@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<fl:FoLiA xmlns:fl="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.2" version="0.5">
+  <fl:metadata type="imdi">
+    <fl:annotations>
+      <fl:token-annotation annotator="ilktok" annotatortype="auto" />
+      <fl:pos-annotation set="cgn-combinedtags" annotator="tadpole" annotatortype="auto" />
+      <fl:lemma-annotation set="lemmas-nl" annotator="tadpole" annotatortype="auto" />
+      <fl:correction-annotation set="corrections" annotator="proycon" annotatortype="manual" />
+      <fl:errordetection-annotation set="corrections" annotator="proycon" annotatortype="manual" />
+    </fl:annotations>
+    <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
+    <imdi:Session>
+      <imdi:Name>WR-P-E-J-0000000001</imdi:Name>
+      <imdi:Title>Stemma</imdi:Title>
+      <imdi:Date>2009-01-27</imdi:Date>
+      <imdi:Description/>
+      <imdi:MDGroup>
+        <imdi:Location>
+          <imdi:Continent>Europe</imdi:Continent>
+          <imdi:Country>NL/B</imdi:Country>
+        </imdi:Location>
+        <imdi:Keys/>
+        <imdi:Project>
+          <imdi:Name>D-Coi</imdi:Name>
+          <imdi:Title/>
+          <imdi:Id/>
+          <imdi:Contact/>
+          <imdi:Description/>
+        </imdi:Project>
+        <imdi:Collector>
+          <imdi:Name/>
+          <imdi:Contact/>
+          <imdi:Description/>
+        </imdi:Collector>
+        <imdi:Content>
+          <imdi:Task/>
+          <imdi:Modalities/>
+          <imdi:CommunicationContext>
+            <imdi:Interactivity/>
+            <imdi:PlanningType/>
+            <imdi:Involvement/>
+          </imdi:CommunicationContext>
+          <imdi:Genre>
+            <imdi:Interactional/>
+            <imdi:Discursive/>
+            <imdi:Performance/>
+          </imdi:Genre>
+          <imdi:Languages>
+            <imdi:Language>
+              <imdi:Id/>
+              <imdi:Name>Dutch</imdi:Name>
+              <imdi:Description/>
+            </imdi:Language>
+          </imdi:Languages>
+          <imdi:Keys/>
+        </imdi:Content>
+        <imdi:Participants/>
+      </imdi:MDGroup>
+      <imdi:Resources>
+        <imdi:MediaFile>
+          <imdi:ResourceLink/>
+          <imdi:Size>2865</imdi:Size>
+          <imdi:Type/>
+          <imdi:Format/>
+          <imdi:Quality>Unknown</imdi:Quality>
+          <imdi:RecordingConditions/>
+          <imdi:TimePosition Start="Unknown"/>
+          <imdi:Access>
+            <imdi:Availability/>
+            <imdi:Date/>
+            <imdi:Owner/>
+            <imdi:Publisher/>
+            <imdi:Contact/>
+            <imdi:Description/>
+          </imdi:Access>
+          <imdi:Description/>
+        </imdi:MediaFile>
+        <imdi:AnnotationUnit>
+          <imdi:ResourceLink/>
+          <imdi:MediaResourceLink/>
+          <imdi:Annotator/>
+          <imdi:Date/>
+          <imdi:Type/>
+          <imdi:Format/>
+          <imdi:ContentEncoding/>
+          <imdi:CharacterEncoding/>
+          <imdi:Access>
+            <imdi:Availability/>
+            <imdi:Date/>
+            <imdi:Owner/>
+            <imdi:Publisher/>
+            <imdi:Contact/>
+            <imdi:Description/>
+          </imdi:Access>
+          <imdi:LanguageId/>
+          <imdi:Anonymous>false</imdi:Anonymous>
+          <imdi:Description/>
+        </imdi:AnnotationUnit>
+        <imdi:Source>
+          <imdi:Id/>
+          <imdi:Format/>
+          <imdi:Quality>Unknown</imdi:Quality>
+          <imdi:TimePosition Start="Unknown"/>
+          <imdi:Access>
+            <imdi:Availability>GNU Free Documentation License</imdi:Availability>
+            <imdi:Date/>
+            <imdi:Owner/>
+            <imdi:Publisher>Wikimedia Foundation (NL/B)</imdi:Publisher>
+            <imdi:Contact/>
+            <imdi:Description/>
+          </imdi:Access>
+          <imdi:Description/>
+        </imdi:Source>
+      </imdi:Resources>
+    </imdi:Session>
+  </imdi:METATRANSCRIPT>
+  </fl:metadata>
+  <fl:text xml:id="WR-P-E-J-0000000001.text">
+      <fl:div xml:id="WR-P-E-J-0000000001.div0.1">
+        <fl:head xml:id="WR-P-E-J-0000000001.head.1">
+          <fl:s xml:id="WR-P-E-J-0000000001.head.1.s.1">
+            <fl:w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1">
+              <fl:t>Stemma</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="stemma"/>
+            </fl:w>
+          </fl:s>
+        </fl:head>
+        <fl:p xml:id="WR-P-E-J-0000000001.p.1">
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.1">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
+              <fl:t>Stemma</fl:t>
+              <fl:pos class="N(eigen,ev,basis,zijd,stan)" />
+              <fl:lemma class="Stemma" />
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.2">
+              <fl:t>is</fl:t>
+              <fl:pos class="WW(pv,tgw,ev)"/>
+              <fl:lemma class="zijn"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.3">
+              <fl:t>een</fl:t>
+              <fl:pos class="LID(onbep,stan,agr)"/>
+              <fl:lemma class="een"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4">
+              <fl:t>ander</fl:t>
+              <fl:pos class="ADJ(prenom,basis,zonder)"/>
+              <fl:lemma class="ander"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5">
+              <fl:t>woord</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="woord"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.6">
+              <fl:desc>Dit woordje is een voorzetsel, het is maar dat je het weet...</fl:desc>
+              <fl:t>voor</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="voor"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.7">
+              <fl:t>stamboom</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="stamboom"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.8">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+            <fl:syntax>
+              <fl:su class="sentence">
+                <fl:su class="subject">
+		  <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.1" t="Stemma" />
+		</fl:su>
+                <fl:su class="verb">
+		  <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.2" t="is" />
+		</fl:su>
+                <fl:su class="predicate">
+                  <fl:su class="np">
+                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een" />
+                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander" />
+                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord" />
+                  </fl:su>
+                  <fl:su class="pp">
+                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor" />
+                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom" />
+                  </fl:su>
+                </fl:su>
+                <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.8" t="." />
+              </fl:su>
+            </fl:syntax>
+	    <fl:chunking>
+	      <fl:chunk>
+		<fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een" />
+		<fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander" />
+		<fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord" />
+	      </fl:chunk>
+	    <fl:chunk>
+	      <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor" />
+	      <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom" />
+	    </fl:chunk>
+	  </fl:chunking>
+          </fl:s>
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.2">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1">
+              <fl:t>In</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="in"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.2">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3">
+              <fl:t>historische</fl:t>
+              <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+              <fl:lemma class="historisch"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4">
+              <fl:t>wetenschap</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="wetenschap"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5">
+              <fl:t>wordt</fl:t>
+              <fl:pos class="WW(pv,tgw,met-t)"/>
+              <fl:lemma class="worden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6">
+              <fl:t>zo'n</fl:t>
+              <fl:pos class="VNW(aanw,det,stan,prenom,zonder,agr)"/>
+              <fl:lemma class="zo'n"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7">
+              <fl:t>stamboom</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="stamboom"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.8">
+              <fl:t>,</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class=","/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.9">
+              <fl:t>onder</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="onder"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.10">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.11">
+              <fl:t>naam</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="naam"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.12">
+              <fl:t>stemma</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="stemma"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.13">
+              <fl:t>codicum</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="codicum"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.14">
+              <fl:t>(</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="("/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.15">
+              <fl:t>handschriftelijke</fl:t>
+              <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+              <fl:lemma class="handschriftelijk"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.16">
+              <fl:t>genealogie</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="genealogie"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.17">
+              <fl:t>)</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class=")"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.18">
+              <fl:t>,</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class=","/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.19">
+              <fl:t>gebruikt</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="gebruiken"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.20">
+              <fl:t>om</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="om"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.21">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.22">
+              <fl:t>verwantschap</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="verwantschap"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.23">
+              <fl:t>tussen</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="tussen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.24">
+              <fl:t>handschrift</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="handschrift"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.25">
+              <fl:t>en</fl:t>
+              <fl:pos class="VG(neven)"/>
+              <fl:lemma class="en"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.26">
+              <fl:t>weer</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="weer"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.27">
+              <fl:t>te</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="te"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.28">
+              <fl:t>geven</fl:t>
+              <fl:pos class="WW(inf,vrij,zonder)"/>
+              <fl:lemma class="geven"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.29">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+          </fl:s>
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.3">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.1">
+              <fl:t>Werkwijze</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="werkwijz"/>
+            </fl:w>
+	    <fl:whitespace />
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.2">
+              <fl:t>Hiervoor</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="hiervoor"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.3">
+              <fl:t>worden</fl:t>
+              <fl:pos class="WW(pv,tgw,mv)"/>
+              <fl:lemma class="worden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.4">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.5">
+              <fl:t>handschriften</fl:t>
+              <fl:pos class="N(soort,mv,basis)"/>
+              <fl:lemma class="handschrift"/>
+              <fl:morphology>
+                <fl:morpheme class="handschrift">
+                    <fl:feat class="stem" subset="type" />
+                    <fl:feat class="lexical" subset="function" />
+                    <fl:t offset="0">handschrift</fl:t>
+                </fl:morpheme>
+                <fl:morpheme>
+                    <fl:feat class="suffix" subset="type" />
+                    <fl:feat class="plural" subset="function" />
+                    <fl:t offset="11">en</fl:t>
+                </fl:morpheme>
+              </fl:morphology>              
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.6">
+              <fl:t>genummerd</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="nummeren"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.7">
+              <fl:t>en</fl:t>
+              <fl:pos class="VG(neven)"/>
+              <fl:lemma class="en"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.8">
+              <fl:t>gedateerd</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="dateren"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.9">
+              <fl:t>zodat</fl:t>
+              <fl:pos class="VG(onder)"/>
+              <fl:lemma class="zodat"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.10">
+              <fl:t>ze</fl:t>
+              <fl:pos class="VNW(pers,pron,stan,red,3,ev,fem)"/>
+              <fl:lemma class="ze"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.11">
+              <fl:t>op</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="op"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.12">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.13">
+              <fl:t>juiste</fl:t>
+              <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+              <fl:lemma class="juist"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.14">
+              <fl:t>plaats</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="plaats"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.15">
+              <fl:t>van</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="van"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.16">
+              <fl:t>hun</fl:t>
+              <fl:pos class="VNW(bez,det,stan,vol,3,mv,prenom,zonder,agr)"/>
+              <fl:lemma class="hun"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.17">
+              <fl:t>afstammingsgeschiedenis</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="afstammingsgeschiedenis"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.18">
+              <fl:t>geplaatst</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="plaatsen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.19">
+              <fl:t>kunnen</fl:t>
+              <fl:pos class="WW(pv,tgw,mv)"/>
+              <fl:lemma class="kunnen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.20">
+              <fl:t>worden</fl:t>
+              <fl:pos class="WW(inf,vrij,zonder)"/>
+              <fl:lemma class="worden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.21">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+          </fl:s>
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.4">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.1">
+              <fl:t>De</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.2">
+              <fl:t>hoofdletter</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="hoofdletter"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.3">
+              <fl:t>A</fl:t>
+              <fl:pos class="SPEC(symb)"/>
+              <fl:lemma class="_"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.4">
+              <fl:t>wordt</fl:t>
+              <fl:pos class="WW(pv,tgw,met-t)"/>
+              <fl:lemma class="worden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.5">
+              <fl:t>gebruikt</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="gebruiken"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.6">
+              <fl:t>voor</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="voor"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.7">
+              <fl:t>het</fl:t>
+              <fl:pos class="LID(bep,stan,evon)"/>
+              <fl:lemma class="het"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.8">
+              <fl:t>originele</fl:t>
+              <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+              <fl:lemma class="origineel"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.9">
+              <fl:t>handschrift</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="handschrift"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.10">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+          </fl:s>
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.5">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.1">
+              <fl:t>De</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.2">
+              <fl:t>andere</fl:t>
+              <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+              <fl:lemma class="ander"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.3">
+              <fl:t>handschriften</fl:t>
+              <fl:pos class="N(soort,mv,basis)"/>
+              <fl:lemma class="handschrift"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.4">
+              <fl:t>krijgen</fl:t>
+              <fl:pos class="WW(pv,tgw,mv)"/>
+              <fl:lemma class="krijgen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.5">
+              <fl:t>ook</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="ook"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.6">
+              <fl:t>een</fl:t>
+              <fl:pos class="LID(onbep,stan,agr)"/>
+              <fl:lemma class="een"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.7">
+              <fl:t>letter</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="letter"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.8">
+              <fl:t>die</fl:t>
+              <fl:pos class="VNW(betr,pron,stan,vol,persoon,getal)"/>
+              <fl:lemma class="die"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.9">
+              <fl:t>verband</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="verband"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.10">
+              <fl:t>kan</fl:t>
+              <fl:pos class="WW(pv,tgw,ev)"/>
+              <fl:lemma class="kunnen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.11">
+              <fl:t>houden</fl:t>
+              <fl:pos class="WW(inf,vrij,zonder)"/>
+              <fl:lemma class="houden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.12">
+              <fl:t>met</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="met"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.13">
+              <fl:t>hun</fl:t>
+              <fl:pos class="VNW(bez,det,stan,vol,3,mv,prenom,zonder,agr)"/>
+              <fl:lemma class="hun"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.14">
+              <fl:t>plaats</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="plaats"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.15">
+              <fl:t>van</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="van"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.16">
+              <fl:t>oorsprong</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="oorsprong"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.17">
+              <fl:t>of</fl:t>
+              <fl:pos class="VG(neven)"/>
+              <fl:lemma class="of"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.18">
+              <fl:t>plaats</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="plaats"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.19">
+              <fl:t>van</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="van"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.20">
+              <fl:t>bewaring</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="bewaring"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.21">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+          </fl:s>
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.6">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.1">
+              <fl:t>Verdwenen</fl:t>
+              <fl:pos class="WW(vd,prenom,zonder)">
+		<fl:feat class="WW" subset="head"/>
+              </fl:pos>
+              <fl:lemma class="verdwijnen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.2">
+              <fl:t>handschriften</fl:t>
+              <fl:pos class="N(soort,mv,basis)"/>
+              <fl:lemma class="handschrift"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.3">
+              <fl:t>waarvan</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="waarvan"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.4">
+              <fl:t>men</fl:t>
+              <fl:pos class="VNW(pers,pron,nomin,red,3p,ev,masc)"/>
+              <fl:lemma class="men"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.5">
+              <fl:t>toch</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="toch"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.6">
+              <fl:t>vermoedt</fl:t>
+              <fl:pos class="WW(pv,tgw,met-t)"/>
+              <fl:lemma class="vermoeden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.7">
+              <fl:t>dat</fl:t>
+              <fl:pos class="VG(onder)"/>
+              <fl:lemma class="dat"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.8">
+              <fl:t>ze</fl:t>
+              <fl:pos class="VNW(pers,pron,stan,red,3,mv)"/>
+              <fl:lemma class="ze"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.9">
+              <fl:t>ooit</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="ooit"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.10">
+              <fl:t>bestaan</fl:t>
+              <fl:pos class="WW(inf,vrij,zonder)"/>
+              <fl:lemma class="bestaan"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.11">
+              <fl:t>hebben</fl:t>
+              <fl:pos class="WW(inf,vrij,zonder)"/>
+              <fl:lemma class="hebben"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.12">
+              <fl:t>worden</fl:t>
+              <fl:pos class="WW(inf,vrij,zonder)"/>
+              <fl:lemma class="worden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.13">
+              <fl:t>ook</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="ook"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.14">
+              <fl:t>in</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="in"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.15">
+              <fl:t>het</fl:t>
+              <fl:pos class="LID(bep,stan,evon)"/>
+              <fl:lemma class="het"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.16">
+              <fl:t>stemma</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="stemma"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.17">
+              <fl:t>opgenomen</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="opnemen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.18">
+              <fl:t>en</fl:t>
+              <fl:pos class="VG(neven)"/>
+              <fl:lemma class="en"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.19">
+              <fl:t>worden</fl:t>
+              <fl:pos class="WW(pv,tgw,mv)"/>
+              <fl:lemma class="worden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.20">
+              <fl:t>weergegeven</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="weergeven"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.21">
+              <fl:t>door</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="door"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.22">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.23">
+              <fl:t>laatste</fl:t>
+              <fl:pos class="ADJ(prenom,sup,met-e,stan)"/>
+              <fl:lemma class="laat"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.24">
+              <fl:t>letters</fl:t>
+              <fl:pos class="N(soort,mv,basis)"/>
+              <fl:lemma class="letter"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.25">
+              <fl:t>van</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="van"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.26">
+              <fl:t>het</fl:t>
+              <fl:pos class="LID(bep,stan,evon)"/>
+              <fl:lemma class="het"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.27">
+              <fl:t>alfabet</fl:t>
+              <fl:pos class="N(soort,ev,basis,onz,stan)"/>
+              <fl:lemma class="alfabet"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.28">
+              <fl:t>en</fl:t>
+              <fl:pos class="VG(neven)"/>
+              <fl:lemma class="en"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.29">
+              <fl:t>worden</fl:t>
+              <fl:pos class="WW(pv,tgw,mv)"/>
+              <fl:lemma class="worden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.30">
+              <fl:t>tussen</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="tussen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.31">
+              <fl:correction xml:id="WR-P-E-J-0000000001.p.1.s.6.w.31.c.1">
+                <fl:new>
+                 <fl:t>vierkante</fl:t>
+                </fl:new>
+                <fl:original>
+                 <fl:t>vierkant</fl:t>
+                </fl:original>
+              </fl:correction>
+              <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+              <fl:lemma class="vierkant"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.32">
+              <fl:t>haken</fl:t>
+              <fl:pos class="N(soort,mv,basis)"/>
+              <fl:correction xml:id="WR-P-E-J-0000000001.p.1.s.6.w.32.c.1">
+                <fl:new>              
+                 <fl:lemma class="haak"/>
+                </fl:new>
+                <fl:original>
+                 <fl:lemma class="haaak"/>
+                </fl:original>
+               </fl:correction>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.33">
+              <fl:t>geplaatst</fl:t>
+              <fl:pos class="WW(vd,vrij,zonder)"/>
+              <fl:lemma class="plaatsen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.34">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+          </fl:s>
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.7">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.1">
+              <fl:t>Tenslotte</fl:t>
+              <fl:pos class="BW()"/>
+              <fl:lemma class="tenslotte"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.2">
+              <fl:t>gaat</fl:t>
+              <fl:pos class="WW(pv,tgw,met-t)"/>
+              <fl:lemma class="gaan"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.3">
+              <fl:t>men</fl:t>
+              <fl:pos class="VNW(pers,pron,nomin,red,3p,ev,masc)"/>
+              <fl:lemma class="men"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.4">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.5">
+              <fl:t>verwantschap</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="verwantschap"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.6">
+              <fl:t>tussen</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="tussen"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.7">
+              <fl:t>de</fl:t>
+              <fl:pos class="LID(bep,stan,rest)"/>
+              <fl:lemma class="de"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.8">
+              <fl:t>handschriften</fl:t>
+              <fl:pos class="N(soort,mv,basis)"/>
+              <fl:lemma class="handschrift"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.9">
+              <fl:t>aanduiden</fl:t>
+              <fl:pos class="WW(inf,vrij,zonder)"/>
+              <fl:lemma class="aanduiden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.10">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+          </fl:s>
+          <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.8">
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.1">
+              <fl:t>Een</fl:t>
+              <fl:pos class="LID(onbep,stan,agr)"/>
+              <fl:lemma class="een"/>
+            </fl:w>
+	    <fl:quote xml:id="WR-P-E-J-0000000001.p.1.s.8.q.1">
+	      <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.2">
+		<fl:t>volle</fl:t>
+		<fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+		<fl:lemma class="vol"/>
+	      </fl:w>
+	      <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.3">
+		<fl:t>lijn</fl:t>
+		<fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+		<fl:lemma class="lijn"/>
+	      </fl:w>
+	    </fl:quote>
+	    <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.4">
+              <fl:t>duidt</fl:t>
+              <fl:pos class="WW(pv,tgw,met-t)"/>
+              <fl:lemma class="duiden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.5">
+              <fl:t>op</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="op"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.6">
+              <fl:t>een</fl:t>
+              <fl:pos class="LID(onbep,stan,agr)"/>
+              <fl:lemma class="een"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.7">
+              <fl:t>verwantschap</fl:t>
+              <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="verwantschap"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.8">
+              <fl:t>,</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class=","/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.9">
+              <fl:t>terweil</fl:t>
+              <fl:errordetection class="spelling" error="yes" />
+              <fl:pos class="VG(onder)"/>
+              <fl:lemma class="terweil"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.10">
+              <fl:t>een</fl:t>
+              <fl:pos class="LID(onbep,stan,agr)"/>
+              <fl:lemma class="een"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.11">
+              <fl:t>stippelijn</fl:t>
+              <fl:pos class="FOUTN(soort,ev,basis,zijd,stan)"/>
+              <fl:lemma class="stippelijn"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.12">
+              <fl:t>op</fl:t>
+              <fl:pos class="VZ(init)"/>
+              <fl:lemma class="op"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.13">
+              <fl:t>een</fl:t>
+              <fl:pos class="LID(onbep,stan,agr)"/>
+              <fl:lemma class="een"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.14">
+              <fl:t>onzekere</fl:t>
+              <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+              <fl:lemma class="onzeker"/>
+              <fl:correction xml:id="WR-P-E-J-0000000001.p.1.s.8.w.14.c.1" class="spelling">
+                <fl:suggestion>
+                    <fl:t>twijfelachtige</fl:t>
+                </fl:suggestion>
+                <fl:suggestion>
+                    <fl:t>ongewisse</fl:t>
+                </fl:suggestion>
+              </fl:correction>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.15">
+              <fl:t>verwantschap</fl:t>
+	      <fl:pos class="N(soort,ev,basis,zijd,stan)" datetime="2011-07-20T19:00:01" />
+              <fl:lemma class="verwantschap"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.16">
+              <fl:t>duidt</fl:t>
+              <fl:pos class="WW(pv,tgw,met-t)"/>
+              <fl:lemma class="duiden"/>
+            </fl:w>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.17">
+              <fl:t>.</fl:t>
+              <fl:pos class="LET()"/>
+              <fl:lemma class="."/>
+            </fl:w>
+          </fl:s>
+        </fl:p>
+      </fl:div>
+      <fl:gap xml:id="WR-P-E-J-0000000001.gap.1" annotator="proycon" class="backmatter">
+       <fl:desc>Backmatter</fl:desc>
+       <fl:content><![CDATA[
+bli bli bla, bla bla bli
+]]></fl:content>
+      </fl:gap>      
+  </fl:text>  
+</fl:FoLiA>
