@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<fl:FoLiA xmlns:fl="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.2" version="0.5">
+<fl:FoLiA xmlns:fl="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.6" generator="libfolia-v0.2">
   <fl:metadata type="imdi">
     <fl:annotations>
       <fl:token-annotation annotator="ilktok" annotatortype="auto" />
@@ -154,9 +153,9 @@
               <fl:pos class="N(soort,ev,basis,onz,stan)"/>
               <fl:lemma class="woord"/>
             </fl:w>
-            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.6">
-              <fl:desc>Dit woordje is een voorzetsel, het is maar dat je het weet...</fl:desc>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.6">              
               <fl:t>voor</fl:t>
+              <fl:desc>Dit woordje is een voorzetsel, het is maar dat je het weet...</fl:desc>
               <fl:pos class="VZ(init)"/>
               <fl:lemma class="voor"/>
             </fl:w>
@@ -171,38 +170,34 @@
               <fl:lemma class="."/>
             </fl:w>
             <fl:syntax>
-              <fl:su class="sentence">
-                <fl:su class="subject">
-		  <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.1" t="Stemma" />
-		</fl:su>
-                <fl:su class="verb">
-		  <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.2" t="is" />
-		</fl:su>
-                <fl:su class="predicate">
-                  <fl:su class="np">
-                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een" />
-                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander" />
-                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord" />
-                  </fl:su>
-                  <fl:su class="pp">
-                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor" />
-                    <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom" />
-                  </fl:su>
+                <fl:su class="sentence">
+                 <fl:su class="subject"><fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.1" t="Stemma" /></fl:su>
+                 <fl:su class="verb"><fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.2" t="is" /></fl:su>
+                 <fl:su class="predicate">
+                    <fl:su class="np">
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een" />
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander" />
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord" />
+                    </fl:su>
+                    <fl:su class="pp">
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor" />
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom" />
+                    </fl:su>
+                 </fl:su>
+                 <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.8" t="." />
                 </fl:su>
-                <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.8" t="." />
-              </fl:su>
             </fl:syntax>
-	    <fl:chunking>
-	      <fl:chunk>
-		<fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een" />
-		<fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander" />
-		<fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord" />
-	      </fl:chunk>
-	    <fl:chunk>
-	      <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor" />
-	      <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom" />
-	    </fl:chunk>
-	  </fl:chunking>
+            <fl:chunking>
+                <fl:chunk>
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een" />
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander" />
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord" />                
+                </fl:chunk>
+                <fl:chunk>
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor" />
+                        <fl:wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom" />
+                </fl:chunk>
+            </fl:chunking>            
           </fl:s>
           <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.2">
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1">
@@ -352,12 +347,13 @@
             </fl:w>
           </fl:s>
           <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.3">
+            <fl:whitespace />
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.1">
               <fl:t>Werkwijze</fl:t>
               <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
               <fl:lemma class="werkwijz"/>
             </fl:w>
-	    <fl:whitespace />
+            <fl:whitespace />
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.2">
               <fl:t>Hiervoor</fl:t>
               <fl:pos class="BW()"/>
@@ -379,14 +375,14 @@
               <fl:lemma class="handschrift"/>
               <fl:morphology>
                 <fl:morpheme class="handschrift">
-                    <fl:feat class="stem" subset="type" />
-                    <fl:feat class="lexical" subset="function" />
                     <fl:t offset="0">handschrift</fl:t>
+                    <fl:feat subset="type" class="stem" />
+                    <fl:feat subset="function" class="lexical" />
                 </fl:morpheme>
                 <fl:morpheme>
-                    <fl:feat class="suffix" subset="type" />
-                    <fl:feat class="plural" subset="function" />
                     <fl:t offset="11">en</fl:t>
+                    <fl:feat subset="type" class="suffix" />
+                    <fl:feat subset="function" class="plural" />                    
                 </fl:morpheme>
               </fl:morphology>              
             </fl:w>
@@ -472,13 +468,16 @@
             </fl:w>
           </fl:s>
           <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.4">
+            <fl:t>De hoofdletter A wordt gebruikt voor het originele handschrift.</fl:t>
+            <fl:t class="original">De hoofdletter A wordt gebruikt voor het originele handschrift.</fl:t>
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.1">
-              <fl:t>De</fl:t>
+              <fl:t offset="0">De</fl:t>
+              <fl:t offset="0" class="original">De</fl:t>
               <fl:pos class="LID(bep,stan,rest)"/>
               <fl:lemma class="de"/>
             </fl:w>
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.2">
-              <fl:t>hoofdletter</fl:t>
+              <fl:t offset="3">hoofdletter</fl:t>
               <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
               <fl:lemma class="hoofdletter"/>
             </fl:w>
@@ -634,7 +633,7 @@
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.1">
               <fl:t>Verdwenen</fl:t>
               <fl:pos class="WW(vd,prenom,zonder)">
-		<fl:feat class="WW" subset="head"/>
+                <fl:feat subset="head" class="WW" />
               </fl:pos>
               <fl:lemma class="verdwijnen"/>
             </fl:w>
@@ -876,19 +875,19 @@
               <fl:pos class="LID(onbep,stan,agr)"/>
               <fl:lemma class="een"/>
             </fl:w>
-	    <fl:quote xml:id="WR-P-E-J-0000000001.p.1.s.8.q.1">
-	      <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.2">
-		<fl:t>volle</fl:t>
-		<fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
-		<fl:lemma class="vol"/>
-	      </fl:w>
-	      <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.3">
-		<fl:t>lijn</fl:t>
-		<fl:pos class="N(soort,ev,basis,zijd,stan)"/>
-		<fl:lemma class="lijn"/>
-	      </fl:w>
-	    </fl:quote>
-	    <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.4">
+            <fl:quote xml:id="WR-P-E-J-0000000001.p.1.s.8.q.1">
+                <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.2">
+                  <fl:t>volle</fl:t>
+                  <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
+                  <fl:lemma class="vol"/>
+                </fl:w>
+                <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.3">
+                  <fl:t>lijn</fl:t>
+                  <fl:pos class="N(soort,ev,basis,zijd,stan)"/>
+                  <fl:lemma class="lijn"/>
+                </fl:w>
+            </fl:quote>
+            <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.4">
               <fl:t>duidt</fl:t>
               <fl:pos class="WW(pv,tgw,met-t)"/>
               <fl:lemma class="duiden"/>
@@ -954,7 +953,7 @@
             </fl:w>
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.15">
               <fl:t>verwantschap</fl:t>
-	      <fl:pos class="N(soort,ev,basis,zijd,stan)" datetime="2011-07-20T19:00:01" />
+              <fl:pos class="N(soort,ev,basis,zijd,stan)" datetime="2011-07-20T19:00:01" />
               <fl:lemma class="verwantschap"/>
             </fl:w>
             <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.16">
@@ -970,11 +969,51 @@
           </fl:s>
         </fl:p>
       </fl:div>
-      <fl:gap xml:id="WR-P-E-J-0000000001.gap.1" annotator="proycon" class="backmatter">
+      <fl:div xml:id="sandbox">
+          <fl:list  xml:id="sandbox.list.1">
+              <fl:listitem xml:id="sandbox.list.1.listitem.1">
+                  <fl:s xml:id="sandbox.list.1.listitem.1.s.1">
+                      <fl:w xml:id="sandbox.list.1.listitem.1.s.1.w.1">
+                          <fl:t>Eerste</fl:t>
+                      </fl:w>
+                      <fl:w xml:id="sandbox.list.1.listitem.1.s.1.w.2">
+                          <fl:t>testitem</fl:t>
+                      </fl:w>                      
+                  </fl:s>                  
+              </fl:listitem>
+              <fl:listitem xml:id="sandbox.list.1.listitem.2">
+                  <fl:s xml:id="sandbox.list.1.listitem.2.s.1">
+                      <fl:w xml:id="sandbox.list.1.listitem.2.s.1.w.1">
+                          <fl:t>Tweede</fl:t>
+                      </fl:w>
+                      <fl:w xml:id="sandbox.list.1.listitem.2.s.1.w.2">
+                          <fl:t>testitem</fl:t>
+                      </fl:w>                      
+                  </fl:s>                  
+              </fl:listitem>
+          </fl:list>
+          <fl:figure xml:id="sandbox.figure.1" src="http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg">
+              <fl:desc>Stamboom plaatje van wikipedia</fl:desc>              
+              <fl:caption>
+                  <fl:s xml:id="sandbox.figure.1.caption.s.1">
+                      <fl:w xml:id="sandbox.figure.1.caption.s.1.w.1">
+                          <fl:t>Een</fl:t>
+                      </fl:w>
+                      <fl:w xml:id="sandbox.figure.1.caption.s.1.w.2">
+                          <fl:t>stamboom</fl:t>
+                      </fl:w>                      
+                  </fl:s>
+              </fl:caption>
+          </fl:figure>
+      </fl:div>
+      <fl:gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter" annotator="proycon">
        <fl:desc>Backmatter</fl:desc>
-       <fl:content><![CDATA[
-bli bli bla, bla bla bli
-]]></fl:content>
+       <fl:content>
+<![CDATA[
+De tekst is beschikbaar onder de licentie Creative Commons Naamsvermelding/Gelijk delen, er kunnen aanvullende voorwaarden van toepassing zijn. Zie de Gebruiksvoorwaarden voor meer informatie.
+Wikipedia® is een geregistreerd handelsmerk van de Wikimedia Foundation, Inc., een organisatie zonder winstoogmerk.
+]]>
+       </fl:content>
       </fl:gap>      
   </fl:text>  
 </fl:FoLiA>

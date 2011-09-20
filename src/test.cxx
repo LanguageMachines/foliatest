@@ -213,14 +213,14 @@ void sanityTest::test002(){
   cout << " Sentence count ";
   vector<AbstractElement*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.sentences() );
-  CPPUNIT_ASSERT( v.size() == 9 );
+  CPPUNIT_ASSERT_EQUAL( v.size(), size_t(12) );
 }
 
 void sanityTest::test003( ){
   cout << " Word count ";
   vector<AbstractElement*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.words() );
-  CPPUNIT_ASSERT_EQUAL( v.size(), (size_t)151 );
+  CPPUNIT_ASSERT_EQUAL( v.size(), (size_t)157 );
 }
 
 void sanityTest::test004(){
@@ -239,9 +239,9 @@ void sanityTest::test005( ){
   AbstractElement* w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.rwords(0) );
   CPPUNIT_ASSERT( w->isinstance( Word_t ) );
-  CPPUNIT_ASSERT_EQUAL( w->id(), string("WR-P-E-J-0000000001.p.1.s.8.w.17") );
-  CPPUNIT_ASSERT_EQUAL( str(w), string(".") );
-  CPPUNIT_ASSERT_EQUAL( w->text(),  UnicodeString(".") );
+  CPPUNIT_ASSERT_EQUAL( w->id(), string("sandbox.figure.1.caption.s.1.w.2") );
+  CPPUNIT_ASSERT_EQUAL( w->text(),  UnicodeString("stamboom") );
+  CPPUNIT_ASSERT_EQUAL( str(w), string("stamboom") );
 }
 
 void sanityTest::test006( ){
@@ -250,8 +250,7 @@ void sanityTest::test006( ){
   CPPUNIT_ASSERT_NO_THROW( w = doc.sentences(1) );
   CPPUNIT_ASSERT( isinstance( w, Sentence_t ) );
   CPPUNIT_ASSERT( w->id() == "WR-P-E-J-0000000001.p.1.s.1" );
-  CPPUNIT_ASSERT_THROW( w->text( PROCESSED ), NoSuchText );
-  CPPUNIT_ASSERT_THROW( w->text( ORIGINAL ), NoSuchText );
+  CPPUNIT_ASSERT( !w->hastext() );
   CPPUNIT_ASSERT( w->str() == "Stemma is een ander woord voor stamboom ." );
 }
 
@@ -392,7 +391,7 @@ void sanityTest::test016b(){
 void sanityTest::test017(){
   cout << " Check - Gap ";
   AbstractElement *gap = doc["WR-P-E-J-0000000001.gap.1"];
-  CPPUNIT_ASSERT( strip(gap->content()) == "bli bli bla, bla bla bli" );
+  CPPUNIT_ASSERT_EQUAL( strip(gap->content()).substr(0,11), string("De tekst is") );
   CPPUNIT_ASSERT( gap->cls() == "backmatter" );
   CPPUNIT_ASSERT( gap->description() == "Backmatter" );
 }
@@ -506,22 +505,22 @@ void sanityTest::test024a(){
 
 void sanityTest::test024b(){
   cout << " Obtaining right context with default placeholder ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.16"];
+  AbstractElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
   vector<AbstractElement*> context = w->rightcontext(3);
-  // cerr << "found context " << context << endl;
+  //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
-  CPPUNIT_ASSERT( text(context[0]) == "." );
+  CPPUNIT_ASSERT( text(context[0]) == "stamboom" );
   CPPUNIT_ASSERT( context[1] == 0 );
   CPPUNIT_ASSERT( context[2] == 0 );
 }
 
 void sanityTest::test024c(){
   cout << " Obtaining right context with placeholder ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.16"];
+  AbstractElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
   vector<AbstractElement*> context = w->rightcontext(3, "_");
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
-  CPPUNIT_ASSERT( text(context[0]) == "." );
+  CPPUNIT_ASSERT( text(context[0]) == "stamboom" );
   CPPUNIT_ASSERT( context[1]->isinstance(PlaceHolder_t) );
   CPPUNIT_ASSERT( context[2]->text() == "_" );
 }
@@ -665,8 +664,8 @@ class editTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test007 );
   CPPUNIT_TEST( test008 );
   CPPUNIT_TEST( test009a );
-  CPPUNIT_TEST( test009b );
-  CPPUNIT_TEST( test009c );
+  // CPPUNIT_TEST( test009b );
+  // CPPUNIT_TEST( test009c );
   CPPUNIT_TEST( test010 );
   CPPUNIT_TEST( test011 );
   CPPUNIT_TEST( test012 );
@@ -692,8 +691,8 @@ protected:
   void test007();
   void test008();
   void test009a();
-  void test009b();
-  void test009c();
+  // void test009b();
+  // void test009c();
   void test010();
   void test011();
   void test012();
@@ -988,20 +987,20 @@ void editTest::test009a( ){
 			DuplicateIDError );
 }
 
-void editTest::test009b( ){
-  cout << " Exception on adding TextContent of wrong level ";
-  AbstractElement *w = 0;
-  CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
-  CPPUNIT_ASSERT_THROW( w->settext( "bla", ORIGINAL ), ValueError );
-}
+// void editTest::test009b( ){
+//   cout << " Exception on adding TextContent of wrong level ";
+//   AbstractElement *w = 0;
+//   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
+//   CPPUNIT_ASSERT_THROW( w->settext( "bla", "original" ), ValueError );
+// }
 
-void editTest::test009c( ){
-  cout << " Exception on adding duplicate TextContent ";
-  AbstractElement *w = 0;
-  CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
-  TextContent *t = new TextContent( "value='blah', corrected='yes'" );
-  CPPUNIT_ASSERT_THROW( w->append( t ), DuplicateAnnotationError );
-}
+// void editTest::test009c( ){
+//   cout << " Exception on adding duplicate TextContent ";
+//   AbstractElement *w = 0;
+//   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
+//   TextContent *t = new TextContent( "value='blah', corrected='yes'" );
+//   CPPUNIT_ASSERT_THROW( w->append( t ), DuplicateAnnotationError );
+// }
 
 void editTest::test010( ){
   cout << " Creating an initially document-less tokenannotation element and adding it to a word ";
@@ -1124,11 +1123,9 @@ void editTest::test018a(){
   cout << " Altering sentence text (untokenized by definition)";
   AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
   CPPUNIT_ASSERT( s->text() == "Stemma is een ander woord voor stamboom ." );
-  CPPUNIT_ASSERT_THROW( s->text( PROCESSED ), NoSuchText );
-  CPPUNIT_ASSERT_THROW( s->text( ORIGINAL ), NoSuchText );
-  CPPUNIT_ASSERT_THROW( s->text( OCR ), NoSuchText );
-  CPPUNIT_ASSERT_THROW( s->text( SPEECHTOTEXT ), NoSuchText );
+  CPPUNIT_ASSERT( !s->hastext() );
   s->settext( "Stemma is een ander woord voor stamboom." );
+  CPPUNIT_ASSERT( s->hastext() );
   CPPUNIT_ASSERT( s->text() == "Stemma is een ander woord voor stamboom." );
 }
 
@@ -1136,11 +1133,12 @@ void editTest::test018b(){
   cout << " Altering sentence text (untokenized by definition)";
   AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.8"];
   CPPUNIT_ASSERT( s->text() == "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
-  CPPUNIT_ASSERT_NO_THROW( s->settext("Een volle lijn duidt op een verwantschap, terweil een stippelijn op een onzekere verwantschap duidt.", ORIGINAL ) );
-  CPPUNIT_ASSERT_NO_THROW( s->settext("Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt.", PROCESSED ) );
+  CPPUNIT_ASSERT_NO_THROW( s->settext("Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt." ) );
+  CPPUNIT_ASSERT_NO_THROW( s->settext("Een volle lijn duidt op een verwantschap, terweil een stippelijn op een onzekere verwantschap duidt.", "original" ) );
   CPPUNIT_ASSERT( s->text() == "Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt." );
-  CPPUNIT_ASSERT( s->text(PROCESSED) == "Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt." );
-  CPPUNIT_ASSERT( s->text(ORIGINAL) == "Een volle lijn duidt op een verwantschap, terweil een stippelijn op een onzekere verwantschap duidt." );
+  CPPUNIT_ASSERT( s->text("original") == "Een volle lijn duidt op een verwantschap, terweil een stippelijn op een onzekere verwantschap duidt." );
+
+  CPPUNIT_ASSERT( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.1\"><t>Een</t><pos class=\"LID(onbep,stan,agr)\"/><lemma class=\"een\"/></w><quote xml:id=\"WR-P-E-J-0000000001.p.1.s.8.q.1\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.2\"><t>volle</t><pos class=\"ADJ(prenom,basis,met-e,stan)\"/><lemma class=\"vol\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.3\"><t>lijn</t><pos class=\"N(soort,ev,basis,zijd,stan)\"/><lemma class=\"lijn\"/></w></quote><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.4\"><t>duidt</t><pos class=\"WW(pv,tgw,met-t)\"/><lemma class=\"duiden\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.5\"><t>op</t><pos class=\"VZ(init)\"/><lemma class=\"op\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.6\"><t>een</t><pos class=\"LID(onbep,stan,agr)\"/><lemma class=\"een\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.7\"><t>verwantschap</t><pos class=\"N(soort,ev,basis,zijd,stan)\"/><lemma class=\"verwantschap\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.8\"><t>,</t><pos class=\"LET()\"/><lemma class=\",\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.9\"><t>terweil</t><errordetection class=\"spelling\" error=\"yes\"/><pos class=\"VG(onder)\"/><lemma class=\"terweil\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.10\"><t>een</t><pos class=\"LID(onbep,stan,agr)\"/><lemma class=\"een\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.12\"><t>op</t><pos class=\"VZ(init)\"/><lemma class=\"op\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.13\"><t>een</t><pos class=\"LID(onbep,stan,agr)\"/><lemma class=\"een\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.14\"><t>onzekere</t><pos class=\"ADJ(prenom,basis,met-e,stan)\"/><lemma class=\"onzeker\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.14.c.1\" class=\"spelling\"><suggestion><t>twijfelachtige</t></suggestion><suggestion><t>ongewisse</t></suggestion></correction></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.15\"><t>verwantschap</t><pos class=\"N(soort,ev,basis,zijd,stan)\" datetime=\"2011-07-20T19:00:01\"/><lemma class=\"verwantschap\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.16\"><t>duidt</t><pos class=\"WW(pv,tgw,met-t)\"/><lemma class=\"duiden\"/></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.17\"><t>.</t><pos class=\"LET()\"/><lemma class=\".\"/></w><t>Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt.</t><t class=\"original\">Een volle lijn duidt op een verwantschap, terweil een stippelijn op een onzekere verwantschap duidt.</t></s>" );
 }
 
 class createTest: public CppUnit::TestFixture {
