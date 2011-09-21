@@ -281,6 +281,7 @@ void sanityTest::test009( ){
   CPPUNIT_ASSERT_NO_THROW( w = doc.words(0) );
   CPPUNIT_ASSERT( w->annotation( Pos_t ) == w->select( Pos_t )[0] );
   CPPUNIT_ASSERT( w->annotation( Pos_t )->isinstance(Pos_t ) );
+  CPPUNIT_ASSERT( issubclass( PosAnnotation, AbstractTokenAnnotation ) );
   CPPUNIT_ASSERT( w->annotation( Pos_t )->cls() == "N(soort,ev,basis,onz,stan)" );
   CPPUNIT_ASSERT( w->pos() == "N(soort,ev,basis,onz,stan)" );
   CPPUNIT_ASSERT( w->annotation(Pos_t)->st() == "cgn-combinedtags" );
