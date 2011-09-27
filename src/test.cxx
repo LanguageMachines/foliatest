@@ -139,7 +139,11 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test028 );
   CPPUNIT_TEST( test029 );
   CPPUNIT_TEST( test030 );
+  CPPUNIT_TEST( test030a );
   CPPUNIT_TEST( test031 );
+  CPPUNIT_TEST( test032 );
+  CPPUNIT_TEST( test033 );
+  CPPUNIT_TEST( test034 );
   CPPUNIT_TEST( test099 );
   CPPUNIT_TEST( test100a );
   CPPUNIT_TEST( test100b );
@@ -186,7 +190,11 @@ protected:
   void test028();
   void test029();
   void test030();
+  void test030a();
   void test031();
+  void test032();
+  void test033();
+  void test034();
   void test099();
   void test100a();
   void test100b();
@@ -308,8 +316,8 @@ void sanityTest::test011( ){
   cout << " Token Annotation - Non-existing element ";
   AbstractElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.words(0) );
-  CPPUNIT_ASSERT( len( w->select( Sense_t ) ) == 0 );
-  CPPUNIT_ASSERT_THROW( w->annotation( Sense_t ), 
+  CPPUNIT_ASSERT( len( w->select( SenseAnnotation_t ) ) == 0 );
+  CPPUNIT_ASSERT_THROW( w->annotation( SenseAnnotation_t ), 
 			NoSuchAnnotation );
 }
 
@@ -627,10 +635,44 @@ void sanityTest::test030( ){
   CPPUNIT_ASSERT_THROW( p->append( s ), ValueError );
 }
 
-void sanityTest::test031( ){
+void sanityTest::test030a( ){
   cout << " Add a word at wrong position ";
   AbstractElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   CPPUNIT_ASSERT_THROW( p->addWord("text='Ahoi'" ), ValueError );
+}
+
+void sanityTest::test031( ){
+  cout << " Lexical Semantic Sense Annotation ";
+  AbstractElement *w = doc["sandbox.list.1.listitem.1.s.1.w.1"];
+  AbstractElement *sense = w->annotation( SenseAnnotation_t );
+  CPPUNIT_ASSERT( sense->cls() == "some.sense.id" );
+  CPPUNIT_ASSERT( sense->feat("synset") == "some.synset.id" );
+}
+
+void sanityTest::test032( ){
+  cout << " Events ";
+  AbstractElement *l = doc["sandbox.list.1"];
+  AbstractElement *event = l->annotation( Event_t );
+  CPPUNIT_ASSERT( event->cls() == "applause" );
+  CPPUNIT_ASSERT( event->feat("actor") == "audience" );
+}
+
+void sanityTest::test033( ){
+  cout << " List ";
+  AbstractElement *l = doc["sandbox.list.1"];
+  CPPUNIT_ASSERT( l->index(0)->isinstance( ListItem_t ) );
+  CPPUNIT_ASSERT( l->index(0)->n() == "1" );
+  CPPUNIT_ASSERT( l->index(0)->text() == "Eerste testitem" );
+  CPPUNIT_ASSERT( l->rindex(0)->isinstance( ListItem_t ) );
+  CPPUNIT_ASSERT( l->rindex(0)->n() == "2" );
+  CPPUNIT_ASSERT( l->index(0)->text() == "Tweede testitem" );
+}
+
+void sanityTest::test034( ){
+  cout << " Figure ";
+  AbstractElement *fig = doc["sandbox.figure.1"];
+  CPPUNIT_ASSERT( fig->src() == "http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg" );
+  CPPUNIT_ASSERT( fig->caption() == "Een stamboom" );
 }
 
 void sanityTest::test099(){
