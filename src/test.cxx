@@ -289,7 +289,7 @@ void sanityTest::test009( ){
   CPPUNIT_ASSERT_NO_THROW( w = doc.words(0) );
   CPPUNIT_ASSERT( w->annotation( Pos_t ) == w->select( Pos_t )[0] );
   CPPUNIT_ASSERT( w->annotation( Pos_t )->isinstance(Pos_t ) );
-  CPPUNIT_ASSERT( issubclass( PosAnnotation, AbstractTokenAnnotation ) );
+  //  CPPUNIT_ASSERT( issubclass( PosAnnotation, AbstractTokenAnnotation ) );
   CPPUNIT_ASSERT( w->annotation( Pos_t )->cls() == "N(soort,ev,basis,onz,stan)" );
   CPPUNIT_ASSERT( w->pos() == "N(soort,ev,basis,onz,stan)" );
   CPPUNIT_ASSERT( w->annotation(Pos_t)->st() == "cgn-combinedtags" );
@@ -665,7 +665,7 @@ void sanityTest::test033( ){
   CPPUNIT_ASSERT( l->index(0)->text() == "Eerste testitem" );
   CPPUNIT_ASSERT( l->rindex(0)->isinstance( ListItem_t ) );
   CPPUNIT_ASSERT( l->rindex(0)->n() == "2" );
-  CPPUNIT_ASSERT( l->index(0)->text() == "Tweede testitem" );
+  CPPUNIT_ASSERT( l->rindex(0)->text() == "Tweede testitem" );
 }
 
 void sanityTest::test034( ){
