@@ -139,7 +139,8 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test028 );
   CPPUNIT_TEST( test029 );
   CPPUNIT_TEST( test030 );
-  CPPUNIT_TEST( test030a );
+  CPPUNIT_TEST( test0300 );
+  CPPUNIT_TEST( test0300a );
   CPPUNIT_TEST( test031 );
   CPPUNIT_TEST( test032 );
   CPPUNIT_TEST( test033 );
@@ -190,7 +191,8 @@ protected:
   void test028();
   void test029();
   void test030();
-  void test030a();
+  void test0300();
+  void test0300a();
   void test031();
   void test032();
   void test033();
@@ -429,7 +431,7 @@ void sanityTest::test020a(){
   cout << " Span annotation (Syntax) ";
   AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
   AbstractElement *l = 0;
-  CPPUNIT_ASSERT_NO_THROW( l = s->annotation( Annolay_t ) );
+  CPPUNIT_ASSERT_NO_THROW( l = s->annotation( SyntaxLayer_t ) );
   CPPUNIT_ASSERT( isinstance( l->index(0), SyntacticUnit_t ) );
   CPPUNIT_ASSERT( l->index(0)->cls() == "sentence" );
   CPPUNIT_ASSERT( l->index(0)->index(0)->cls() == "subject" );
@@ -441,6 +443,7 @@ void sanityTest::test020a(){
   CPPUNIT_ASSERT( l->index(0)->index(2)->index(1)->text() == "voor stamboom" );
   CPPUNIT_ASSERT( l->index(0)->index(2)->text() == "een ander woord voor stamboom" );
 }
+
 void sanityTest::test020b(){
   cout << " Span annotation (Chunking) ";
   AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
@@ -628,6 +631,19 @@ void sanityTest::test029(){
 }
 
 void sanityTest::test030( ){
+  cout << " Text Content ";
+  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
+  CPPUNIT_ASSERT( s->text() == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  CPPUNIT_ASSERT( s->text("original") == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  CPPUNIT_ASSERT_THROW( s->text( "BLAH" ), NoSuchText );
+
+  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
+  CPPUNIT_ASSERT( w->text() == "hoofdletter" );
+  CPPUNIT_ASSERT( w->textcontent()->text() == "hoofdletter" );
+  CPPUNIT_ASSERT( w->textcontent()->offset() == 3 );
+}
+
+void sanityTest::test0300( ){
   cout << " Add a sentence at wrong position ";
   AbstractElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   AbstractElement *s = 0;
@@ -635,7 +651,7 @@ void sanityTest::test030( ){
   CPPUNIT_ASSERT_THROW( p->append( s ), ValueError );
 }
 
-void sanityTest::test030a( ){
+void sanityTest::test0300a( ){
   cout << " Add a word at wrong position ";
   AbstractElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   CPPUNIT_ASSERT_THROW( p->addWord("text='Ahoi'" ), ValueError );
