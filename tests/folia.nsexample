@@ -787,7 +787,7 @@
                 <fl:new>
                  <fl:t>vierkante</fl:t>
                 </fl:new>
-                <fl:original>
+                <fl:original auth="no">
                  <fl:t>vierkant</fl:t>
                 </fl:original>
               </fl:correction>
@@ -801,7 +801,7 @@
                 <fl:new>              
                  <fl:lemma class="haak"/>
                 </fl:new>
-                <fl:original>
+                <fl:original auth="no">
                  <fl:lemma class="haaak"/>
                 </fl:original>
                </fl:correction>
@@ -943,10 +943,10 @@
               <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
               <fl:lemma class="onzeker"/>
               <fl:correction xml:id="WR-P-E-J-0000000001.p.1.s.8.w.14.c.1" class="spelling">
-                <fl:suggestion>
+                <fl:suggestion auth="no">
                     <fl:t>twijfelachtige</fl:t>
                 </fl:suggestion>
-                <fl:suggestion>
+                <fl:suggestion auth="no">
                     <fl:t>ongewisse</fl:t>
                 </fl:suggestion>
               </fl:correction>

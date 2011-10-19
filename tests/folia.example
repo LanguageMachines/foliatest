@@ -789,7 +789,7 @@
                 <new>
                  <t>vierkante</t>
                 </new>
-                <original>
+                <original auth="no">
                  <t>vierkant</t>
                 </original>
               </correction>
@@ -803,7 +803,7 @@
                 <new>              
                  <lemma class="haak"/>
                 </new>
-                <original>
+                <original auth="no">
                  <lemma class="haaak"/>
                 </original>
                </correction>
@@ -945,10 +945,10 @@
               <pos class="ADJ(prenom,basis,met-e,stan)"/>
               <lemma class="onzeker"/>
               <correction xml:id="WR-P-E-J-0000000001.p.1.s.8.w.14.c.1" class="spelling">
-                <suggestion>
+                <suggestion auth="no">
                     <t>twijfelachtige</t>
                 </suggestion>
-                <suggestion>
+                <suggestion auth="no">
                     <t>ongewisse</t>
                 </suggestion>
               </correction>
