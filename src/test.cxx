@@ -852,6 +852,8 @@ void editTest::test001b( ){
   CPPUNIT_ASSERT( w->text() == "zin" );
   CPPUNIT_ASSERT( doc[w->id()] == w );
   
+  CPPUNIT_ASSERT( w2->text() == "." );
+
   // adition to paragraph correct?
   CPPUNIT_ASSERT( len( p->sentences() ) == tmp+1 );
   CPPUNIT_ASSERT( p->rindex(0) == s );
