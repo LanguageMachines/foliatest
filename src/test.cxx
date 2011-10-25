@@ -24,6 +24,7 @@
 #include <cppunit/BriefTestProgressListener.h>
 
 using namespace std;
+using namespace folia;
 
 class foliaTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE( foliaTest );
