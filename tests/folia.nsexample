@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fl:FoLiA xmlns:fl="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.7" generator="libfolia-v0.2">
+<fl:FoLiA xmlns:fl="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.7" generator="libfolia-v0.4">
   <fl:metadata type="imdi">
     <fl:annotations>
       <fl:token-annotation annotator="ilktok" annotatortype="auto" />

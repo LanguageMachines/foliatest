@@ -53,6 +53,14 @@ void foliaTest::test0() {
   CPPUNIT_ASSERT_EQUAL ( bla["dat"] , string(" ra ar") );
   CPPUNIT_ASSERT_THROW( bla = getArgs( "dit='fout' = " ), ArgsError );
   CPPUNIT_ASSERT_THROW( bla = getArgs( "dit=fout" ), ArgsError );
+  CPPUNIT_ASSERT_NO_THROW( bla = getArgs( "cls='o\\'k'" ) );
+  CPPUNIT_ASSERT ( bla["cls"] == "o'k" );
+  CPPUNIT_ASSERT_NO_THROW( bla = getArgs( "cls='o\\k'" ) );
+  CPPUNIT_ASSERT ( bla["cls"] == "o\\k" );
+  CPPUNIT_ASSERT_NO_THROW( bla = getArgs( "cls='o\"k'" ) );
+  CPPUNIT_ASSERT ( bla["cls"] == "o\"k" );
+  CPPUNIT_ASSERT_NO_THROW( bla = getArgs( "cls='o""k'" ) );
+  CPPUNIT_ASSERT ( bla["cls"] == "ok" );
 }
 
 
@@ -1294,9 +1302,10 @@ void correctionTest::test001b( ){
   Word *w1 = new Word( doc, "generate_id='" + s->id() + "',text='on'" );
   Word *w2 = new Word( doc, "generate_id='" + s->id() + "',text='line'" );
   w->split( w1, w2, "suggest='true'" );
-  //  CPPUNIT_ASSERT_NO_THROW( doc->save( "/tmp/foliasplit1b.xml" ) );
+  CPPUNIT_ASSERT_NO_THROW( doc->save( "/tmp/foliasplit1b.xml" ) );
   s = doc->index("example.s.1");
   CPPUNIT_ASSERT( len( s->words() ) == 5 );
+  CPPUNIT_ASSERT( len( doc->words() ) == 5 );
   CPPUNIT_ASSERT( s->rwords(1)->text() == "online" );
   CPPUNIT_ASSERT( s->text() == "De site staat online ." );
   CPPUNIT_ASSERT( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>");
