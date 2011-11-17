@@ -132,6 +132,8 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test019 );
   CPPUNIT_TEST( test020a );
   CPPUNIT_TEST( test020b );
+  CPPUNIT_TEST( test020c );
+  CPPUNIT_TEST( test020d );
   CPPUNIT_TEST( test021 );
   CPPUNIT_TEST( test022 );
   CPPUNIT_TEST( test023a );
@@ -152,6 +154,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test032 );
   CPPUNIT_TEST( test033 );
   CPPUNIT_TEST( test034 );
+  CPPUNIT_TEST( test035 );
   CPPUNIT_TEST( test099 );
   CPPUNIT_TEST( test100a );
   CPPUNIT_TEST( test100b );
@@ -184,6 +187,8 @@ protected:
   void test019();
   void test020a();
   void test020b();
+  void test020c();
+  void test020d();
   void test021();
   void test022();
   void test023a();
@@ -204,6 +209,7 @@ protected:
   void test032();
   void test033();
   void test034();
+  void test035();
   void test099();
   void test100a();
   void test100b();
@@ -380,7 +386,12 @@ void check( AbstractElement *parent, const string& indent, ostream& os ){
   for ( size_t i=0; i < parent->size(); ++i ){
     AbstractElement *child = parent->index(i);
     os << indent << repr( child ) << endl;
-    if ( ! ( (parent->isinstance( SyntacticUnit_t ) || parent->isinstance( Chunk_t ) ) && child->isinstance( Word_t ) ) ){
+    if ( ! ( (parent->isinstance( SyntacticUnit_t ) 
+	      || parent->isinstance( Chunk_t ) 
+	      || parent->isinstance( Entity_t ) 
+	      || parent->isinstance( DependencyHead_t )
+	      || parent->isinstance( DependencyDependent_t ) ) 
+	     && child->isinstance( Word_t ) ) ){
       CPPUNIT_ASSERT( parent == child->parent() );
       check( child, indent + " ", os );
     }
@@ -461,6 +472,47 @@ void sanityTest::test020b(){
   CPPUNIT_ASSERT( isinstance( l->index(0), Chunk_t ) );
   CPPUNIT_ASSERT( l->index(0)->text() == "een ander woord" );
   CPPUNIT_ASSERT( l->index(1)->text() == "voor stamboom" );
+}
+
+void sanityTest::test020c(){
+  cout << " Span annotation (Entities) ";
+  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
+  AbstractElement *l = 0;
+  CPPUNIT_ASSERT_NO_THROW( l = s->annotation( Entities_t ) );
+  CPPUNIT_ASSERT( isinstance( l->index(0), Entity_t ) );
+  CPPUNIT_ASSERT( l->index(0)->text() == "ander woord" );
+}
+
+void sanityTest::test020d(){
+  cout << " Span annotation (Dependencies) ";
+  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
+  AbstractElement *l = 0;
+  CPPUNIT_ASSERT_NO_THROW( l = s->annotation( Dependencies_t ) );
+  CPPUNIT_ASSERT( l->size() == 6 );
+
+  CPPUNIT_ASSERT( l->index(0)->head()->text() == "is" );
+  CPPUNIT_ASSERT( l->index(0)->dependent()->text() == "Stemma" );
+  CPPUNIT_ASSERT( l->index(0)->cls() == "su" );
+
+  CPPUNIT_ASSERT( l->index(1)->head()->text() == "is" );
+  CPPUNIT_ASSERT( l->index(1)->dependent()->text() == "woord" );
+  CPPUNIT_ASSERT( l->index(1)->cls() == "predc" );
+
+  CPPUNIT_ASSERT( l->index(2)->head()->text() == "woord" );
+  CPPUNIT_ASSERT( l->index(2)->dependent()->text() == "een" );
+  CPPUNIT_ASSERT( l->index(2)->cls() == "det" );
+
+  CPPUNIT_ASSERT( l->index(3)->head()->text() == "woord" );
+  CPPUNIT_ASSERT( l->index(3)->dependent()->text() == "ander" );
+  CPPUNIT_ASSERT( l->index(3)->cls() == "mod" );
+
+  CPPUNIT_ASSERT( l->index(4)->head()->text() == "woord" );
+  CPPUNIT_ASSERT( l->index(4)->dependent()->text() == "voor" );
+  CPPUNIT_ASSERT( l->index(4)->cls() == "mod" );
+
+  CPPUNIT_ASSERT( l->index(5)->head()->text() == "voor" );
+  CPPUNIT_ASSERT( l->index(5)->dependent()->text() == "stamboom" );
+  CPPUNIT_ASSERT( l->index(5)->cls() == "obj1" );
 }
 
 void sanityTest::test021(){
@@ -684,6 +736,14 @@ void sanityTest::test034( ){
   AbstractElement *fig = doc["sandbox.figure.1"];
   CPPUNIT_ASSERT( fig->src() == "http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg" );
   CPPUNIT_ASSERT( fig->caption() == "Een stamboom" );
+}
+
+void sanityTest::test035( ){
+  cout << " Event ";
+  AbstractElement *e = doc["sandbox.event.1"];
+  CPPUNIT_ASSERT( e->feat("actor") == "proycon" );
+  CPPUNIT_ASSERT( e->feat("begindatetime") == "2011-12-15T19:01" );
+  CPPUNIT_ASSERT( e->feat("enddatetime") == "2011-12-15T19:05" );
 }
 
 void sanityTest::test099(){
@@ -1099,36 +1159,39 @@ void editTest::test012(){
 
 void editTest::test013(){
   cout << " Adding Span Annotatation (syntax) ";
+  CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::SYNTAX, 
+					"syntax-set", 
+					"annotator='proycon'" ) );
   AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
   AbstractElement *layer = s->append( new SyntaxLayer(&doc) );
-  AbstractElement *top = layer->append( new SyntacticUnit(&doc, "generate_id='" + s->id() + "'" ) );
-  AbstractElement *sent = top->append( new SyntacticUnit( "cls='s'" ) );
-  AbstractElement *np = sent->append( new SyntacticUnit( "cls='np'" ) );
-  AbstractElement *su = np->append( new SyntacticUnit( "cls='det'" ) );
+  AbstractElement *top = layer->append( new SyntacticUnit(&doc, "generate_id='" + s->id() + "', class='ROOT'" ) );
+  AbstractElement *sent = top->append( new SyntacticUnit( &doc, "cls='s'" ) );
+  AbstractElement *np = sent->append( new SyntacticUnit( &doc, "cls='np'" ) );
+  AbstractElement *su = np->append( new SyntacticUnit( &doc, "cls='det'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.1"] );
-  su = np->append( new SyntacticUnit( "cls='n'" ) );
+  su = np->append( new SyntacticUnit( &doc, "cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.2"] );
-  su = np->append( new SyntacticUnit( "cls='n'" ) );
+  su = np->append( new SyntacticUnit( &doc, "cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.3"] );
-  AbstractElement *vp = sent->append( new SyntacticUnit( "cls='vp'" ) );
-  AbstractElement *vps = vp->append( new SyntacticUnit( "cls='vp'" ) );
-  su = vps->append( new SyntacticUnit( "cls='v'" ) );
+  AbstractElement *vp = sent->append( new SyntacticUnit( &doc, "cls='vp'" ) );
+  AbstractElement *vps = vp->append( new SyntacticUnit( &doc, "cls='vp'" ) );
+  su = vps->append( new SyntacticUnit( &doc, "cls='v'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.4"] );
-  su = vps->append( new SyntacticUnit( "cls='participle'" ) );
+  su = vps->append( new SyntacticUnit( &doc, "cls='participle'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.5"] );
-  AbstractElement *pp = vp->append( new SyntacticUnit( "cls='pp'" ) );
-  su = pp->append( new SyntacticUnit( "cls='prep'" ) );
+  AbstractElement *pp = vp->append( new SyntacticUnit( &doc, "cls='pp'" ) );
+  su = pp->append( new SyntacticUnit( &doc, "cls='prep'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.6"] );
-  AbstractElement *nps = pp->append( new SyntacticUnit( "cls='np'" ) );
-  su = nps->append( new SyntacticUnit( "cls='det'" ) );
+  AbstractElement *nps = pp->append( new SyntacticUnit( &doc, "cls='np'" ) );
+  su = nps->append( new SyntacticUnit( &doc, "cls='det'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.7"] );
-  su = nps->append( new SyntacticUnit( "cls='adj'" ) );
+  su = nps->append( new SyntacticUnit( &doc, "cls='adj'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.8"] );
-  su = nps->append( new SyntacticUnit( "cls='n'" ) );
+  su = nps->append( new SyntacticUnit( &doc, "cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.9"] );
 
-  CPPUNIT_ASSERT( layer->xmlstring() == "<syntax xmlns=\"http://ilk.uvt.nl/folia\"><su xml:id=\"WR-P-E-J-0000000001.p.1.s.4.su.1\"><su class=\"s\"><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.1\" t=\"De\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.2\" t=\"hoofdletter\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.3\" t=\"A\"/></su></su><su class=\"vp\"><su class=\"vp\"><su class=\"v\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.4\" t=\"wordt\"/></su><su class=\"participle\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.5\" t=\"gebruikt\"/></su></su><su class=\"pp\"><su class=\"prep\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.6\" t=\"voor\"/></su><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.7\" t=\"het\"/></su><su class=\"adj\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.8\" t=\"originele\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.9\" t=\"handschrift\"/></su></su></su></su></su></su></syntax>" );
+  CPPUNIT_ASSERT( layer->xmlstring() == "<syntax xmlns=\"http://ilk.uvt.nl/folia\"><su xml:id=\"WR-P-E-J-0000000001.p.1.s.4.su.1\" class=\"ROOT\"><su class=\"s\"><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.1\" t=\"De\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.2\" t=\"hoofdletter\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.3\" t=\"A\"/></su></su><su class=\"vp\"><su class=\"vp\"><su class=\"v\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.4\" t=\"wordt\"/></su><su class=\"participle\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.5\" t=\"gebruikt\"/></su></su><su class=\"pp\"><su class=\"prep\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.6\" t=\"voor\"/></su><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.7\" t=\"het\"/></su><su class=\"adj\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.8\" t=\"originele\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.9\" t=\"handschrift\"/></su></su></su></su></su></su></syntax>" );
 }
 
 void editTest::test014() {
