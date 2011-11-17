@@ -1111,13 +1111,19 @@ void editTest::test009a( ){
 
 void editTest::test010( ){
   cout << " Creating an initially document-less tokenannotation element and adding it to a word ";
+  AbstractElement *pos =new PosAnnotation( "set='fakecgn', cls='N'" );
   AbstractElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
-  AbstractElement *pos = w->append( new PosAnnotation( "set='fakecgn', cls='N'" ) );
+  CPPUNIT_ASSERT_THROW( w->append( pos ), ValueError );
+  CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::POS, 
+					"fakecgn") );
+  CPPUNIT_ASSERT_NO_THROW( w->append( pos ) );
   CPPUNIT_ASSERT( pos == w->annotation(Pos_t,"fakecgn") );
   CPPUNIT_ASSERT( pos->parent() == w );
   CPPUNIT_ASSERT( pos->doc() == w->doc() );
-  CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/><pos class=\"N\" set=\"fakecgn\"/></w>" );
+
+  cerr << "\nstring: " << w->xmlstring() << endl;
+  CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"stippelijn\"/><pos class=\"N\" set=\"fakecgn\"/></w>" );
 }
 
 void editTest::test011(){
