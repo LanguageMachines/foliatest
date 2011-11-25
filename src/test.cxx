@@ -695,6 +695,7 @@ void sanityTest::test030( ){
   cout << " Text Content ";
   AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
   CPPUNIT_ASSERT( s->text() == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  CPPUNIT_ASSERT( s->stricttext() == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   CPPUNIT_ASSERT( s->text("original") == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   CPPUNIT_ASSERT_THROW( s->text( "BLAH" ), NoSuchText );
 
@@ -702,6 +703,10 @@ void sanityTest::test030( ){
   CPPUNIT_ASSERT( w->text() == "hoofdletter" );
   CPPUNIT_ASSERT( w->textcontent()->text() == "hoofdletter" );
   CPPUNIT_ASSERT( w->textcontent()->offset() == 3 );
+  
+  AbstractElement *w2= doc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
+  CPPUNIT_ASSERT( w2->text() == "vierkante" );
+  //CPPUNIT_ASSERT( w2->stricttext() == "vierkante" ); //TODO <-- this still fails
 }
 
 void sanityTest::test031( ){
