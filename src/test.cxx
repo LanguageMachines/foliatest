@@ -706,7 +706,8 @@ void sanityTest::test030( ){
   
   AbstractElement *w2= doc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
   CPPUNIT_ASSERT( w2->text() == "vierkante" );
-  //CPPUNIT_ASSERT( w2->stricttext() == "vierkante" ); //TODO <-- this still fails
+  CPPUNIT_ASSERT( w2->stricttext() == "vierkante" );
+  CPPUNIT_ASSERT( w2->stricttext("original") == "vierkant" );
 }
 
 void sanityTest::test031( ){
