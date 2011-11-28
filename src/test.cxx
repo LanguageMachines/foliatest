@@ -693,10 +693,10 @@ void sanityTest::test029(){
 
 void sanityTest::test030( ){
   cout << " Text Content ";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
-  CPPUNIT_ASSERT( s->text() == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
-  CPPUNIT_ASSERT( s->stricttext() == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
-  CPPUNIT_ASSERT( s->text("original") == "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.6"];
+  CPPUNIT_ASSERT( s->text() == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkante haken geplaatst ." );
+  CPPUNIT_ASSERT_THROW( s->stricttext(), NoSuchText );
+  CPPUNIT_ASSERT( s->stricttext("original") == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkant haken geplaatst ." );
   CPPUNIT_ASSERT_THROW( s->text( "BLAH" ), NoSuchText );
 
   AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
@@ -1128,7 +1128,6 @@ void editTest::test010( ){
   CPPUNIT_ASSERT( pos->parent() == w );
   CPPUNIT_ASSERT( pos->doc() == w->doc() );
 
-  cerr << "\nstring: " << w->xmlstring() << endl;
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"stippelijn\"/><pos class=\"N\" set=\"fakecgn\"/></w>" );
 }
 
