@@ -371,8 +371,8 @@ void sanityTest::test014(){
   FoliaElement *c = 0;
   CPPUNIT_ASSERT_NO_THROW( c = w->annotation( Correction_t ) );
   CPPUNIT_ASSERT( c->suggestions().size() == 2 );
-  CPPUNIT_ASSERT( c->getSuggestion(0)->text() == "twijfelachtige" );
-  CPPUNIT_ASSERT( c->suggestions()[1]->text() == "ongewisse" );
+  CPPUNIT_ASSERT( c->suggestions(0)->text() == "twijfelachtige" );
+  CPPUNIT_ASSERT( c->suggestions(1)->text() == "ongewisse" );
 }
 
 string repr( FoliaElement *a ){
