@@ -3,6 +3,6 @@
 
 AM_CPPFLAGS = -I@top_srcdir@/include
 
-bin_PROGRAMS = test
+bin_PROGRAMS = foliatest
 
-test_SOURCES = test.cxx
+test_SOURCES = foliatest.cxx
