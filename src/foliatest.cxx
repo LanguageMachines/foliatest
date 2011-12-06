@@ -236,14 +236,14 @@ void sanityTest::test001( ){
 
 void sanityTest::test002(){
   cout << " Sentence count ";
-  vector<FoliaElement*> v;
+  vector<Sentence*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.sentences() );
   CPPUNIT_ASSERT_EQUAL( v.size(), size_t(12) );
 }
 
 void sanityTest::test003( ){
   cout << " Word count ";
-  vector<FoliaElement*> v;
+  vector<Word*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.words() );
   CPPUNIT_ASSERT_EQUAL( v.size(), (size_t)157 );
 }
@@ -1030,15 +1030,15 @@ void editTest::test005( ){
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
   KWargs args = getArgs( "cls='V'" );
   CPPUNIT_ASSERT_NO_THROW( w->addAlternative( Pos_t, args ) );
-  std::vector<FoliaElement *> alt = w->alternatives(); // all alternatives
+  std::vector<Alternative*> alt = w->alternatives(); // all alternatives
   string set = doc.defaultset(AnnotationType::POS);
-  std::vector<FoliaElement *> alt2 = w->alternatives(set);
+  std::vector<Alternative*> alt2 = w->alternatives(set);
   CPPUNIT_ASSERT( alt.size() == 1 );
   CPPUNIT_ASSERT( alt2.size() == 1 );
   CPPUNIT_ASSERT( alt[0] == alt2[0] );
   CPPUNIT_ASSERT( alt[0]->annotation( Pos_t, set )->isinstance( Pos_t ) );
 
-  std::vector<FoliaElement *> alt3;
+  std::vector<Alternative *> alt3;
   CPPUNIT_ASSERT_NO_THROW( alt3 = w->alternatives(Pos_t, set) );
   CPPUNIT_ASSERT( alt3.size() == 1 );
   CPPUNIT_ASSERT( alt[0] == alt3[0] );
