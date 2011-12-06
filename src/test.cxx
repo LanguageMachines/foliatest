@@ -236,21 +236,21 @@ void sanityTest::test001( ){
 
 void sanityTest::test002(){
   cout << " Sentence count ";
-  vector<AbstractElement*> v;
+  vector<FoliaElement*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.sentences() );
   CPPUNIT_ASSERT_EQUAL( v.size(), size_t(12) );
 }
 
 void sanityTest::test003( ){
   cout << " Word count ";
-  vector<AbstractElement*> v;
+  vector<FoliaElement*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.words() );
   CPPUNIT_ASSERT_EQUAL( v.size(), (size_t)157 );
 }
 
 void sanityTest::test004(){
   cout << " first word ";
-  AbstractElement* w = 0;
+  FoliaElement* w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.words(0) );
   CPPUNIT_ASSERT( w->isinstance( Word_t ) );
   CPPUNIT_ASSERT( w->id() == "WR-P-E-J-0000000001.head.1.s.1.w.1" );
@@ -261,7 +261,7 @@ void sanityTest::test004(){
 
 void sanityTest::test005( ){
   cout << " last word ";
-  AbstractElement* w = 0;
+  FoliaElement* w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.rwords(0) );
   CPPUNIT_ASSERT( w->isinstance( Word_t ) );
   CPPUNIT_ASSERT_EQUAL( w->id(), string("sandbox.figure.1.caption.s.1.w.2") );
@@ -271,7 +271,7 @@ void sanityTest::test005( ){
 
 void sanityTest::test006( ){
   cout << " second sentence ";
-  AbstractElement* w = 0;
+  FoliaElement* w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.sentences(1) );
   CPPUNIT_ASSERT( isinstance( w, Sentence_t ) );
   CPPUNIT_ASSERT( w->id() == "WR-P-E-J-0000000001.p.1.s.1" );
@@ -281,7 +281,7 @@ void sanityTest::test006( ){
 
 void sanityTest::test007( ){
   cout << " use index ";
-  AbstractElement *e = 0;
+  FoliaElement *e = 0;
   CPPUNIT_ASSERT_NO_THROW( e = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"] );
   CPPUNIT_ASSERT( e->isinstance( Word_t ) );
   CPPUNIT_ASSERT_EQUAL( e, doc.index("WR-P-E-J-0000000001.p.1.s.2.w.7") );
@@ -291,10 +291,10 @@ void sanityTest::test007( ){
 
 void sanityTest::test008(){
   cout << " division + head ";
-  AbstractElement *e = 0;
+  FoliaElement *e = 0;
   CPPUNIT_ASSERT_NO_THROW( e = doc["WR-P-E-J-0000000001.div0.1"] );
   CPPUNIT_ASSERT( e->isinstance( Division_t ) );
-  AbstractElement *h;
+  FoliaElement *h;
   CPPUNIT_ASSERT_NO_THROW( h = e->head() );
   CPPUNIT_ASSERT_EQUAL( h,  doc["WR-P-E-J-0000000001.head.1"] );
   CPPUNIT_ASSERT( len( h ) == 1 );
@@ -302,7 +302,7 @@ void sanityTest::test008(){
 
 void sanityTest::test009( ){
   cout << " Token Annotation - Pos ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.words(0) );
   CPPUNIT_ASSERT( w->annotation( Pos_t ) == w->select( Pos_t )[0] );
   CPPUNIT_ASSERT( w->annotation( Pos_t )->isinstance(Pos_t ) );
@@ -316,9 +316,9 @@ void sanityTest::test009( ){
 
 void sanityTest::test010( ){
   cout << " Token Annotation - Lemma ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.words(0) );
-  AbstractElement *l = 0;
+  FoliaElement *l = 0;
   CPPUNIT_ASSERT_NO_THROW( l = w->annotation(Lemma_t) );
   CPPUNIT_ASSERT( l == w->select( Lemma_t )[0] );
   CPPUNIT_ASSERT( isinstance( l, Lemma_t ) );
@@ -331,7 +331,7 @@ void sanityTest::test010( ){
 
 void sanityTest::test011( ){
   cout << " Token Annotation - Non-existing element ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.words(0) );
   CPPUNIT_ASSERT( len( w->select( Sense_t ) ) == 0 );
   CPPUNIT_ASSERT_THROW( w->annotation( Sense_t ), 
@@ -340,9 +340,9 @@ void sanityTest::test011( ){
 
 void sanityTest::test012( ){
   cout << " Correction - Text ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.6.w.31"] );
-  AbstractElement *c = 0;
+  FoliaElement *c = 0;
   CPPUNIT_ASSERT_NO_THROW( c = w->annotation( Correction_t ) );
   CPPUNIT_ASSERT( len( c->getNew() ) == 1 );
   CPPUNIT_ASSERT( len( c->getOriginal() ) == 1 );
@@ -353,9 +353,9 @@ void sanityTest::test012( ){
 
 void sanityTest::test013( ){
   cout << " Correction - Token Annotation ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.6.w.32"] );
-  AbstractElement *c = 0;
+  FoliaElement *c = 0;
   CPPUNIT_ASSERT_NO_THROW( c = w->annotation( Correction_t ) );
   CPPUNIT_ASSERT( len( c->getNew() ) == 1 );
   CPPUNIT_ASSERT( len( c->getOriginal() ) == 1 );
@@ -366,25 +366,25 @@ void sanityTest::test013( ){
 
 void sanityTest::test014(){
   cout << " Correction - Suggestions (text) ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.14"] );
-  AbstractElement *c = 0;
+  FoliaElement *c = 0;
   CPPUNIT_ASSERT_NO_THROW( c = w->annotation( Correction_t ) );
   CPPUNIT_ASSERT( c->suggestions().size() == 2 );
   CPPUNIT_ASSERT( c->getSuggestion(0)->text() == "twijfelachtige" );
   CPPUNIT_ASSERT( c->suggestions()[1]->text() == "ongewisse" );
 }
 
-string repr( AbstractElement *a ){
+string repr( FoliaElement *a ){
   if ( a )
     return "[" + toString( a->element_id() ) + "]";
   else
     return "[null]";
 }
 
-void check( AbstractElement *parent, const string& indent, ostream& os ){
+void check( FoliaElement *parent, const string& indent, ostream& os ){
   for ( size_t i=0; i < parent->size(); ++i ){
-    AbstractElement *child = parent->index(i);
+    FoliaElement *child = parent->index(i);
     os << indent << repr( child ) << endl;
     if ( ! ( (parent->isinstance( SyntacticUnit_t ) 
 	      || parent->isinstance( Chunk_t ) 
@@ -409,19 +409,19 @@ void sanityTest::test015( ){
 
 void sanityTest::test016a(){
   cout << " Check - Description ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.6"];
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.6"];
   CPPUNIT_ASSERT( w->description() == "Dit woordje is een voorzetsel, het is maar dat je het weet..." );
 }
 
 void sanityTest::test016b(){
   cout << " Check - Error on non-existing description ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.7"];
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.7"];
   CPPUNIT_ASSERT_THROW( w->description(), NoDescription );
 }
 
 void sanityTest::test017(){
   cout << " Check - Gap ";
-  AbstractElement *gap = doc["WR-P-E-J-0000000001.gap.1"];
+  FoliaElement *gap = doc["WR-P-E-J-0000000001.gap.1"];
   CPPUNIT_ASSERT_EQUAL( strip(gap->content()).substr(0,11), string("De tekst is") );
   CPPUNIT_ASSERT( gap->cls() == "backmatter" );
   CPPUNIT_ASSERT( gap->description() == "Backmatter" );
@@ -429,8 +429,8 @@ void sanityTest::test017(){
 
 void sanityTest::test018(){
   cout << " Subtoken annotation (morphological) ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.3.w.5"];
-  AbstractElement *m = 0;
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.3.w.5"];
+  FoliaElement *m = 0;
   CPPUNIT_ASSERT_NO_THROW( m = w->annotation( Morphology_t ) );
   CPPUNIT_ASSERT( len(m) == 2 );
   CPPUNIT_ASSERT( m->index(0)->isinstance( Morpheme_t ) );
@@ -449,8 +449,8 @@ void sanityTest::test019(){
 
 void sanityTest::test020a(){
   cout << " Span annotation (Syntax) ";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
-  AbstractElement *l = 0;
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
+  FoliaElement *l = 0;
   CPPUNIT_ASSERT_NO_THROW( l = s->annotation( SyntaxLayer_t ) );
   CPPUNIT_ASSERT( isinstance( l->index(0), SyntacticUnit_t ) );
   CPPUNIT_ASSERT( l->index(0)->cls() == "sentence" );
@@ -466,8 +466,8 @@ void sanityTest::test020a(){
 
 void sanityTest::test020b(){
   cout << " Span annotation (Chunking) ";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
-  AbstractElement *l = 0;
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
+  FoliaElement *l = 0;
   CPPUNIT_ASSERT_NO_THROW( l = s->annotation( Chunking_t ) );
   CPPUNIT_ASSERT( isinstance( l->index(0), Chunk_t ) );
   CPPUNIT_ASSERT( l->index(0)->text() == "een ander woord" );
@@ -476,8 +476,8 @@ void sanityTest::test020b(){
 
 void sanityTest::test020c(){
   cout << " Span annotation (Entities) ";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
-  AbstractElement *l = 0;
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
+  FoliaElement *l = 0;
   CPPUNIT_ASSERT_NO_THROW( l = s->annotation( Entities_t ) );
   CPPUNIT_ASSERT( isinstance( l->index(0), Entity_t ) );
   CPPUNIT_ASSERT( l->index(0)->text() == "ander woord" );
@@ -485,8 +485,8 @@ void sanityTest::test020c(){
 
 void sanityTest::test020d(){
   cout << " Span annotation (Dependencies) ";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
-  AbstractElement *l = 0;
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
+  FoliaElement *l = 0;
   CPPUNIT_ASSERT_NO_THROW( l = s->annotation( Dependencies_t ) );
   CPPUNIT_ASSERT( l->size() == 6 );
 
@@ -517,24 +517,24 @@ void sanityTest::test020d(){
 
 void sanityTest::test021(){
   cout << " Obtaining previous word ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  AbstractElement *prevw = w->previous();
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  FoliaElement *prevw = w->previous();
   CPPUNIT_ASSERT( prevw->isinstance( Word_t ) );
   CPPUNIT_ASSERT( prevw->text() == "zo'n" );
 }
 
 void sanityTest::test022(){
   cout << " Obtaining next word ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  AbstractElement *prevw = w->next();
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  FoliaElement *prevw = w->next();
   CPPUNIT_ASSERT( prevw->isinstance( Word_t ) );
   CPPUNIT_ASSERT( prevw->text() == "," );
 }
 
 void sanityTest::test023a(){
   cout << " Obtaining left context ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<AbstractElement*> context = w->leftcontext(3);
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  vector<FoliaElement*> context = w->leftcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( context[0]->text() == "wetenschap" );
@@ -544,8 +544,8 @@ void sanityTest::test023a(){
 
 void sanityTest::test023b(){
   cout << " Obtaining left context with default placeholder ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
-  vector<AbstractElement*> context = w->leftcontext(3);
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
+  vector<FoliaElement*> context = w->leftcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( context[0] == 0 );
@@ -555,8 +555,8 @@ void sanityTest::test023b(){
 
 void sanityTest::test023c(){
   cout << " Obtaining left context with placeholder ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
-  vector<AbstractElement*> context = w->leftcontext(3,"?");
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
+  vector<FoliaElement*> context = w->leftcontext(3,"?");
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( context[0]->isinstance( PlaceHolder_t) );
@@ -567,8 +567,8 @@ void sanityTest::test023c(){
 
 void sanityTest::test024a(){
   cout << " Obtaining right context ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<AbstractElement*> context = w->rightcontext(3);
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  vector<FoliaElement*> context = w->rightcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( text(context[0]) == "," );
@@ -578,8 +578,8 @@ void sanityTest::test024a(){
 
 void sanityTest::test024b(){
   cout << " Obtaining right context with default placeholder ";
-  AbstractElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
-  vector<AbstractElement*> context = w->rightcontext(3);
+  FoliaElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
+  vector<FoliaElement*> context = w->rightcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( text(context[0]) == "stamboom" );
@@ -589,8 +589,8 @@ void sanityTest::test024b(){
 
 void sanityTest::test024c(){
   cout << " Obtaining right context with placeholder ";
-  AbstractElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
-  vector<AbstractElement*> context = w->rightcontext(3, "_");
+  FoliaElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
+  vector<FoliaElement*> context = w->rightcontext(3, "_");
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( text(context[0]) == "stamboom" );
@@ -600,8 +600,8 @@ void sanityTest::test024c(){
 
 void sanityTest::test025a(){
   cout << " Obtaining full context ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<AbstractElement*> context = w->context(3);
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  vector<FoliaElement*> context = w->context(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 7 );
   CPPUNIT_ASSERT( context[0]->text() == "wetenschap" );
@@ -615,8 +615,8 @@ void sanityTest::test025a(){
 
 void sanityTest::test025b(){
   cout << " Obtaining full context with default placeholder ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<AbstractElement*> context = w->context(150);
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  vector<FoliaElement*> context = w->context(150);
   CPPUNIT_ASSERT( context.size() == 301 );
   CPPUNIT_ASSERT( context[0] == 0 );
   CPPUNIT_ASSERT( text(context[202]) == "handschrift" );
@@ -625,8 +625,8 @@ void sanityTest::test025b(){
 
 void sanityTest::test025c(){
   cout << " Obtaining full context with string placeholder ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<AbstractElement*> context = w->context(150, "nil");
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  vector<FoliaElement*> context = w->context(150, "nil");
   CPPUNIT_ASSERT( context.size() == 301 );
   CPPUNIT_ASSERT( text(context[0]) == "nil" );
   CPPUNIT_ASSERT( text(context[202]) == "handschrift" );
@@ -635,12 +635,12 @@ void sanityTest::test025c(){
 
 void sanityTest::test026(){
   cout << " Features ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
-  AbstractElement *pos = w->annotation(Pos_t);
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
+  FoliaElement *pos = w->annotation(Pos_t);
   CPPUNIT_ASSERT( pos->isinstance(Pos_t) );
   CPPUNIT_ASSERT( pos->cls() == "WW(vd,prenom,zonder)" );
   CPPUNIT_ASSERT( len(pos) ==  1 );
-  vector<AbstractElement*> features = pos->select( Feature_t );
+  vector<FoliaElement*> features = pos->select( Feature_t );
   CPPUNIT_ASSERT( len(features) == 1 );
   CPPUNIT_ASSERT( isinstance(features[0], Feature_t ) );
   CPPUNIT_ASSERT( features[0]->subset() == "head" );
@@ -649,8 +649,8 @@ void sanityTest::test026(){
 
 void sanityTest::test027(){
   cout << " Time Stamp ";
-  AbstractElement *word = doc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
-  AbstractElement *pos = word->annotation(Pos_t);
+  FoliaElement *word = doc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
+  FoliaElement *pos = word->annotation(Pos_t);
   //  cerr << endl << "'" << pos->getDateTime() << "'" << endl;
   CPPUNIT_ASSERT( pos->getDateTime() == "2011-07-20T19:00:01" );
   //  cerr << endl << pos->xmlstring() << endl;
@@ -659,17 +659,17 @@ void sanityTest::test027(){
 
 void sanityTest::test028() {
   cout << " Finding parents of word ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
   
-  AbstractElement *s = w->sentence();
+  FoliaElement *s = w->sentence();
   CPPUNIT_ASSERT( s->isinstance( Sentence_t ) );
   CPPUNIT_ASSERT( s->id() == "WR-P-E-J-0000000001.p.1.s.8" );
         
-  AbstractElement *p = w->paragraph();
+  FoliaElement *p = w->paragraph();
   CPPUNIT_ASSERT( isinstance( p, Paragraph_t ) );
   CPPUNIT_ASSERT( p->id() == "WR-P-E-J-0000000001.p.1" );
   
-  AbstractElement *div = w->division();
+  FoliaElement *div = w->division();
   CPPUNIT_ASSERT( isinstance( div, Division_t ) );
   CPPUNIT_ASSERT( div->id() == "WR-P-E-J-0000000001.div0.1" );
   CPPUNIT_ASSERT( w->incorrection() == 0 );
@@ -677,34 +677,34 @@ void sanityTest::test028() {
 
 void sanityTest::test029(){
   cout << " Sanity Check - Quote ";
-  AbstractElement *q = doc["WR-P-E-J-0000000001.p.1.s.8.q.1"];
+  FoliaElement *q = doc["WR-P-E-J-0000000001.p.1.s.8.q.1"];
   CPPUNIT_ASSERT( q->isinstance( Quote_t ) );
   CPPUNIT_ASSERT( q->text() == "volle lijn" );
   
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.8"];
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.8"];
   CPPUNIT_ASSERT( s->text() == "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
   // (spelling errors are present in sentence)
         
   // get a word from the quote
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.2"];
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.2"];
   // and check if sentence matches
   CPPUNIT_ASSERT( w->sentence() == s );
 }
 
 void sanityTest::test030( ){
   cout << " Text Content ";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.6"];
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.6"];
   CPPUNIT_ASSERT( s->text() == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkante haken geplaatst ." );
   CPPUNIT_ASSERT_THROW( s->stricttext(), NoSuchText );
   CPPUNIT_ASSERT( s->stricttext("original") == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkant haken geplaatst ." );
   CPPUNIT_ASSERT_THROW( s->text( "BLAH" ), NoSuchText );
 
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
   CPPUNIT_ASSERT( w->text() == "hoofdletter" );
   CPPUNIT_ASSERT( w->textcontent()->text() == "hoofdletter" );
   CPPUNIT_ASSERT( w->textcontent()->offset() == 3 );
   
-  AbstractElement *w2= doc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
+  FoliaElement *w2= doc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
   CPPUNIT_ASSERT( w2->text() == "vierkante" );
   CPPUNIT_ASSERT( w2->stricttext() == "vierkante" );
   CPPUNIT_ASSERT( w2->stricttext("original") == "vierkant" );
@@ -712,23 +712,23 @@ void sanityTest::test030( ){
 
 void sanityTest::test031( ){
   cout << " Lexical Semantic Sense Annotation ";
-  AbstractElement *w = doc["sandbox.list.1.listitem.1.s.1.w.1"];
-  AbstractElement *sense = w->annotation( Sense_t );
+  FoliaElement *w = doc["sandbox.list.1.listitem.1.s.1.w.1"];
+  FoliaElement *sense = w->annotation( Sense_t );
   CPPUNIT_ASSERT( sense->cls() == "some.sense.id" );
   CPPUNIT_ASSERT( sense->feat("synset") == "some.synset.id" );
 }
 
 void sanityTest::test032( ){
   cout << " Events ";
-  AbstractElement *l = doc["sandbox.list.1"];
-  AbstractElement *event = l->annotation( Event_t );
+  FoliaElement *l = doc["sandbox.list.1"];
+  FoliaElement *event = l->annotation( Event_t );
   CPPUNIT_ASSERT( event->cls() == "applause" );
   CPPUNIT_ASSERT( event->feat("actor") == "audience" );
 }
 
 void sanityTest::test033( ){
   cout << " List ";
-  AbstractElement *l = doc["sandbox.list.1"];
+  FoliaElement *l = doc["sandbox.list.1"];
   CPPUNIT_ASSERT( l->index(0)->isinstance( ListItem_t ) );
   CPPUNIT_ASSERT( l->index(0)->n() == "1" );
   CPPUNIT_ASSERT( l->index(0)->text() == "Eerste testitem" );
@@ -739,14 +739,14 @@ void sanityTest::test033( ){
 
 void sanityTest::test034( ){
   cout << " Figure ";
-  AbstractElement *fig = doc["sandbox.figure.1"];
+  FoliaElement *fig = doc["sandbox.figure.1"];
   CPPUNIT_ASSERT( fig->src() == "http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg" );
   CPPUNIT_ASSERT( fig->caption() == "Een stamboom" );
 }
 
 void sanityTest::test035( ){
   cout << " Event ";
-  AbstractElement *e = doc["sandbox.event.1"];
+  FoliaElement *e = doc["sandbox.event.1"];
   CPPUNIT_ASSERT( e->feat("actor") == "proycon" );
   CPPUNIT_ASSERT( e->feat("begindatetime") == "2011-12-15T19:01" );
   CPPUNIT_ASSERT( e->feat("enddatetime") == "2011-12-15T19:05" );
@@ -773,15 +773,15 @@ void sanityTest::test100b( ){
 
 void sanityTest::test101( ){
   cout << " Add a sentence at wrong position ";
-  AbstractElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  AbstractElement *s = 0;
+  FoliaElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  FoliaElement *s = 0;
   CPPUNIT_ASSERT_NO_THROW( s = new Sentence( &doc, "generate_id='" + p->id() + "'" ) );
   CPPUNIT_ASSERT_THROW( p->append( s ), ValueError );
 }
 
 void sanityTest::test102( ){
   cout << " Add a word at wrong position ";
-  AbstractElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
+  FoliaElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   CPPUNIT_ASSERT_THROW( p->addWord("text='Ahoi'" ), ValueError );
 }
 
@@ -848,12 +848,12 @@ void editTest::setUp( ){
 
 void editTest::test001a( ){
   cout << " Add a sentence to the last paragraph ";
-  AbstractElement *p = 0;
+  FoliaElement *p = 0;
   // grab last paragraph
   CPPUNIT_ASSERT_NO_THROW( p = doc.rparagraphs(0) );
   size_t tmp = len(p->sentences());
   // add a sentence
-  AbstractElement *s = 0;
+  FoliaElement *s = 0;
   CPPUNIT_ASSERT_NO_THROW( s = new Sentence( &doc, "generate_id='" + p->id() + "'" ) );
   p->append( s );
   // add words to the sentence
@@ -901,12 +901,12 @@ void editTest::test001a( ){
 
 void editTest::test001b( ){
   cout << " Add a sentence to the last paragraph (shortcuts)";
-  AbstractElement *p = 0;
+  FoliaElement *p = 0;
   // grab last paragraph
   CPPUNIT_ASSERT_NO_THROW( p = doc.rparagraphs(0) );
   size_t tmp = p->size();
   // add a sentence
-  AbstractElement *s = 0;
+  FoliaElement *s = 0;
   CPPUNIT_ASSERT_NO_THROW( s = p->addSentence() );
   // add words to the sentence
   KWargs ann;
@@ -918,9 +918,9 @@ void editTest::test001b( ){
   ann["text"] = "nieuwe";
   CPPUNIT_ASSERT_NO_THROW( s->addWord( ann ) );
   ann["text"] = "zin";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = s->addWord( ann ) );
-  AbstractElement *w2 = 0;
+  FoliaElement *w2 = 0;
   CPPUNIT_ASSERT_NO_THROW( w2 = s->addWord( "text='.', cls='PUNCTUATION'" ) );
   
   CPPUNIT_ASSERT( len(s->words()) == 6 );
@@ -941,7 +941,7 @@ void editTest::test001b( ){
 void editTest::test002( ){
   cout << " Add an token annotation (pos, lemma) ";
   // grab a word (naam)
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
   
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::POS, 
@@ -956,7 +956,7 @@ void editTest::test002( ){
   args = getArgs( "set='adhoclemma', cls='NAAM', annotator='testscript', annotatortype='auto', datetime='1982-12-15T19:00:01'");
   CPPUNIT_ASSERT_NO_THROW( w->addLemmaAnnotation( args ) );
 
-  AbstractElement *p = 0;
+  FoliaElement *p = 0;
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation( Pos_t, "adhocpos") );
   CPPUNIT_ASSERT( p->isinstance( Pos_t ) );
   CPPUNIT_ASSERT( p->cls() == "NOUN" );
@@ -972,7 +972,7 @@ void editTest::test002( ){
 void editTest::test003( ){
   cout << " Add an token annotation (pos, lemma) (alternative) ";
   // grab a word (naam)
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
 
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::POS, "adhocpos") );
@@ -985,7 +985,7 @@ void editTest::test003( ){
   args = getArgs( "set='adhoclemma', cls='NAAM', annotator='testscript', annotatortype='auto'" );
   CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Lemma_t, args ) );
 
-  AbstractElement *p = 0;
+  FoliaElement *p = 0;
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation( Pos_t, "adhocpos") );
   CPPUNIT_ASSERT( p->isinstance( Pos_t ) );
   CPPUNIT_ASSERT( p->cls() == "NOUN" );
@@ -1001,7 +1001,7 @@ void editTest::test003( ){
 void editTest::test003b( ){
   cout << " Add an token annotation (pos, lemma) with missing declaration ";
   // grab a word (naam)
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
 
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::POS, "adhocpos") );
@@ -1015,7 +1015,7 @@ void editTest::test003b( ){
 void editTest::test004( ){
   cout << " Add a token default-set annotation which gives a name clash ";
   // grab a word (naam)
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
   // add a pos annotation without specifying a set (should take default set), but this will clash with existing tag!
   KWargs args = getArgs( "cls='N', annotator='testscript', annotatortype='auto'" );
@@ -1027,18 +1027,18 @@ void editTest::test004( ){
 void editTest::test005( ){
   cout << " Adding an alternative token annotation ";
   // grab a word (naam)
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
   KWargs args = getArgs( "cls='V'" );
   CPPUNIT_ASSERT_NO_THROW( w->addAlternative( Pos_t, args ) );
-  std::vector<AbstractElement *> alt = w->alternatives(); // all alternatives
+  std::vector<FoliaElement *> alt = w->alternatives(); // all alternatives
   string set = doc.defaultset(AnnotationType::POS);
-  std::vector<AbstractElement *> alt2 = w->alternatives(set);
+  std::vector<FoliaElement *> alt2 = w->alternatives(set);
   CPPUNIT_ASSERT( alt.size() == 1 );
   CPPUNIT_ASSERT( alt2.size() == 1 );
   CPPUNIT_ASSERT( alt[0] == alt2[0] );
   CPPUNIT_ASSERT( alt[0]->annotation( Pos_t, set )->isinstance( Pos_t ) );
 
-  std::vector<AbstractElement *> alt3;
+  std::vector<FoliaElement *> alt3;
   CPPUNIT_ASSERT_NO_THROW( alt3 = w->alternatives(Pos_t, set) );
   CPPUNIT_ASSERT( alt3.size() == 1 );
   CPPUNIT_ASSERT( alt[0] == alt3[0] );
@@ -1049,10 +1049,10 @@ void editTest::test005( ){
 
 void editTest::test006( ){
   cout << " Correcting text ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] ); // stippelijn
   CPPUNIT_ASSERT_NO_THROW( w->correct("new='stippellijn', set='corrections', cls='spelling',annotator='testscript', annotatortype='auto'"  ) );
-  AbstractElement *c = 0;
+  FoliaElement *c = 0;
   CPPUNIT_ASSERT_NO_THROW( c = w->annotation(Correction_t) );
   CPPUNIT_ASSERT( c->getOriginal()->index(0)->text() == "stippelijn" );
   CPPUNIT_ASSERT( c->getNew()->index(0)->text() == "stippellijn" );
@@ -1064,13 +1064,13 @@ void editTest::test006( ){
 
 void editTest::test007( ){
   cout << " Correcting Token Annotation ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] ); // alweer stippelijn
-  AbstractElement *oldpos = w->annotation(Pos_t);
-  AbstractElement *newpos = new PosAnnotation( &doc, "cls='N(soort,ev,basis,zijd,stan)'" );
+  FoliaElement *oldpos = w->annotation(Pos_t);
+  FoliaElement *newpos = new PosAnnotation( &doc, "cls='N(soort,ev,basis,zijd,stan)'" );
   KWargs args = getArgs( "set='corrections', cls='spelling', annotator='testscript', annotatortype='auto'" );
   CPPUNIT_ASSERT_NO_THROW( w->correct( oldpos, newpos, args ) );
-  AbstractElement *c = 0;
+  FoliaElement *c = 0;
   CPPUNIT_ASSERT( (c = w->annotation(Correction_t))!= 0 );
   CPPUNIT_ASSERT( c->getOriginal(0 ) == oldpos );
   CPPUNIT_ASSERT( c->getNew(0) == newpos );
@@ -1080,9 +1080,9 @@ void editTest::test007( ){
 
 void editTest::test008( ){
   cout << " Suggesting a text correction ";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"]; // stippelijn
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"]; // stippelijn
   CPPUNIT_ASSERT_NO_THROW( w->correct( "suggestion='stippellijn', set='corrections', cls='spelling',annotator='testscript', annotatortype='auto'" ) );
-  AbstractElement *c = 0;
+  FoliaElement *c = 0;
   CPPUNIT_ASSERT_NO_THROW( c = w->annotation(Correction_t) );
   CPPUNIT_ASSERT_NO_THROW( c = c->suggestions()[0] );
   CPPUNIT_ASSERT( c->text() == "stippellijn" );
@@ -1091,7 +1091,7 @@ void editTest::test008( ){
 
 void editTest::test009a( ){
   cout << " Exception on duplicate ID ";
-  AbstractElement *w = 0;
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   KWargs kw;
   kw["text"] = "stippellijn";
@@ -1102,14 +1102,14 @@ void editTest::test009a( ){
 
 // void editTest::test009b( ){
 //   cout << " Exception on adding TextContent of wrong level ";
-//   AbstractElement *w = 0;
+//   FoliaElement *w = 0;
 //   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
 //   CPPUNIT_ASSERT_THROW( w->settext( "bla", "original" ), ValueError );
 // }
 
 // void editTest::test009c( ){
 //   cout << " Exception on adding duplicate TextContent ";
-//   AbstractElement *w = 0;
+//   FoliaElement *w = 0;
 //   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
 //   TextContent *t = new TextContent( "value='blah', corrected='yes'" );
 //   CPPUNIT_ASSERT_THROW( w->append( t ), DuplicateAnnotationError );
@@ -1117,8 +1117,8 @@ void editTest::test009a( ){
 
 void editTest::test010( ){
   cout << " Creating an initially document-less tokenannotation element and adding it to a word ";
-  AbstractElement *pos =new PosAnnotation( "set='fakecgn', cls='N'" );
-  AbstractElement *w = 0;
+  FoliaElement *pos =new PosAnnotation( "set='fakecgn', cls='N'" );
+  FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   CPPUNIT_ASSERT_THROW( w->append( pos ), ValueError );
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::POS, 
@@ -1133,14 +1133,14 @@ void editTest::test010( ){
 
 void editTest::test011(){
   cout << " Adding Subtoken annotation (morphological analysis)";
-  AbstractElement *w = doc["WR-P-E-J-0000000001.p.1.s.5.w.3"];
-  AbstractElement *l = new MorphologyLayer(0);
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.5.w.3"];
+  FoliaElement *l = new MorphologyLayer(0);
   w->append( l );
-  AbstractElement *m = new Morpheme( &doc );
+  FoliaElement *m = new Morpheme( &doc );
   l->append( m );
-  AbstractElement *t = new TextContent( &doc, "value='handschrift', offset='0'");
+  FoliaElement *t = new TextContent( &doc, "value='handschrift', offset='0'");
   m->append( t );
-  AbstractElement *f = new Feature( &doc, "subset='type', cls='stem'");
+  FoliaElement *f = new Feature( &doc, "subset='type', cls='stem'");
   m->append( f );
   f = new Feature( &doc, "subset='function', cls='lexical'");
   m->append( f );
@@ -1173,28 +1173,28 @@ void editTest::test013(){
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::SYNTAX, 
 					"syntax-set", 
 					"annotator='proycon'" ) );
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
-  AbstractElement *layer = s->append( new SyntaxLayer(&doc) );
-  AbstractElement *top = layer->append( new SyntacticUnit( &doc, "generate_id='" + s->id() + "', class='ROOT'" ) );
-  AbstractElement *sent = top->append( new SyntacticUnit( "cls='s'" ) );
-  AbstractElement *np = sent->append( new SyntacticUnit( "cls='np'" ) );
-  AbstractElement *su = np->append( new SyntacticUnit( "cls='det'" ) );
+  FoliaElement *layer = s->append( new SyntaxLayer(&doc) );
+  FoliaElement *top = layer->append( new SyntacticUnit( &doc, "generate_id='" + s->id() + "', class='ROOT'" ) );
+  FoliaElement *sent = top->append( new SyntacticUnit( "cls='s'" ) );
+  FoliaElement *np = sent->append( new SyntacticUnit( "cls='np'" ) );
+  FoliaElement *su = np->append( new SyntacticUnit( "cls='det'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.1"] );
   su = np->append( new SyntacticUnit( "cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.2"] );
   su = np->append( new SyntacticUnit( "cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.3"] );
-  AbstractElement *vp = sent->append( new SyntacticUnit( "cls='vp'" ) );
-  AbstractElement *vps = vp->append( new SyntacticUnit( "cls='vp'" ) );
+  FoliaElement *vp = sent->append( new SyntacticUnit( "cls='vp'" ) );
+  FoliaElement *vps = vp->append( new SyntacticUnit( "cls='vp'" ) );
   su = vps->append( new SyntacticUnit( "cls='v'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.4"] );
   su = vps->append( new SyntacticUnit( "cls='participle'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.5"] );
-  AbstractElement *pp = vp->append( new SyntacticUnit( "cls='pp'" ) );
+  FoliaElement *pp = vp->append( new SyntacticUnit( "cls='pp'" ) );
   su = pp->append( new SyntacticUnit( "cls='prep'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.6"] );
-  AbstractElement *nps = pp->append( new SyntacticUnit( "cls='np'" ) );
+  FoliaElement *nps = pp->append( new SyntacticUnit( "cls='np'" ) );
   su = nps->append( new SyntacticUnit( "cls='det'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.7"] );
   su = nps->append( new SyntacticUnit( "cls='adj'" ) );
@@ -1207,7 +1207,7 @@ void editTest::test013(){
 
 void editTest::test014() {
   cout << " Replacing an annotation " ;
-  AbstractElement *word = doc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
+  FoliaElement *word = doc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
   word->replace( new PosAnnotation( &doc, "cls='BOGUS'") );
   CPPUNIT_ASSERT( len(word->annotations( Pos_t) ) ==  1 );
   CPPUNIT_ASSERT(  word->annotation(Pos_t)->cls() == "BOGUS" );
@@ -1216,7 +1216,7 @@ void editTest::test014() {
 
 void editTest::test015(){
   cout << " Removing an annotation ";
-  AbstractElement *word = doc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
+  FoliaElement *word = doc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
   word->remove( word->annotation(Pos_t) );
   CPPUNIT_ASSERT_THROW( word->annotations(Pos_t), NoSuchAnnotation );
   CPPUNIT_ASSERT( word->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.3.w.14\"><t>plaats</t><lemma class=\"plaats\"/></w>" );
@@ -1224,8 +1224,8 @@ void editTest::test015(){
 
 void editTest::test016(){
   cout << " Time Stamp ";
-  AbstractElement *word = doc["WR-P-E-J-0000000001.p.1.s.8.w.16"];
-  AbstractElement *pos = word->annotation(Pos_t);
+  FoliaElement *word = doc["WR-P-E-J-0000000001.p.1.s.8.w.16"];
+  FoliaElement *pos = word->annotation(Pos_t);
   CPPUNIT_ASSERT_NO_THROW( pos->setDateTime( "1982-12-15T19:00:01" ) );
 
   CPPUNIT_ASSERT( pos->xmlstring() == "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"WW(pv,tgw,met-t)\" datetime=\"1982-12-15T19:00:01\"/>" );      
@@ -1234,7 +1234,7 @@ void editTest::test016(){
 void editTest::test017(){
   cout << " Altering word text";
   // Important note: directly altering text is usually bad practise, you'll want to use proper corrections instead.
-  AbstractElement *word = doc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
+  FoliaElement *word = doc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
   CPPUNIT_ASSERT( word->text() == "terweil" );
   word->settext("terwijl");
   CPPUNIT_ASSERT( word->text() == "terwijl" );
@@ -1243,7 +1243,7 @@ void editTest::test017(){
 
 void editTest::test018a(){
   cout << " Altering sentence text (untokenized by definition)";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
   CPPUNIT_ASSERT( !s->hastext() ); // No text directly associated
   // but text() can be retrieved from children.
   CPPUNIT_ASSERT( s->text() == "Stemma is een ander woord voor stamboom ." );
@@ -1255,7 +1255,7 @@ void editTest::test018a(){
 
 void editTest::test018b(){
   cout << " Altering sentence text (untokenized by definition)";
-  AbstractElement *s = doc["WR-P-E-J-0000000001.p.1.s.8"];
+  FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.8"];
   CPPUNIT_ASSERT( s->text() == "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
   CPPUNIT_ASSERT_NO_THROW( s->settext("Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt." ) );
   CPPUNIT_ASSERT_NO_THROW( s->settext("Een volle lijn duidt op een verwantschap, terweil een stippelijn op een onzekere verwantschap duidt.", "original" ) );
@@ -1286,11 +1286,11 @@ void createTest::test001( ){
   CPPUNIT_ASSERT( d.defaultset(AnnotationType::TOKEN) == "adhocset" );
   CPPUNIT_ASSERT( d.defaultannotator(AnnotationType::TOKEN) == "proycon" );
   string id = d.id() + ".text.1";
-  AbstractElement *text = 0;
+  FoliaElement *text = 0;
   KWargs kw = getArgs( "id='" + id + "'" );
   CPPUNIT_ASSERT_NO_THROW( text = d.addNode( Text_t, kw ) );
   kw.clear();
-  AbstractElement *s = 0;
+  FoliaElement *s = 0;
   CPPUNIT_ASSERT_NO_THROW( s = new Sentence( &d, "generate_id='" + text->id() + "'" ) );
   text->append( s );
   kw.clear();
@@ -1346,13 +1346,13 @@ void correctionTest::tearDown( ){
 
 void correctionTest::test001a( ){
   cout << " Split correction ";
-  AbstractElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"  ) );
+  FoliaElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"  ) );
   s->append( new Word( doc, "text='De', id='" + doc->id() + ".s.1.w.1'" ) );
   s->append( new Word( doc, "text='site', id='" + doc->id() + ".s.1.w.2'" ) );
   s->append( new Word( doc, "text='staat', id='" + doc->id() + ".s.1.w.3'" ) );
   s->append( new Word( doc, "text='online', id='" + doc->id() + ".s.1.w.4'" ) );
   s->append( new Word( doc, "text='.', id='" + doc->id() + ".s.1.w.5'" ) );
-  AbstractElement *w = doc->index(doc->id() + ".s.1.w.4");
+  FoliaElement *w = doc->index(doc->id() + ".s.1.w.4");
   w->split( new Word( doc, "id='" + doc->id() + ".s.1.w.4a', text='on'" ),
    	    new Word( doc, "id='" + doc->id() + ".s.1.w.4b', text='line'" ) );
   //  CPPUNIT_ASSERT_NO_THROW( doc->save( "/tmp/foliasplit1a.xml" ) );
@@ -1366,13 +1366,13 @@ void correctionTest::test001a( ){
 
 void correctionTest::test001b( ){
   cout << " Split suggestion ";
-  AbstractElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"  ) );
+  FoliaElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"  ) );
   s->append( new Word( doc, "text='De', id='" + doc->id() + ".s.1.w.1'" ) );
   s->append( new Word( doc, "text='site', id='" + doc->id() + ".s.1.w.2'" ) );
   s->append( new Word( doc, "text='staat', id='" + doc->id() + ".s.1.w.3'" ) );
   s->append( new Word( doc, "text='online', id='" + doc->id() + ".s.1.w.4'" ) );
   s->append( new Word( doc, "text='.', id='" + doc->id() + ".s.1.w.5'" ) );
-  AbstractElement *w = doc->index(doc->id() + ".s.1.w.4");
+  FoliaElement *w = doc->index(doc->id() + ".s.1.w.4");
   Word *w1 = new Word( doc, "generate_id='" + s->id() + "',text='on'" );
   Word *w2 = new Word( doc, "generate_id='" + s->id() + "',text='line'" );
   w->split( w1, w2, "suggest='true'" );
@@ -1387,7 +1387,7 @@ void correctionTest::test001b( ){
      
 void correctionTest::test002(){
   cout << " Merge corrections ";
-  AbstractElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"	 ) );
+  FoliaElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"	 ) );
   s->append( new Word( doc, "text='De', id='" + doc->id() + ".s.1.w.1'" ) );
   s->append( new Word( doc, "text='site', id='" + doc->id() + ".s.1.w.2'" ) );
   s->append( new Word( doc, "text='staat', id='" + doc->id() + ".s.1.w.3'" ) );
@@ -1395,7 +1395,7 @@ void correctionTest::test002(){
   s->append( new Word( doc, "text='line', id='" + doc->id() + ".s.1.w.5'" ) );
   s->append( new Word( doc, "text='.', id='" + doc->id() + ".s.1.w.6'" ) );
 
-  vector<AbstractElement *> ow;
+  vector<FoliaElement *> ow;
   ow.push_back( doc->index(doc->id() + ".s.1.w.4") );
   ow.push_back( doc->index(doc->id() + ".s.1.w.5") );
   s->mergewords( new Word( doc, "id='" + doc->id() + ".s.1.w.4-5', text='online'" ), ow );
@@ -1403,7 +1403,7 @@ void correctionTest::test002(){
   CPPUNIT_ASSERT( len(s->words() ) ==  5 );
   CPPUNIT_ASSERT( s->text() == "De site staat online ." );
   // incorrection() test, check if newly added word correctly reports being part of a correction
-  AbstractElement *w = doc->index(doc->id() + ".s.1.w.4-5");
+  FoliaElement *w = doc->index(doc->id() + ".s.1.w.4-5");
   CPPUNIT_ASSERT( isinstance(w->incorrection(), Correction_t) );
   //incorrection return the correction the word is part of, or None if not part of a correction, 
   CPPUNIT_ASSERT( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
@@ -1411,7 +1411,7 @@ void correctionTest::test002(){
 
 void correctionTest::test003(){
   cout << " Delete corrections ";
-  AbstractElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"	 ) );
+  FoliaElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"	 ) );
   s->append( new Word( doc, "text='Ik', id='" + doc->id() + ".s.1.w.1'" ) );
   s->append( new Word( doc, "text='zie', id='" + doc->id() + ".s.1.w.2'" ) );
   s->append( new Word( doc, "text='een', id='" + doc->id() + ".s.1.w.3'" ) );
@@ -1427,7 +1427,7 @@ void correctionTest::test003(){
 
 void correctionTest::test004(){
   cout << " Insert corrections ";
-  AbstractElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"	 ) );
+  FoliaElement *s = text->append( new Sentence( "id='" + doc->id() + ".s.1'"	 ) );
   s->append( new Word( doc, "text='Ik', id='" + doc->id() + ".s.1.w.1'" ) );
   s->append( new Word( doc, "text='zie', id='" + doc->id() + ".s.1.w.2'" ) );
   s->append( new Word( doc, "text='een', id='" + doc->id() + ".s.1.w.3'" ) );
@@ -1445,10 +1445,10 @@ void correctionTest::test005(){
   delete doc; // get rid of the setUp variant…
   doc = new Document();
   doc->readFromFile( "tests/folia.example" );
-  AbstractElement *w = doc->index("WR-P-E-J-0000000001.p.1.s.8.w.11"); // stippelijn
+  FoliaElement *w = doc->index("WR-P-E-J-0000000001.p.1.s.8.w.11"); // stippelijn
   CPPUNIT_ASSERT_NO_THROW( w->correct("suggestion='stippellijn', set='corrections', cls='spelling',annotator='testscript', annotatortype='auto'" ) );
   CPPUNIT_ASSERT_NO_THROW( doc->save( "/tmp/foliainsert005-1.xml" ) );
-  AbstractElement *c = 0;
+  FoliaElement *c = 0;
   CPPUNIT_ASSERT_NO_THROW( c = w->annotation(Correction_t) );
   CPPUNIT_ASSERT( c->suggestions()[0]->text() == "stippellijn" );
   CPPUNIT_ASSERT( w->text() == "stippelijn" );  
@@ -1510,7 +1510,7 @@ void queryTest::test001(){
   words.push_back( "van" );
   words.push_back( "het" );
   words.push_back( "alfabet" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 3 );
   CPPUNIT_ASSERT( matches[0][0]->text() == "van" );
@@ -1524,7 +1524,7 @@ void queryTest::test002(){
   words.push_back( "van" );
   words.push_back( "het" );
   words.push_back( "*:1" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 3 );
 
@@ -1540,7 +1540,7 @@ void queryTest::test003(){
   words.push_back( "historisch" );
   words.push_back( "wetenschap" );
   words.push_back( "worden" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words,
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words,
 								    Lemma_t ) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
@@ -1568,7 +1568,7 @@ void queryTest::test004(){
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
-  vector<vector<AbstractElement*> >matches = doc.findwords( l ); 
+  vector<vector<FoliaElement*> >matches = doc.findwords( l ); 
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
 
@@ -1584,16 +1584,16 @@ void queryTest::test005(){
   words.push_back( "bli" );
   words.push_back( "bla" );
   words.push_back( "blu" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 0 );
 }
 
 void queryTest::test006(){
   cout << " Find words with overlap ";
   Document doc( "id='test'" );
-  AbstractElement *text = new Text( "id='test.text'" );
+  FoliaElement *text = new Text( "id='test.text'" );
   doc.append( text );
-  AbstractElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
+  FoliaElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='a'" );
@@ -1605,7 +1605,7 @@ void queryTest::test006(){
   vector<string> words;
   words.push_back( "a" );
   words.push_back( "a" );  
-  vector<vector<AbstractElement*> > matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> > matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 4 );
   matches = doc.findwords( Pattern(words,"casesensitive='1'") );
   CPPUNIT_ASSERT( matches.size() == 3 );
@@ -1617,7 +1617,7 @@ void queryTest::test007(){
   words.push_back( "van" );
   words.push_back( "het" );
   words.push_back( "alfabet" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words),
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words),
 							    "leftcontext='3', rightcontext='3'"); 
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 9 );
@@ -1640,7 +1640,7 @@ void queryTest::test008(){
   words.push_back( "regexp('historische|hedendaagse')" );
   words.push_back( "wetenschap" );
   words.push_back( "wordt" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
 
@@ -1657,7 +1657,7 @@ void queryTest::test009(){
   words.push_back( "regexp('hist.*')" );
   words.push_back( "regexp('.*schap')" );
   words.push_back( "regexp('w[oae]rdt')" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
 
@@ -1674,7 +1674,7 @@ void queryTest::test010a(){
   words.push_back( "laatste" );
   words.push_back( "*" );
   words.push_back( "alfabet" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 6 );
 
@@ -1689,9 +1689,9 @@ void queryTest::test010a(){
 void queryTest::test010b(){
   cout << " Find words with wildcard and overlap ";
   Document doc( "id='test'" );
-  AbstractElement *text = new Text( "id='test.text'" );
+  FoliaElement *text = new Text( "id='test.text'" );
   doc.append( text );
-  AbstractElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
+  FoliaElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='b'" );
@@ -1704,7 +1704,7 @@ void queryTest::test010b(){
   words.push_back( "a" );
   words.push_back( "*" );  
   words.push_back( "c" );  
-  vector<vector<AbstractElement*> > matches = doc.findwords( Pattern(words) );
+  vector<vector<FoliaElement*> > matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 3 );
 }
 
@@ -1714,7 +1714,7 @@ void queryTest::test011(){
   words.push_back( "bla" );
   words.push_back( "bla" );
   words.push_back( "blu" );
-  vector<vector<AbstractElement*> >matches = doc.findwords( Pattern(words,
+  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words,
 								    Sense_t ) );
   CPPUNIT_ASSERT( matches.size() == 0 );
 }
