@@ -534,7 +534,7 @@ void sanityTest::test022(){
 void sanityTest::test023a(){
   cout << " Obtaining left context ";
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<FoliaElement*> context = w->leftcontext(3);
+  vector<Word*> context = w->leftcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( context[0]->text() == "wetenschap" );
@@ -545,7 +545,7 @@ void sanityTest::test023a(){
 void sanityTest::test023b(){
   cout << " Obtaining left context with default placeholder ";
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
-  vector<FoliaElement*> context = w->leftcontext(3);
+  vector<Word*> context = w->leftcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( context[0] == 0 );
@@ -556,7 +556,7 @@ void sanityTest::test023b(){
 void sanityTest::test023c(){
   cout << " Obtaining left context with placeholder ";
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
-  vector<FoliaElement*> context = w->leftcontext(3,"?");
+  vector<Word*> context = w->leftcontext(3,"?");
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( context[0]->isinstance( PlaceHolder_t) );
@@ -568,7 +568,7 @@ void sanityTest::test023c(){
 void sanityTest::test024a(){
   cout << " Obtaining right context ";
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<FoliaElement*> context = w->rightcontext(3);
+  vector<Word*> context = w->rightcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( text(context[0]) == "," );
@@ -579,7 +579,7 @@ void sanityTest::test024a(){
 void sanityTest::test024b(){
   cout << " Obtaining right context with default placeholder ";
   FoliaElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
-  vector<FoliaElement*> context = w->rightcontext(3);
+  vector<Word*> context = w->rightcontext(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( text(context[0]) == "stamboom" );
@@ -590,7 +590,7 @@ void sanityTest::test024b(){
 void sanityTest::test024c(){
   cout << " Obtaining right context with placeholder ";
   FoliaElement *w = doc["sandbox.figure.1.caption.s.1.w.1"];
-  vector<FoliaElement*> context = w->rightcontext(3, "_");
+  vector<Word*> context = w->rightcontext(3, "_");
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 3 );
   CPPUNIT_ASSERT( text(context[0]) == "stamboom" );
@@ -601,7 +601,7 @@ void sanityTest::test024c(){
 void sanityTest::test025a(){
   cout << " Obtaining full context ";
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<FoliaElement*> context = w->context(3);
+  vector<Word*> context = w->context(3);
   //  cerr << "found context " << context << endl;
   CPPUNIT_ASSERT( context.size() == 7 );
   CPPUNIT_ASSERT( context[0]->text() == "wetenschap" );
@@ -616,7 +616,7 @@ void sanityTest::test025a(){
 void sanityTest::test025b(){
   cout << " Obtaining full context with default placeholder ";
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<FoliaElement*> context = w->context(150);
+  vector<Word*> context = w->context(150);
   CPPUNIT_ASSERT( context.size() == 301 );
   CPPUNIT_ASSERT( context[0] == 0 );
   CPPUNIT_ASSERT( text(context[202]) == "handschrift" );
@@ -626,7 +626,7 @@ void sanityTest::test025b(){
 void sanityTest::test025c(){
   cout << " Obtaining full context with string placeholder ";
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<FoliaElement*> context = w->context(150, "nil");
+  vector<Word*> context = w->context(150, "nil");
   CPPUNIT_ASSERT( context.size() == 301 );
   CPPUNIT_ASSERT( text(context[0]) == "nil" );
   CPPUNIT_ASSERT( text(context[202]) == "handschrift" );
@@ -1510,7 +1510,7 @@ void queryTest::test001(){
   words.push_back( "van" );
   words.push_back( "het" );
   words.push_back( "alfabet" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 3 );
   CPPUNIT_ASSERT( matches[0][0]->text() == "van" );
@@ -1524,7 +1524,7 @@ void queryTest::test002(){
   words.push_back( "van" );
   words.push_back( "het" );
   words.push_back( "*:1" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 3 );
 
@@ -1540,8 +1540,8 @@ void queryTest::test003(){
   words.push_back( "historisch" );
   words.push_back( "wetenschap" );
   words.push_back( "worden" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words,
-								    Lemma_t ) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words,
+							 Lemma_t ) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
 
@@ -1568,7 +1568,7 @@ void queryTest::test004(){
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
-  vector<vector<FoliaElement*> >matches = doc.findwords( l ); 
+  vector<vector<Word*> >matches = doc.findwords( l ); 
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
 
@@ -1584,7 +1584,7 @@ void queryTest::test005(){
   words.push_back( "bli" );
   words.push_back( "bla" );
   words.push_back( "blu" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 0 );
 }
 
@@ -1605,7 +1605,7 @@ void queryTest::test006(){
   vector<string> words;
   words.push_back( "a" );
   words.push_back( "a" );  
-  vector<vector<FoliaElement*> > matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> > matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 4 );
   matches = doc.findwords( Pattern(words,"casesensitive='1'") );
   CPPUNIT_ASSERT( matches.size() == 3 );
@@ -1617,8 +1617,8 @@ void queryTest::test007(){
   words.push_back( "van" );
   words.push_back( "het" );
   words.push_back( "alfabet" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words),
-							    "leftcontext='3', rightcontext='3'"); 
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words),
+						  "leftcontext='3', rightcontext='3'"); 
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 9 );
 
@@ -1640,7 +1640,7 @@ void queryTest::test008(){
   words.push_back( "regexp('historische|hedendaagse')" );
   words.push_back( "wetenschap" );
   words.push_back( "wordt" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
 
@@ -1657,7 +1657,7 @@ void queryTest::test009(){
   words.push_back( "regexp('hist.*')" );
   words.push_back( "regexp('.*schap')" );
   words.push_back( "regexp('w[oae]rdt')" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 4 );
 
@@ -1674,7 +1674,7 @@ void queryTest::test010a(){
   words.push_back( "laatste" );
   words.push_back( "*" );
   words.push_back( "alfabet" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 1 );
   CPPUNIT_ASSERT( len(matches[0]) == 6 );
 
@@ -1704,7 +1704,7 @@ void queryTest::test010b(){
   words.push_back( "a" );
   words.push_back( "*" );  
   words.push_back( "c" );  
-  vector<vector<FoliaElement*> > matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> > matches = doc.findwords( Pattern(words) );
   CPPUNIT_ASSERT( matches.size() == 3 );
 }
 
@@ -1714,8 +1714,8 @@ void queryTest::test011(){
   words.push_back( "bla" );
   words.push_back( "bla" );
   words.push_back( "blu" );
-  vector<vector<FoliaElement*> >matches = doc.findwords( Pattern(words,
-								    Sense_t ) );
+  vector<vector<Word*> >matches = doc.findwords( Pattern(words,
+							 Sense_t ) );
   CPPUNIT_ASSERT( matches.size() == 0 );
 }
 
