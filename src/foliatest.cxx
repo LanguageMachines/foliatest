@@ -469,7 +469,6 @@ void sanityTest::test020b(){
   FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.1"];
   ChunkingLayer *l = 0;
   CPPUNIT_ASSERT_NO_THROW( l = s->annotation<ChunkingLayer>() );
-  cerr << "\nCHUNK? " << l << endl;
   CPPUNIT_ASSERT( isinstance( l->index(0), Chunk_t ) );
   CPPUNIT_ASSERT( l->index(0)->text() == "een ander woord" );
   CPPUNIT_ASSERT( l->index(1)->text() == "voor stamboom" );
