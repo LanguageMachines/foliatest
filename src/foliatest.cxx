@@ -347,8 +347,8 @@ void sanityTest::test012( ){
   CPPUNIT_ASSERT( len( c->getNew() ) == 1 );
   CPPUNIT_ASSERT( len( c->getOriginal() ) == 1 );
   CPPUNIT_ASSERT( w->text() == "vierkante" );
-  CPPUNIT_ASSERT( c->getNew( 0 )->text() == "vierkante" );
-  CPPUNIT_ASSERT( c->getOriginal( 0 )->text() == "vierkant" );
+  CPPUNIT_ASSERT( c->getNew()->index(0)->text() == "vierkante" );
+  CPPUNIT_ASSERT( c->getOriginal()->index(0)->text() == "vierkant" );
 }
 
 void sanityTest::test013( ){
@@ -360,8 +360,8 @@ void sanityTest::test013( ){
   CPPUNIT_ASSERT( len( c->getNew() ) == 1 );
   CPPUNIT_ASSERT( len( c->getOriginal() ) == 1 );
   CPPUNIT_ASSERT( w->annotation<LemmaAnnotation>()->cls() == "haak" );
-  CPPUNIT_ASSERT( c->getNew(0)->cls() == "haak" );
-  CPPUNIT_ASSERT( c->getOriginal(0)->cls() == "haaak" );
+  CPPUNIT_ASSERT( (*c->getNew())[0]->cls() == "haak" );
+  CPPUNIT_ASSERT( (*c->getOriginal())[0]->cls() == "haaak" );
 }
 
 void sanityTest::test014(){
@@ -1075,8 +1075,8 @@ void editTest::test007( ){
   CPPUNIT_ASSERT_NO_THROW( w->correct( oldpos, newpos, args ) );
   FoliaElement *c = 0;
   CPPUNIT_ASSERT( (c = w->annotation<Correction>()) != 0 );
-  CPPUNIT_ASSERT( c->getOriginal(0 ) == oldpos );
-  CPPUNIT_ASSERT( c->getNew(0) == newpos );
+  CPPUNIT_ASSERT( c->getOriginal()->index(0) == oldpos );
+  CPPUNIT_ASSERT( (*c->getNew())[0] == newpos );
 
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"testscript\" annotatortype=\"auto\" class=\"spelling\"><new><pos class=\"N(soort,ev,basis,zijd,stan)\"/></new><original auth=\"no\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/></original></correction><lemma class=\"stippelijn\"/></w>" );
 }
@@ -1463,7 +1463,7 @@ void correctionTest::test005(){
   CPPUNIT_ASSERT( w->annotation<Correction>()->suggestions()[0]->text() == "stippellijn" );
   CPPUNIT_ASSERT( w->annotation<Correction>()->suggestions()[0]->annotator() == "testscript" );
   CPPUNIT_ASSERT( w->annotation<Correction>()->suggestions()[0]->annotatortype() == AUTO );
-  CPPUNIT_ASSERT( w->annotation<Correction>()->getNew(0)->text() == "stippellijn" );
+  CPPUNIT_ASSERT( w->annotation<Correction>()->getNew()->text() == "stippellijn" );
   CPPUNIT_ASSERT( w->annotation<Correction>()->annotator() == "John Doe" );
   CPPUNIT_ASSERT( w->annotation<Correction>()->annotatortype() == MANUAL );
 
