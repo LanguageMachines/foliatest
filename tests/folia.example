@@ -701,7 +701,7 @@
             </w>
             <w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.2">
               <t>handschriften</t>
-              <pos class="N(soort,mv,basis)"/>
+              <pos head="N" class="N(soort,mv,basis)"/>
               <lemma class="handschrift"/>
             </w>
             <w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.3">
