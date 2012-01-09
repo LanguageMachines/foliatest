@@ -61,6 +61,12 @@ void foliaTest::test0() {
   CPPUNIT_ASSERT ( bla["cls"] == "o\"k" );
   CPPUNIT_ASSERT_NO_THROW( bla = getArgs( "cls='o""k'" ) );
   CPPUNIT_ASSERT ( bla["cls"] == "ok" );
+  CPPUNIT_ASSERT_NO_THROW( bla = getArgs( "cls='ok\\a', bli='bla'" ) );
+  CPPUNIT_ASSERT ( bla["cls"] == "ok\\a" );
+  CPPUNIT_ASSERT ( bla["bli"] == "bla" );
+  CPPUNIT_ASSERT_NO_THROW( bla = getArgs( "cls='ok\\\\', bli='bla'" ) );
+  CPPUNIT_ASSERT ( bla["cls"] == "ok\\" );
+  CPPUNIT_ASSERT ( bla["bli"] == "bla" );
 }
 
 
