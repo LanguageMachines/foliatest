@@ -32,33 +32,6 @@ AC_SUBST([LIBTOOL_DEPS])
 # when running tests, use CXX
 AC_LANG([C++])
 
-PKG_PROG_PKG_CONFIG
-# ugly hack when PKG_CONFIG_PATH isn't defined.
-# couldn't get it to work otherwise
-if test "x$PKG_CONFIG_PATH" = x; then
-    export PKG_CONFIG_PATH=""
-fi
-
-AC_ARG_WITH(folia,
-       [  --with-folia=DIR       use libfolia installed in <DIR>; 
-             note that you can install libfolia in a non-default directory with
-             ./configure --prefix=<DIR> in the libfolia installation directory],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
-AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
-
-PKG_CHECK_MODULES([folia],[folia >= 0.5])
-CXXFLAGS="$CXXFLAGS $folia_CFLAGS"
-LIBS="$LIBS $folia_LIBS"
-
-PKG_CHECK_MODULES([CppUnit], [cppunit >= 1.12.1] )
-CXXFLAGS="$CXXFLAGS $CppUnit_CFLAGS"
-LIBS="$LIBS $CppUnit_LIBS"
-
-PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
-CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
-LIBS="$LIBS $XML2_LIBS"
-
 useICU=1;
 # inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
 AC_ARG_WITH(icu,
@@ -79,6 +52,33 @@ if test "$useICU" = "1"; then
 else
   AC_MSG_ERROR("ICU support is required")
 fi
+
+PKG_PROG_PKG_CONFIG
+# ugly hack when PKG_CONFIG_PATH isn't defined.
+# couldn't get it to work otherwise
+if test "x$PKG_CONFIG_PATH" = x; then
+    export PKG_CONFIG_PATH=""
+fi
+
+AC_ARG_WITH(folia,
+       [  --with-folia=DIR       use libfolia installed in <DIR>; 
+             note that you can install libfolia in a non-default directory with
+             ./configure --prefix=<DIR> in the libfolia installation directory],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
+AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
+
+PKG_CHECK_MODULES([CppUnit], [cppunit >= 1.12.1] )
+CXXFLAGS="$CXXFLAGS $CppUnit_CFLAGS"
+LIBS="$CppUnit_LIBS $LIBS"
+
+PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
+CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
+LIBS="$XML2_LIBS $LIBS"
+
+PKG_CHECK_MODULES([folia],[folia >= 0.5])
+CXXFLAGS="$CXXFLAGS $folia_CFLAGS"
+LIBS="$folia_LIBS $LIBS"
 
 AC_OUTPUT([
   Makefile
