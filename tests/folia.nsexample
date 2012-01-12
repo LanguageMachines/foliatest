@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <fl:FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fl="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.7" version="0.8">
-  <fl:metadata type="imdi"><fl:annotations><fl:token-annotation annotator="ilktok" annotatortype="auto"/><fl:pos-annotation annotator="tadpole" annotatortype="auto" set="cgn-combinedtags"/><fl:lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/><fl:correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/><fl:errordetection-annotation annotator="proycon" annotatortype="manual" set="corrections"/><fl:syntax-annotation set="syntax-set"/><fl:dependency-annotation set="dep-set"/></fl:annotations><imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
+  <fl:metadata type="imdi"><fl:annotations><fl:token-annotation set="ucto" annotator="ilktok" annotatortype="auto"/><fl:pos-annotation annotator="tadpole" annotatortype="auto" set="cgn-combinedtags"/><fl:lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/><fl:correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/><fl:errordetection-annotation annotator="proycon" annotatortype="manual" set="corrections"/><fl:syntax-annotation set="syntax-set"/><fl:div-annotation set="div-set"/><fl:dependency-annotation set="dep-set"/><fl:gap-annotation set="gap-set"/></fl:annotations><imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
     <imdi:Session>
       <imdi:Name>WR-P-E-J-0000000001</imdi:Name>
       <imdi:Title>Stemma</imdi:Title>
@@ -108,7 +108,7 @@
   </imdi:METATRANSCRIPT>
   </fl:metadata>
   <fl:text xml:id="WR-P-E-J-0000000001.text">
-    <fl:div xml:id="WR-P-E-J-0000000001.div0.1">
+    <fl:div xml:id="WR-P-E-J-0000000001.div0.1" class="paragraph">
       <fl:head xml:id="WR-P-E-J-0000000001.head.1">
         <fl:s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <fl:w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1">
@@ -965,7 +965,7 @@
         </fl:s>
       </fl:p>
     </fl:div>
-    <fl:div xml:id="sandbox">
+    <fl:div xml:id="sandbox" class="test">
       <fl:list xml:id="sandbox.list.1">
         <fl:listitem xml:id="sandbox.list.1.listitem.1">
           <fl:s xml:id="sandbox.list.1.listitem.1.s.1">
