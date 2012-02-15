@@ -1349,6 +1349,14 @@ void createTest::test002( ){
   kw["cls"] = "VP";
   kw["set"] = "adhocset";
   CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Pos_t, kw ) );
+  vector<PosAnnotation*> v = w->select<PosAnnotation>( "adhocset" );
+  CPPUNIT_ASSERT( v.size() == 1 );
+  vector<PosAnnotation*> v1 = w->select<PosAnnotation>( "myset" );
+  CPPUNIT_ASSERT( v1.size() == 1 );
+  vector<PosAnnotation*> v2 = w->select<PosAnnotation>( "noset" );
+  CPPUNIT_ASSERT( v2.size() == 0 ); 
+  vector<PosAnnotation*> v3 = w->select<PosAnnotation>();
+  CPPUNIT_ASSERT( v3.size() == 2 ); 
   CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest002.xml" ) );
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>landen</t><pos class=\"NP\" set=\"myset\"/><pos class=\"VP\" set=\"adhocset\"/></w>" );
 }
