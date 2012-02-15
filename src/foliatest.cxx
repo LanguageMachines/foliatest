@@ -1277,10 +1277,12 @@ void editTest::test018b(){
 class createTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE( createTest );
   CPPUNIT_TEST( test001 );
+  CPPUNIT_TEST( test002 );
   CPPUNIT_TEST_SUITE_END();
 public:
 protected:
   void test001();
+  void test002();
   Document doc;
 };
 
@@ -1314,6 +1316,41 @@ void createTest::test001( ){
   CPPUNIT_ASSERT_NO_THROW( s->addWord( kw ) );
   //  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest001.xml" ) );
   CPPUNIT_ASSERT( d[id+".s.1"]->size() == 5 );
+}
+
+void createTest::test002( ){
+  cout << " Creating a document from scratch. ";
+  Document d( "id='example'" );
+  CPPUNIT_ASSERT_NO_THROW( d.declare( AnnotationType::POS, 
+				      "adhocset", 
+				      "annotator='proycon'" ) );
+  CPPUNIT_ASSERT_NO_THROW( d.declare( AnnotationType::POS, 
+				      "myset", 
+				      "annotator='sloot'" ) );
+  CPPUNIT_ASSERT( d.defaultset(AnnotationType::POS) == "" );
+  CPPUNIT_ASSERT( d.defaultannotator(AnnotationType::POS) == "" );
+  CPPUNIT_ASSERT( d.defaultannotator(AnnotationType::POS, "myset") == "sloot" );
+  string id = d.id() + ".text.1";
+  FoliaElement *text = 0;
+  KWargs kw = getArgs( "id='" + id + "'" );
+  CPPUNIT_ASSERT_NO_THROW( text = d.addNode( Text_t, kw ) );
+  kw.clear();
+  FoliaElement *s = 0;
+  CPPUNIT_ASSERT_NO_THROW( s = new Sentence( &d, "generate_id='" + text->id() + "'" ) );
+  text->append( s );
+  kw.clear();
+  kw["text"] = "landen";
+  FoliaElement *w = 0;
+  CPPUNIT_ASSERT_NO_THROW( w = s->addWord( kw ) );
+  kw.clear();
+  kw["set"] = "myset";
+  kw["cls"] = "NP";
+  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Pos_t, kw ) );
+  kw["cls"] = "VP";
+  kw["set"] = "adhocset";
+  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Pos_t, kw ) );
+  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest002.xml" ) );
+  CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>landen</t><pos class=\"NP\" set=\"myset\"/><pos class=\"VP\" set=\"adhocset\"/></w>" );
 }
 
 class correctionTest: public CppUnit::TestFixture {
