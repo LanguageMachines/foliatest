@@ -34,7 +34,6 @@ class foliaTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test3 );
   CPPUNIT_TEST( test4 );
   CPPUNIT_TEST( test5 );
-  CPPUNIT_TEST( test6 );
   CPPUNIT_TEST_SUITE_END();
 protected:
   void test0();
@@ -43,7 +42,6 @@ protected:
   void test3();
   void test4();
   void test5();
-  void test6();
 };
 
 void foliaTest::test0() {
@@ -115,16 +113,6 @@ void foliaTest::test5() {
 			  (stat == 0) );
 }
 
-void foliaTest::test6() {
-  cout << " Test lezen van een FoLiA cimdi testfile";
-  Document d;
-  CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "tests/folia.cimdi.xml" ) );
-  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test6.out" ) );
-  int stat = system( "xmldiff /tmp/test6.out tests/folia.cimdi.xml" );
-  CPPUNIT_ASSERT_MESSAGE( "/tmp/test6.out tests/folia.cimdi.xml differ!",
-			  (stat == 0) );
-}
-
 class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE( sanityTest );
   CPPUNIT_TEST( test000 );
@@ -177,6 +165,8 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test100a );
   CPPUNIT_TEST( test100b );
   CPPUNIT_TEST( test101 );
+  CPPUNIT_TEST( test101a );
+  CPPUNIT_TEST( test101b );
   CPPUNIT_TEST( test102 );
   CPPUNIT_TEST_SUITE_END();
 public:
@@ -232,6 +222,8 @@ protected:
   void test100a();
   void test100b();
   void test101();
+  void test101a();
+  void test101b();
   void test102();
   Document doc;
 };
@@ -795,6 +787,20 @@ void sanityTest::test101( ){
   FoliaElement *s = 0;
   CPPUNIT_ASSERT_NO_THROW( s = new Sentence( &doc, "generate_id='" + p->id() + "'" ) );
   CPPUNIT_ASSERT_THROW( p->append( s ), ValueError );
+}
+
+void sanityTest::test101a(){
+  cout << " Metadata external reference (CMDI) ";
+  Document doc = Document("file='tests/folia.cmdi.xml'");
+  CPPUNIT_ASSERT( doc.metadatatype() == CMDI );
+  CPPUNIT_ASSERT( doc.metadatafile() == "test.cmdi.xml" );
+}
+
+void sanityTest::test101b(){
+  cout << " Metadata external reference (IMDI) ";
+  Document doc = Document("file='tests/folia.imdi.xml'");
+  CPPUNIT_ASSERT( doc.metadatatype() == IMDI );
+  CPPUNIT_ASSERT( doc.metadatafile() == "test.imdi.xml" );
 }
 
 void sanityTest::test102( ){
