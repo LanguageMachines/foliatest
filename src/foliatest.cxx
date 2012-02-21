@@ -34,6 +34,7 @@ class foliaTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test3 );
   CPPUNIT_TEST( test4 );
   CPPUNIT_TEST( test5 );
+  CPPUNIT_TEST( test6 );
   CPPUNIT_TEST_SUITE_END();
 protected:
   void test0();
@@ -42,6 +43,7 @@ protected:
   void test3();
   void test4();
   void test5();
+  void test6();
 };
 
 void foliaTest::test0() {
@@ -110,6 +112,16 @@ void foliaTest::test5() {
   CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test5.out", "fl" ) );
   int stat = system( "xmldiff /tmp/test5.out tests/folia.nsexample" );
   CPPUNIT_ASSERT_MESSAGE( "/tmp/test5.out tests/folia.nsexample differ!",
+			  (stat == 0) );
+}
+
+void foliaTest::test6() {
+  cout << " Test lezen van een FoLiA cimdi testfile";
+  Document d;
+  CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "tests/folia.cimdi.xml" ) );
+  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test6.out" ) );
+  int stat = system( "xmldiff /tmp/test6.out tests/folia.cimdi.xml" );
+  CPPUNIT_ASSERT_MESSAGE( "/tmp/test6.out tests/folia.cimdi.xml differ!",
 			  (stat == 0) );
 }
 
@@ -315,7 +327,7 @@ void sanityTest::test009( ){
   //  CPPUNIT_ASSERT( issubclass( PosAnnotation, AbstractTokenAnnotation ) );
   CPPUNIT_ASSERT( w->annotation<PosAnnotation>()->cls() == "N(soort,ev,basis,onz,stan)" );
   CPPUNIT_ASSERT( w->pos() == "N(soort,ev,basis,onz,stan)" );
-  CPPUNIT_ASSERT( w->annotation<PosAnnotation>()->st() == "cgn-combinedtags" );
+  CPPUNIT_ASSERT( w->annotation<PosAnnotation>()->sett() == "cgn-combinedtags" );
   CPPUNIT_ASSERT( w->annotation<PosAnnotation>()->annotator() == "tadpole" );
   CPPUNIT_ASSERT( w->annotation<PosAnnotation>()->annotatortype() == AUTO );
 }
@@ -330,7 +342,7 @@ void sanityTest::test010( ){
   CPPUNIT_ASSERT( isinstance( l, Lemma_t ) );
   CPPUNIT_ASSERT( l->cls() == "stemma" );
   CPPUNIT_ASSERT( w->lemma() == "stemma" );
-  CPPUNIT_ASSERT( l->st() == "lemmas-nl" );
+  CPPUNIT_ASSERT( l->sett() == "lemmas-nl" );
   CPPUNIT_ASSERT( l->annotator() == "tadpole" );
   CPPUNIT_ASSERT( l->annotatortype() == AUTO );
 }
