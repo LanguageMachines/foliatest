@@ -34,6 +34,7 @@ class foliaTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test3 );
   CPPUNIT_TEST( test4 );
   CPPUNIT_TEST( test5 );
+  CPPUNIT_TEST( test6 );
   CPPUNIT_TEST_SUITE_END();
 protected:
   void test0();
@@ -42,6 +43,7 @@ protected:
   void test3();
   void test4();
   void test5();
+  void test6();
 };
 
 void foliaTest::test0() {
@@ -110,6 +112,16 @@ void foliaTest::test5() {
   CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test5.out", "fl" ) );
   int stat = system( "xmldiff /tmp/test5.out tests/folia.nsexample" );
   CPPUNIT_ASSERT_MESSAGE( "/tmp/test5.out tests/folia.nsexample differ!",
+			  (stat == 0) );
+}
+
+void foliaTest::test6() {
+  cout << " Test lezen van een FoLiA file met foute set";
+  Document d;
+  CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "tests/folia-gap.example" ) );
+  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test6.out" ) );
+  int stat = system( "xmldiff /tmp/test6.out tests/folia-gap.example" );
+  CPPUNIT_ASSERT_MESSAGE( "/tmp/test6.out tests/folia-gap.example differ!",
 			  (stat == 0) );
 }
 
@@ -1296,11 +1308,13 @@ class createTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE( createTest );
   CPPUNIT_TEST( test001 );
   CPPUNIT_TEST( test002 );
+  CPPUNIT_TEST( test003 );
   CPPUNIT_TEST_SUITE_END();
 public:
 protected:
   void test001();
   void test002();
+  void test003();
   Document doc;
 };
 
@@ -1377,6 +1391,44 @@ void createTest::test002( ){
   CPPUNIT_ASSERT( v3.size() == 2 ); 
   CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest002.xml" ) );
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>landen</t><pos class=\"NP\" set=\"myset\"/><pos class=\"VP\" set=\"adhocset\"/></w>" );
+}
+
+void createTest::test003( ){
+  cout << " Creating a document with gap annotations from scratch. ";
+  Document d( "id='example'" );
+  CPPUNIT_ASSERT_NO_THROW( d.declare( AnnotationType::GAP, 
+				      "gap-set",
+				      "annotator='sloot'" ) );
+  CPPUNIT_ASSERT_NO_THROW( d.declare( AnnotationType::GAP, 
+				      "extended-gap-set", 
+				      "annotator='sloot'" ) );
+  CPPUNIT_ASSERT( d.defaultset(AnnotationType::GAP) == "" );
+  CPPUNIT_ASSERT( d.defaultannotator(AnnotationType::GAP) == "" );
+  CPPUNIT_ASSERT( d.defaultannotator(AnnotationType::GAP, "gap-set") == "sloot" );
+  CPPUNIT_ASSERT( d.defaultannotator(AnnotationType::GAP, "extended-gap-set") == "sloot" );
+  string id = d.id() + ".text.1";
+  FoliaElement *text = 0;
+  KWargs kw = getArgs( "id='" + id + "'" );
+  CPPUNIT_ASSERT_NO_THROW( text = d.addNode( Text_t, kw ) );
+  kw.clear();
+  kw["set"] = "gap-set";
+  kw["cls"] = "NP";
+  FoliaElement *g = 0;
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( kw ) );
+  text->append( g );
+  kw.clear();
+  kw["cls"] = "VP";
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( kw ) );
+  text->append( g );
+  vector<Gap*> v = text->select<Gap>( "gap-set" );
+  CPPUNIT_ASSERT( v.size() == 1 );
+  vector<Gap*> v1 = text->select<Gap>( "extended-gap-set" );
+  CPPUNIT_ASSERT( v1.size() == 0 );
+  vector<Gap*> v3 = text->select<Gap>();
+  CPPUNIT_ASSERT( v3.size() == 2 ); 
+  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest003.xml" ) );
+  cerr << "\n" << text->xmlstring() << endl;
+  CPPUNIT_ASSERT( text->xmlstring() == "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\"/></text>" );
 }
 
 class correctionTest: public CppUnit::TestFixture {

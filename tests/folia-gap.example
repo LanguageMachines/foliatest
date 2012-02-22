@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="example" generator="libfolia-v0.8" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <gap-annotation annotator="sloot" set="extended-gap-set"/>
+      <gap-annotation annotator="sloot" set="gap-set"/>
+    </annotations>
+  </metadata>
+  <text xml:id="example.text.1">
+    <gap class="NP" set="gap-set"/>
+    <gap class="VP"/>
+  </text>
+</FoLiA>
