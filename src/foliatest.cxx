@@ -180,6 +180,10 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test101a );
   CPPUNIT_TEST( test101b );
   CPPUNIT_TEST( test102 );
+  CPPUNIT_TEST( test102a );
+  CPPUNIT_TEST( test102b );
+  CPPUNIT_TEST( test102c );
+  CPPUNIT_TEST( test102d );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -237,6 +241,10 @@ protected:
   void test101a();
   void test101b();
   void test102();
+  void test102a();
+  void test102b();
+  void test102c();
+  void test102d();
   Document doc;
 };
 
@@ -821,6 +829,89 @@ void sanityTest::test102( ){
   CPPUNIT_ASSERT_THROW( p->addWord("text='Ahoi'" ), ValueError );
 }
 
+
+void sanityTest::test102a(){
+  cout << " Declarations - Default set ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" />\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
+}
+
+void sanityTest::test102b(){
+  cout << " Declarations - Set mismatching";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" set=\"gip-set\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_THROW( doc.readFromString(xml), XmlError );
+}
+
+void sanityTest::test102c(){
+  cout << " Declarations - Multiple sets for the same annotation type ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"extended-gap-set\"/>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" set=\"gap-set\"/>\n"
+"    <gap class=\"Y\" set=\"extended-gap-set\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
+  CPPUNIT_ASSERT( doc["example.text.1"]->select<Gap>()[1]->sett() == "extended-gap-set" );
+}
+
+void sanityTest::test102d(){
+  cout << " Declarations - Multiple sets for the same annotation type (testing failure)";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"extended-gap-set\"/>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" set=\"gap-set\"/>\n"
+"    <gap class=\"Y\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_THROW( doc.readFromString(xml), XmlError );
+}
 
 class editTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE( editTest );
@@ -1426,8 +1517,8 @@ void createTest::test003( ){
   CPPUNIT_ASSERT( v1.size() == 0 );
   vector<Gap*> v3 = text->select<Gap>();
   CPPUNIT_ASSERT( v3.size() == 2 ); 
-  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest003.xml" ) );
-  cerr << "\n" << text->xmlstring() << endl;
+  //  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest003.xml" ) );
+  //  cerr << "\n" << text->xmlstring() << endl;
   CPPUNIT_ASSERT( text->xmlstring() == "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\"/></text>" );
 }
 
