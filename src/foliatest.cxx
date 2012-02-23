@@ -171,7 +171,8 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102a );
   CPPUNIT_TEST( test102b );
   CPPUNIT_TEST( test102c );
-  CPPUNIT_TEST( test102d );
+  CPPUNIT_TEST( test102d1 );
+  CPPUNIT_TEST( test102d2 );
   CPPUNIT_TEST( test102e );
   CPPUNIT_TEST( test102f );
   CPPUNIT_TEST( test102g );
@@ -235,7 +236,8 @@ protected:
   void test102a();
   void test102b();
   void test102c();
-  void test102d();
+  void test102d1();
+  void test102d2();
   void test102e();
   void test102f();
   void test102g();
@@ -886,7 +888,7 @@ void sanityTest::test102c(){
   CPPUNIT_ASSERT( doc["example.text.1"]->select<Gap>()[1]->sett() == "extended-gap-set" );
 }
 
-void sanityTest::test102d(){
+void sanityTest::test102d1(){
   cout << " Declarations - Multiple sets for the same annotation type (testing failure)";
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
@@ -900,6 +902,27 @@ void sanityTest::test102d(){
 "  <text xml:id=\"example.text.1\">\n"
 "    <gap class=\"X\" set=\"gap-set\"/>\n"
 "    <gap class=\"Y\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_THROW( doc.readFromString(xml), XmlError );
+}
+
+void sanityTest::test102d2(){
+  cout << " Declarations - Multiple sets for the same annotation type (testing failure)";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"extended-gap-set\"/>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" set=\"gap-set\"/>\n"
+"    <gap class=\"Y\" set=\"gip-set\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
   
