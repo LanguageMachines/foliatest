@@ -172,6 +172,8 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102b );
   CPPUNIT_TEST( test102c );
   CPPUNIT_TEST( test102d );
+  CPPUNIT_TEST( test102e );
+  CPPUNIT_TEST( test102f );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -233,6 +235,8 @@ protected:
   void test102b();
   void test102c();
   void test102d();
+  void test102e();
+  void test102f();
   Document doc;
 };
 
@@ -899,6 +903,45 @@ void sanityTest::test102d(){
   
   Document doc;
   CPPUNIT_ASSERT_THROW( doc.readFromString(xml), XmlError );
+}
+
+void sanityTest::test102e(){
+  cout << " Declarations - Missing declaration ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" set=\"extended-gap-set\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_THROW( doc.readFromString(xml), XmlError );
+}
+
+void sanityTest::test102f(){
+  cout << " Declarations - Declaration not needed ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap>\n"
+"     <desc>test</desc>\n"
+"    </gap>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+
 }
 
 class editTest: public CppUnit::TestFixture {
