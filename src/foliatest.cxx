@@ -34,7 +34,6 @@ class foliaTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test3 );
   CPPUNIT_TEST( test4 );
   CPPUNIT_TEST( test5 );
-  CPPUNIT_TEST( test6 );
   CPPUNIT_TEST_SUITE_END();
 protected:
   void test0();
@@ -43,7 +42,6 @@ protected:
   void test3();
   void test4();
   void test5();
-  void test6();
 };
 
 void foliaTest::test0() {
@@ -112,16 +110,6 @@ void foliaTest::test5() {
   CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test5.out", "fl" ) );
   int stat = system( "xmldiff /tmp/test5.out tests/folia.nsexample" );
   CPPUNIT_ASSERT_MESSAGE( "/tmp/test5.out tests/folia.nsexample differ!",
-			  (stat == 0) );
-}
-
-void foliaTest::test6() {
-  cout << " Test lezen van een FoLiA file met foute set";
-  Document d;
-  CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "tests/folia-gap.example" ) );
-  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test6.out" ) );
-  int stat = system( "xmldiff /tmp/test6.out tests/folia-gap.example" );
-  CPPUNIT_ASSERT_MESSAGE( "/tmp/test6.out tests/folia-gap.example differ!",
 			  (stat == 0) );
 }
 
