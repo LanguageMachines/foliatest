@@ -1368,29 +1368,29 @@ void editTest::test013(){
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
   FoliaElement *layer = s->append( new SyntaxLayer(&doc) );
   FoliaElement *top = layer->append( new SyntacticUnit( &doc, "generate_id='" + s->id() + "', class='ROOT'" ) );
-  FoliaElement *sent = top->append( new SyntacticUnit( "cls='s'" ) );
-  FoliaElement *np = sent->append( new SyntacticUnit( "cls='np'" ) );
-  FoliaElement *su = np->append( new SyntacticUnit( "cls='det'" ) );
+  FoliaElement *sent = top->append( new SyntacticUnit( &doc, "cls='s'" ) );
+  FoliaElement *np = sent->append( new SyntacticUnit( &doc,"cls='np'" ) );
+  FoliaElement *su = np->append( new SyntacticUnit( &doc,"cls='det'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.1"] );
-  su = np->append( new SyntacticUnit( "cls='n'" ) );
+  su = np->append( new SyntacticUnit( &doc,"cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.2"] );
-  su = np->append( new SyntacticUnit( "cls='n'" ) );
+  su = np->append( new SyntacticUnit( &doc,"cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.3"] );
-  FoliaElement *vp = sent->append( new SyntacticUnit( "cls='vp'" ) );
-  FoliaElement *vps = vp->append( new SyntacticUnit( "cls='vp'" ) );
-  su = vps->append( new SyntacticUnit( "cls='v'" ) );
+  FoliaElement *vp = sent->append( new SyntacticUnit( &doc,"cls='vp'" ) );
+  FoliaElement *vps = vp->append( new SyntacticUnit(&doc, "cls='vp'" ) );
+  su = vps->append( new SyntacticUnit( &doc,"cls='v'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.4"] );
-  su = vps->append( new SyntacticUnit( "cls='participle'" ) );
+  su = vps->append( new SyntacticUnit( &doc,"cls='participle'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.5"] );
-  FoliaElement *pp = vp->append( new SyntacticUnit( "cls='pp'" ) );
-  su = pp->append( new SyntacticUnit( "cls='prep'" ) );
+  FoliaElement *pp = vp->append( new SyntacticUnit( &doc,"cls='pp'" ) );
+  su = pp->append( new SyntacticUnit( &doc,"cls='prep'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.6"] );
-  FoliaElement *nps = pp->append( new SyntacticUnit( "cls='np'" ) );
-  su = nps->append( new SyntacticUnit( "cls='det'" ) );
+  FoliaElement *nps = pp->append( new SyntacticUnit( &doc,"cls='np'" ) );
+  su = nps->append( new SyntacticUnit( &doc,"cls='det'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.7"] );
-  su = nps->append( new SyntacticUnit( "cls='adj'" ) );
+  su = nps->append( new SyntacticUnit( &doc,"cls='adj'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.8"] );
-  su = nps->append( new SyntacticUnit( "cls='n'" ) );
+  su = nps->append( new SyntacticUnit( &doc,"cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.9"] );
 
   CPPUNIT_ASSERT( layer->xmlstring() == "<syntax xmlns=\"http://ilk.uvt.nl/folia\"><su xml:id=\"WR-P-E-J-0000000001.p.1.s.4.su.1\" class=\"ROOT\"><su class=\"s\"><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.1\" t=\"De\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.2\" t=\"hoofdletter\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.3\" t=\"A\"/></su></su><su class=\"vp\"><su class=\"vp\"><su class=\"v\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.4\" t=\"wordt\"/></su><su class=\"participle\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.5\" t=\"gebruikt\"/></su></su><su class=\"pp\"><su class=\"prep\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.6\" t=\"voor\"/></su><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.7\" t=\"het\"/></su><su class=\"adj\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.8\" t=\"originele\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.9\" t=\"handschrift\"/></su></su></su></su></su></su></syntax>" );
@@ -1570,18 +1570,19 @@ void createTest::test003( ){
   CPPUNIT_ASSERT_NO_THROW( g = new Gap( kw ) );
   text->append( g );
   kw.clear();
+  kw["set"] = "extended-gap-set";
   kw["cls"] = "VP";
   CPPUNIT_ASSERT_NO_THROW( g = new Gap( kw ) );
   text->append( g );
   vector<Gap*> v = text->select<Gap>( "gap-set" );
   CPPUNIT_ASSERT( v.size() == 1 );
   vector<Gap*> v1 = text->select<Gap>( "extended-gap-set" );
-  CPPUNIT_ASSERT( v1.size() == 0 );
+  CPPUNIT_ASSERT( v1.size() == 1 );
   vector<Gap*> v3 = text->select<Gap>();
   CPPUNIT_ASSERT( v3.size() == 2 ); 
   //  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/foliacreatetest003.xml" ) );
   //  cerr << "\n" << text->xmlstring() << endl;
-  CPPUNIT_ASSERT( text->xmlstring() == "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\"/></text>" );
+  CPPUNIT_ASSERT( text->xmlstring() == "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\" set=\"extended-gap-set\"/></text>" );
 }
 
 class correctionTest: public CppUnit::TestFixture {
