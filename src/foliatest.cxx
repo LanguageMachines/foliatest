@@ -174,6 +174,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102d );
   CPPUNIT_TEST( test102e );
   CPPUNIT_TEST( test102f );
+  CPPUNIT_TEST( test102g );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -237,6 +238,7 @@ protected:
   void test102d();
   void test102e();
   void test102f();
+  void test102g();
   Document doc;
 };
 
@@ -942,6 +944,35 @@ void sanityTest::test102f(){
   Document doc;
   CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
 
+}
+
+void sanityTest::test102g(){
+  cout << " Declarations - Empty set ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap>\n"
+"     <desc>test1</desc>\n"
+"    </gap>\n"
+"    <gap set=\"undefined\">\n"
+"     <desc>test2</desc>\n"
+"    </gap>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  vector<Gap*> v = doc["example.text.1"]->select<Gap>();
+  CPPUNIT_ASSERT( v[0]->description() == "test1" );
+  CPPUNIT_ASSERT( v[1]->description() == "test2" );
+  CPPUNIT_ASSERT( v[0]->sett() == "undefined" );
+  CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\"><desc>test2</desc></gap>" );
 }
 
 class editTest: public CppUnit::TestFixture {
