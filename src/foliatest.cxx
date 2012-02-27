@@ -1331,12 +1331,13 @@ void editTest::test009a( ){
 
 void editTest::test010( ){
   cout << " Creating an initially document-less tokenannotation element and adding it to a word ";
-  FoliaElement *pos =new PosAnnotation( "set='fakecgn', cls='N'" );
   FoliaElement *w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
-  CPPUNIT_ASSERT_THROW( w->append( pos ), ValueError );
+  FoliaElement *pos = 0;
+  CPPUNIT_ASSERT_THROW( pos = new PosAnnotation( &doc, "set='fakecgn', cls='N'" ), ValueError );
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::POS, 
 					"fakecgn") );
+  CPPUNIT_ASSERT_NO_THROW( pos = new PosAnnotation( &doc, "set='fakecgn', cls='N'" ) );
   CPPUNIT_ASSERT_NO_THROW( w->append( pos ) );
   CPPUNIT_ASSERT( pos == w->annotation<PosAnnotation>("fakecgn") );
   CPPUNIT_ASSERT( pos->parent() == w );
@@ -1590,12 +1591,12 @@ void createTest::test003( ){
   kw["set"] = "gap-set";
   kw["cls"] = "NP";
   FoliaElement *g = 0;
-  CPPUNIT_ASSERT_NO_THROW( g = new Gap( kw ) );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &d, kw ) );
   text->append( g );
   kw.clear();
   kw["set"] = "extended-gap-set";
   kw["cls"] = "VP";
-  CPPUNIT_ASSERT_NO_THROW( g = new Gap( kw ) );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &d, kw ) );
   text->append( g );
   vector<Gap*> v = text->select<Gap>( "gap-set" );
   CPPUNIT_ASSERT( v.size() == 1 );
