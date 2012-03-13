@@ -175,7 +175,10 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102d2 );
   CPPUNIT_TEST( test102e );
   CPPUNIT_TEST( test102f );
-  CPPUNIT_TEST( test102g );
+   CPPUNIT_TEST( test102g );
+  CPPUNIT_TEST( test102h );
+  CPPUNIT_TEST( test102i );
+  CPPUNIT_TEST( test102j );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -241,6 +244,9 @@ protected:
   void test102e();
   void test102f();
   void test102g();
+  void test102h();
+  void test102i();
+  void test102j();
   Document doc;
 };
 
@@ -998,6 +1004,86 @@ void sanityTest::test102g(){
   CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\"><desc>test2</desc></gap>" );
 }
 
+void sanityTest::test102h(){
+  cout << " Declarations - Adding a declaration in same set. (other annotator)";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" />\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::GAP, 
+					"gap-set", 
+					"annotator='proycon'" ) );
+  vector<Gap*> v = doc["example.text.1"]->select<Gap>();
+  CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap-set\"/>" );
+}
+
+void sanityTest::test102i(){
+  cout << " Declarations - Adding a declaration in non-default set. (other annotator)";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap1-set\"/>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap2-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" set=\"gap1-set\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::GAP, 
+					"gap1-set", 
+					"annotator='proycon'" ) );
+  vector<Gap*> v = doc["example.text.1"]->select<Gap>();
+  CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap1-set\"/>" );
+}
+
+void sanityTest::test102j(){
+  cout << " Declarations - Adding a declaration in other set.";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" />\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  FoliaElement *text = doc["example.text.1"];
+  CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::GAP, 
+					"other-set", 
+					"annotator='proycon'" ) );
+  KWargs args = getArgs( "set='other-set', cls='Y', annotator='proycon'" );
+  FoliaElement *g = 0;
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
+  vector<Gap*> v = text->select<Gap>();
+  CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\" set=\"gap-set\"/>" );
+  CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" set=\"other-set\"/>" );
+}
+
+
 class editTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE( editTest );
   CPPUNIT_TEST( test001a );
@@ -1176,7 +1262,7 @@ void editTest::test002( ){
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation<LemmaAnnotation>( "adhoclemma") );
   CPPUNIT_ASSERT( p->isinstance( Lemma_t ) );
   CPPUNIT_ASSERT( p->cls() == "NAAM" );
-
+  cerr <<  "\n" << w->xmlstring() << endl;
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" datetime=\"1982-12-15T19:00:01\" set=\"adhoclemma\"/></w>");
   
 }
@@ -1385,9 +1471,6 @@ void editTest::test012(){
 
 void editTest::test013(){
   cout << " Adding Span Annotatation (syntax) ";
-  CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::SYNTAX, 
-					"syntax-set", 
-					"annotator='proycon'" ) );
   FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
   FoliaElement *layer = s->append( new SyntaxLayer(&doc) );
