@@ -852,6 +852,10 @@ void sanityTest::test102a(){
   Document doc;
   CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
   CPPUNIT_ASSERT( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
+  CPPUNIT_ASSERT_THROW( doc.declare( AnnotationType::TOKEN, 
+				     "some-set", 
+				     "annotatorname='proycon'" ), XmlError );
+
 }
 
 void sanityTest::test102b(){
@@ -1130,7 +1134,6 @@ void sanityTest::test102k(){
   FoliaElement *text = doc["example.text.1"];
   CPPUNIT_ASSERT( doc.defaultannotatortype(AnnotationType::GAP) == "auto" );
   vector<Gap*> v = text->select<Gap>();
-  cerr << endl <<  v[0]->xmlstring() << endl;
   CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::GAP, 
 					"gap-set", 
