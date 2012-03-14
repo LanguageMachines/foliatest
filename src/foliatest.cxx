@@ -175,10 +175,11 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102d2 );
   CPPUNIT_TEST( test102e );
   CPPUNIT_TEST( test102f );
-   CPPUNIT_TEST( test102g );
+  CPPUNIT_TEST( test102g );
   CPPUNIT_TEST( test102h );
   CPPUNIT_TEST( test102i );
   CPPUNIT_TEST( test102j );
+  CPPUNIT_TEST( test102k );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -247,6 +248,7 @@ protected:
   void test102h();
   void test102i();
   void test102j();
+  void test102k();
   Document doc;
 };
 
@@ -1106,6 +1108,47 @@ void sanityTest::test102j(){
   CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\" set=\"gap-set\"/>" );
   CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" set=\"other-set\"/>" );
   CPPUNIT_ASSERT( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z\" set=\"other-set\"/>" );
+}
+
+void sanityTest::test102k(){
+  cout << " Declarations - Several annotator types.";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotatortype=\"auto\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" />\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  FoliaElement *text = doc["example.text.1"];
+  CPPUNIT_ASSERT( doc.defaultannotatortype(AnnotationType::GAP) == "auto" );
+  vector<Gap*> v = text->select<Gap>();
+  cerr << endl <<  v[0]->xmlstring() << endl;
+  CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
+  CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::GAP, 
+					"gap-set", 
+					"annotatortype='manual'" ) );
+  CPPUNIT_ASSERT( doc.defaultannotatortype(AnnotationType::GAP) == "" );
+  KWargs args = getArgs( "set='gap-set', cls='Y', annotatortype='unknown'" );
+  FoliaElement *g = 0;
+  CPPUNIT_ASSERT_THROW( g = new Gap( &doc, args ), ValueError );
+  args = getArgs( "set='gap-set', cls='Y', annotatortype='manual'" );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
+  args = getArgs( "set='gap-set', cls='Z', annotatortype='auto'" );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
+  v = text->select<Gap>();
+  CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
+  CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"manual\" class=\"Y\" set=\"gap-set\"/>" );
+  CPPUNIT_ASSERT( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\" set=\"gap-set\"/>" );
 }
 
 
