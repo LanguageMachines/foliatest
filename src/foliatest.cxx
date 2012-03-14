@@ -1046,11 +1046,32 @@ void sanityTest::test102i(){
   
   Document doc;
   CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( doc.defaultannotator(AnnotationType::GAP,"gap1-set") == "sloot" );
   CPPUNIT_ASSERT_NO_THROW( doc.declare( AnnotationType::GAP, 
 					"gap1-set", 
 					"annotator='proycon'" ) );
+  CPPUNIT_ASSERT( doc.defaultannotator(AnnotationType::GAP,"gap1-set") == "" );
+  CPPUNIT_ASSERT( doc.defaultannotator(AnnotationType::GAP,"gap2-set") == "sloot" );
+  FoliaElement *text = doc["example.text.1"];
+  KWargs args = getArgs( "set='gap1-set', cls='Y', annotator='proycon'" );
+  FoliaElement *g = 0;
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
+  args = getArgs( "set='gap1-set', cls='Z1'" );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
+  args = getArgs( "set='gap2-set', cls='Z2'" );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
+  args = getArgs( "set='gap2-set', cls='Y2', annotator='onbekend'" );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
   CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap1-set\"/>" );
+  CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"proycon\" class=\"Y\" set=\"gap1-set\"/>" );
+  CPPUNIT_ASSERT( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z1\" set=\"gap1-set\"/>" );
+  CPPUNIT_ASSERT( v[3]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z2\" set=\"gap2-set\"/>" );
+  CPPUNIT_ASSERT( v[4]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"onbekend\" class=\"Y2\" set=\"gap2-set\"/>" );
 }
 
 void sanityTest::test102j(){
@@ -1078,9 +1099,13 @@ void sanityTest::test102j(){
   FoliaElement *g = 0;
   CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
   text->append( g );
+  args = getArgs( "set='other-set', cls='Z'" );
+  CPPUNIT_ASSERT_NO_THROW( g = new Gap( &doc, args ) );
+  text->append( g );
   vector<Gap*> v = text->select<Gap>();
   CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\" set=\"gap-set\"/>" );
   CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" set=\"other-set\"/>" );
+  CPPUNIT_ASSERT( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z\" set=\"other-set\"/>" );
 }
 
 
@@ -1262,7 +1287,6 @@ void editTest::test002( ){
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation<LemmaAnnotation>( "adhoclemma") );
   CPPUNIT_ASSERT( p->isinstance( Lemma_t ) );
   CPPUNIT_ASSERT( p->cls() == "NAAM" );
-  cerr <<  "\n" << w->xmlstring() << endl;
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" datetime=\"1982-12-15T19:00:01\" set=\"adhoclemma\"/></w>");
   
 }
