@@ -262,7 +262,7 @@ void sanityTest::setUp( ){
 void sanityTest::test000( ){
   cout << " Text count ";
   CPPUNIT_ASSERT_EQUAL( doc.size(), 1 );
-  CPPUNIT_ASSERT( doc[0]->isinstance( Text_t ) );
+  CPPUNIT_ASSERT( doc[0]->isinstance<Text>() );
 }
 
 void sanityTest::test001( ){
@@ -299,7 +299,7 @@ void sanityTest::test005( ){
   cout << " last word ";
   FoliaElement* w = 0;
   CPPUNIT_ASSERT_NO_THROW( w = doc.rwords(0) );
-  CPPUNIT_ASSERT( w->isinstance( Word_t ) );
+  CPPUNIT_ASSERT( w->isinstance<Word>() );
   CPPUNIT_ASSERT_EQUAL( w->id(), string("sandbox.figure.1.caption.s.1.w.2") );
   CPPUNIT_ASSERT_EQUAL( w->text(),  UnicodeString("stamboom") );
   CPPUNIT_ASSERT_EQUAL( str(w), string("stamboom") );
@@ -765,10 +765,10 @@ void sanityTest::test032( ){
 void sanityTest::test033( ){
   cout << " List ";
   FoliaElement *l = doc["sandbox.list.1"];
-  CPPUNIT_ASSERT( l->index(0)->isinstance( ListItem_t ) );
+  CPPUNIT_ASSERT( l->index(0)->isinstance<ListItem>() );
   CPPUNIT_ASSERT( l->index(0)->n() == "1" );
   CPPUNIT_ASSERT( l->index(0)->text() == "Eerste testitem" );
-  CPPUNIT_ASSERT( l->rindex(0)->isinstance( ListItem_t ) );
+  CPPUNIT_ASSERT( l->rindex(0)->isinstance<ListItem>() );
   CPPUNIT_ASSERT( l->rindex(0)->n() == "2" );
   CPPUNIT_ASSERT( l->rindex(0)->text() == "Tweede testitem" );
 }
@@ -1351,11 +1351,11 @@ void editTest::test002( ){
 
   FoliaElement *p = 0;
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation<PosAnnotation>( "adhocpos") );
-  CPPUNIT_ASSERT( p->isinstance( Pos_t ) );
+  CPPUNIT_ASSERT( p->isinstance<PosAnnotation>() );
   CPPUNIT_ASSERT( p->cls() == "NOUN" );
 
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation<LemmaAnnotation>( "adhoclemma") );
-  CPPUNIT_ASSERT( p->isinstance( Lemma_t ) );
+  CPPUNIT_ASSERT( p->isinstance<LemmaAnnotation>() );
   CPPUNIT_ASSERT( p->cls() == "NAAM" );
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" datetime=\"1982-12-15T19:00:01\" set=\"adhoclemma\"/></w>");
   
@@ -1373,17 +1373,17 @@ void editTest::test003( ){
 
   // add a pos annotation (in a different set than the one already present, to prevent conflict)
   KWargs args = getArgs( "set='adhocpos', cls='NOUN', annotator='testscript', annotatortype='auto'" );
-  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Pos_t, args ) );
+  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation<PosAnnotation>( args ) );
   args = getArgs( "set='adhoclemma', cls='NAAM', annotator='testscript', annotatortype='auto'" );
-  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Lemma_t, args ) );
+  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation<LemmaAnnotation>( args ) );
 
   FoliaElement *p = 0;
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation<PosAnnotation>( "adhocpos") );
-  CPPUNIT_ASSERT( p->isinstance( Pos_t ) );
+  CPPUNIT_ASSERT( p->isinstance<PosAnnotation>() );
   CPPUNIT_ASSERT( p->cls() == "NOUN" );
 
   CPPUNIT_ASSERT_NO_THROW( p = w->annotation<LemmaAnnotation>( "adhoclemma") );
-  CPPUNIT_ASSERT( p->isinstance( Lemma_t ) );
+  CPPUNIT_ASSERT( p->isinstance<LemmaAnnotation>() );
   CPPUNIT_ASSERT( p->cls() == "NAAM" );
 
   // check the outcome
@@ -1401,7 +1401,7 @@ void editTest::test003b( ){
   // add a pos annotation (in a different set than the one declared,
   // to generate a conflict)
   KWargs args = getArgs( "set='adhopcos', cls='NOUN', annotator='testscript', annotatortype='auto'" );
-  CPPUNIT_ASSERT_THROW( w->addAnnotation( Pos_t, args ), ValueError );
+  CPPUNIT_ASSERT_THROW( w->addAnnotation<PosAnnotation>( args ), ValueError );
 }
 
 void editTest::test004( ){
@@ -1421,7 +1421,7 @@ void editTest::test005( ){
   // grab a word (naam)
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
   KWargs args = getArgs( "cls='V'" );
-  CPPUNIT_ASSERT_NO_THROW( w->addAlternative( Pos_t, args ) );
+  CPPUNIT_ASSERT_NO_THROW( w->addAlternative<PosAnnotation>( args ) );
   vector<Alternative*> alt = w->alternatives(); // all alternatives
   string sett = doc.defaultset(AnnotationType::POS);
   vector<Alternative*> alt2 = w->alternatives(sett);
@@ -1430,7 +1430,7 @@ void editTest::test005( ){
   CPPUNIT_ASSERT( alt[0] == alt2[0] );
   FoliaElement *p;
   CPPUNIT_ASSERT( p = w->annotation<PosAnnotation>( sett ) );
-  CPPUNIT_ASSERT( p->isinstance( Pos_t ) );
+  CPPUNIT_ASSERT( p->isinstance<PosAnnotation>() );
 
   std::vector<Alternative *> alt3;
   CPPUNIT_ASSERT_NO_THROW( alt3 = w->alternatives(Pos_t, sett) );
@@ -1731,10 +1731,10 @@ void createTest::test002( ){
   kw.clear();
   kw["set"] = "myset";
   kw["cls"] = "NP";
-  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Pos_t, kw ) );
+  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation<PosAnnotation>( kw ) );
   kw["cls"] = "VP";
   kw["set"] = "adhocset";
-  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation( Pos_t, kw ) );
+  CPPUNIT_ASSERT_NO_THROW( w->addAnnotation<PosAnnotation>( kw ) );
   vector<PosAnnotation*> v = w->select<PosAnnotation>( "adhocset" );
   CPPUNIT_ASSERT( v.size() == 1 );
   vector<PosAnnotation*> v1 = w->select<PosAnnotation>( "myset" );
