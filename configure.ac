@@ -64,8 +64,8 @@ AC_ARG_WITH(folia,
        [  --with-folia=DIR       use libfolia installed in <DIR>; 
              note that you can install libfolia in a non-default directory with
              ./configure --prefix=<DIR> in the libfolia installation directory],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
+       [PKG_CONFIG_PATH="$withval/lib/pkgconfig:$PKG_CONFIG_PATH:"],
+       [PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"])
 AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
 
 PKG_CHECK_MODULES([CppUnit], [cppunit >= 1.12.1] )
@@ -76,8 +76,8 @@ PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$XML2_LIBS $LIBS"
 
-PKG_CHECK_MODULES([folia],[folia >= 0.8])
-CXXFLAGS="$CXXFLAGS $folia_CFLAGS"
+PKG_CHECK_MODULES([folia],[folia >= 0.9])
+CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
 AC_OUTPUT([

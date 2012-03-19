@@ -173,6 +173,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102c );
   CPPUNIT_TEST( test102d1 );
   CPPUNIT_TEST( test102d2 );
+  CPPUNIT_TEST( test102d3 );
   CPPUNIT_TEST( test102e );
   CPPUNIT_TEST( test102f );
   CPPUNIT_TEST( test102g );
@@ -242,6 +243,7 @@ protected:
   void test102c();
   void test102d1();
   void test102d2();
+  void test102d3();
   void test102e();
   void test102f();
   void test102g();
@@ -940,6 +942,28 @@ void sanityTest::test102d2(){
   
   Document doc;
   CPPUNIT_ASSERT_THROW( doc.readFromString(xml), XmlError );
+}
+
+void sanityTest::test102d3(){
+  cout << " Declarations - Duplicates";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.9\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" set=\"gap-set\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( doc.defaultset(AnnotationType::GAP) == "gap-set" );
+  CPPUNIT_ASSERT( doc.defaultannotator(AnnotationType::GAP,"gap-set") == "sloot" );
 }
 
 void sanityTest::test102e(){
