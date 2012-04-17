@@ -945,7 +945,7 @@ void sanityTest::test102d2(){
 }
 
 void sanityTest::test102d3(){
-  cout << " Declarations - Duplicates";
+  cout << " Declarations - Ignore Duplicates";
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.9\" version=\"0.8\">\n"
