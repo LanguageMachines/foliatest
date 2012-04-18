@@ -1,6 +1,19 @@
 <?xml version="1.0"?>
 <fl:FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fl="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.10" version="0.8">
-  <fl:metadata type="imdi"><fl:annotations><fl:token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/><fl:div-annotation set="div-set"/><fl:pos-annotation annotator="tadpole" annotatortype="auto" set="cgn-combinedtags"/><fl:lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/><fl:syntax-annotation set="syntax-set"/><fl:correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/><fl:errordetection-annotation annotator="proycon" annotatortype="manual" set="corrections"/><fl:morphological-annotation set="morpho-set"/><fl:dependency-annotation set="dep-set"/><fl:gap-annotation set="gap-set"/></fl:annotations><imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
+  <fl:metadata type="imdi">
+    <fl:annotations>
+      <fl:token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
+      <fl:div-annotation set="div-set"/>
+      <fl:pos-annotation annotator="tadpole" annotatortype="auto" set="cgn-combinedtags"/>
+      <fl:lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/>
+      <fl:syntax-annotation set="syntax-set"/>
+      <fl:correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/>
+      <fl:errordetection-annotation annotator="proycon" annotatortype="manual" set="corrections"/>
+      <fl:morphological-annotation set="morpho-set"/>
+      <fl:dependency-annotation set="dep-set"/>
+      <fl:gap-annotation set="gap-set"/>
+    </fl:annotations>
+    <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
     <imdi:Session>
       <imdi:Name>WR-P-E-J-0000000001</imdi:Name>
       <imdi:Title>Stemma</imdi:Title>
