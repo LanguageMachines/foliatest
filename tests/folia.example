@@ -1035,7 +1035,7 @@
             </w>
           </s>
         </listitem>
-        <event actor="audience" class="applause"/>
+        <event xml:id="sandbox.event.0" actor="audience" class="applause"/>
         <listitem xml:id="sandbox.list.1.listitem.2" n="2">
           <s xml:id="sandbox.list.1.listitem.2.s.1">
             <w xml:id="sandbox.list.1.listitem.2.s.1.w.1">
@@ -1050,7 +1050,7 @@
       <event xml:id="sandbox.event.1" actor="proycon" begindatetime="2011-12-15T19:01" class="presentation" enddatetime="2011-12-15T19:05">
         <figure xml:id="sandbox.figure.1" src="http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg">
           <desc>Stamboom plaatje van wikipedia</desc>
-          <caption>
+          <caption xml:id="sandbox.figure.1.caption.1">
             <s xml:id="sandbox.figure.1.caption.s.1">
               <w xml:id="sandbox.figure.1.caption.s.1.w.1">
                 <t>Een</t>
