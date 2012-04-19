@@ -161,6 +161,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test033 );
   CPPUNIT_TEST( test034 );
   CPPUNIT_TEST( test035 );
+  CPPUNIT_TEST( test036 );
   CPPUNIT_TEST( test099 );
   CPPUNIT_TEST( test100a );
   CPPUNIT_TEST( test100b );
@@ -181,6 +182,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102i );
   CPPUNIT_TEST( test102j );
   CPPUNIT_TEST( test102k );
+  CPPUNIT_TEST( test103 );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -231,6 +233,7 @@ protected:
   void test033();
   void test034();
   void test035();
+  void test036();
   void test099();
   void test100a();
   void test100b();
@@ -251,6 +254,7 @@ protected:
   void test102i();
   void test102j();
   void test102k();
+  void test103();
   Document doc;
 };
 
@@ -788,6 +792,14 @@ void sanityTest::test035( ){
   CPPUNIT_ASSERT( e->feat("enddatetime") == "2011-12-15T19:05" );
 }
 
+void sanityTest::test036( ){
+  cout << " Paragraph and Sentence annotation ";
+  FoliaElement *e = doc["WR-P-E-J-0000000001.p.1"];
+  CPPUNIT_ASSERT( e->cls() == "firstparagraph" );
+  e = doc["WR-P-E-J-0000000001.p.1.s.6"];
+  CPPUNIT_ASSERT( e->cls() == "sentence" );
+}
+
 void sanityTest::test099(){
   cout << " Writing to file ";
   CPPUNIT_ASSERT_NO_THROW( doc.save( "/tmp/savetest.xml" ) );
@@ -834,7 +846,6 @@ void sanityTest::test102( ){
   FoliaElement *p = doc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   CPPUNIT_ASSERT_THROW( p->addWord("text='Ahoi'" ), ValueError );
 }
-
 
 void sanityTest::test102a(){
   cout << " Declarations - Default set ";
@@ -1176,6 +1187,38 @@ void sanityTest::test102k(){
   CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
   CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"manual\" class=\"Y\" set=\"gap-set\"/>" );
   CPPUNIT_ASSERT( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\" set=\"gap-set\"/>" );
+}
+
+void sanityTest::test103( ){
+  cout << " Alien namespaces - Checking whether properly ignored ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+    " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+    "xmlns=\"http://ilk.uvt.nl/folia\" xmlns:alien=\"http://somewhere.else\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations/>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"example.text.1\">\n"
+    "    <s xml:id=\"example.text.1.s.1\">\n"
+    "      <alien:blah >\n"
+    "        <w xml:id=\"example.text.1.s.1.alienword\">\n"
+    "        </w>\n"
+    "      </alien:blah >\n"
+    "      <w xml:id=\"example.text.1.s.1.w.1\">\n"
+    "          <t>word</t>\n"
+    "          <alien:invasion number=\"99999\" />\n"
+    "      </w>\n"   
+    "    </s>\n"
+    "  </text>\n"
+    "</FoLiA>\n" ;
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( len(doc.words()) == 1 ); // second word is in alien namespace
+  // not read
+  FoliaElement *w = doc["example.text.1.s.1.alienword"];
+  CPPUNIT_ASSERT( w == 0 );   // doesn't exist
+  w = doc["example.text.1.s.1.w.1"];
+  cerr << "\nfrag:\n" << w->xmlstring() << endl;
+  CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>word</t></w>" );
 }
 
 
