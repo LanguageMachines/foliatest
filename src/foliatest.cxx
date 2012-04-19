@@ -1217,7 +1217,6 @@ void sanityTest::test103( ){
   FoliaElement *w = doc["example.text.1.s.1.alienword"];
   CPPUNIT_ASSERT( w == 0 );   // doesn't exist
   w = doc["example.text.1.s.1.w.1"];
-  cerr << "\nfrag:\n" << w->xmlstring() << endl;
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>word</t></w>" );
 }
 
@@ -1611,8 +1610,7 @@ void editTest::test013(){
   FoliaElement *s = doc["WR-P-E-J-0000000001.p.1.s.4"];
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
   FoliaElement *layer = s->append( new SyntaxLayer(&doc) );
-  FoliaElement *top = layer->append( new SyntacticUnit( &doc, "generate_id='" + s->id() + "', class='ROOT'" ) );
-  FoliaElement *sent = top->append( new SyntacticUnit( &doc, "cls='s'" ) );
+  FoliaElement *sent = layer->append( new SyntacticUnit( &doc, "cls='s'" ) );
   FoliaElement *np = sent->append( new SyntacticUnit( &doc,"cls='np'" ) );
   FoliaElement *su = np->append( new SyntacticUnit( &doc,"cls='det'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.1"] );
@@ -1637,7 +1635,7 @@ void editTest::test013(){
   su = nps->append( new SyntacticUnit( &doc,"cls='n'" ) );
   su->append( doc["WR-P-E-J-0000000001.p.1.s.4.w.9"] );
 
-  CPPUNIT_ASSERT( layer->xmlstring() == "<syntax xmlns=\"http://ilk.uvt.nl/folia\"><su xml:id=\"WR-P-E-J-0000000001.p.1.s.4.su.1\" class=\"ROOT\"><su class=\"s\"><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.1\" t=\"De\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.2\" t=\"hoofdletter\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.3\" t=\"A\"/></su></su><su class=\"vp\"><su class=\"vp\"><su class=\"v\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.4\" t=\"wordt\"/></su><su class=\"participle\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.5\" t=\"gebruikt\"/></su></su><su class=\"pp\"><su class=\"prep\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.6\" t=\"voor\"/></su><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.7\" t=\"het\"/></su><su class=\"adj\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.8\" t=\"originele\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.9\" t=\"handschrift\"/></su></su></su></su></su></su></syntax>" );
+  CPPUNIT_ASSERT( layer->xmlstring() == "<syntax xmlns=\"http://ilk.uvt.nl/folia\"><su class=\"s\"><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.1\" t=\"De\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.2\" t=\"hoofdletter\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.3\" t=\"A\"/></su></su><su class=\"vp\"><su class=\"vp\"><su class=\"v\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.4\" t=\"wordt\"/></su><su class=\"participle\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.5\" t=\"gebruikt\"/></su></su><su class=\"pp\"><su class=\"prep\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.6\" t=\"voor\"/></su><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.7\" t=\"het\"/></su><su class=\"adj\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.8\" t=\"originele\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.9\" t=\"handschrift\"/></su></su></su></su></su></syntax>" );
 }
 
 void editTest::test014() {
