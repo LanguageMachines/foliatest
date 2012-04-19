@@ -1027,10 +1027,10 @@ void sanityTest::test102g(){
 "    </annotations>\n"
 "  </metadata>\n"
 "  <text xml:id=\"example.text.1\">\n"
-"    <gap>\n"
+"    <gap class=\"X\">\n"
 "     <desc>test1</desc>\n"
 "    </gap>\n"
-"    <gap set=\"undefined\">\n"
+"    <gap set=\"undefined\" class=\"Y\">\n"
 "     <desc>test2</desc>\n"
 "    </gap>\n"
 "  </text>\n"
@@ -1040,9 +1040,10 @@ void sanityTest::test102g(){
   CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
   CPPUNIT_ASSERT( v[0]->description() == "test1" );
-  CPPUNIT_ASSERT( v[1]->description() == "test2" );
   CPPUNIT_ASSERT( v[0]->sett() == "undefined" );
-  CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\"><desc>test2</desc></gap>" );
+  CPPUNIT_ASSERT( v[1]->description() == "test2" );
+  CPPUNIT_ASSERT( v[1]->sett() == "undefined" );
+  CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\"><desc>test2</desc></gap>" );
 }
 
 void sanityTest::test102h(){
@@ -1070,7 +1071,7 @@ void sanityTest::test102h(){
 }
 
 void sanityTest::test102i(){
-  cout << " Declarations - Adding a declaration in non-default set. (other annotator)";
+  cout << " Declarations - miscellanious trouble";
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
