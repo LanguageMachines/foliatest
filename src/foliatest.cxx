@@ -162,6 +162,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test034 );
   CPPUNIT_TEST( test035 );
   CPPUNIT_TEST( test036 );
+  CPPUNIT_TEST( test037 );
   CPPUNIT_TEST( test099 );
   CPPUNIT_TEST( test100a );
   CPPUNIT_TEST( test100b );
@@ -234,6 +235,7 @@ protected:
   void test034();
   void test035();
   void test036();
+  void test037();
   void test099();
   void test100a();
   void test100b();
@@ -798,6 +800,60 @@ void sanityTest::test036( ){
   CPPUNIT_ASSERT( e->cls() == "firstparagraph" );
   e = doc["WR-P-E-J-0000000001.p.1.s.6"];
   CPPUNIT_ASSERT( e->cls() == "sentence" );
+}
+
+void sanityTest::test037( ){
+  cout << " Feature test & Ambiguitity resolution of head as PoS Feature and as structure element ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <pos-annotation set=\"test\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"test.text\">\n"
+"    <div xml:id=\"div\">\n"
+"     <head xml:id=\"head\">\n"
+"       <s xml:id=\"head.1.s.1\">\n"
+"            <w xml:id=\"head.1.s.1.w.1\">\n"
+"                <t>blah</t>\n"
+"                <pos class=\"NN(blah)\" head=\"NN\" />\n"
+"            </w>\n"
+"        </s>\n"
+"    </head>\n"
+"    <p xml:id=\"p.1\">\n"
+"        <s xml:id=\"p.1.s.1\">\n"
+"            <w xml:id=\"p.1.s.1.w.1\">\n"
+"                <t>blah</t>\n"
+"                <pos class=\"NN(blah)\">\n"
+"                    <headfeature class=\"NN\" />\n"
+"                </pos>\n"
+"            </w>\n"
+"        </s>\n"
+"    </p>\n"
+"    <p xml:id=\"p.2\">\n"
+"        <s xml:id=\"p.2.s.1\">\n"
+"            <w xml:id=\"p.2.s.1.w.1\">\n"
+"                <t>blah</t>\n"
+"                <pos class=\"BB(blah)\">\n"
+"                    <feat subset=\"head\" class=\"BB\" />\n"
+"                </pos>\n"
+"            </w>\n"
+"        </s>\n"
+"    </p>\n"
+"   </div>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( doc["head.1.s.1.w.1"]->pos() == "NN(blah)" );
+  CPPUNIT_ASSERT( doc["head.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
+  CPPUNIT_ASSERT( doc["p.1.s.1.w.1"]->pos() == "NN(blah)" );
+  CPPUNIT_ASSERT( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
+  CPPUNIT_ASSERT( doc["p.2.s.1.w.1"]->pos() == "BB(blah)" );
+  CPPUNIT_ASSERT( doc["p.2.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
 }
 
 void sanityTest::test099(){
