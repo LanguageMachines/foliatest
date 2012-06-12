@@ -17,6 +17,7 @@
       <event-annotation set="event-set"/>
       <dependency-annotation set="alpino-set"/>
       <gap-annotation set="gap-set"/>
+      <alignment-annotation set="alignment-set"/>
     </annotations>
     <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
       <imdi:Session>
@@ -480,6 +481,9 @@
             <t>ze</t>
             <pos class="VNW(pers,pron,stan,red,3,ev,fem)"/>
             <lemma class="ze"/>
+	    <alignment class="reference">
+	      <aref id="WR-P-E-J-0000000001.p.1.s.3.w.5" t="handschriften" type="w"/>
+	    </alignment>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.11">
             <t>op</t>

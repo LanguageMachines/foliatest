@@ -485,8 +485,14 @@ void sanityTest::test018(){
 }
 
 void sanityTest::test019(){
-  cout << " Alignment ";
-  throw NotImplementedError("test019");
+  cout << " Alignment in same document";
+  FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.3.w.10"];
+  Alignment *aref = 0;
+  CPPUNIT_ASSERT_NO_THROW( aref = w->annotation<Alignment>() );
+  vector<FoliaElement *>targets;
+  CPPUNIT_ASSERT_NO_THROW( targets = aref->resolve() );
+  CPPUNIT_ASSERT( targets.size() != 0 );
+  CPPUNIT_ASSERT( targets[0]->xmlstring() == doc["WR-P-E-J-0000000001.p.1.s.3.w.5"]->xmlstring() );  
 }
 
 void sanityTest::test020a(){
