@@ -923,7 +923,7 @@
           </fl:w>
           <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.9">
             <fl:t>terweil</fl:t>
-            <fl:errordetection class="spelling" error="yes"/>
+            <fl:errordetection class="spelling"/>
             <fl:pos class="VG(onder)"/>
             <fl:lemma class="terweil"/>
           </fl:w>
