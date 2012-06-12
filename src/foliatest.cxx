@@ -1383,6 +1383,7 @@ void editTest::test001a( ){
   CPPUNIT_ASSERT( w->text() == "." );
 
   // sentence ok?
+  CPPUNIT_ASSERT( s->toktext() == "Dit is een nieuwe zin ." );
   CPPUNIT_ASSERT( s->text() == "Dit is een nieuwe zin." );
 
   // all well?
