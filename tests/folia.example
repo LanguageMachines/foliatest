@@ -10,12 +10,13 @@
       <lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/>
       <sense-annotation set="sense-set"/>
       <syntax-annotation set="syntax-set"/>
-      <entity-annotation set="ent-set"/>
+      <entity-annotation set="mwu-set"/>
       <correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/>
       <errordetection-annotation set="error-set"/>
       <morphological-annotation set="morph-set"/>
       <event-annotation set="event-set"/>
       <dependency-annotation set="alpino-set"/>
+      <timedevent-annotation set="event-set"/>
       <gap-annotation set="gap-set"/>
       <alignment-annotation set="alignment-set"/>
     </annotations>
@@ -269,6 +270,18 @@
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom"/>
             </chunk>
           </chunking>
+          <timing>
+            <timedevent actor="speaker" begindatetime="2011-12-15T19:00" class="utterance" enddatetime="2011-12-15T19:02">
+              <wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een"/>
+              <wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander"/>
+              <wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord"/>
+            </timedevent>
+            <timedevent actor="annoying_person" begindatetime="2011-12-15T19:03" class="cough" enddatetime="2011-12-15T19:05"/>
+            <timedevent actor="speaker" begindatetime="2011-12-15T19:06" class="utterance" enddatetime="2011-12-15T19:07">
+              <wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor"/>
+              <wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom"/>
+            </timedevent>
+          </timing>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1">
@@ -481,9 +494,9 @@
             <t>ze</t>
             <pos class="VNW(pers,pron,stan,red,3,ev,fem)"/>
             <lemma class="ze"/>
-	    <alignment class="reference">
-	      <aref id="WR-P-E-J-0000000001.p.1.s.3.w.5" t="handschriften" type="w"/>
-	    </alignment>
+            <alignment class="reference">
+              <aref id="WR-P-E-J-0000000001.p.1.s.3.w.5" t="handschriften" type="w"/>
+            </alignment>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.11">
             <t>op</t>

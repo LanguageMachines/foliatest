@@ -280,14 +280,14 @@ void sanityTest::test002(){
   cout << " Sentence count ";
   vector<Sentence*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.sentences() );
-  CPPUNIT_ASSERT_EQUAL( v.size(), size_t(12) );
+  CPPUNIT_ASSERT_EQUAL( size_t(12), v.size() );
 }
 
 void sanityTest::test003( ){
   cout << " Word count ";
   vector<Word*> v;
   CPPUNIT_ASSERT_NO_THROW( v = doc.words() );
-  CPPUNIT_ASSERT_EQUAL( v.size(), (size_t)157 );
+  CPPUNIT_ASSERT_EQUAL( (size_t)157, v.size() );
 }
 
 void sanityTest::test004(){
@@ -431,6 +431,7 @@ void check( FoliaElement *parent, const string& indent, ostream& os ){
     if ( ! ( (parent->isinstance( SyntacticUnit_t ) 
 	      || parent->isinstance( Chunk_t ) 
 	      || parent->isinstance( Entity_t ) 
+	      || parent->isinstance( TimedEvent_t ) 
 	      || parent->isinstance( DependencyHead_t )
 	      || parent->isinstance( DependencyDependent_t ) ) 
 	     && child->isinstance( Word_t ) ) ){
