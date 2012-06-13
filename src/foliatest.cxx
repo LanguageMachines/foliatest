@@ -162,7 +162,8 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test034 );
   CPPUNIT_TEST( test035 );
   CPPUNIT_TEST( test036 );
-  CPPUNIT_TEST( test037 );
+  CPPUNIT_TEST( test037a );
+  CPPUNIT_TEST( test037b );
   CPPUNIT_TEST( test099 );
   CPPUNIT_TEST( test100a );
   CPPUNIT_TEST( test100b );
@@ -235,7 +236,8 @@ protected:
   void test034();
   void test035();
   void test036();
-  void test037();
+  void test037a();
+  void test037b();
   void test099();
   void test100a();
   void test100b();
@@ -809,12 +811,12 @@ void sanityTest::test036( ){
   CPPUNIT_ASSERT( e->cls() == "sentence" );
 }
 
-void sanityTest::test037( ){
+void sanityTest::test037a( ){
   cout << " Feature test & Ambiguitity resolution of head as PoS Feature and as structure element ";
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
-"  <metadata type=\"native\">\n"
+"  <metadata src=\"test.cmdi.xml\" type=\"cmdi\">\n"
 "    <annotations>\n"
 "      <pos-annotation set=\"test\"/>\n"
 "    </annotations>\n"
@@ -861,6 +863,44 @@ void sanityTest::test037( ){
   CPPUNIT_ASSERT( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
   CPPUNIT_ASSERT( doc["p.2.s.1.w.1"]->pos() == "BB(blah)" );
   CPPUNIT_ASSERT( doc["p.2.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
+}
+
+void sanityTest::test037b( ){
+  cout << " Multiclass Feature ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata src=\"test.cmdi.xml\" type=\"cmdi\">\n"
+"    <annotations>\n"
+"      <pos-annotation set=\"test\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"test.text\">\n"
+"    <div xml:id=\"div\">\n"
+"     <p xml:id=\"p.1\">\n"
+"       <s xml:id=\"p.1.s.1\">\n"
+"         <w xml:id=\"p.1.s.1.w.1\">\n"
+"           <t>blah</t>\n"
+"           <pos class=\"NN(a,b,c)\">\n"
+"           <feat subset=\"x\" class=\"a\" />\n"
+"           <feat subset=\"x\" class=\"b\" />\n"
+"           <feat subset=\"x\" class=\"c\" />\n"
+"           </pos>\n"
+"         </w>\n"
+"       </s>\n"
+"     </p>\n"
+"   </div>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
+  PosAnnotation* p = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
+  vector<string> v = p->feats("x");
+  CPPUNIT_ASSERT( v[0] == "a" );
+  CPPUNIT_ASSERT( v[1] == "b" );
+  CPPUNIT_ASSERT( v[2] == "c" );
 }
 
 void sanityTest::test099(){
@@ -1037,6 +1077,7 @@ void sanityTest::test102d3(){
   Document doc;
   CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
   CPPUNIT_ASSERT( doc.defaultset(AnnotationType::GAP) == "gap-set" );
+  CPPUNIT_ASSERT( doc.defaultannotator(AnnotationType::GAP) == "sloot" );
   CPPUNIT_ASSERT( doc.defaultannotator(AnnotationType::GAP,"gap-set") == "sloot" );
 }
 
