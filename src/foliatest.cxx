@@ -107,7 +107,7 @@ void foliaTest::test5() {
   cout << " Test lezen van een FoLiA file met namespaces";
   Document d;
   CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "tests/folia.nsexample" ) );
-  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test5.out", "fl" ) );
+  CPPUNIT_ASSERT_NO_THROW( d.save( "/tmp/test5.out", "fl", false ) );
   int stat = system( "xmldiff /tmp/test5.out tests/folia.nsexample" );
   CPPUNIT_ASSERT_MESSAGE( "/tmp/test5.out tests/folia.nsexample differ!",
 			  (stat == 0) );
@@ -184,6 +184,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102i );
   CPPUNIT_TEST( test102j );
   CPPUNIT_TEST( test102k );
+  CPPUNIT_TEST( test102l );
   CPPUNIT_TEST( test103 );
   CPPUNIT_TEST_SUITE_END();
 public:
@@ -258,6 +259,7 @@ protected:
   void test102i();
   void test102j();
   void test102k();
+  void test102l();
   void test103();
   Document doc;
 };
@@ -906,13 +908,21 @@ void sanityTest::test037b( ){
 void sanityTest::test099(){
   cout << " Writing to file ";
   CPPUNIT_ASSERT_NO_THROW( doc.save( "/tmp/savetest.xml" ) );
+  CPPUNIT_ASSERT_NO_THROW( doc.save( "/tmp/savetest.canonical.xml", true ) );
 }
 
 void sanityTest::test100a( ){
   cout << " Checking saved file against document ";
-  Document d;
-  CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "/tmp/savetest.xml" ) );
-  CPPUNIT_ASSERT( d == doc );
+  {
+    Document d;
+    CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "/tmp/savetest.xml" ) );
+    CPPUNIT_ASSERT( d == doc );
+  }
+  {
+    Document d;
+    CPPUNIT_ASSERT_NO_THROW( d.readFromFile( "/tmp/savetest.canonical.xml" ) );
+    CPPUNIT_ASSERT( d == doc );
+  }
 }
 
 void sanityTest::test100b( ){
@@ -1292,6 +1302,31 @@ void sanityTest::test102k(){
   CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
   CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"manual\" class=\"Y\" set=\"gap-set\"/>" );
   CPPUNIT_ASSERT( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\" set=\"gap-set\"/>" );
+}
+
+void sanityTest::test102l(){
+  cout << " Declarations - Datetime default.";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation set=\"gap-set\" datetime=\"2012-06-18T17:49\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <gap class=\"X\" />\n"
+"    <gap class=\"Y\" datetime=\"2012-06-18T17:50\"/>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+  
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  FoliaElement *text = doc["example.text.1"];
+  CPPUNIT_ASSERT( doc.defaultdatetime(AnnotationType::GAP,"gap-set") == "2012-06-18T17:49:00" );
+  vector<Gap*> v = text->select<Gap>();
+  CPPUNIT_ASSERT( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
+  CPPUNIT_ASSERT( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" datetime=\"2012-06-18T17:50:00\"/>" );
 }
 
 void sanityTest::test103( ){
