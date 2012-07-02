@@ -1032,10 +1032,10 @@
             <pos class="ADJ(prenom,basis,met-e,stan)"/>
             <lemma class="onzeker"/>
             <correction xml:id="WR-P-E-J-0000000001.p.1.s.8.w.14.c.1" class="spelling">
-              <suggestion auth="no">
+              <suggestion auth="no" n="1/2">
                 <t>twijfelachtige</t>
               </suggestion>
-              <suggestion auth="no">
+              <suggestion auth="no" n="2/2">
                 <t>ongewisse</t>
               </suggestion>
             </correction>
