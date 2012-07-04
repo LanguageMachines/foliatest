@@ -186,6 +186,8 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test102k );
   CPPUNIT_TEST( test102l );
   CPPUNIT_TEST( test103 );
+  CPPUNIT_TEST( test104 );
+  CPPUNIT_TEST( test105 );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -261,6 +263,8 @@ protected:
   void test102k();
   void test102l();
   void test103();
+  void test104();
+  void test105();
   Document doc;
 };
 
@@ -1360,6 +1364,135 @@ void sanityTest::test103( ){
   CPPUNIT_ASSERT( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>word</t></w>" );
 }
 
+
+void sanityTest::test104( ){
+  cout << " embedded sentences ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+    " <FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"doc\">\n"
+    "   <metadata type=\"native\">\n"
+    "     <annotations>\n"
+    "      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" set=\"tokconfig-nl\"/>\n"
+    "     </annotations>\n"
+    "   </metadata>\n"
+    "  <text xml:id=\"doc.text\">\n"
+    "   <p xml:id=\"doc.p.1\">\n"
+    "    <s xml:id=\"doc.p.1.s.1\">\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.1\" class=\"WORD\">\n"
+    "      <t>Hij</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.2\" class=\"WORD\" space=\"no\">\n"
+    "      <t>zegt</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.3\" class=\"PUNCTUATION\">\n"
+    "      <t>:</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.4\" class=\"PUNCTUATION\" space=\"no\">\n"
+    "      <t>\"</t>\n"
+    "     </w>\n"
+    "     <quote xml:id=\"doc.p.1.s.1.quote.1\">\n"
+    "      <s xml:id=\"doc.p.1.s.1.quote.1.s.1\" auth=\"no\">\n"
+    "       <w xml:id=\"doc.p.1.s.1.quote.1.s.1.w.1\" class=\"WORD\">\n"
+    "          <t>Dit</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.1.w.2\" class=\"WORD\">\n"
+    "          <t>is</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.1.w.3\" class=\"WORD\">\n"
+    "          <t>de</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.1.w.4\" class=\"WORD\">\n"
+    "          <t>eerste</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.1.w.5\" class=\"WORD\" space=\"no\">\n"
+    "          <t>zin</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.1.w.6\" class=\"PUNCTUATION\">\n"
+    "          <t>.</t>\n"
+    "        </w>\n"
+    "      </s>\n"
+    "      <s xml:id=\"doc.p.1.s.1.quote.1.s.2\" auth=\"no\">\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.2.w.1\" class=\"WORD\">\n"
+    "          <t>Dit</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.2.w.2\" class=\"WORD\">\n"
+    "          <t>is</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.2.w.3\" class=\"WORD\">\n"
+    "          <t>de</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.2.w.4\" class=\"WORD\">\n"
+    "          <t>tweede</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.2.w.5\" class=\"WORD\" space=\"no\">\n"
+    "          <t>zin</t>\n"
+    "        </w>\n"
+    "        <w xml:id=\"doc.p.1.s.1.quote.1.s.2.w.6\" class=\"PUNCTUATION\" space=\"no\">\n"
+    "          <t>.</t>\n"
+    "        </w>\n"
+    "      </s>\n"
+    "     </quote>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.5\" class=\"PUNCTUATION\" space=\"no\">\n"
+    "      <t>\"</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.6\" class=\"PUNCTUATION\">\n"
+    "      <t>,</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.7\" class=\"WORD\">\n"
+    "      <t>en</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.8\" class=\"WORD\">\n"
+    "      <t>loopt</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.9\" class=\"WORD\" space=\"no\">\n"
+    "      <t>verder</t>\n"
+    "     </w>\n"
+    "     <w xml:id=\"doc.p.1.s.1.w.10\" class=\"PUNCTUATION\">\n"
+    "      <t>.</t>\n"
+    "     </w>\n"
+    "    </s>\n"
+    "   </p>\n"
+    "  </text>\n"
+    " </FoLiA>\n";
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromString(xml) );
+  CPPUNIT_ASSERT( len(doc.sentences()) == 1 ); // one sentence at top level
+  vector<Sentence*> s = doc.sentenceParts();
+  CPPUNIT_ASSERT( s.size() == 3 );
+  // cerr << "AHA" << endl;
+  // for ( size_t i=0; i < s.size(); ++i ){
+  //   vector<Word*> v = s[i]->wordParts();
+  //   cerr << "sentence[" << s[i]->id() << "] = ";
+  //   for ( size_t j=0; j < v.size(); ++j ){
+  //     cerr << v[j]->str() << " ";
+  //   }
+  //   cerr << endl;
+  // }
+  vector<Word*> v = s[0]->wordParts();
+  CPPUNIT_ASSERT( v[5]->str() == "[doc.p.1.s.1.quote.1.s.2]" );
+  v = s[1]->wordParts();
+  CPPUNIT_ASSERT( v[3]->str() == "eerste" );
+  v = s[2]->wordParts();
+  CPPUNIT_ASSERT( v[3]->str() == "tweede" );
+}
+
+void sanityTest::test105( ){
+  Document doc;
+  CPPUNIT_ASSERT_NO_THROW( doc.readFromFile("tests/fg.xml") );
+  vector<Sentence *> s = doc.sentenceParts();
+  // cerr << "AHA" << endl;
+  // for ( size_t i=0; i < s.size(); ++i ){
+  //   vector<Word*> v = s[i]->wordParts();
+  //   cerr << "part[" << i << "] = ";
+  //   for ( size_t j=0; j < v.size(); ++j ){
+  //     cerr << v[j]->str() << " ";
+  //   }
+  //   cerr << endl;
+  // }
+  CPPUNIT_ASSERT( s.size() == 24 );
+  vector<Word*> wv = s[18]->wordParts();
+  CPPUNIT_ASSERT( wv[1]->str() == "zegt" );
+  CPPUNIT_ASSERT( wv[6]->str() == "[doc.p.1.s.1.quote.1.s.15.quote.1.s.1]" );
+}
 
 class editTest: public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE( editTest );
