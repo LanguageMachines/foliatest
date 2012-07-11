@@ -188,6 +188,7 @@ class sanityTest: public CppUnit::TestFixture {
   CPPUNIT_TEST( test103 );
   CPPUNIT_TEST( test104 );
   CPPUNIT_TEST( test105 );
+  CPPUNIT_TEST( test106 );
   CPPUNIT_TEST_SUITE_END();
 public:
   void setUp();
@@ -265,6 +266,7 @@ protected:
   void test103();
   void test104();
   void test105();
+  void test106();
   Document doc;
 };
 
@@ -1492,6 +1494,18 @@ void sanityTest::test105( ){
   vector<Word*> wv = s[18]->wordParts();
   CPPUNIT_ASSERT( wv[1]->str() == "zegt" );
   CPPUNIT_ASSERT( wv[6]->str() == "doc.p.1.s.1.quote.1.s.15.quote.1.s.1" );
+}
+
+void sanityTest::test106( ){
+  Document doc;
+  cout << " Attributes - invalid values ";
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"</FoLiA>\n" ;
+  CPPUNIT_ASSERT_THROW( doc.readFromString(xml), XmlError );
+  Sentence *s = 0;
+  CPPUNIT_ASSERT_THROW( new Sentence(&doc, "id='dit mag ook niet'" ), XmlError );
 }
 
 class editTest: public CppUnit::TestFixture {
