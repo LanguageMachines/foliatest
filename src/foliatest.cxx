@@ -1468,7 +1468,7 @@ void sanityTest::test104( ){
   //   cerr << endl;
   // }
   vector<Word*> v = s[0]->wordParts();
-  CPPUNIT_ASSERT( v[5]->str() == "[doc.p.1.s.1.quote.1.s.2]" );
+  CPPUNIT_ASSERT( v[5]->str() == "doc.p.1.s.1.quote.1.s.2" );
   v = s[1]->wordParts();
   CPPUNIT_ASSERT( v[3]->str() == "eerste" );
   v = s[2]->wordParts();
@@ -1491,7 +1491,7 @@ void sanityTest::test105( ){
   CPPUNIT_ASSERT( s.size() == 24 );
   vector<Word*> wv = s[18]->wordParts();
   CPPUNIT_ASSERT( wv[1]->str() == "zegt" );
-  CPPUNIT_ASSERT( wv[6]->str() == "[doc.p.1.s.1.quote.1.s.15.quote.1.s.1]" );
+  CPPUNIT_ASSERT( wv[6]->str() == "doc.p.1.s.1.quote.1.s.15.quote.1.s.1" );
 }
 
 class editTest: public CppUnit::TestFixture {
