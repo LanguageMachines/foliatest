@@ -68,6 +68,18 @@ AC_ARG_WITH(folia,
        [PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"])
 AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
 
+AC_ARG_WITH(ticcutils,
+       [  --with-ticcutils=DIR       use ticcutils installed in <DIR>; 
+               note that you can install ticcutils in a non-default directory with
+               ./configure --prefix=<DIR> in the ticcutils installation directory],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
+#  AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
+PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.1] )
+CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
+LIBS="$LIBS $ticcutils_LIBS"
+
+
 PKG_CHECK_MODULES([CppUnit], [cppunit >= 1.12.1] )
 CXXFLAGS="$CXXFLAGS $CppUnit_CFLAGS"
 LIBS="$CppUnit_LIBS $LIBS"
