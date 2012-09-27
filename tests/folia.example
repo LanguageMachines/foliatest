@@ -20,6 +20,7 @@
       <timedevent-annotation set="event-set"/>
       <gap-annotation set="gap-set"/>
       <alignment-annotation set="alignment-set"/>
+      <metric-annotation set="metrics"/>
     </annotations>
     <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
       <imdi:Session>
@@ -140,6 +141,7 @@
         </s>
       </head>
       <p xml:id="WR-P-E-J-0000000001.p.1" class="firstparagraph">
+	<metric class="sentenceCount" value="8"/>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
             <t>Stemma</t>

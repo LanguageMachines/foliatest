@@ -1404,7 +1404,7 @@ void edit_test001a( ){
   // grab last paragraph
   Document editDoc( "file='tests/folia.example'" );
   assertNoThrow( p = editDoc.rparagraphs(0) );
-  size_t tmp = len(p->sentences());
+  size_t tmp = p->size();
   // add a sentence
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( &editDoc, "generate_id='" + p->id() + "'" ) );
@@ -1436,7 +1436,7 @@ void edit_test001a( ){
   assertTrue( s->index(2)->annotatortype() == AUTO );
 
   // adition to paragraph correct?
-  assertTrue( p->size() == tmp+1 );
+  assertEqual( p->size(), (tmp+1) );
   assertTrue( p->rindex(0) == s );
 
   // last word ok?
@@ -1485,7 +1485,7 @@ void edit_test001b( ){
   assertTrue( w2->text() == "." );
 
   // adition to paragraph correct?
-  assertTrue( len( p->sentences() ) == tmp+1 );
+  assertEqual( p->size(), (tmp+1) );
   assertTrue( p->rindex(0) == s );
   
   // all well?
