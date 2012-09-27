@@ -545,7 +545,7 @@ void sanity_test025c(){
   
 }
 
-void sanity_test026(){
+void sanity_test026a(){
   startTestSerie(" Features " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
   FoliaElement *pos = w->annotation<PosAnnotation>();
@@ -558,6 +558,15 @@ void sanity_test026(){
   assertTrue( features[0]->subset() == "head" );
   assertTrue( features[0]->cls() == "WW" );
   
+}
+
+void sanity_test026b(){
+  startTestSerie(" Metric " );
+  FoliaElement *p= sanityDoc.paragraphs(0);
+  FoliaElement *m = p->annotation<MetricAnnotation>();
+  assertTrue( isinstance(m, Metric_t ) );
+  assertEqual( m->cls(), "sentenceCount" );
+  assertEqual( m->feat("value"), "8" );
 }
 
 void sanity_test027(){
@@ -2374,7 +2383,8 @@ int main(){
   sanity_test025a();
   sanity_test025b();
   sanity_test025c();
-  sanity_test026();
+  sanity_test026a();
+  sanity_test026b();
   sanity_test027();
   sanity_test028();
   sanity_test029();
