@@ -17,10 +17,12 @@
       <morphological-annotation set="morph-set"/>
       <event-annotation set="event-set"/>
       <dependency-annotation set="alpino-set"/>
-      <timedevent-annotation set="event-set"/>
+      <timesegment-annotation set="event-set"/>
       <gap-annotation set="gap-set"/>
       <alignment-annotation set="alignment-set"/>
-      <metric-annotation set="metrics"/>
+      <coreference-annotation set="coreference-set"/>
+      <semrole-annotation set="semrole-set"/>
+      <metric-annotation set="metrics-set"/>
     </annotations>
     <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
       <imdi:Session>
@@ -141,7 +143,7 @@
         </s>
       </head>
       <p xml:id="WR-P-E-J-0000000001.p.1" class="firstparagraph">
-	<metric class="sentenceCount" value="8"/>
+        <metric class="sentenceCount" value="8"/>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
             <t>Stemma</t>
@@ -274,16 +276,16 @@
             </chunk>
           </chunking>
           <timing>
-            <timedevent actor="speaker" begindatetime="2011-12-15T19:00" class="utterance" enddatetime="2011-12-15T19:02">
+            <timesegment actor="speaker" begindatetime="2011-12-15T19:00" class="utterance" enddatetime="2011-12-15T19:02">
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.3" t="een"/>
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander"/>
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord"/>
-            </timedevent>
-            <timedevent actor="annoying_person" begindatetime="2011-12-15T19:03" class="cough" enddatetime="2011-12-15T19:05"/>
-            <timedevent actor="speaker" begindatetime="2011-12-15T19:06" class="utterance" enddatetime="2011-12-15T19:07">
+            </timesegment>
+            <timesegment actor="annoying_person" begindatetime="2011-12-15T19:03" class="cough" enddatetime="2011-12-15T19:05"/>
+            <timesegment actor="speaker" begindatetime="2011-12-15T19:06" class="utterance" enddatetime="2011-12-15T19:07">
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.6" t="voor"/>
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.7" t="stamboom"/>
-            </timedevent>
+            </timesegment>
           </timing>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
@@ -309,7 +311,11 @@
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5">
             <t>wordt</t>
-            <pos class="WW(pv,tgw,met-t)"/>
+            <pos class="WW(pv,tgw,met-t)">
+              <feat class="pv" subset="role"/>
+              <feat class="tgw" subset="tense"/>
+              <feat class="met-t" subset="form"/>
+            </pos>
             <lemma class="worden"/>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6">
@@ -461,15 +467,11 @@
             <pos class="N(soort,mv,basis)"/>
             <lemma class="handschrift"/>
             <morphology>
-              <morpheme class="handschrift">
+              <morpheme class="stem" function="lexical">
                 <t offset="0">handschrift</t>
-                <feat class="stem" subset="type"/>
-                <feat class="lexical" subset="function"/>
               </morpheme>
-              <morpheme>
+              <morpheme class="suffix" function="inflexional">
                 <t offset="11">en</t>
-                <feat class="suffix" subset="type"/>
-                <feat class="plural" subset="function"/>
               </morpheme>
             </morphology>
           </w>
@@ -959,6 +961,17 @@
             <pos class="LET()"/>
             <lemma class="."/>
           </w>
+          <semroles>
+            <semrole class="actor">
+              <wref id="WR-P-E-J-0000000001.p.1.s.7.w.3" t="men"/>
+            </semrole>
+            <semrole class="patient">
+              <wref id="WR-P-E-J-0000000001.p.1.s.7.w.4" t="de"/>
+              <hd>
+                <wref id="WR-P-E-J-0000000001.p.1.s.7.w.5" t="verwantschap"/>
+              </hd>
+            </semrole>
+          </semroles>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.8">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.8.w.1">
@@ -1059,6 +1072,33 @@
           </w>
         </s>
       </p>
+      <coreferences>
+        <coreferencechain class="ident">
+          <coreferencelink>
+            <wref id="WR-P-E-J-0000000001.p.1.s.3.w.5" t="handschriften"/>
+          </coreferencelink>
+          <coreferencelink>
+            <wref id="WR-P-E-J-0000000001.p.1.s.3.w.10" t="ze"/>
+          </coreferencelink>            
+          <coreferencelink>
+            <wref id="WR-P-E-J-0000000001.p.1.s.3.w.16" t="hun"/>
+          </coreferencelink>                        
+          <coreferencelink>
+            <wref id="WR-P-E-J-0000000001.p.1.s.7.w.7" t="de"/>
+          </coreferencelink>                        
+        </coreferencechain>
+        <coreferencechain class="ident">
+          <coreferencelink>
+            <wref id="WR-P-E-J-0000000001.p.1.s.6.w.1" t="Verdwenen"/>
+            <hd>
+              <wref id="WR-P-E-J-0000000001.p.1.s.6.w.2" t="handschriften"/>
+            </hd>
+          </coreferencelink>
+          <coreferencelink>
+            <wref id="WR-P-E-J-0000000001.p.1.s.6.w.8" t="ze"/>
+          </coreferencelink>
+        </coreferencechain>
+      </coreferences>
     </div>
     <div xml:id="sandbox">
       <list xml:id="sandbox.list.1">

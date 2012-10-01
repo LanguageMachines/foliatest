@@ -271,11 +271,15 @@ void check( FoliaElement *parent, const string& indent, ostream& os ){
     if ( ! ( (parent->isinstance( SyntacticUnit_t ) 
 	      || parent->isinstance( Chunk_t ) 
 	      || parent->isinstance( Entity_t ) 
-	      || parent->isinstance( TimedEvent_t ) 
-	      || parent->isinstance( DependencyHead_t )
+	      || parent->isinstance( TimeSegment_t ) 
+	      || parent->isinstance( TimingLayer_t ) 
+	      || parent->isinstance( CoreferenceChain_t )
+	      || parent->isinstance( CoreferenceLink_t )
+	      || parent->isinstance( Semrole_t )
+	      || parent->isinstance( Headwords_t )
 	      || parent->isinstance( DependencyDependent_t ) ) 
-	     && child->isinstance( Word_t ) ) ){
-      assertTrue( parent == child->parent() );
+	     && ( child->isinstance( Word_t ) || child->isinstance( Morpheme_t )) ) ){
+      assertEqual( parent, child->parent() );
       check( child, indent + " ", os );
     }
   }
@@ -317,19 +321,13 @@ void sanity_test017(){
 }
 
 void sanity_test018(){
-  startTestSerie(" Subtoken annotation (morphological) " );
-  FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"];
-  FoliaElement *m = 0;
-  assertNoThrow( m = w->annotation<MorphologyLayer>() );
-  assertTrue( len(m) == 2 );
-  assertTrue( m->index(0)->isinstance( Morpheme_t ) );
-  assertTrue( m->index(0)->text() == "handschrift" );
-  assertTrue( m->index(0)->feat("type") == "stem" );
-  assertTrue( m->index(0)->feat("function") == "lexical" );
-  assertTrue( m->index(1)->text() == "en" );
-  assertTrue( m->index(1)->feat("type") == "suffix" );
-  assertTrue( m->index(1)->feat("function") == "plural" );
-  
+  startTestSerie(" Subtoken annotation (part of speech) " );
+  FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.5"];
+  PosAnnotation *m = 0;
+  assertNoThrow( m = w->annotation<PosAnnotation>() );
+  assertEqual( m->feat("role"),"pv" );
+  assertEqual( m->feat("tense"), "tgw" );
+  assertEqual( m->feat("form") , "met-t" );
 }
 
 void sanity_test019(){
