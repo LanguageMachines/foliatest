@@ -414,6 +414,18 @@ void sanity_test020d(){
   
 }
 
+void sanity_test020e(){
+  startTestSerie( " Span Annotation (TimeSegment) " );
+  FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
+  TimingLayer *l = 0;
+  assertNoThrow( l = s->annotation<TimingLayer>() );
+    
+  assertTrue( isinstance( l->index(0), TimeSegment_t ) );
+  assertEqual( l->index(0)->text(),  "een ander woord" ) ;
+  assertEqual( l->index(1)->cls(), "cough" );
+  assertEqual( l->index(2)->text(),  "voor stamboom" );
+}
+
 void sanity_test021(){
   startTestSerie(" Obtaining previous word " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
@@ -2370,6 +2382,7 @@ int main(){
   sanity_test020b();
   sanity_test020c();
   sanity_test020d();
+  sanity_test020e();
   sanity_test021();
   sanity_test022();
   sanity_test023a();
