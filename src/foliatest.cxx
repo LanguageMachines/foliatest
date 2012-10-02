@@ -107,7 +107,7 @@ void sanity_test002(){
   startTestSerie(" Sentence count " );
   vector<Sentence*> v;
   assertNoThrow( v = sanityDoc.sentences() );
-  assertEqual( size_t(12), v.size() );
+  assertEqual( size_t(13), v.size() );
   
 }
 
@@ -115,7 +115,7 @@ void sanity_test003( ){
   startTestSerie(" Word count " );
   vector<Word*> v;
   assertNoThrow( v = sanityDoc.words() );
-  assertEqual( 157, v.size() );
+  assertEqual( 163, v.size() );
   
 }
 
@@ -136,9 +136,9 @@ void sanity_test005( ){
   FoliaElement* w = 0;
   assertNoThrow( w = sanityDoc.rwords(0) );
   assertTrue( w->isinstance<Word>() );
-  assertEqual( w->id(), string("sandbox.figure.1.caption.s.1.w.2") );
-  assertEqual( w->text(),  UnicodeString("stamboom") );
-  assertEqual( str(w), string("stamboom") );
+  assertEqual( w->id(), "WR-P-E-J-0000000001.sandbox.2.s.1.w.6" );
+  assertEqual( w->text(), "." );
+  assertEqual( str(w), string(".") );
   
 }
 
@@ -495,23 +495,24 @@ void sanity_test024a(){
 
 void sanity_test024b(){
   startTestSerie(" Obtaining right context with default placeholder " );
-  FoliaElement *w = sanityDoc["sandbox.figure.1.caption.s.1.w.1"];
+  FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.5"];
   vector<Word*> context = w->rightcontext(3);
   //  cerr << "found context " << context << endl;
   assertTrue( context.size() == 3 );
-  assertTrue( text(context[0]) == "stamboom" );
+  assertTrue( text(context[0]) == "." );
   assertTrue( context[1] == 0 );
   assertTrue( context[2] == 0 );
-  
 }
 
 void sanity_test024c(){
   startTestSerie(" Obtaining right context with placeholder " );
-  FoliaElement *w = sanityDoc["sandbox.figure.1.caption.s.1.w.1"];
+  FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.5"];
   vector<Word*> context = w->rightcontext(3, "_");
-  //  cerr << "found context " << context << endl;
+  cerr << "found context " << context[0] << endl;
+  cerr << "found context " << context[1] << endl;
+  cerr << "found context " << context[2] << endl;
   assertTrue( context.size() == 3 );
-  assertTrue( text(context[0]) == "stamboom" );
+  assertTrue( text(context[0]) == "." );
   assertTrue( context[1]->isinstance(PlaceHolder_t) );
   assertTrue( context[2]->text() == "_" );
   

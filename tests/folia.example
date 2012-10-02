@@ -1140,6 +1140,44 @@
           </caption>
         </figure>
       </event>
+      <div xml:id="sandbox.2">
+	<s xml:id="WR-P-E-J-0000000001.sandbox.2.s.1">
+	  <t>De CDA-lijsttrekker heeft fors verloren.</t>
+	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1">
+	    <t offset="0">De</t>
+	  </w>
+	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.2">
+	    <t offset="3">CDA-lijsttrekker</t>
+	    <morphology>
+	      <morpheme xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" class="lexical">
+		<t offset="0">CDA</t>
+	      </morpheme>
+	      <morpheme class="lexical">
+		<t offset="4">lijsttrekker</t>
+		<pos class="n" />
+		<lemma class="lijsttrekker" />
+	      </morpheme>
+	    </morphology>
+	  </w> 
+	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.3">
+	    <t offset="18">heeft</t>
+	  </w> 
+	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.4">
+	    <t offset="24">fors</t>
+	  </w>  
+	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.5">
+	    <t offset="29">verloren</t>
+	  </w>  
+	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.6">
+	    <t offset="37">.</t>
+	  </w>  
+	  <entities>
+	    <entity class="politicalparty">
+             <wref id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" t="CDA"/>
+	    </entity>
+	  </entities>
+	</s>
+      </div>
     </div>
     <gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter">
       <desc>Backmatter</desc>
