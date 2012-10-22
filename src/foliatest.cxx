@@ -1589,7 +1589,7 @@ void edit_test003b( ){
   assertThrow( w->addAnnotation<PosAnnotation>( args ), ValueError );
 }
 
-void edit_test004( ){
+void edit_test004a( ){
   startTestSerie( " Add a token default-set annotation which gives a name clash " );
   Document editDoc( "file='tests/folia.example'" );
   // grab a word (naam)
@@ -1602,9 +1602,32 @@ void edit_test004( ){
   assertThrow( w->addLemmaAnnotation( args ), DuplicateAnnotationError );
 }
 
-void edit_test005( ){
+void edit_test004b( ){
+  startTestSerie( " Add a token default-set annotation which gives a name clash " );
+  Document editDoc( "file='tests/folia.example'" );
+  // grab a word which already has morhological info)
+  FoliaElement *w = 0;
+  assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"] );
+  // add morhological information without specifying a set (should take default
+  // set), but this will clash with existing tag!
+  FoliaElement *l = new MorphologyLayer( &editDoc );
+  FoliaElement *m = new Morpheme( &editDoc );
+  l->append( m );
+  FoliaElement *t = new TextContent( &editDoc, "value='hand', offset='0'");
+  m->append( t );
+  m = new Morpheme( &editDoc );
+  l->append( m );
+  t = new TextContent( &editDoc, "value='schrift', offset='4'");
+  m->append( t );
+  m = new Morpheme( &editDoc );
+  l->append( m );
+  t = new TextContent( &editDoc, "value='en', offset='11'");
+  m->append( t );
+  assertThrow( w->append( l ), DuplicateAnnotationError );
+}
+
+void edit_test005a( ){
   startTestSerie( " Adding an alternative token annotation " );
-  // grab a word (naam)
   Document doc( "file='tests/folia.example'" );
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
   KWargs args = getArgs( "cls='V'" );
@@ -1626,6 +1649,34 @@ void edit_test005( ){
 
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\"/><lemma class=\"naam\"/><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt.1\" auth=\"no\"><pos class=\"V\"/></alt></w>" );
 
+}
+
+void edit_test005b( ){
+  startTestSerie( " Adding a morpology layer in a different set" );
+  FoliaElement *w = 0;
+  Document editDoc( "file='tests/folia.example'" );
+  assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"] );
+  // add morhological information without specifying a set (should take default
+  // set), but this will clash with existing tag!
+  
+  FoliaElement *alt = 0;
+  KWargs args;
+  assertNoThrow( alt = w->addAlternative<MorphologyLayer>( args ) );
+  MorphologyLayer *l = alt->select<MorphologyLayer>()[0];
+  FoliaElement *m = new Morpheme( &editDoc );
+  l->append( m );
+  FoliaElement *t = new TextContent( &editDoc, "value='hand', offset='0'");
+  m->append( t );
+  m = new Morpheme( &editDoc );
+  l->append( m );
+  t = new TextContent( &editDoc, "value='schrift', offset='4'");
+  m->append( t );
+  m = new Morpheme( &editDoc );
+  l->append( m );
+  t = new TextContent( &editDoc, "value='en', offset='11'");
+  m->append( t );
+  cerr << "l " << l->xmlstring() << endl;
+  cerr << "w " << w->xmlstring() << endl;
 }
 
 void edit_test006( ){
@@ -2442,8 +2493,10 @@ int main(){
   edit_test002();
   edit_test003();
   edit_test003b();
-  edit_test004();
-  edit_test005();
+  edit_test004a();
+  edit_test004b();
+  edit_test005a();
+  edit_test005b();
   edit_test006();
   edit_test007();
   edit_test008();
