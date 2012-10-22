@@ -1659,10 +1659,8 @@ void edit_test005b( ){
   // add morhological information without specifying a set (should take default
   // set), but this will clash with existing tag!
   
-  FoliaElement *alt = 0;
-  KWargs args;
-  assertNoThrow( alt = w->addAlternative<MorphologyLayer>( args ) );
-  MorphologyLayer *l = alt->select<MorphologyLayer>()[0];
+  MorphologyLayer *l = 0;
+  assertNoThrow( l = w->addAlternative<MorphologyLayer>() );
   FoliaElement *m = new Morpheme( &editDoc );
   l->append( m );
   FoliaElement *t = new TextContent( &editDoc, "value='hand', offset='0'");
