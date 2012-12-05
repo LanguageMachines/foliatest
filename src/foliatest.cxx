@@ -1119,16 +1119,16 @@ void sanity_test102i(){
   KWargs args = getArgs( "set='gap1-set', cls='Y', annotator='proycon'" );
   FoliaElement *g = 0;
   assertNoThrow( g = new Gap( &doc, args ) );
-  text->append( g );
+  assertNoThrow( text->append( g ) );
   args = getArgs( "set='gap1-set', cls='Z1'" );
   assertNoThrow( g = new Gap( &doc, args ) );
-  text->append( g );
+  assertNoThrow( text->append( g ) );
   args = getArgs( "set='gap2-set', cls='Z2'" );
   assertNoThrow( g = new Gap( &doc, args ) );
-  text->append( g );
+  assertNoThrow( text->append( g ) );
   args = getArgs( "set='gap2-set', cls='Y2', annotator='onbekend'" );
   assertNoThrow( g = new Gap( &doc, args ) );
-  text->append( g );
+  assertNoThrow( text->append( g ) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap1-set\"/>" );
   assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"proycon\" class=\"Y\" set=\"gap1-set\"/>" );
@@ -1673,8 +1673,6 @@ void edit_test005b( ){
   l->append( m );
   t = new TextContent( &editDoc, "value='en', offset='11'");
   m->append( t );
-  cerr << "l " << l->xmlstring() << endl;
-  cerr << "w " << w->xmlstring() << endl;
 }
 
 void edit_test006( ){
