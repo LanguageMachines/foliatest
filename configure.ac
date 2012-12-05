@@ -80,9 +80,9 @@ CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 
 
-PKG_CHECK_MODULES([CppUnit], [cppunit >= 1.12.1] )
-CXXFLAGS="$CXXFLAGS $CppUnit_CFLAGS"
-LIBS="$CppUnit_LIBS $LIBS"
+#PKG_CHECK_MODULES([CppUnit], [cppunit >= 1.12.1] )
+#CXXFLAGS="$CXXFLAGS $CppUnit_CFLAGS"
+#LIBS="$CppUnit_LIBS $LIBS"
 
 PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
