@@ -1536,10 +1536,12 @@ void edit_test002( ){
   assertNoThrow( p = w->annotation<PosAnnotation>( "adhocpos") );
   assertTrue( p->isinstance<PosAnnotation>() );
   assertTrue( p->cls() == "NOUN" );
-
+  assertTrue( w->pos("adhocpos") == "NOUN" );
+  
   assertNoThrow( p = w->annotation<LemmaAnnotation>( "adhoclemma") );
   assertTrue( p->isinstance<LemmaAnnotation>() );
   assertTrue( p->cls() == "NAAM" );
+  assertTrue( w->lemma("adhoclemma") == "NAAM" );
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" datetime=\"1982-12-15T19:00:01\" set=\"adhoclemma\"/></w>");
   
 }
