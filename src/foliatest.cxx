@@ -1677,6 +1677,34 @@ void edit_test005b( ){
   m->append( t );
 }
 
+void edit_test005c( ){
+  startTestSerie( " Adding TextContents in different classes" );
+  FoliaElement *s = 0;
+  Document editDoc( "file='tests/folia.example'" );
+  assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
+  FoliaElement *t = new TextContent( &editDoc, "value='text1', class='test1'");
+  assertNoThrow( s->append( t ) );
+  t = new TextContent( &editDoc, "value='text1', class='test2'");
+  assertNoThrow( s->append( t ) );
+}
+
+void edit_test005d( ){
+  startTestSerie( " Adding String tags in several classes" );
+  FoliaElement *s = 0;
+  Document editDoc( "file='tests/folia.example'" );
+  assertNoThrow( editDoc.declare( AnnotationType::STRING, 
+				  "stringtypes") );
+  assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
+  FoliaElement *t = new String( &editDoc, "class='test1'");
+  assertNoThrow( t->settext( "text1", "test1" ) );
+  assertNoThrow( s->append( t ) );
+  t = new String( &editDoc, "class='test2'");
+  assertNoThrow( s->append( t ) );
+  assertNoThrow( t->settext( "text2" ) );
+  assertNoThrow( t->settext( "text2" , "test2" ) );
+  assertTrue( t->xmlstring() == "<str xmlns=\"http://ilk.uvt.nl/folia\" class=\"test2\"><t>text2</t><t class=\"test2\">text2</t></str>" );
+}
+
 void edit_test006( ){
   startTestSerie( " Correcting text " );
   FoliaElement *w = 0;
@@ -1803,8 +1831,19 @@ void edit_test011(){
 }
 
 void edit_test012(){
-  startTestSerie( " Alignment " );
-  assertMessage( "Not Implemented test012", false );
+  startTestSerie( " Edit Check - Adding Alignment" );
+  Document editDoc( "file='tests/folia.example'" );
+  FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.6.w.8"];
+  Alignment *a = new Alignment( &editDoc, "cls='coreference'" );
+  w->append( a );
+  AlignReference *ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.1', type='word'" );
+  a->append(ar);
+  ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.2', type='word'" );
+  a->append(ar);
+  assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
+  assertEqual( a->resolve()[1], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.2"] );
+  cerr << w->xmlstring() << endl;
+  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\"/><lemma class=\"ze\"/><alignment class=\"coreference\"><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" type=\"word\"/><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"word\"/></alignment></w>" );
 }
 
 void edit_test013(){
@@ -2495,6 +2534,8 @@ int main(){
   edit_test004b();
   edit_test005a();
   edit_test005b();
+  edit_test005c();
+  edit_test005d();
   edit_test006();
   edit_test007();
   edit_test008();
@@ -2533,5 +2574,5 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
-  summarize_tests(1);
+  summarize_tests();
 }
