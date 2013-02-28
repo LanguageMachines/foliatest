@@ -536,6 +536,9 @@
             <t>afstammingsgeschiedenis</t>
             <pos class="N(soort,ev,basis,zijd,stan)"/>
             <lemma class="afstammingsgeschiedenis"/>
+            <alignment class="extern" xlink:href="externalfile.xml" xlink:type="simple">
+              <aref id="A1" type="w"/>
+            </alignment>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.3.w.18">
             <t>geplaatst</t>
