@@ -448,7 +448,6 @@ void sanity_test023a(){
   startTestSerie(" Obtaining left context " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   vector<Word*> context = w->leftcontext(3);
-  //  cerr << "found context " << context << endl;
   assertTrue( context.size() == 3 );
   assertTrue( context[0]->text() == "wetenschap" );
   assertTrue( context[1]->text() == "wordt" );
@@ -460,7 +459,6 @@ void sanity_test023b(){
   startTestSerie(" Obtaining left context with default placeholder " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
   vector<Word*> context = w->leftcontext(3);
-  //  cerr << "found context " << context << endl;
   assertTrue( context.size() == 3 );
   assertTrue( context[0] == 0 );
   assertTrue( context[1]->text() == "Stemma" );
@@ -472,7 +470,6 @@ void sanity_test023c(){
   startTestSerie(" Obtaining left context with placeholder " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
   vector<Word*> context = w->leftcontext(3,"?");
-  //  cerr << "found context " << context << endl;
   assertTrue( context.size() == 3 );
   assertTrue( context[0]->isinstance( PlaceHolder_t) );
   assertTrue( context[0]->text() == "?" );
@@ -485,7 +482,6 @@ void sanity_test024a(){
   startTestSerie(" Obtaining right context " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   vector<Word*> context = w->rightcontext(3);
-  //  cerr << "found context " << context << endl;
   assertTrue( context.size() == 3 );
   assertTrue( text(context[0]) == "," );
   assertTrue( text(context[1]) == "onder" );
@@ -497,7 +493,6 @@ void sanity_test024b(){
   startTestSerie(" Obtaining right context with default placeholder " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.5"];
   vector<Word*> context = w->rightcontext(3);
-  //  cerr << "found context " << context << endl;
   assertTrue( context.size() == 3 );
   assertTrue( text(context[0]) == "." );
   assertTrue( context[1] == 0 );
@@ -508,9 +503,6 @@ void sanity_test024c(){
   startTestSerie(" Obtaining right context with placeholder " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.5"];
   vector<Word*> context = w->rightcontext(3, "_");
-  cerr << "found context " << context[0] << endl;
-  cerr << "found context " << context[1] << endl;
-  cerr << "found context " << context[2] << endl;
   assertTrue( context.size() == 3 );
   assertTrue( text(context[0]) == "." );
   assertTrue( context[1]->isinstance(PlaceHolder_t) );
@@ -522,7 +514,6 @@ void sanity_test025a(){
   startTestSerie(" Obtaining full context " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   vector<Word*> context = w->context(3);
-  //  cerr << "found context " << context << endl;
   assertTrue( context.size() == 7 );
   assertTrue( context[0]->text() == "wetenschap" );
   assertTrue( context[1]->text() == "wordt" );
@@ -584,9 +575,7 @@ void sanity_test027(){
   startTestSerie(" Time Stamp " );
   FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
   FoliaElement *pos = word->annotation<PosAnnotation>();
-  //  cerr << endl << "'" << pos->getDateTime() << "'" << endl;
   assertTrue( pos->getDateTime() == "2011-07-20T19:00:01" );
-  //  cerr << endl << pos->xmlstring() << endl;
   assertTrue( pos->xmlstring() == "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"N(soort,ev,basis,zijd,stan)\" datetime=\"2011-07-20T19:00:01\"/>" );      
   
 }
@@ -1366,15 +1355,6 @@ void sanity_test104( ){
   assertTrue( len(doc.sentences()) == 1 ); // one sentence at top level
   vector<Sentence*> s = doc.sentenceParts();
   assertTrue( s.size() == 3 );
-  // cerr << "AHA" << endl;
-  // for ( size_t i=0; i < s.size(); ++i ){
-  //   vector<Word*> v = s[i]->wordParts();
-  //   cerr << "sentence[" << s[i]->id() << "] = ";
-  //   for ( size_t j=0; j < v.size(); ++j ){
-  //     cerr << v[j]->str() << " ";
-  //   }
-  //   cerr << endl;
-  // }
   vector<Word*> v = s[0]->wordParts();
   assertTrue( v[5]->str() == "doc.p.1.s.1.quote.1.s.2" );
   v = s[1]->wordParts();
@@ -1389,15 +1369,6 @@ void sanity_test105( ){
   Document doc;
   assertNoThrow( doc.readFromFile("tests/fg.xml") );
   vector<Sentence *> s = doc.sentenceParts();
-  // cerr << "AHA" << endl;
-  // for ( size_t i=0; i < s.size(); ++i ){
-  //   vector<Word*> v = s[i]->wordParts();
-  //   cerr << "part[" << i << "] = ";
-  //   for ( size_t j=0; j < v.size(); ++j ){
-  //     cerr << v[j]->str() << " ";
-  //   }
-  //   cerr << endl;
-  // }
   assertTrue( s.size() == 24 );
   vector<Word*> wv = s[18]->wordParts();
   assertTrue( wv[1]->str() == "zegt" );
@@ -1842,7 +1813,6 @@ void edit_test012(){
   a->append(ar);
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
   assertEqual( a->resolve()[1], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.2"] );
-  cerr << w->xmlstring() << endl;
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\"/><lemma class=\"ze\"/><alignment class=\"coreference\"><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" type=\"word\"/><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"word\"/></alignment></w>" );
 }
 
@@ -2064,8 +2034,6 @@ void create_test003( ){
   assertTrue( v1.size() == 1 );
   vector<Gap*> v3 = text->select<Gap>();
   assertTrue( v3.size() == 2 ); 
-  //  assertNoThrow( d.save( "/tmp/foliacreatetest003.xml" ) );
-  //  cerr << "\n" << text->xmlstring() << endl;
   assertTrue( text->xmlstring() == "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\" set=\"extended-gap-set\"/></text>" );
 }
 
