@@ -564,6 +564,7 @@
         <s xml:id="WR-P-E-J-0000000001.p.1.s.4">
           <t>De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
           <t class="original">De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
+          <t class="translate" xml:lang="en">Uppercase A is used for the original.</t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.1">
             <t offset="0">De</t>
             <t class="original" offset="0">De</t>
