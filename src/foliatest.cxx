@@ -1386,7 +1386,8 @@ void sanity_test106( ){
   assertThrow( doc.readFromString(xml), XmlError );
   Sentence *s = 0;
   assertThrow( new Sentence(&doc, "id='dit mag ook niet'" ), XmlError );
-  
+  assertThrow( new Sentence(&doc, "id='1.ook.niet'" ), XmlError );
+  assertThrow( new Sentence(&doc, "id='dit:ook:niet'" ), XmlError );  
 }
 
 void edit_test001a( ){
