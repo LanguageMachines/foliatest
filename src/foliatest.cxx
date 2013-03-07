@@ -1808,13 +1808,15 @@ void edit_test012(){
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.6.w.8"];
   Alignment *a = new Alignment( &editDoc, "cls='coreference'" );
   w->append( a );
-  AlignReference *ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.1', type='word'" );
+  AlignReference *ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.1', type='w'" );
   a->append(ar);
-  ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.2', type='word'" );
+  assertThrow( ar = new AlignReference( "id='wrong', type='word'" ), XmlError );
+  assertThrow( ar = new AlignReference( "id='wrong'" ), XmlError );
+  ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.2', type='w'" );
   a->append(ar);
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
   assertEqual( a->resolve()[1], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.2"] );
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\"/><lemma class=\"ze\"/><alignment class=\"coreference\"><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" type=\"word\"/><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"word\"/></alignment></w>" );
+  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\"/><lemma class=\"ze\"/><alignment class=\"coreference\"><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" type=\"w\"/><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"w\"/></alignment></w>" );
 }
 
 void edit_test013(){
