@@ -1416,7 +1416,7 @@ void edit_test001a( ){
   assertNoThrow( w = new Word( &editDoc, "text='.', cls='PUNCTUATION', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
   s->append( w );  
   for ( int i=0; i < 6; ++i ){
-    assertTrue( s->index(i)->id() == s->id() + ".w." + toString(i+1) );
+    assertTrue( s->index(i)->id() == s->id() + ".w." + TiCC::toString(i+1) );
   }
 
   // index check
