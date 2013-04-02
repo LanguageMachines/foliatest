@@ -11,8 +11,8 @@
 #include <stdexcept>
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
-#include "libfolia/document.h"
-#include "libfolia/folia.h"
+#include "folia/document.h"
+#include "folia/folia.h"
 
 #include <ticcutils/UnitTest.h>
 
