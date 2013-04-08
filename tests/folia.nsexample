@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<fl:FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fl="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.10" version="0.8">
+<?xml version="1.0" encoding="UTF-8"?>
+<fl:FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fl="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
   <fl:metadata type="imdi">
     <fl:annotations>
       <fl:token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
@@ -14,111 +14,111 @@
       <fl:gap-annotation set="gap-set"/>
     </fl:annotations>
     <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
-    <imdi:Session>
-      <imdi:Name>WR-P-E-J-0000000001</imdi:Name>
-      <imdi:Title>Stemma</imdi:Title>
-      <imdi:Date>2009-01-27</imdi:Date>
-      <imdi:Description/>
-      <imdi:MDGroup>
-        <imdi:Location>
-          <imdi:Continent>Europe</imdi:Continent>
-          <imdi:Country>NL/B</imdi:Country>
-        </imdi:Location>
-        <imdi:Keys/>
-        <imdi:Project>
-          <imdi:Name>D-Coi</imdi:Name>
-          <imdi:Title/>
-          <imdi:Id/>
-          <imdi:Contact/>
-          <imdi:Description/>
-        </imdi:Project>
-        <imdi:Collector>
-          <imdi:Name/>
-          <imdi:Contact/>
-          <imdi:Description/>
-        </imdi:Collector>
-        <imdi:Content>
-          <imdi:Task/>
-          <imdi:Modalities/>
-          <imdi:CommunicationContext>
-            <imdi:Interactivity/>
-            <imdi:PlanningType/>
-            <imdi:Involvement/>
-          </imdi:CommunicationContext>
-          <imdi:Genre>
-            <imdi:Interactional/>
-            <imdi:Discursive/>
-            <imdi:Performance/>
-          </imdi:Genre>
-          <imdi:Languages>
-            <imdi:Language>
-              <imdi:Id/>
-              <imdi:Name>Dutch</imdi:Name>
-              <imdi:Description/>
-            </imdi:Language>
-          </imdi:Languages>
+      <imdi:Session>
+        <imdi:Name>WR-P-E-J-0000000001</imdi:Name>
+        <imdi:Title>Stemma</imdi:Title>
+        <imdi:Date>2009-01-27</imdi:Date>
+        <imdi:Description/>
+        <imdi:MDGroup>
+          <imdi:Location>
+            <imdi:Continent>Europe</imdi:Continent>
+            <imdi:Country>NL/B</imdi:Country>
+          </imdi:Location>
           <imdi:Keys/>
-        </imdi:Content>
-        <imdi:Participants/>
-      </imdi:MDGroup>
-      <imdi:Resources>
-        <imdi:MediaFile>
-          <imdi:ResourceLink/>
-          <imdi:Size>2865</imdi:Size>
-          <imdi:Type/>
-          <imdi:Format/>
-          <imdi:Quality>Unknown</imdi:Quality>
-          <imdi:RecordingConditions/>
-          <imdi:TimePosition Start="Unknown"/>
-          <imdi:Access>
-            <imdi:Availability/>
-            <imdi:Date/>
-            <imdi:Owner/>
-            <imdi:Publisher/>
+          <imdi:Project>
+            <imdi:Name>D-Coi</imdi:Name>
+            <imdi:Title/>
+            <imdi:Id/>
             <imdi:Contact/>
             <imdi:Description/>
-          </imdi:Access>
-          <imdi:Description/>
-        </imdi:MediaFile>
-        <imdi:AnnotationUnit>
-          <imdi:ResourceLink/>
-          <imdi:MediaResourceLink/>
-          <imdi:Annotator/>
-          <imdi:Date/>
-          <imdi:Type/>
-          <imdi:Format/>
-          <imdi:ContentEncoding/>
-          <imdi:CharacterEncoding/>
-          <imdi:Access>
-            <imdi:Availability/>
-            <imdi:Date/>
-            <imdi:Owner/>
-            <imdi:Publisher/>
+          </imdi:Project>
+          <imdi:Collector>
+            <imdi:Name/>
             <imdi:Contact/>
             <imdi:Description/>
-          </imdi:Access>
-          <imdi:LanguageId/>
-          <imdi:Anonymous>false</imdi:Anonymous>
-          <imdi:Description/>
-        </imdi:AnnotationUnit>
-        <imdi:Source>
-          <imdi:Id/>
-          <imdi:Format/>
-          <imdi:Quality>Unknown</imdi:Quality>
-          <imdi:TimePosition Start="Unknown"/>
-          <imdi:Access>
-            <imdi:Availability>GNU Free Documentation License</imdi:Availability>
-            <imdi:Date/>
-            <imdi:Owner/>
-            <imdi:Publisher>Wikimedia Foundation (NL/B)</imdi:Publisher>
-            <imdi:Contact/>
+          </imdi:Collector>
+          <imdi:Content>
+            <imdi:Task/>
+            <imdi:Modalities/>
+            <imdi:CommunicationContext>
+              <imdi:Interactivity/>
+              <imdi:PlanningType/>
+              <imdi:Involvement/>
+            </imdi:CommunicationContext>
+            <imdi:Genre>
+              <imdi:Interactional/>
+              <imdi:Discursive/>
+              <imdi:Performance/>
+            </imdi:Genre>
+            <imdi:Languages>
+              <imdi:Language>
+                <imdi:Id/>
+                <imdi:Name>Dutch</imdi:Name>
+                <imdi:Description/>
+              </imdi:Language>
+            </imdi:Languages>
+            <imdi:Keys/>
+          </imdi:Content>
+          <imdi:Participants/>
+        </imdi:MDGroup>
+        <imdi:Resources>
+          <imdi:MediaFile>
+            <imdi:ResourceLink/>
+            <imdi:Size>2865</imdi:Size>
+            <imdi:Type/>
+            <imdi:Format/>
+            <imdi:Quality>Unknown</imdi:Quality>
+            <imdi:RecordingConditions/>
+            <imdi:TimePosition Start="Unknown"/>
+            <imdi:Access>
+              <imdi:Availability/>
+              <imdi:Date/>
+              <imdi:Owner/>
+              <imdi:Publisher/>
+              <imdi:Contact/>
+              <imdi:Description/>
+            </imdi:Access>
             <imdi:Description/>
-          </imdi:Access>
-          <imdi:Description/>
-        </imdi:Source>
-      </imdi:Resources>
-    </imdi:Session>
-  </imdi:METATRANSCRIPT>
+          </imdi:MediaFile>
+          <imdi:AnnotationUnit>
+            <imdi:ResourceLink/>
+            <imdi:MediaResourceLink/>
+            <imdi:Annotator/>
+            <imdi:Date/>
+            <imdi:Type/>
+            <imdi:Format/>
+            <imdi:ContentEncoding/>
+            <imdi:CharacterEncoding/>
+            <imdi:Access>
+              <imdi:Availability/>
+              <imdi:Date/>
+              <imdi:Owner/>
+              <imdi:Publisher/>
+              <imdi:Contact/>
+              <imdi:Description/>
+            </imdi:Access>
+            <imdi:LanguageId/>
+            <imdi:Anonymous>false</imdi:Anonymous>
+            <imdi:Description/>
+          </imdi:AnnotationUnit>
+          <imdi:Source>
+            <imdi:Id/>
+            <imdi:Format/>
+            <imdi:Quality>Unknown</imdi:Quality>
+            <imdi:TimePosition Start="Unknown"/>
+            <imdi:Access>
+              <imdi:Availability>GNU Free Documentation License</imdi:Availability>
+              <imdi:Date/>
+              <imdi:Owner/>
+              <imdi:Publisher>Wikimedia Foundation (NL/B)</imdi:Publisher>
+              <imdi:Contact/>
+              <imdi:Description/>
+            </imdi:Access>
+            <imdi:Description/>
+          </imdi:Source>
+        </imdi:Resources>
+      </imdi:Session>
+    </imdi:METATRANSCRIPT>
   </fl:metadata>
   <fl:text xml:id="WR-P-E-J-0000000001.text">
     <fl:div xml:id="WR-P-E-J-0000000001.div0.1" class="paragraph">

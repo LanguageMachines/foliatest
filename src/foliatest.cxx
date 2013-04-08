@@ -50,6 +50,19 @@ void test1() {
   assertNoThrow( d.readFromFile( "tests/folia.example" ) );
 }
 
+void test1a() {
+  startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
+  Document d1;
+  assertNoThrow( d1.readFromFile( "tests/folia.example" ) );
+  assertNoThrow( d1.save( "/tmp/folia.example.bz2" ) );
+  Document d2;
+  assertNoThrow( d2.readFromFile( "/tmp/folia.example.bz2" ) );
+  assertNoThrow( d2.save( "/tmp/folia.example" ) );
+  int stat = system( "diff -w /tmp/folia.example tests/folia.example" );
+  assertMessage( "/tmp/folia.example tests/folia.example differ!",
+   		 (stat == 0) );
+}
+
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -2425,6 +2438,7 @@ void query_test011(){
 int main(){
   test0();
   test1();
+  test1a();
   test2();
   test3();
   test4();
