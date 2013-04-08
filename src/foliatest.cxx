@@ -63,6 +63,18 @@ void test1a() {
    		 (stat == 0) );
 }
 
+void test1b() {
+  startTestSerie( " Test lezen en schrijven van een GZ FoLiA file " );
+  Document d1;
+  assertNoThrow( d1.readFromFile( "tests/folia.example" ) );
+  assertNoThrow( d1.save( "/tmp/folia.example.gz" ) );
+  Document d2;
+  assertNoThrow( d2.readFromFile( "/tmp/folia.example.gz" ) );
+  assertNoThrow( d2.save( "/tmp/folia.gz.example" ) );
+  int stat = system( "diff -w /tmp/folia.gz.example tests/folia.example" );
+  assertMessage( "/tmp/folia.gz.example tests/folia.example differ!",
+   		 (stat == 0) );
+}
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -2439,6 +2451,7 @@ int main(){
   test0();
   test1();
   test1a();
+  test1b();
   test2();
   test3();
   test4();
