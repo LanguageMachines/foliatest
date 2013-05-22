@@ -810,6 +810,62 @@ void sanity_test037b( ){
   
 }
 
+void sanity_test038a(){
+  startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
+  PosAnnotation *p;
+  assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
+}
+
+void sanity_test038b(){
+  startTestSerie( "Sanity check - Obtaining morphemes and token annotation under morphemes" );
+  FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"];
+  vector<Morpheme*> l = w->morphemes(); //get all morphemes
+  assertEqual( l.size(), 2);
+  Morpheme *m = w->morpheme(1); // #get second morpheme
+  assertEqual( m->annotation<PosAnnotation>()->cls(), "n" );
+}
+
+void sanity_test039(){
+  startTestSerie( "Sanity Check - Find span on layer" );
+  FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.7"];
+  SemanticRolesLayer *semrolelayer = s->annotation<SemanticRolesLayer>();
+  vector<SemanticRole*> roles = semrolelayer->annotations<SemanticRole>();
+  vector<FoliaElement*> wv;
+  wv.push_back( sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.4"] );
+  wv.push_back( sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.5"] );
+  assertEqual( semrolelayer->findspan( wv ), roles[1] );
+}
+
+void sanity_test040(){
+  startTestSerie( "Sanity Check - Iteration over spans" );
+  FoliaElement *sentence = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
+  vector<EntitiesLayer*> el = sentence->select<EntitiesLayer>();
+  UnicodeString res;
+  for ( size_t i=0; i < el.size(); ++i ){
+    vector<Entity*> ev = el[i]->select<Entity>();
+    for ( size_t j=0; j < ev.size(); ++j ){
+      vector<FoliaElement*> wv = ev[i]->wrefs();
+      for ( size_t k=0; k < wv.size(); ++k ){
+	res += " " + wv[k]->text();
+      }
+    }
+  }
+  assertEqual( res, " ander woord" );
+}
+
+#ifdef NOTYET
+
+    def test041_findspans(self):
+        """Sanity check - Find spans given words"""
+        t = []
+        word = self.doc["WR-P-E-J-0000000001.p.1.s.1.w.4"]
+        for entity in word.findspans(folia.EntitiesLayer):
+            for word in entity.wrefs():
+                t.append(word.text())
+        self.assertEqual(t, ['ander','woord'])
+#endif
+
+
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
@@ -891,8 +947,8 @@ void sanity_test102a(){
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
   assertThrow( doc.declare( AnnotationType::TOKEN, 
-				     "some-set", 
-				     "annotatorname='proycon'" ), XmlError );
+			    "some-set", 
+			    "annotatorname='proycon'" ), XmlError );
   
 }
 
@@ -2507,6 +2563,10 @@ int main(){
   sanity_test036();
   sanity_test037a();
   sanity_test037b();
+  sanity_test038a();
+  sanity_test038a();
+  sanity_test039();
+  sanity_test040();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
