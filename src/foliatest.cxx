@@ -853,18 +853,20 @@ void sanity_test040(){
   assertEqual( res, " ander woord" );
 }
 
-#ifdef NOTYET
-
-    def test041_findspans(self):
-        """Sanity check - Find spans given words"""
-        t = []
-        word = self.doc["WR-P-E-J-0000000001.p.1.s.1.w.4"]
-        for entity in word.findspans(folia.EntitiesLayer):
-            for word in entity.wrefs():
-                t.append(word.text())
-        self.assertEqual(t, ['ander','woord'])
-#endif
-
+void sanity_test041(){
+  startTestSerie( "Sanity check - Find spans given words" );
+  UnicodeString res;
+  FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.4"];
+  vector<FoliaElement*> spans;
+  assertNoThrow( spans = word->findspans<EntitiesLayer>() );
+  for( size_t i=0; i < spans.size(); ++i ){
+    vector<FoliaElement*> wv = spans[i]->wrefs();
+    for ( size_t k=0; k < wv.size(); ++k ){
+      res += " " + wv[k]->text();
+    }
+  }
+  assertEqual( res, " ander woord" );
+}
 
 void sanity_test099(){
   startTestSerie(" Writing to file " );
@@ -2567,6 +2569,7 @@ int main(){
   sanity_test038a();
   sanity_test039();
   sanity_test040();
+  sanity_test041();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
