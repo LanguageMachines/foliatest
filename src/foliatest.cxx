@@ -139,7 +139,7 @@ void sanity_test003( ){
   startTestSerie(" Word count " );
   vector<Word*> v;
   assertNoThrow( v = sanityDoc.words() );
-  assertEqual( 163, v.size() );
+  assertEqual( 177, v.size() );
   
 }
 
@@ -160,9 +160,9 @@ void sanity_test005( ){
   FoliaElement* w = 0;
   assertNoThrow( w = sanityDoc.rwords(0) );
   assertTrue( w->isinstance<Word>() );
-  assertEqual( w->id(), "WR-P-E-J-0000000001.sandbox.2.s.1.w.6" );
-  assertEqual( w->text(), "." );
-  assertEqual( str(w), string(".") );
+  assertEqual( w->id(), "example.table.1.w.14" );
+  assertEqual( w->text(), "University" );
+  assertEqual( str(w), string("University") );
   
 }
 
@@ -515,20 +515,20 @@ void sanity_test024a(){
 
 void sanity_test024b(){
   startTestSerie(" Obtaining right context with default placeholder " );
-  FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.5"];
+  FoliaElement *w = sanityDoc["example.table.1.w.13"];
   vector<Word*> context = w->rightcontext(3);
   assertTrue( context.size() == 3 );
-  assertTrue( text(context[0]) == "." );
+  assertTrue( text(context[0]) == "University" );
   assertTrue( context[1] == 0 );
   assertTrue( context[2] == 0 );
 }
 
 void sanity_test024c(){
   startTestSerie(" Obtaining right context with placeholder " );
-  FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.5"];
+  FoliaElement *w = sanityDoc["example.table.1.w.13"];
   vector<Word*> context = w->rightcontext(3, "_");
   assertTrue( context.size() == 3 );
-  assertTrue( text(context[0]) == "." );
+  assertTrue( text(context[0]) == "University" );
   assertTrue( context[1]->isinstance(PlaceHolder_t) );
   assertTrue( context[2]->text() == "_" );
   
@@ -552,22 +552,23 @@ void sanity_test025a(){
 void sanity_test025b(){
   startTestSerie(" Obtaining full context with default placeholder " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<Word*> context = w->context(150);
-  assertTrue( context.size() == 301 );
+  vector<Word*> context = w->context(250);
+  assertTrue( context.size() == 501 );
   assertTrue( context[0] == 0 );
-  assertTrue( text(context[202]) == "handschrift" );
-  assertTrue( context[300] == 0 );
+  assertTrue( text(context[302]) == "handschrift" );
+  assertTrue( context[500] == 0 );
   
 }
 
 void sanity_test025c(){
   startTestSerie(" Obtaining full context with string placeholder " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
-  vector<Word*> context = w->context(150, "nil");
-  assertTrue( context.size() == 301 );
+  vector<Word*> context = w->context(250, "nil");
+  assertTrue( context.size() == 501 );
   assertTrue( text(context[0]) == "nil" );
-  assertTrue( text(context[202]) == "handschrift" );
-  assertTrue( context[300]->isinstance(PlaceHolder_t) );
+  assertTrue( text(context[302]) == "handschrift" );
+  assertTrue( text(context[202]) == "nil" );
+  assertTrue( context[500]->isinstance(PlaceHolder_t) );
   
 }
 

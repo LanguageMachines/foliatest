@@ -21,7 +21,8 @@
       <alignment-annotation set="alignment-set"/>
       <coreference-annotation set="coreference-set"/>
       <semrole-annotation set="semrole-set"/>
-      <metric-annotation set="metrics-set"/>
+      <metric-annotation set="metric-set"/>
+      <table-annotation set="table-set"/>
     </annotations>
     <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
       <imdi:Session>
@@ -1180,6 +1181,79 @@
 	    </entity>
 	  </entities>
 	</s>
+      </div>
+      <div xml:id="sandbox.3">
+	<head xml:id="sandbox.3.head">
+	  <t>De FoLiA developers zijn:</t>
+	  <str xml:id="sandbox.3.str">
+	    <t xml:lang="en" offset="3">FoLiA developers</t>
+	    <metric class="wordcount" value="2" />
+	  </str>
+	</head>
+	<table xml:id="example.table.1">
+	  <tablehead>
+	    <row>
+	      <cell>
+		<w xml:id="example.table.1.w.1">
+		  <t>Naam</t>
+		</w>
+	      </cell>
+	      <cell>
+		<w xml:id="example.table.1.w.2">
+		  <t>Universiteit</t>
+		</w>
+	      </cell>
+	    </row>
+	  </tablehead>
+	  <row>
+	    <cell>
+	      <w xml:id="example.table.1.w.3">
+		<t>Maarten</t>
+	      </w>
+	      <w xml:id="example.table.1.w.4">
+		<t>van</t>
+	      </w>
+	      <w xml:id="example.table.1.w.5">
+		<t>Gompel</t>
+	      </w>
+	    </cell>
+	    <cell>
+	      <w xml:id="example.table.1.w.6">
+		<t>Radboud</t>
+	      </w>
+	      <w xml:id="example.table.1.w.7">
+		<t>University</t>
+	      </w>
+	      <w xml:id="example.table.1.w.8">
+		<t>Nijmegen</t>
+	      </w>
+	    </cell>
+	  </row>
+	  <row>
+	    <cell>
+	      <w xml:id="example.table.1.w.9">
+		<t>Ko</t>
+	      </w>
+	      <w xml:id="example.table.1.w.10">
+		<t>van</t>
+	      </w>
+	      <w xml:id="example.table.1.w.11">
+		<t>der</t>
+	      </w>
+	      <w xml:id="example.table.1.w.12">
+		<t>Sloot</t>
+	      </w>
+	    </cell>
+	    <cell>
+	      <w xml:id="example.table.1.w.13">
+		<t>Tilburg</t>
+	      </w>
+	      <w xml:id="example.table.1.w.14">
+		<t>University</t>
+	      </w>
+	    </cell>
+	  </row>
+	</table>
       </div>
     </div>
     <gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter">
