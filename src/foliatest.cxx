@@ -58,7 +58,7 @@ void test1a() {
   Document d2;
   assertNoThrow( d2.readFromFile( "/tmp/folia.example.bz2" ) );
   assertNoThrow( d2.save( "/tmp/folia.example" ) );
-  int stat = system( "diff -w /tmp/folia.example tests/folia.example" );
+  int stat = system( "xmldiff -c /tmp/folia.example tests/folia.example" );
   assertMessage( "/tmp/folia.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -71,7 +71,7 @@ void test1b() {
   Document d2;
   assertNoThrow( d2.readFromFile( "/tmp/folia.example.gz" ) );
   assertNoThrow( d2.save( "/tmp/folia.gz.example" ) );
-  int stat = system( "diff -w /tmp/folia.gz.example tests/folia.example" );
+  int stat = system( "xmldiff -c /tmp/folia.gz.example tests/folia.example" );
   assertMessage( "/tmp/folia.gz.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -893,7 +893,7 @@ void sanity_test100a( ){
 
 void sanity_test100b( ){
   startTestSerie(" Checking saved file against input file " );
-  int stat = system( "xmldiff /tmp/savetest.xml tests/folia.example" );
+  int stat = system( "xmldiff -c /tmp/savetest.xml tests/folia.example" );
   assertMessage( "/tmp/savetest.xml tests/folia.example differ!",
 		 stat == 0 );
   

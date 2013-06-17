@@ -1184,6 +1184,7 @@
       </div>
       <div xml:id="sandbox.3">
 	<head xml:id="sandbox.3.head">
+	  <!-- Not tokenised! -->
 	  <t>De FoLiA developers zijn:</t>
 	  <str xml:id="sandbox.3.str">
 	    <t xml:lang="en" offset="3">FoLiA developers</t>
