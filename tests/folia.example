@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
-  <metadata type="imdi">
+  <metadata type="native">
     <annotations>
       <token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
       <paragraph-annotation annotator="ucto" annotatortype="auto" set="paragraphs"/>
@@ -23,115 +23,13 @@
       <semrole-annotation set="semrole-set"/>
       <metric-annotation set="metric-set"/>
       <table-annotation set="table-set"/>
+      <lang-annotation set="ISO639"/>
     </annotations>
-    <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI" Date="2009-01-27" Type="SESSION" Version="1">
-      <imdi:Session>
-        <imdi:Name>WR-P-E-J-0000000001</imdi:Name>
-        <imdi:Title>Stemma</imdi:Title>
-        <imdi:Date>2009-01-27</imdi:Date>
-        <imdi:Description/>
-        <imdi:MDGroup>
-          <imdi:Location>
-            <imdi:Continent>Europe</imdi:Continent>
-            <imdi:Country>NL/B</imdi:Country>
-          </imdi:Location>
-          <imdi:Keys/>
-          <imdi:Project>
-            <imdi:Name>D-Coi</imdi:Name>
-            <imdi:Title/>
-            <imdi:Id/>
-            <imdi:Contact/>
-            <imdi:Description/>
-          </imdi:Project>
-          <imdi:Collector>
-            <imdi:Name/>
-            <imdi:Contact/>
-            <imdi:Description/>
-          </imdi:Collector>
-          <imdi:Content>
-            <imdi:Task/>
-            <imdi:Modalities/>
-            <imdi:CommunicationContext>
-              <imdi:Interactivity/>
-              <imdi:PlanningType/>
-              <imdi:Involvement/>
-            </imdi:CommunicationContext>
-            <imdi:Genre>
-              <imdi:Interactional/>
-              <imdi:Discursive/>
-              <imdi:Performance/>
-            </imdi:Genre>
-            <imdi:Languages>
-              <imdi:Language>
-                <imdi:Id/>
-                <imdi:Name>Dutch</imdi:Name>
-                <imdi:Description/>
-              </imdi:Language>
-            </imdi:Languages>
-            <imdi:Keys/>
-          </imdi:Content>
-          <imdi:Participants/>
-        </imdi:MDGroup>
-        <imdi:Resources>
-          <imdi:MediaFile>
-            <imdi:ResourceLink/>
-            <imdi:Size>2865</imdi:Size>
-            <imdi:Type/>
-            <imdi:Format/>
-            <imdi:Quality>Unknown</imdi:Quality>
-            <imdi:RecordingConditions/>
-            <imdi:TimePosition Start="Unknown"/>
-            <imdi:Access>
-              <imdi:Availability/>
-              <imdi:Date/>
-              <imdi:Owner/>
-              <imdi:Publisher/>
-              <imdi:Contact/>
-              <imdi:Description/>
-            </imdi:Access>
-            <imdi:Description/>
-          </imdi:MediaFile>
-          <imdi:AnnotationUnit>
-            <imdi:ResourceLink/>
-            <imdi:MediaResourceLink/>
-            <imdi:Annotator/>
-            <imdi:Date/>
-            <imdi:Type/>
-            <imdi:Format/>
-            <imdi:ContentEncoding/>
-            <imdi:CharacterEncoding/>
-            <imdi:Access>
-              <imdi:Availability/>
-              <imdi:Date/>
-              <imdi:Owner/>
-              <imdi:Publisher/>
-              <imdi:Contact/>
-              <imdi:Description/>
-            </imdi:Access>
-            <imdi:LanguageId/>
-            <imdi:Anonymous>false</imdi:Anonymous>
-            <imdi:Description/>
-          </imdi:AnnotationUnit>
-          <imdi:Source>
-            <imdi:Id/>
-            <imdi:Format/>
-            <imdi:Quality>Unknown</imdi:Quality>
-            <imdi:TimePosition Start="Unknown"/>
-            <imdi:Access>
-              <imdi:Availability>GNU Free Documentation License</imdi:Availability>
-              <imdi:Date/>
-              <imdi:Owner/>
-              <imdi:Publisher>Wikimedia Foundation (NL/B)</imdi:Publisher>
-              <imdi:Contact/>
-              <imdi:Description/>
-            </imdi:Access>
-            <imdi:Description/>
-          </imdi:Source>
-        </imdi:Resources>
-      </imdi:Session>
-    </imdi:METATRANSCRIPT>
+    <meta id="title">Stemma</meta>
+    <meta id="language">nl</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
+    <lang class="nl"/>
     <div xml:id="WR-P-E-J-0000000001.div0.1">
       <head xml:id="WR-P-E-J-0000000001.head.1">
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
@@ -565,7 +463,7 @@
         <s xml:id="WR-P-E-J-0000000001.p.1.s.4">
           <t>De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
           <t class="original">De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
-          <t class="translate" xml:lang="en">Uppercase A is used for the original.</t>
+          <t class="translate">Uppercase A is used for the original.</t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.1">
             <t offset="0">De</t>
             <t class="original" offset="0">De</t>
@@ -1187,7 +1085,8 @@
 	  <!-- Not tokenised! -->
 	  <t>De FoLiA developers zijn:</t>
 	  <str xml:id="sandbox.3.str">
-	    <t xml:lang="en" offset="3">FoLiA developers</t>
+	    <t offset="3">FoLiA developers</t>
+	    <lang class="en"/>
 	    <metric class="wordcount" value="2" />
 	  </str>
 	</head>

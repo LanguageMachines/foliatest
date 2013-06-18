@@ -1744,19 +1744,6 @@ void edit_test005c( ){
 }
 
 void edit_test005d( ){
-  startTestSerie( " Adding TextContents in different languages" );
-  FoliaElement *s = 0;
-  Document editDoc( "file='tests/folia.example'" );
-  assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
-  FoliaElement *t = new TextContent( &editDoc, "value='language', lang='en'");
-  assertNoThrow( s->append( t ) );
-  assertTrue( t->xmlstring() == "<t xmlns=\"http://ilk.uvt.nl/folia\" xml:lang=\"en\">language</t>" );
-  t = new TextContent( &editDoc, "value='Sprache', lang='de'");
-  assertNoThrow( s->append( t ) );
-  assertTrue( t->xmlstring() == "<t xmlns=\"http://ilk.uvt.nl/folia\" xml:lang=\"de\">Sprache</t>" );
-}
-
-void edit_test005e( ){
   startTestSerie( " Adding String tags in several classes" );
   FoliaElement *s = 0;
   Document editDoc( "file='tests/folia.example'" );
@@ -2610,7 +2597,6 @@ int main(){
   edit_test005b();
   edit_test005c();
   edit_test005d();
-  edit_test005e();
   edit_test006();
   edit_test007();
   edit_test008();

@@ -1,4 +1,5 @@
 [text]
+ [lang]
  [div]
   [head]
    [s]
@@ -816,6 +817,7 @@
     [t]
     [str]
      [t]
+     [lang]
      [metric]
       [value]
    [table]
