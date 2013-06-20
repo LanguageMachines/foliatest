@@ -814,6 +814,7 @@
       [morpheme]
   [div]
    [head]
+    [comment]
     [t]
     [str]
      [t]
@@ -862,3 +863,4 @@
  [gap]
   [desc]
   [content]
+   [comment]
