@@ -66,6 +66,7 @@
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5">
             <t>woord</t>
             <pos class="N(soort,ev,basis,onz,stan)"/>
+	    <!-- numb comment -->
             <lemma class="woord"/>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.6">
@@ -87,6 +88,7 @@
           <entities>
             <entity class="ander_woord">
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander"/>
+	      <!-- no idea why you would like to comment on this -->
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord"/>
             </entity>
           </entities>
@@ -1057,7 +1059,7 @@
 	      <morpheme class="lexical">
 		<t offset="4">lijsttrekker</t>
 		<pos class="n" />
-		<lemma class="lijsttrekker" />
+		<lemma class="lijsttrekker"/>
 	      </morpheme>
 	    </morphology>
 	  </w> 
@@ -1087,7 +1089,7 @@
 	  <str xml:id="sandbox.3.str">
 	    <t offset="3">FoLiA developers</t>
 	    <lang class="en"/>
-	    <metric class="wordcount" value="2" />
+	    <metric class="wordcount" value="2"/>
 	  </str>
 	</head>
 	<table xml:id="example.table.1">
