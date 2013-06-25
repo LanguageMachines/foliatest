@@ -576,11 +576,14 @@ void sanity_test026a(){
   startTestSerie(" Features " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
   FoliaElement *pos = w->annotation<PosAnnotation>();
+  assertTrue( pos->isSubClass( TokenAnnotation_t ) );
   assertTrue( pos->isinstance(Pos_t) );
   assertTrue( pos->cls() == "WW(vd,prenom,zonder)" );
   assertTrue( len(pos) ==  1 );
   vector<Feature*> features = pos->select<Feature>();
   assertTrue( len(features) == 1 );
+  assertFalse( isSubClass( features[0]->element_id(), Sentence_t ) );
+  assertTrue( isSubClass( features[0]->element_id(), Feature_t ) );
   assertTrue( isinstance(features[0], Feature_t ) );
   assertTrue( features[0]->subset() == "head" );
   assertTrue( features[0]->cls() == "WW" );
@@ -805,6 +808,7 @@ void sanity_test037b( ){
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
   PosAnnotation* p = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
   vector<string> v = p->feats("x");
+  assertEqual( v.size(), 3 );
   assertTrue( v[0] == "a" );
   assertTrue( v[1] == "b" );
   assertTrue( v[2] == "c" );
