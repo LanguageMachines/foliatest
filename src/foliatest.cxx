@@ -649,7 +649,7 @@ void sanity_test030( ){
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"];
   assertTrue( s->text() == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkante haken geplaatst ." );
   assertThrow( s->stricttext(), NoSuchText );
-  assertTrue( s->stricttext("original") == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkant haken geplaatst ." );
+  assertTrue( s->stricttext("original") == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkant haken geplaatst." );
   assertThrow( s->text( "BLAH" ), NoSuchText );
 
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
