@@ -1997,7 +1997,7 @@ void edit_test018b(){
   startTestSerie( " Altering sentence text (untokenized by definition)" );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.8"];
-  assertTrue( s->text() == "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
+  assertEqual( s->text(), "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
   assertNoThrow( s->settext("Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt." ) );
   assertNoThrow( s->settext("Een volle lijn duidt op een verwantschap, terweil een stippelijn op een onzekere verwantschap duidt.", "original" ) );
   assertTrue( s->text() == "Een volle lijn duidt op een verwantschap, terwijl een stippellijn op een onzekere verwantschap duidt." );

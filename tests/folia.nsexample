@@ -3,7 +3,7 @@
   <fl:metadata type="imdi">
     <fl:annotations>
       <fl:token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
-      <fl:div-annotation set="div-set"/>
+      <fl:division-annotation set="div-set"/>
       <fl:pos-annotation annotator="tadpole" annotatortype="auto" set="cgn-combinedtags"/>
       <fl:lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/>
       <fl:syntax-annotation set="syntax-set"/>
