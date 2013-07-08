@@ -646,10 +646,10 @@ void sanity_test029(){
 
 void sanity_test030( ){
   startTestSerie(" Text Content " );
-  FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"];
-  assertTrue( s->text() == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkante haken geplaatst ." );
-  assertThrow( s->stricttext(), NoSuchText );
-  assertTrue( s->stricttext("original") == "Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkant haken geplaatst." );
+  FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.4"];
+  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  assertEqual( s->stricttext(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  assertEqual( s->stricttext("original"), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   assertThrow( s->text( "BLAH" ), NoSuchText );
 
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
@@ -660,7 +660,6 @@ void sanity_test030( ){
   FoliaElement *w2= sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
   assertTrue( w2->text() == "vierkante" );
   assertTrue( w2->stricttext() == "vierkante" );
-  assertTrue( w2->stricttext("original") == "vierkant" );
   
 }
 
@@ -906,7 +905,34 @@ void sanity_test043(){
   assertEqual( st->text(), "FoLiA developers" );
   assertEqual( st->annotation<LangAnnotation>()->cls(), "eng" );
 }
- 
+
+void sanity_test044(){
+  startTestSerie( " Sanity check - Text Markup " );
+  FoliaElement *head = sanityDoc["sandbox.3.head"];
+  TextContent *t = head->textcontent();
+  assertEqual( len(head->select<TextMarkupString>()), 1 );
+  assertEqual( len(t->select<TextMarkupString>()), 1 );
+  vector<TextMarkupString*> v = t->select<TextMarkupString>();
+  TextMarkupString *st = v[0];
+  assertEqual( st->text(), "FoLiA developers" ) ;// testing value (full text value)
+  FoliaElement *r1 =  st->resolveid();
+  FoliaElement *r2 = sanityDoc["sandbox.3.str"];
+  assertEqual( r1, r2 ); // testing resolving references
+  t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->textcontent();
+  assertTrue( t->index(t->size()-1)->isinstance( LineBreak_t) );  // did we get the linebreak properly?
+  // testing nesting
+  assertEqual( len(st), 2 );
+  assertEqual( st->index(0), sanityDoc["sandbox.3.str.bold"] );
+
+  // testing TextMarkup.text()
+  assertEqual( st->index(0)->text(), "FoLiA" );
+
+  // resolving returns self if it's not a reference
+  assertEqual( sanityDoc["sandbox.3.str.bold"]->resolveid(), 
+	       sanityDoc["sandbox.3.str.bold"] );
+}
+
+
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
@@ -2599,6 +2625,7 @@ int main(){
   sanity_test041();
   sanity_test042();
   sanity_test043();
+  sanity_test044();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
