@@ -163,7 +163,6 @@ void sanity_test005( ){
   assertEqual( w->id(), "example.table.1.w.14" );
   assertEqual( w->text(), "University" );
   assertEqual( str(w), string("University") );
-  
 }
 
 void sanity_test006( ){
@@ -174,7 +173,19 @@ void sanity_test006( ){
   assertTrue( w->id() == "WR-P-E-J-0000000001.p.1.s.1" );
   assertTrue( !w->hastext() );
   assertTrue( w->str() == "Stemma is een ander woord voor stamboom ." );
-  
+}
+
+void sanity_test006b(){
+  startTestSerie( " Sanity check - Sentence text (including retaining tokenisation) " );
+  // grab fifth sentence
+  Sentence *s = sanityDoc.sentences(5);
+  assertTrue( isinstance( s, Sentence_t ) );
+  assertFalse( s->hastext() );
+  assertEqual( s->text(), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring." );
+  assertEqual( s->text("current",true), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring ." );
+  // not detokenised
+  assertEqual( s->toktext(), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring ." );
+  // just an alias for the above
 }
 
 void sanity_test007( ){
@@ -915,7 +926,7 @@ void sanity_test044(){
   vector<TextMarkupString*> v = t->select<TextMarkupString>();
   TextMarkupString *st = v[0];
   assertEqual( st->text(), "FoLiA developers" ) ;// testing value (full text value)
-  FoliaElement *r1 =  st->resolveid();
+  const FoliaElement *r1 =  st->resolveid();
   FoliaElement *r2 = sanityDoc["sandbox.3.str"];
   assertEqual( r1, r2 ); // testing resolving references
   t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->textcontent();
