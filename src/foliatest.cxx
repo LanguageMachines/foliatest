@@ -380,7 +380,7 @@ void sanity_test020a(){
   assertTrue( l->index(0)->index(2)->index(0)->cls() == "np" );
   assertTrue( l->index(0)->index(2)->index(1)->cls() == "pp" );
   assertTrue( l->index(0)->index(2)->index(1)->text() == "voor stamboom" );
-  assertTrue( l->index(0)->index(2)->text() == "een ander woord voor stamboom" );
+  assertEqual( l->index(0)->index(2)->text(), "een ander woord voor stamboom" );
   
 }
 
@@ -664,6 +664,18 @@ void sanity_test030( ){
   
 }
 
+void sanity_test030b( ){
+  startTestSerie( " Sanity check - Text Content (2) " );
+  FoliaElement *head = sanityDoc["sandbox.3.head"];
+  TextContent *t = head->textcontent();
+  assertEqual( len(t), 3 );
+  assertEqual( t->text(), "De FoLiA developers zijn:" );
+  assertEqual( t->index(0)->text(), "De ");
+  assertTrue( isinstance( t->index(1), TextMarkupString_t ) );
+  assertEqual( t->index(1)->text(), "FoLiA developers" );
+  assertEqual( t->index(2)->text(), " zijn:" );
+}
+
 void sanity_test031( ){
   startTestSerie(" Lexical Semantic Sense Annotation " );
   FoliaElement *w = sanityDoc["sandbox.list.1.listitem.1.s.1.w.1"];
@@ -873,6 +885,28 @@ void sanity_test041(){
   assertEqual( res, " ander woord" );
 }
 
+void sanity_test042(){
+  startTestSerie( " Sanity check - Table " );
+  FoliaElement *table = sanityDoc["example.table.1"];
+  assertTrue( isinstance( table, Table_t) );
+  assertTrue( isinstance( table->index(0), TableHead_t) );
+  assertTrue( isinstance( table->index(0)->index(0), Row_t) );
+  assertEqual( len( table->index(0)->index(0)), 2 ); // two cells
+  assertTrue( isinstance(table->index(0)->index(0)->index(0), Cell_t) );
+  assertEqual( table->index(0)->index(0)->index(0)->text(), "Naam" );
+  assertEqual( table->index(0)->index(0)->text(), "Naam | Universiteit" ); //text of whole row
+}
+
+void sanity_test043(){
+  startTestSerie( " Sanity check - String " );
+  FoliaElement *head = sanityDoc["sandbox.3.head"];
+  assertTrue( head->hasannotation<String>() );
+  vector<String*> v = head->select<String>();
+  String* st = v[0];
+  assertEqual( st->text(), "FoLiA developers" );
+  assertEqual( st->annotation<LangAnnotation>()->cls(), "eng" );
+}
+ 
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
@@ -1523,8 +1557,8 @@ void edit_test001a( ){
   assertTrue( w->text() == "." );
 
   // sentence ok?
-  assertTrue( s->toktext() == "Dit is een nieuwe zin ." );
-  assertTrue( s->text() == "Dit is een nieuwe zin." );
+  assertEqual( s->toktext(), "Dit is een nieuwe zin ." );
+  assertEqual( s->text(), "Dit is een nieuwe zin." );
 
   // all well?
 
@@ -2249,7 +2283,7 @@ void correction_test004(){
 
   s->insertword( new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.3b', text='groot'" ), corDoc->index( corDoc->id() + ".s.1.w.3" ) );
   assertNoThrow( corDoc->save( "/tmp/foliainsert004.xml" ) );
-  assertTrue( s->text() == "Ik zie een groot huis ." );
+  assertEqual( s->text(), "Ik zie een groot huis ." );
   assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.3b\"><t>groot</t></w></new><original auth=\"no\"/></correction><w xml:id=\"example.s.1.w.4\"><t>huis</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
 }
 
@@ -2549,6 +2583,7 @@ int main(){
   sanity_test028();
   sanity_test029();
   sanity_test030();
+  sanity_test030b();
   sanity_test031();
   sanity_test032();
   sanity_test033();
@@ -2562,6 +2597,8 @@ int main(){
   sanity_test039();
   sanity_test040();
   sanity_test041();
+  sanity_test042();
+  sanity_test043();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
