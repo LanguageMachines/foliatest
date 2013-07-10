@@ -165,7 +165,7 @@ void sanity_test005( ){
   assertEqual( str(w), string("University") );
 }
 
-void sanity_test006( ){
+void sanity_test006a( ){
   startTestSerie(" second sentence " );
   FoliaElement* w = 0;
   assertNoThrow( w = sanityDoc.sentences(1) );
@@ -186,6 +186,19 @@ void sanity_test006b(){
   // not detokenised
   assertEqual( s->toktext(), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring ." );
   // just an alias for the above
+}
+
+void sanity_test006c(){
+  startTestSerie( " Sanity check - Sentence text both tokenized and not " );
+  // grab fourth sentence
+  Sentence *s = sanityDoc.sentences(4);
+  assertTrue( s->hastext() );
+  // The sentence has text of it's own
+  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  // The sentence has <w> children with tokenization too
+  assertEqual( s->toktext("current"), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
+  assertEqual( s->toktext(), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
+  assertThrow( s->toktext("strange"), NoSuchText );
 }
 
 void sanity_test007( ){
@@ -2583,7 +2596,9 @@ int main(){
   sanity_test003();
   sanity_test004();
   sanity_test005();
-  sanity_test006();
+  sanity_test006a();
+  sanity_test006b();
+  sanity_test006c();
   sanity_test007();
   sanity_test008();
   sanity_test009();
