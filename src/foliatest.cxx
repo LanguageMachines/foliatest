@@ -212,7 +212,7 @@ void sanity_test007( ){
   
 }
 
-void sanity_test008(){
+void sanity_test008a(){
   startTestSerie(" division + head " );
   FoliaElement *e = 0;
   assertNoThrow( e = sanityDoc["WR-P-E-J-0000000001.div0.1"] );
@@ -221,7 +221,15 @@ void sanity_test008(){
   assertNoThrow( h = e->head() );
   assertEqual( h,  sanityDoc["WR-P-E-J-0000000001.head.1"] );
   assertTrue( len( h ) == 1 );
-  
+}
+
+void sanity_test008b(){
+  startTestSerie(" occurrences  " );
+  FoliaElement *d = 0;
+  assertNoThrow( d = sanityDoc["WR-P-E-J-0000000001.div0.1"] );
+  FoliaElement *e = 0;
+  assertNoThrow( e = new Head( &sanityDoc, "id='whatever'" ) );
+  assertThrow( d->append(e), DuplicateAnnotationError );
 }
 
 void sanity_test009( ){
@@ -1902,7 +1910,7 @@ void edit_test009a( ){
   kw["text"] = "stippellijn";
   kw["id"] = "WR-P-E-J-0000000001.p.1.s.8.w.11";
   assertThrow( w->sentence()->addWord( kw ),
-			DuplicateIDError );
+	       DuplicateIDError );
 }
 
 // void edit_test009b( ){
@@ -2600,7 +2608,8 @@ int main(){
   sanity_test006b();
   sanity_test006c();
   sanity_test007();
-  sanity_test008();
+  sanity_test008a();
+  sanity_test008b();
   sanity_test009();
   sanity_test010();
   sanity_test011();
