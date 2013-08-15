@@ -113,18 +113,18 @@ void test5() {
 }
 
 Document sanityDoc( "file='tests/folia.example'" );
- 
+
 void sanity_test000( ){
   startTestSerie( " Text count " );
   assertEqual( sanityDoc.size(), 1 );
   assertTrue( sanityDoc[0]->isinstance<Text>() );
-  
+
 }
 
 void sanity_test001( ){
   startTestSerie(" Paragraph count " );
   assertTrue( sanityDoc.paragraphs().size() == 1 );
-  
+
 }
 
 void sanity_test002(){
@@ -132,7 +132,7 @@ void sanity_test002(){
   vector<Sentence*> v;
   assertNoThrow( v = sanityDoc.sentences() );
   assertEqual( size_t(13), v.size() );
-  
+
 }
 
 void sanity_test003( ){
@@ -140,7 +140,7 @@ void sanity_test003( ){
   vector<Word*> v;
   assertNoThrow( v = sanityDoc.words() );
   assertEqual( 177, v.size() );
-  
+
 }
 
 void sanity_test004(){
@@ -152,7 +152,7 @@ void sanity_test004(){
   assertTrue( w->text() == "Stemma" );
   assertTrue( str(w) == "Stemma" );
   assertTrue( unicode(w) == "Stemma" );
-  
+
 }
 
 void sanity_test005( ){
@@ -202,14 +202,14 @@ void sanity_test006c(){
 }
 
 void sanity_test007( ){
-  startTestSerie(" use index " ); 
+  startTestSerie(" use index " );
   FoliaElement *e = 0;
   assertNoThrow( e = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"] );
   assertTrue( e->isinstance( Word_t ) );
   assertEqual( e, sanityDoc.index("WR-P-E-J-0000000001.p.1.s.2.w.7") );
   assertEqual( e->id(), string("WR-P-E-J-0000000001.p.1.s.2.w.7") );
   assertTrue( e->text() == "stamboom" );
-  
+
 }
 
 void sanity_test008a(){
@@ -232,6 +232,39 @@ void sanity_test008b(){
   assertThrow( d->append(e), DuplicateAnnotationError );
 }
 
+void sanity_test008c(){
+  startTestSerie(" empty text  " );
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"example.text.1\">\n"
+"    <p xml:id=\"par\">\n"
+"      <w xml:id=\"word\" />\n"
+"    </p>"
+"  </text>\n"
+"</FoLiA>\n" ;
+
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  FoliaElement *t = 0;
+  assertThrow( t = new TextContent( &doc, "value=''" ), ArgsError );
+  assertNoThrow( t = new TextContent( &doc, "value=' '" ) );
+  FoliaElement *p = 0;
+  assertNoThrow( p = doc["par"] );
+  cerr << endl << p->xmlstring() << endl;
+  assertNoThrow( p->append(t) );
+  cerr << endl << p->xmlstring() << endl;
+  FoliaElement *w = 0;
+  assertNoThrow( w = doc["word"] );
+  assertNoThrow( t = new TextContent( &doc, "value=' '" ) );
+  assertThrow( w->append(t), ValueError );
+}
+
 void sanity_test009( ){
   startTestSerie(" Token Annotation - Pos " );
   FoliaElement *w = 0;
@@ -244,7 +277,7 @@ void sanity_test009( ){
   assertTrue( w->annotation<PosAnnotation>()->sett() == "cgn-combinedtags" );
   assertTrue( w->annotation<PosAnnotation>()->annotator() == "tadpole" );
   assertTrue( w->annotation<PosAnnotation>()->annotatortype() == AUTO );
-  
+
 }
 
 void sanity_test010( ){
@@ -260,7 +293,7 @@ void sanity_test010( ){
   assertTrue( l->sett() == "lemmas-nl" );
   assertTrue( l->annotator() == "tadpole" );
   assertTrue( l->annotatortype() == AUTO );
-  
+
 }
 
 void sanity_test011( ){
@@ -268,9 +301,9 @@ void sanity_test011( ){
   FoliaElement *w = 0;
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( len( w->select<SenseAnnotation>() ) == 0 );
-  assertThrow( w->annotation<SenseAnnotation>(), 
+  assertThrow( w->annotation<SenseAnnotation>(),
 			NoSuchAnnotation );
-  
+
 }
 
 void sanity_test012( ){
@@ -284,7 +317,7 @@ void sanity_test012( ){
   assertTrue( w->text() == "vierkante" );
   assertTrue( c->getNew()->index(0)->text() == "vierkante" );
   assertTrue( c->getOriginal()->index(0)->text() == "vierkant" );
-  
+
 }
 
 void sanity_test013( ){
@@ -298,7 +331,7 @@ void sanity_test013( ){
   assertTrue( w->annotation<LemmaAnnotation>()->cls() == "haak" );
   assertTrue( (*c->getNew())[0]->cls() == "haak" );
   assertTrue( (*c->getOriginal())[0]->cls() == "haaak" );
-  
+
 }
 
 void sanity_test014(){
@@ -310,7 +343,7 @@ void sanity_test014(){
   assertTrue( c->suggestions().size() == 2 );
   assertTrue( c->suggestions(0)->text() == "twijfelachtige" );
   assertTrue( c->suggestions(1)->text() == "ongewisse" );
-  
+
 }
 
 string repr( FoliaElement *a ){
@@ -324,16 +357,16 @@ void check( FoliaElement *parent, const string& indent, ostream& os ){
   for ( size_t i=0; i < parent->size(); ++i ){
     FoliaElement *child = parent->index(i);
     os << indent << repr( child ) << endl;
-    if ( ! ( (parent->isinstance( SyntacticUnit_t ) 
-	      || parent->isinstance( Chunk_t ) 
-	      || parent->isinstance( Entity_t ) 
-	      || parent->isinstance( TimeSegment_t ) 
-	      || parent->isinstance( TimingLayer_t ) 
+    if ( ! ( (parent->isinstance( SyntacticUnit_t )
+	      || parent->isinstance( Chunk_t )
+	      || parent->isinstance( Entity_t )
+	      || parent->isinstance( TimeSegment_t )
+	      || parent->isinstance( TimingLayer_t )
 	      || parent->isinstance( CoreferenceChain_t )
 	      || parent->isinstance( CoreferenceLink_t )
 	      || parent->isinstance( Semrole_t )
 	      || parent->isinstance( Headwords_t )
-	      || parent->isinstance( DependencyDependent_t ) ) 
+	      || parent->isinstance( DependencyDependent_t ) )
 	     && ( child->isinstance( Word_t ) || child->isinstance( Morpheme_t )) ) ){
       assertEqual( parent, child->parent() );
       check( child, indent + " ", os );
@@ -348,9 +381,9 @@ void sanity_test015( ){
   check( sanityDoc.doc(), "",  os );
   TEST_SILENT_OFF();
   int stat = system( "diff -b /tmp/foliaparent.txt tests/foliaparent.ok" );
-  assertMessage( "/tmp/foliaparent.txt tests/foliaparent.ok differ!", 
+  assertMessage( "/tmp/foliaparent.txt tests/foliaparent.ok differ!",
 		 stat == 0 );
-  
+
 }
 
 
@@ -364,7 +397,7 @@ void sanity_test016b(){
   startTestSerie(" Check - Error on non-existing description " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.7"];
   assertThrow( w->description(), NoDescription );
-  
+
 }
 
 void sanity_test017(){
@@ -373,7 +406,7 @@ void sanity_test017(){
   assertEqual( strip(gap->content()).substr(0,11), string("De tekst is") );
   assertTrue( gap->cls() == "backmatter" );
   assertTrue( gap->description() == "Backmatter" );
-  
+
 }
 
 void sanity_test018(){
@@ -394,8 +427,8 @@ void sanity_test019(){
   vector<FoliaElement *>targets;
   assertNoThrow( targets = aref->resolve() );
   assertTrue( targets.size() != 0 );
-  assertTrue( targets[0]->xmlstring() == sanityDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"]->xmlstring() );  
-  
+  assertTrue( targets[0]->xmlstring() == sanityDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"]->xmlstring() );
+
 }
 
 void sanity_test020a(){
@@ -413,7 +446,7 @@ void sanity_test020a(){
   assertTrue( l->index(0)->index(2)->index(1)->cls() == "pp" );
   assertTrue( l->index(0)->index(2)->index(1)->text() == "voor stamboom" );
   assertEqual( l->index(0)->index(2)->text(), "een ander woord voor stamboom" );
-  
+
 }
 
 void sanity_test020b(){
@@ -424,7 +457,7 @@ void sanity_test020b(){
   assertTrue( isinstance( l->index(0), Chunk_t ) );
   assertTrue( l->index(0)->text() == "een ander woord" );
   assertTrue( l->index(1)->text() == "voor stamboom" );
-  
+
 }
 
 void sanity_test020c(){
@@ -434,7 +467,7 @@ void sanity_test020c(){
   assertNoThrow( l = s->annotation<EntitiesLayer>() );
   assertTrue( isinstance( l->index(0), Entity_t ) );
   assertTrue( l->index(0)->text() == "ander woord" );
-  
+
 }
 
 void sanity_test020d(){
@@ -467,7 +500,7 @@ void sanity_test020d(){
   assertTrue( l->index(5)->head()->text() == "voor" );
   assertTrue( l->index(5)->dependent()->text() == "stamboom" );
   assertTrue( l->index(5)->cls() == "obj1" );
-  
+
 }
 
 void sanity_test020e(){
@@ -475,7 +508,7 @@ void sanity_test020e(){
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
   TimingLayer *l = 0;
   assertNoThrow( l = s->annotation<TimingLayer>() );
-    
+
   assertTrue( isinstance( l->index(0), TimeSegment_t ) );
   assertEqual( l->index(0)->text(),  "een ander woord" ) ;
   assertEqual( l->index(1)->cls(), "cough" );
@@ -488,7 +521,7 @@ void sanity_test021(){
   FoliaElement *prevw = w->previous();
   assertTrue( prevw->isinstance( Word_t ) );
   assertTrue( prevw->text() == "zo'n" );
-  
+
 }
 
 void sanity_test022(){
@@ -497,7 +530,7 @@ void sanity_test022(){
   FoliaElement *prevw = w->next();
   assertTrue( prevw->isinstance( Word_t ) );
   assertTrue( prevw->text() == "," );
-  
+
 }
 
 void sanity_test023a(){
@@ -508,7 +541,7 @@ void sanity_test023a(){
   assertTrue( context[0]->text() == "wetenschap" );
   assertTrue( context[1]->text() == "wordt" );
   assertTrue( context[2]->text() == "zo'n" );
-  
+
 }
 
 void sanity_test023b(){
@@ -519,7 +552,7 @@ void sanity_test023b(){
   assertTrue( context[0] == 0 );
   assertTrue( context[1]->text() == "Stemma" );
   assertTrue( context[2]->text() == "Stemma" );
-  
+
 }
 
 void sanity_test023c(){
@@ -531,7 +564,7 @@ void sanity_test023c(){
   assertTrue( context[0]->text() == "?" );
   assertTrue( context[1]->text() == "Stemma" );
   assertTrue( context[2]->text() == "Stemma" );
-  
+
 }
 
 void sanity_test024a(){
@@ -542,7 +575,7 @@ void sanity_test024a(){
   assertTrue( text(context[0]) == "," );
   assertTrue( text(context[1]) == "onder" );
   assertTrue( text(context[2]) == "de" );
-  
+
 }
 
 void sanity_test024b(){
@@ -563,7 +596,7 @@ void sanity_test024c(){
   assertTrue( text(context[0]) == "University" );
   assertTrue( context[1]->isinstance(PlaceHolder_t) );
   assertTrue( context[2]->text() == "_" );
-  
+
 }
 
 void sanity_test025a(){
@@ -578,7 +611,7 @@ void sanity_test025a(){
   assertTrue( text(context[4]) == "," );
   assertTrue( text(context[5]) == "onder" );
   assertTrue( text(context[6]) == "de" );
-  
+
 }
 
 void sanity_test025b(){
@@ -589,7 +622,7 @@ void sanity_test025b(){
   assertTrue( context[0] == 0 );
   assertTrue( text(context[302]) == "handschrift" );
   assertTrue( context[500] == 0 );
-  
+
 }
 
 void sanity_test025c(){
@@ -601,7 +634,7 @@ void sanity_test025c(){
   assertTrue( text(context[302]) == "handschrift" );
   assertTrue( text(context[202]) == "nil" );
   assertTrue( context[500]->isinstance(PlaceHolder_t) );
-  
+
 }
 
 void sanity_test026a(){
@@ -619,7 +652,7 @@ void sanity_test026a(){
   assertTrue( isinstance(features[0], Feature_t ) );
   assertTrue( features[0]->subset() == "head" );
   assertTrue( features[0]->cls() == "WW" );
-  
+
 }
 
 void sanity_test026b(){
@@ -636,27 +669,27 @@ void sanity_test027(){
   FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
   FoliaElement *pos = word->annotation<PosAnnotation>();
   assertTrue( pos->getDateTime() == "2011-07-20T19:00:01" );
-  assertTrue( pos->xmlstring() == "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"N(soort,ev,basis,zijd,stan)\" datetime=\"2011-07-20T19:00:01\"/>" );      
-  
+  assertTrue( pos->xmlstring() == "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"N(soort,ev,basis,zijd,stan)\" datetime=\"2011-07-20T19:00:01\"/>" );
+
 }
 
 void sanity_test028() {
   startTestSerie(" Finding parents of word " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
-  
+
   FoliaElement *s = w->sentence();
   assertTrue( s->isinstance( Sentence_t ) );
   assertTrue( s->id() == "WR-P-E-J-0000000001.p.1.s.8" );
-        
+
   FoliaElement *p = w->paragraph();
   assertTrue( isinstance( p, Paragraph_t ) );
   assertTrue( p->id() == "WR-P-E-J-0000000001.p.1" );
-  
+
   FoliaElement *div = w->division();
   assertTrue( isinstance( div, Division_t ) );
   assertTrue( div->id() == "WR-P-E-J-0000000001.div0.1" );
   assertTrue( w->incorrection() == 0 );
-  
+
 }
 
 void sanity_test029(){
@@ -664,16 +697,16 @@ void sanity_test029(){
   FoliaElement *q = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.q.1"];
   assertTrue( q->isinstance( Quote_t ) );
   assertTrue( q->text() == "volle lijn" );
-  
+
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.8"];
   assertTrue( s->text() == "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
   // (spelling errors are present in sentence)
-        
+
   // get a word from the quote
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.w.2"];
   // and check if sentence matches
   assertTrue( w->sentence() == s );
-  
+
 }
 
 void sanity_test030( ){
@@ -688,11 +721,11 @@ void sanity_test030( ){
   assertTrue( w->text() == "hoofdletter" );
   assertTrue( w->textcontent()->text() == "hoofdletter" );
   assertTrue( w->textcontent()->offset() == 3 );
-  
+
   FoliaElement *w2= sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
   assertTrue( w2->text() == "vierkante" );
   assertTrue( w2->stricttext() == "vierkante" );
-  
+
 }
 
 void sanity_test030b( ){
@@ -713,7 +746,7 @@ void sanity_test031( ){
   FoliaElement *sense = w->annotation<SenseAnnotation>( );
   assertTrue( sense->cls() == "some.sense.id" );
   assertTrue( sense->feat("synset") == "some.synset.id" );
-  
+
 }
 
 void sanity_test032( ){
@@ -722,7 +755,7 @@ void sanity_test032( ){
   FoliaElement *event = l->annotation<Event>();
   assertTrue( event->cls() == "applause" );
   assertTrue( event->feat("actor") == "audience" );
-  
+
 }
 
 void sanity_test033( ){
@@ -734,7 +767,7 @@ void sanity_test033( ){
   assertTrue( l->rindex(0)->isinstance<ListItem>() );
   assertTrue( l->rindex(0)->n() == "2" );
   assertTrue( l->rindex(0)->text() == "Tweede testitem" );
-  
+
 }
 
 void sanity_test034( ){
@@ -742,7 +775,7 @@ void sanity_test034( ){
   FoliaElement *fig = sanityDoc["sandbox.figure.1"];
   assertTrue( fig->src() == "http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg" );
   assertTrue( fig->caption() == "Een stamboom" );
-  
+
 }
 
 void sanity_test035( ){
@@ -751,7 +784,7 @@ void sanity_test035( ){
   assertTrue( e->feat("actor") == "proycon" );
   assertTrue( e->feat("begindatetime") == "2011-12-15T19:01" );
   assertTrue( e->feat("enddatetime") == "2011-12-15T19:05" );
-  
+
 }
 
 void sanity_test036( ){
@@ -760,7 +793,7 @@ void sanity_test036( ){
   assertTrue( e->cls() == "firstparagraph" );
   e = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"];
   assertTrue( e->cls() == "sentence" );
-  
+
 }
 
 void sanity_test037a( ){
@@ -806,7 +839,7 @@ void sanity_test037a( ){
 "   </div>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc["head.1.s.1.w.1"]->pos() == "NN(blah)" );
@@ -815,7 +848,7 @@ void sanity_test037a( ){
   assertTrue( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
   assertTrue( doc["p.2.s.1.w.1"]->pos() == "BB(blah)" );
   assertTrue( doc["p.2.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
-  
+
 }
 
 void sanity_test037b( ){
@@ -845,7 +878,7 @@ void sanity_test037b( ){
 "   </div>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
@@ -855,7 +888,7 @@ void sanity_test037b( ){
   assertTrue( v[0] == "a" );
   assertTrue( v[1] == "b" );
   assertTrue( v[2] == "c" );
-  
+
 }
 
 void sanity_test038a(){
@@ -960,7 +993,7 @@ void sanity_test044(){
   assertEqual( st->index(0)->text(), "FoLiA" );
 
   // resolving returns self if it's not a reference
-  assertEqual( sanityDoc["sandbox.3.str.bold"]->resolveid(), 
+  assertEqual( sanityDoc["sandbox.3.str.bold"]->resolveid(),
 	       sanityDoc["sandbox.3.str.bold"] );
 }
 
@@ -969,7 +1002,7 @@ void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.canonical.xml", true ) );
-  
+
 }
 
 void sanity_test100a( ){
@@ -984,7 +1017,7 @@ void sanity_test100a( ){
     assertNoThrow( d.readFromFile( "/tmp/savetest.canonical.xml" ) );
     assertTrue( d == sanityDoc );
   }
-  
+
 }
 
 void sanity_test100b( ){
@@ -992,7 +1025,7 @@ void sanity_test100b( ){
   int stat = system( "xmldiff /tmp/savetest.xml tests/folia.example" );
   assertMessage( "/tmp/savetest.xml tests/folia.example differ!",
 		 stat == 0 );
-  
+
 }
 
 void sanity_test101( ){
@@ -1001,7 +1034,7 @@ void sanity_test101( ){
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( &sanityDoc, "generate_id='" + p->id() + "'" ) );
   assertThrow( p->append( s ), ValueError );
-  
+
 }
 
 void sanity_test101a(){
@@ -1009,7 +1042,7 @@ void sanity_test101a(){
   Document doc = Document("file='tests/folia.cmdi.xml'");
   assertTrue( doc.metadatatype() == CMDI );
   assertTrue( doc.metadatafile() == "test.cmdi.xml" );
-  
+
 }
 
 void sanity_test101b(){
@@ -1017,14 +1050,14 @@ void sanity_test101b(){
   Document doc = Document("file='tests/folia.imdi.xml'");
   assertTrue( doc.metadatatype() == IMDI );
   assertTrue( doc.metadatafile() == "test.imdi.xml" );
-  
+
 }
 
 void sanity_test102( ){
   startTestSerie(" Add a word at wrong position " );
   FoliaElement *p = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   assertThrow( p->addWord("text='Ahoi'" ), ValueError );
-  
+
 }
 
 void sanity_test102a(){
@@ -1041,14 +1074,14 @@ void sanity_test102a(){
 "    <gap class=\"X\" />\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
-  assertThrow( doc.declare( AnnotationType::TOKEN, 
-			    "some-set", 
+  assertThrow( doc.declare( AnnotationType::TOKEN,
+			    "some-set",
 			    "annotatorname='proycon'" ), XmlError );
-  
+
 }
 
 void sanity_test102b(){
@@ -1065,10 +1098,10 @@ void sanity_test102b(){
 "    <gap class=\"X\" set=\"gip-set\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertThrow( doc.readFromString(xml), XmlError );
-  
+
 }
 
 void sanity_test102c(){
@@ -1087,12 +1120,12 @@ void sanity_test102c(){
 "    <gap class=\"Y\" set=\"extended-gap-set\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
   assertTrue( doc["example.text.1"]->select<Gap>()[1]->sett() == "extended-gap-set" );
-  
+
 }
 
 void sanity_test102d1(){
@@ -1111,10 +1144,10 @@ void sanity_test102d1(){
 "    <gap class=\"Y\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertThrow( doc.readFromString(xml), XmlError );
-  
+
 }
 
 void sanity_test102d2(){
@@ -1133,10 +1166,10 @@ void sanity_test102d2(){
 "    <gap class=\"Y\" set=\"gip-set\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertThrow( doc.readFromString(xml), XmlError );
-  
+
 }
 
 void sanity_test102d3(){
@@ -1154,13 +1187,13 @@ void sanity_test102d3(){
 "    <gap class=\"X\" set=\"gap-set\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc.defaultset(AnnotationType::GAP) == "gap-set" );
   assertTrue( doc.defaultannotator(AnnotationType::GAP) == "sloot" );
   assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap-set") == "sloot" );
-  
+
 }
 
 void sanity_test102e(){
@@ -1176,10 +1209,10 @@ void sanity_test102e(){
 "    <gap class=\"X\" set=\"extended-gap-set\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertThrow( doc.readFromString(xml), XmlError );
-  
+
 }
 
 void sanity_test102f(){
@@ -1197,10 +1230,10 @@ void sanity_test102f(){
 "    </gap>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-  
+
 }
 
 void sanity_test102g(){
@@ -1222,7 +1255,7 @@ void sanity_test102g(){
 "    </gap>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
@@ -1231,7 +1264,7 @@ void sanity_test102g(){
   assertTrue( v[1]->description() == "test2" );
   assertTrue( v[1]->sett() == "undefined" );
   assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\"><desc>test2</desc></gap>" );
-  
+
 }
 
 void sanity_test102h(){
@@ -1248,15 +1281,15 @@ void sanity_test102h(){
 "    <gap class=\"X\" />\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-  assertNoThrow( doc.declare( AnnotationType::GAP, 
-					"gap-set", 
+  assertNoThrow( doc.declare( AnnotationType::GAP,
+					"gap-set",
 					"annotator='proycon'" ) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap-set\"/>" );
-  
+
 }
 
 void sanity_test102i(){
@@ -1274,12 +1307,12 @@ void sanity_test102i(){
 "    <gap class=\"X\" set=\"gap1-set\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap1-set") == "sloot" );
-  assertNoThrow( doc.declare( AnnotationType::GAP, 
-					"gap1-set", 
+  assertNoThrow( doc.declare( AnnotationType::GAP,
+					"gap1-set",
 					"annotator='proycon'" ) );
   assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap1-set") == "" );
   assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap2-set") == "sloot" );
@@ -1303,7 +1336,7 @@ void sanity_test102i(){
   assertTrue( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z1\" set=\"gap1-set\"/>" );
   assertTrue( v[3]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z2\" set=\"gap2-set\"/>" );
   assertTrue( v[4]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"onbekend\" class=\"Y2\" set=\"gap2-set\"/>" );
-  
+
 }
 
 void sanity_test102j(){
@@ -1320,12 +1353,12 @@ void sanity_test102j(){
 "    <gap class=\"X\" />\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *text = doc["example.text.1"];
-  assertNoThrow( doc.declare( AnnotationType::GAP, 
-					"other-set", 
+  assertNoThrow( doc.declare( AnnotationType::GAP,
+					"other-set",
 					"annotator='proycon'" ) );
   KWargs args = getArgs( "set='other-set', cls='Y', annotator='proycon'" );
   FoliaElement *g = 0;
@@ -1338,7 +1371,7 @@ void sanity_test102j(){
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\" set=\"gap-set\"/>" );
   assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" set=\"other-set\"/>" );
   assertTrue( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z\" set=\"other-set\"/>" );
-  
+
 }
 
 void sanity_test102k(){
@@ -1355,15 +1388,15 @@ void sanity_test102k(){
 "    <gap class=\"X\" />\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *text = doc["example.text.1"];
   assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "auto" );
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
-  assertNoThrow( doc.declare( AnnotationType::GAP, 
-					"gap-set", 
+  assertNoThrow( doc.declare( AnnotationType::GAP,
+					"gap-set",
 					"annotatortype='manual'" ) );
   assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "" );
   KWargs args = getArgs( "set='gap-set', cls='Y', annotatortype='unknown'" );
@@ -1379,7 +1412,7 @@ void sanity_test102k(){
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
   assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"manual\" class=\"Y\" set=\"gap-set\"/>" );
   assertTrue( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\" set=\"gap-set\"/>" );
-  
+
 }
 
 void sanity_test102l(){
@@ -1397,7 +1430,7 @@ void sanity_test102l(){
 "    <gap class=\"Y\" datetime=\"2012-06-18T17:50\"/>\n"
 "  </text>\n"
 "</FoLiA>\n" ;
-  
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *text = doc["example.text.1"];
@@ -1405,7 +1438,7 @@ void sanity_test102l(){
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" datetime=\"2012-06-18T17:50:00\"/>" );
-  
+
 }
 
 void sanity_test103( ){
@@ -1425,7 +1458,7 @@ void sanity_test103( ){
     "      <w xml:id=\"example.text.1.s.1.w.1\">\n"
     "          <t>word</t>\n"
     "          <alien:invasion number=\"99999\" />\n"
-    "      </w>\n"   
+    "      </w>\n"
     "    </s>\n"
     "  </text>\n"
     "</FoLiA>\n" ;
@@ -1437,7 +1470,7 @@ void sanity_test103( ){
   assertTrue( w == 0 );   // doesn't exist
   w = doc["example.text.1.s.1.w.1"];
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>word</t></w>" );
-  
+
 }
 
 
@@ -1540,7 +1573,7 @@ void sanity_test104( ){
   assertTrue( v[3]->str() == "eerste" );
   v = s[2]->wordParts();
   assertTrue( v[3]->str() == "tweede" );
-  
+
 }
 
 void sanity_test105( ){
@@ -1552,7 +1585,7 @@ void sanity_test105( ){
   vector<Word*> wv = s[18]->wordParts();
   assertTrue( wv[1]->str() == "zegt" );
   assertTrue( wv[6]->str() == "doc.p.1.s.1.quote.1.s.15.quote.1.s.1" );
-  
+
 }
 
 void sanity_test106( ){
@@ -1566,7 +1599,7 @@ void sanity_test106( ){
   Sentence *s = 0;
   assertThrow( new Sentence(&doc, "id='dit mag ook niet'" ), XmlError );
   assertThrow( new Sentence(&doc, "id='1.ook.niet'" ), XmlError );
-  assertThrow( new Sentence(&doc, "id='dit:ook:niet'" ), XmlError );  
+  assertThrow( new Sentence(&doc, "id='dit:ook:niet'" ), XmlError );
 }
 
 void edit_test001a( ){
@@ -1585,15 +1618,15 @@ void edit_test001a( ){
   assertNoThrow( w = new Word( &editDoc, "text='Dit', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
   s->append( w );
   assertNoThrow( w = new Word( &editDoc, "text='is', annotator='testscript', annotatortype='AUTO', generate_id='" + s->id() + "'" ) );
-  s->append( w );  
+  s->append( w );
   assertNoThrow( w = new Word( &editDoc, "text='een', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
-  s->append( w );  
+  s->append( w );
   assertNoThrow( w = new Word( &editDoc, "text='nieuwe', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
-  s->append( w );  
+  s->append( w );
   assertNoThrow( w = new Word( &editDoc, "text='zin', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "', space='no'" ) );
-  s->append( w );  
+  s->append( w );
   assertNoThrow( w = new Word( &editDoc, "text='.', cls='PUNCTUATION', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
-  s->append( w );  
+  s->append( w );
   for ( int i=0; i < 6; ++i ){
     assertTrue( s->index(i)->id() == s->id() + ".w." + TiCC::toString(i+1) );
   }
@@ -1648,17 +1681,17 @@ void edit_test001b( ){
   assertNoThrow( w = s->addWord( ann ) );
   FoliaElement *w2 = 0;
   assertNoThrow( w2 = s->addWord( "text='.', cls='PUNCTUATION'" ) );
-  
+
   assertTrue( len(s->words()) == 6 );
   assertTrue( w->text() == "zin" );
   assertTrue( editDoc[w->id()] == w );
-  
+
   assertTrue( w2->text() == "." );
 
   // adition to paragraph correct?
   assertEqual( p->size(), (tmp+1) );
   assertTrue( p->rindex(0) == s );
-  
+
   // all well?
   assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\"><t>is</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
 
@@ -1670,11 +1703,11 @@ void edit_test002( ){
   // grab a word (naam)
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
-  
-  assertNoThrow( editDoc.declare( AnnotationType::POS, 
+
+  assertNoThrow( editDoc.declare( AnnotationType::POS,
 					"adhocpos") );
 
-  assertNoThrow( editDoc.declare( AnnotationType::LEMMA, 
+  assertNoThrow( editDoc.declare( AnnotationType::LEMMA,
 					"adhoclemma") );
 
   // add a pos annotation (in a different set than the one already present, to prevent conflict)
@@ -1688,13 +1721,13 @@ void edit_test002( ){
   assertTrue( p->isinstance<PosAnnotation>() );
   assertTrue( p->cls() == "NOUN" );
   assertTrue( w->pos("adhocpos") == "NOUN" );
-  
+
   assertNoThrow( p = w->annotation<LemmaAnnotation>( "adhoclemma") );
   assertTrue( p->isinstance<LemmaAnnotation>() );
   assertTrue( p->cls() == "NAAM" );
   assertTrue( w->lemma("adhoclemma") == "NAAM" );
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" datetime=\"1982-12-15T19:00:01\" set=\"adhoclemma\"/></w>");
-  
+
 }
 
 void edit_test003( ){
@@ -1811,7 +1844,7 @@ void edit_test005b( ){
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"] );
   // add morhological information without specifying a set (should take default
   // set), but this will clash with existing tag!
-  
+
   MorphologyLayer *l = 0;
   assertNoThrow( l = w->addAlternative<MorphologyLayer>() );
   FoliaElement *m = new Morpheme( &editDoc );
@@ -1843,7 +1876,7 @@ void edit_test005d( ){
   startTestSerie( " Adding String tags in several classes" );
   FoliaElement *s = 0;
   Document editDoc( "file='tests/folia.example'" );
-  assertNoThrow( editDoc.declare( AnnotationType::STRING, 
+  assertNoThrow( editDoc.declare( AnnotationType::STRING,
 				  "stringtypes") );
   assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
   FoliaElement *t = new String( &editDoc, "class='test1'");
@@ -1869,7 +1902,7 @@ void edit_test006( ){
   assertTrue( w->text() == "stippellijn" );
 
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"testscript\" annotatortype=\"auto\" class=\"spelling\"><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/></w>" );
- 
+
 }
 
 void edit_test007( ){
@@ -1898,7 +1931,7 @@ void edit_test008( ){
   assertNoThrow( c = w->annotation<Correction>() );
   assertNoThrow( c = c->suggestions()[0] );
   assertTrue( c->text() == "stippellijn" );
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"testscript\" annotatortype=\"auto\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion></correction></w>" );        
+  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"testscript\" annotatortype=\"auto\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion></correction></w>" );
 }
 
 void edit_test009a( ){
@@ -1937,7 +1970,7 @@ void edit_test010( ){
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   FoliaElement *pos = 0;
   assertThrow( pos = new PosAnnotation( &editDoc, "set='fakecgn', cls='N'" ), ValueError );
-  assertNoThrow( editDoc.declare( AnnotationType::POS, 
+  assertNoThrow( editDoc.declare( AnnotationType::POS,
 					"fakecgn") );
   assertNoThrow( pos = new PosAnnotation( &editDoc, "set='fakecgn', cls='N'" ) );
   assertNoThrow( w->append( pos ) );
@@ -2058,7 +2091,7 @@ void edit_test016(){
   FoliaElement *pos = word->annotation<PosAnnotation>();
   assertNoThrow( pos->setDateTime( "1982-12-15T19:00:01" ) );
 
-  assertTrue( pos->xmlstring() == "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"WW(pv,tgw,met-t)\" datetime=\"1982-12-15T19:00:01\"/>" );      
+  assertTrue( pos->xmlstring() == "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"WW(pv,tgw,met-t)\" datetime=\"1982-12-15T19:00:01\"/>" );
 }
 
 void edit_test017(){
@@ -2069,7 +2102,7 @@ void edit_test017(){
   assertTrue( word->text() == "terweil" );
   word->settext("terwijl");
   assertTrue( word->text() == "terwijl" );
-  assertTrue( word->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.9\"><t>terwijl</t><errordetection class=\"spelling\"/><pos class=\"VG(onder)\"/><lemma class=\"terweil\"/></w>" );      
+  assertTrue( word->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.9\"><t>terwijl</t><errordetection class=\"spelling\"/><pos class=\"VG(onder)\"/><lemma class=\"terweil\"/></w>" );
 }
 
 void edit_test018a(){
@@ -2111,8 +2144,8 @@ void edit_test019(){
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
   Document d( "id='example'" );
-  assertNoThrow( d.declare( AnnotationType::TOKEN, 
-				      "adhocset", 
+  assertNoThrow( d.declare( AnnotationType::TOKEN,
+				      "adhocset",
 				      "annotator='proycon'" ) );
   assertTrue( d.defaultset(AnnotationType::TOKEN) == "adhocset" );
   assertTrue( d.defaultannotator(AnnotationType::TOKEN) == "proycon" );
@@ -2142,11 +2175,11 @@ void create_test001( ){
 void create_test002( ){
   startTestSerie( " Creating a document from scratch. " );
   Document d( "id='example'" );
-  assertNoThrow( d.declare( AnnotationType::POS, 
-				      "adhocset", 
+  assertNoThrow( d.declare( AnnotationType::POS,
+				      "adhocset",
 				      "annotator='proycon'" ) );
-  assertNoThrow( d.declare( AnnotationType::POS, 
-				      "myset", 
+  assertNoThrow( d.declare( AnnotationType::POS,
+				      "myset",
 				      "annotator='sloot'" ) );
   assertTrue( d.defaultset(AnnotationType::POS) == "" );
   assertTrue( d.defaultannotator(AnnotationType::POS) == "" );
@@ -2175,9 +2208,9 @@ void create_test002( ){
   vector<PosAnnotation*> v1 = w->select<PosAnnotation>( "myset" );
   assertTrue( v1.size() == 1 );
   vector<PosAnnotation*> v2 = w->select<PosAnnotation>( "noset" );
-  assertTrue( v2.size() == 0 ); 
+  assertTrue( v2.size() == 0 );
   vector<PosAnnotation*> v3 = w->select<PosAnnotation>();
-  assertTrue( v3.size() == 2 ); 
+  assertTrue( v3.size() == 2 );
   assertNoThrow( d.save( "/tmp/foliacreatetest002.xml" ) );
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>landen</t><pos class=\"NP\" set=\"myset\"/><pos class=\"VP\" set=\"adhocset\"/></w>" );
 }
@@ -2185,11 +2218,11 @@ void create_test002( ){
 void create_test003( ){
   startTestSerie( " Creating a document with gap annotations from scratch. " );
   Document d( "id='example'" );
-  assertNoThrow( d.declare( AnnotationType::GAP, 
+  assertNoThrow( d.declare( AnnotationType::GAP,
 				      "gap-set",
 				      "annotator='sloot'" ) );
-  assertNoThrow( d.declare( AnnotationType::GAP, 
-				      "extended-gap-set", 
+  assertNoThrow( d.declare( AnnotationType::GAP,
+				      "extended-gap-set",
 				      "annotator='sloot'" ) );
   assertTrue( d.defaultset(AnnotationType::GAP) == "" );
   assertTrue( d.defaultannotator(AnnotationType::GAP) == "" );
@@ -2215,15 +2248,15 @@ void create_test003( ){
   vector<Gap*> v1 = text->select<Gap>( "extended-gap-set" );
   assertTrue( v1.size() == 1 );
   vector<Gap*> v3 = text->select<Gap>();
-  assertTrue( v3.size() == 2 ); 
+  assertTrue( v3.size() == 2 );
   assertTrue( text->xmlstring() == "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\" set=\"extended-gap-set\"/></text>" );
 }
 
 void correction_test001a( ){
   startTestSerie( " Split correction " );
   Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN, 
-				  "adhocset", 
+  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
   assertNoThrow( corDoc->append( text ) );
@@ -2248,8 +2281,8 @@ void correction_test001a( ){
 void correction_test001b( ){
   startTestSerie( " Split suggestion " );
   Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN, 
-				  "adhocset", 
+  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
   assertNoThrow( corDoc->append( text ) );
@@ -2271,12 +2304,12 @@ void correction_test001b( ){
   assertTrue( s->text() == "De site staat online ." );
   assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>");
 }
-     
+
 void correction_test002(){
   startTestSerie( " Merge corrections " );
   Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN, 
-				  "adhocset", 
+  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
   assertNoThrow( corDoc->append( text ) );
@@ -2298,15 +2331,15 @@ void correction_test002(){
   // incorrection() test, check if newly added word correctly reports being part of a correction
   FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.4-5");
   assertTrue( isinstance(w->incorrection(), Correction_t) );
-  //incorrection return the correction the word is part of, or None if not part of a correction, 
+  //incorrection return the correction the word is part of, or None if not part of a correction,
   assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
 }
 
 void correction_test003(){
   startTestSerie( " Delete corrections " );
   Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN, 
-				  "adhocset", 
+  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
   assertNoThrow( corDoc->append( text ) );
@@ -2327,8 +2360,8 @@ void correction_test003(){
 void correction_test004(){
   startTestSerie( " Insert corrections " );
   Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN, 
-				  "adhocset", 
+  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
   assertNoThrow( corDoc->append( text ) );
@@ -2355,7 +2388,7 @@ void correction_test005(){
   FoliaElement *c = 0;
   assertNoThrow( c = w->annotation<Correction>() );
   assertTrue( c->suggestions()[0]->text() == "stippellijn" );
-  assertTrue( w->text() == "stippelijn" );  
+  assertTrue( w->text() == "stippelijn" );
 
   assertNoThrow( w->correct("new='stippellijn', set='corrections', cls='spelling',annotator='John Doe', annotatortype='manual', reuse='" + c->id() + "'" ) );
 
@@ -2438,7 +2471,7 @@ void query_test004(){
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
-  vector<vector<Word*> >matches = qDoc.findwords( l ); 
+  vector<vector<Word*> >matches = qDoc.findwords( l );
   assertTrue( matches.size() == 1 );
   assertTrue( len(matches[0]) == 4 );
 
@@ -2474,7 +2507,7 @@ void query_test006(){
   s->addWord( "text='a'" );
   vector<string> words;
   words.push_back( "a" );
-  words.push_back( "a" );  
+  words.push_back( "a" );
   vector<vector<Word*> > matches = doc.findwords( Pattern(words) );
   assertTrue( matches.size() == 4 );
   matches = doc.findwords( Pattern(words,"casesensitive='1'") );
@@ -2488,7 +2521,7 @@ void query_test007(){
   words.push_back( "het" );
   words.push_back( "alfabet" );
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words),
-						  "leftcontext='3', rightcontext='3'"); 
+						  "leftcontext='3', rightcontext='3'");
   assertTrue( matches.size() == 1 );
   assertTrue( len(matches[0]) == 9 );
 
@@ -2572,8 +2605,8 @@ void query_test010b(){
   s->addWord( "text='c'" );
   vector<string> words;
   words.push_back( "a" );
-  words.push_back( "*" );  
-  words.push_back( "c" );  
+  words.push_back( "*" );
+  words.push_back( "c" );
   vector<vector<Word*> > matches = doc.findwords( Pattern(words) );
   assertTrue( matches.size() == 3 );
 }
@@ -2610,6 +2643,7 @@ int main(){
   sanity_test007();
   sanity_test008a();
   sanity_test008b();
+  sanity_test008c();
   sanity_test009();
   sanity_test010();
   sanity_test011();
