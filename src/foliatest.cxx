@@ -252,14 +252,20 @@ void sanity_test008c(){
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *t = 0;
+  // creating an empty text is forbidden
   assertThrow( t = new TextContent( &doc, "value=''" ), ArgsError );
+  // creating a not quite empty text is allowed
   assertNoThrow( t = new TextContent( &doc, "value=' '" ) );
   FoliaElement *p = 0;
   assertNoThrow( p = doc["par"] );
+  // appending a not quite empty text is allowed
   assertNoThrow( p->append(t) );
   FoliaElement *w = 0;
   assertNoThrow( w = doc["word"] );
-  assertNoThrow( t = new TextContent( &doc, "value=' '" ) );
+  // appending a node twice is NOT allowed
+  assertThrow( w->append(t), XmlError );
+  assertNoThrow( t = new TextContent( &doc, "value='  '" ) );
+  // appending a not quite empty text is NOT allowed for WORDS!
   assertThrow( w->append(t), ValueError );
 }
 
