@@ -256,9 +256,7 @@ void sanity_test008c(){
   assertNoThrow( t = new TextContent( &doc, "value=' '" ) );
   FoliaElement *p = 0;
   assertNoThrow( p = doc["par"] );
-  cerr << endl << p->xmlstring() << endl;
   assertNoThrow( p->append(t) );
-  cerr << endl << p->xmlstring() << endl;
   FoliaElement *w = 0;
   assertNoThrow( w = doc["word"] );
   assertNoThrow( t = new TextContent( &doc, "value=' '" ) );
@@ -2276,6 +2274,7 @@ void correction_test001a( ){
   assertTrue( s->text() == "De site staat on line ." );
   assertTrue( len( s->words() ) == 6 );
   assertTrue( s->xmlstring() ==  "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4a\"><t>on</t></w><w xml:id=\"example.s.1.w.4b\"><t>line</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>online</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
+  delete corDoc;
 }
 
 void correction_test001b( ){
@@ -2303,6 +2302,7 @@ void correction_test001b( ){
   assertTrue( s->rwords(1)->text() == "online" );
   assertTrue( s->text() == "De site staat online ." );
   assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>");
+  delete corDoc;
 }
 
 void correction_test002(){
@@ -2333,6 +2333,7 @@ void correction_test002(){
   assertTrue( isinstance(w->incorrection(), Correction_t) );
   //incorrection return the correction the word is part of, or None if not part of a correction,
   assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
+  delete corDoc;
 }
 
 void correction_test003(){
@@ -2355,6 +2356,7 @@ void correction_test003(){
   assertNoThrow( corDoc->save( "/tmp/foliadelete003.xml" ) );
   assertTrue( s->text() == "Ik zie een huis ." );
   assertTrue( s->xmlstring() =="<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>groot</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>huis</t></w><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>");
+  delete corDoc;
 }
 
 void correction_test004(){
@@ -2376,6 +2378,7 @@ void correction_test004(){
   assertNoThrow( corDoc->save( "/tmp/foliainsert004.xml" ) );
   assertEqual( s->text(), "Ik zie een groot huis ." );
   assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.3b\"><t>groot</t></w></new><original auth=\"no\"/></correction><w xml:id=\"example.s.1.w.4\"><t>huis</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
+  delete corDoc;
 }
 
 void correction_test005(){
@@ -2402,6 +2405,7 @@ void correction_test005(){
   assertTrue( w->annotation<Correction>()->annotatortype() == MANUAL );
 
   assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion annotator=\"testscript\" annotatortype=\"auto\" auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
+  delete corDoc;
 }
 
 
