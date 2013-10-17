@@ -24,13 +24,20 @@ if $cxx_flags_were_set; then
   CXXFLAGS=$CXXFLAGS
 fi
 
-AC_PROG_RANLIB
 # use libtool
 AC_PROG_LIBTOOL
-AC_SUBST([LIBTOOL_DEPS])
+LT_INIT
 
 # when running tests, use CXX
 AC_LANG([C++])
+
+# check for headers
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_INLINE
+AC_TYPE_SIZE_T
+AC_CHECK_HEADER_STDBOOL
 
 useICU=1;
 # inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
@@ -61,7 +68,7 @@ if test "x$PKG_CONFIG_PATH" = x; then
 fi
 
 AC_ARG_WITH(folia,
-       [  --with-folia=DIR       use libfolia installed in <DIR>; 
+       [  --with-folia=DIR       use libfolia installed in <DIR>;
              note that you can install libfolia in a non-default directory with
              ./configure --prefix=<DIR> in the libfolia installation directory],
        [PKG_CONFIG_PATH="$withval/lib/pkgconfig:$PKG_CONFIG_PATH:"],
@@ -69,7 +76,7 @@ AC_ARG_WITH(folia,
 AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
 
 AC_ARG_WITH(ticcutils,
-       [  --with-ticcutils=DIR       use ticcutils installed in <DIR>; 
+       [  --with-ticcutils=DIR       use ticcutils installed in <DIR>;
                note that you can install ticcutils in a non-default directory with
                ./configure --prefix=<DIR> in the ticcutils installation directory],
        [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
