@@ -37,7 +37,6 @@ AC_LANG([C++])
 AC_HEADER_STDBOOL
 AC_C_INLINE
 AC_TYPE_SIZE_T
-AC_CHECK_HEADER_STDBOOL
 
 useICU=1;
 # inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
