@@ -139,7 +139,7 @@ void sanity_test003( ){
   startTestSerie(" Word count " );
   vector<Word*> v;
   assertNoThrow( v = sanityDoc.words() );
-  assertEqual( 177, v.size() );
+  assertTrue( 177 == v.size() );
 
 }
 
@@ -736,7 +736,7 @@ void sanity_test030b( ){
   startTestSerie( " Sanity check - Text Content (2) " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
   TextContent *t = head->textcontent();
-  assertEqual( len(t), 3 );
+  assertTrue( len(t) == 3 );
   assertEqual( t->text(), "De FoLiA developers zijn:" );
   assertEqual( t->index(0)->text(), "De ");
   assertTrue( isinstance( t->index(1), TextMarkupString_t ) );
@@ -888,7 +888,7 @@ void sanity_test037b( ){
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
   PosAnnotation* p = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
   vector<string> v = p->feats("x");
-  assertEqual( v.size(), 3 );
+  assertEqual( v.size(), size_t(3) );
   assertTrue( v[0] == "a" );
   assertTrue( v[1] == "b" );
   assertTrue( v[2] == "c" );
@@ -897,15 +897,14 @@ void sanity_test037b( ){
 
 void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
-  PosAnnotation *p;
-  assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
+  assertThrow( PosAnnotation *p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
 }
 
 void sanity_test038b(){
   startTestSerie( "Sanity check - Obtaining morphemes and token annotation under morphemes" );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"];
   vector<Morpheme*> l = w->morphemes(); //get all morphemes
-  assertEqual( l.size(), 2);
+  assertEqual( l.size(), size_t(2) );
   Morpheme *m = w->morpheme(1); // #get second morpheme
   assertEqual( m->annotation<PosAnnotation>()->cls(), "n" );
 }
@@ -959,7 +958,7 @@ void sanity_test042(){
   assertTrue( isinstance( table, Table_t) );
   assertTrue( isinstance( table->index(0), TableHead_t) );
   assertTrue( isinstance( table->index(0)->index(0), Row_t) );
-  assertEqual( len( table->index(0)->index(0)), 2 ); // two cells
+  assertEqual( len( table->index(0)->index(0)), size_t(2) ); // two cells
   assertTrue( isinstance(table->index(0)->index(0)->index(0), Cell_t) );
   assertEqual( table->index(0)->index(0)->index(0)->text(), "Naam" );
   assertEqual( table->index(0)->index(0)->text(), "Naam | Universiteit" ); //text of whole row
@@ -979,8 +978,8 @@ void sanity_test044(){
   startTestSerie( " Sanity check - Text Markup " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
   TextContent *t = head->textcontent();
-  assertEqual( len(head->select<TextMarkupString>()), 1 );
-  assertEqual( len(t->select<TextMarkupString>()), 1 );
+  assertEqual( len(head->select<TextMarkupString>()), size_t(1) );
+  assertEqual( len(t->select<TextMarkupString>()), size_t(1) );
   vector<TextMarkupString*> v = t->select<TextMarkupString>();
   TextMarkupString *st = v[0];
   assertEqual( st->text(), "FoLiA developers" ) ;// testing value (full text value)
@@ -990,7 +989,7 @@ void sanity_test044(){
   t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->textcontent();
   assertTrue( t->index(t->size()-1)->isinstance( LineBreak_t) );  // did we get the linebreak properly?
   // testing nesting
-  assertEqual( len(st), 2 );
+  assertEqual( len(st), size_t(2) );
   assertEqual( st->index(0), sanityDoc["sandbox.3.str.bold"] );
 
   // testing TextMarkup.text()
@@ -1600,7 +1599,6 @@ void sanity_test106( ){
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "</FoLiA>\n" ;
   assertThrow( doc.readFromString(xml), XmlError );
-  Sentence *s = 0;
   assertThrow( new Sentence(&doc, "id='dit mag ook niet'" ), XmlError );
   assertThrow( new Sentence(&doc, "id='1.ook.niet'" ), XmlError );
   assertThrow( new Sentence(&doc, "id='dit:ook:niet'" ), XmlError );
