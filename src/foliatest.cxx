@@ -1045,7 +1045,6 @@ void sanity_test101a(){
   Document doc = Document("file='tests/folia.cmdi.xml'");
   assertTrue( doc.metadatatype() == CMDI );
   assertTrue( doc.metadatafile() == "test.cmdi.xml" );
-
 }
 
 void sanity_test101b(){
@@ -1053,7 +1052,14 @@ void sanity_test101b(){
   Document doc = Document("file='tests/folia.imdi.xml'");
   assertTrue( doc.metadatatype() == IMDI );
   assertTrue( doc.metadatafile() == "test.imdi.xml" );
+}
 
+void sanity_test101c(){
+  startTestSerie(" Metadata (native) " );
+  Document doc = Document("file='tests/folia.example'");
+  assertTrue( doc.metadatatype() == NATIVE );
+  assertNoThrow( doc.set_metadata( "name", "Mijn document" ) );
+  assertEqual( doc.get_metadata( "genre" ), "artikel" );
 }
 
 void sanity_test102( ){
@@ -2709,9 +2715,7 @@ int main(){
   sanity_test101();
   sanity_test101a();
   sanity_test101b();
-  sanity_test101();
-  sanity_test101a();
-  sanity_test101b();
+  sanity_test101c();
   sanity_test102();
   sanity_test102a();
   sanity_test102b();

@@ -29,6 +29,7 @@
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
+    <meta id="genre">artikel</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <lang class="nl"/>
@@ -985,13 +986,13 @@
           </coreferencelink>
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.3.w.10" t="ze"/>
-          </coreferencelink>            
+          </coreferencelink>
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.3.w.16" t="hun"/>
-          </coreferencelink>                        
+          </coreferencelink>
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.7.w.7" t="de"/>
-          </coreferencelink>                        
+          </coreferencelink>
         </coreferencechain>
         <coreferencechain class="ident">
           <coreferencelink>
@@ -1064,19 +1065,19 @@
 		<lemma class="lijsttrekker"/>
 	      </morpheme>
 	    </morphology>
-	  </w> 
+	  </w>
 	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.3">
 	    <t offset="18">heeft</t>
-	  </w> 
+	  </w>
 	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.4">
 	    <t offset="24">fors</t>
-	  </w>  
+	  </w>
 	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.5">
 	    <t offset="29">verloren</t>
-	  </w>  
+	  </w>
 	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.6">
 	    <t offset="37">.</t>
-	  </w>  
+	  </w>
 	  <entities>
 	    <entity class="politicalparty">
              <wref id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" t="CDA"/>
