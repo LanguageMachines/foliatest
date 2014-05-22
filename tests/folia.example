@@ -26,6 +26,7 @@
       <table-annotation set="table-set"/>
       <lang-annotation set="ISO639"/>
       <style-annotation set="styles"/>
+      <note-annotation set="footnote-set"/>
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
@@ -38,6 +39,7 @@
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1">
             <t>Stemma</t>
+	    <noteref id="footnote_1"/>
             <pos class="N(soort,ev,basis,onz,stan)"/>
             <lemma class="stemma"/>
           </w>
@@ -1160,6 +1162,11 @@
 	  </row>
 	</table>
       </div>
+      <note id="footnote1">
+	<s xml:id="note1">
+	  <t> Dit is een opmerking</t>
+	</s>
+      </note>
     </div>
     <gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter">
       <desc>Backmatter</desc>
@@ -1170,4 +1177,3 @@
     </gap>
   </text>
 </FoLiA>
-
