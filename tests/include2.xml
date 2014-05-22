@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="main">
+  <metadata type="native">
+    <annotations/>
+    </metadata>
+  <text xml:id="main.text">
+    <div xml:id="main.div">
+      <head xml:id="main.head">
+        <t>chapter 1</t>
+      </head>
+    </div>
+    <external src="tests/chapter2.xml" include="yes"/>
+    <external src="chapter3.xml"/>
+    <external src="tests/chapter2.xml" include="yes"/>
+  </text>
+</FoLiA>

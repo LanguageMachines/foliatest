@@ -112,6 +112,18 @@ void test5() {
    		 (stat == 0) );
 }
 
+void test6() {
+  startTestSerie( " Test lezen van een FoLiA file external nodes" );
+  Document d;
+  assertNoThrow( d.readFromFile( "tests/include1.xml" ) );
+  assertNoThrow( d.save( "/tmp/include.out" ) );
+  int stat = system( "xmldiff /tmp/include.out tests/include.ok" );
+  assertMessage( "/tmp/include.out tests/include.ok differ!",
+   		 (stat == 0) );
+  Document d2;
+  assertThrow( d2.readFromFile( "tests/include2.xml" ), XmlError );
+}
+
 Document sanityDoc( "file='tests/folia.example'" );
 
 void sanity_test000( ){
@@ -897,7 +909,8 @@ void sanity_test037b( ){
 
 void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
-  assertThrow( PosAnnotation *p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
+  PosAnnotation *p =0;
+  assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
 }
 
 void sanity_test038b(){
@@ -2645,6 +2658,7 @@ int main(){
   test3();
   test4();
   test5();
+  test6();
   sanity_test000();
   sanity_test001();
   sanity_test002();

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="main" generator="libfolia-v0.11">
+  <metadata type="native">
+    <annotations/>
+  </metadata>
+  <text xml:id="main.text">
+    <div xml:id="main.div">
+      <head xml:id="main.head">
+        <t>chapter 1</t>
+      </head>
+    </div>
+    <div xml:id="chapter-2.div">
+      <head xml:id="chapter-2.head">
+        <t>chapter 2</t>
+      </head>
+    </div>
+    <external src="chapter3.xml"/>
+  </text>
+</FoLiA>
+
