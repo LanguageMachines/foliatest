@@ -1162,7 +1162,7 @@
 	  </row>
 	</table>
       </div>
-      <note id="footnote1">
+      <note xml:id="footnote1">
 	<s xml:id="note1">
 	  <t> Dit is een opmerking</t>
 	</s>
