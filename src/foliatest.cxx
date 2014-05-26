@@ -151,7 +151,7 @@ void sanity_test003( ){
   startTestSerie(" Word count " );
   vector<Word*> v;
   assertNoThrow( v = sanityDoc.words() );
-  assertTrue( 177 == v.size() );
+  assertEqual( 176, v.size() );
 
 }
 
@@ -636,7 +636,7 @@ void sanity_test025b(){
   vector<Word*> context = w->context(250);
   assertTrue( context.size() == 501 );
   assertTrue( context[0] == 0 );
-  assertTrue( text(context[302]) == "handschrift" );
+  assertEqual( text(context[301]), "handschrift" );
   assertTrue( context[500] == 0 );
 
 }
@@ -647,7 +647,7 @@ void sanity_test025c(){
   vector<Word*> context = w->context(250, "nil");
   assertTrue( context.size() == 501 );
   assertTrue( text(context[0]) == "nil" );
-  assertTrue( text(context[302]) == "handschrift" );
+  assertEqual( text(context[301]), "handschrift" );
   assertTrue( text(context[202]) == "nil" );
   assertTrue( context[500]->isinstance(PlaceHolder_t) );
 
