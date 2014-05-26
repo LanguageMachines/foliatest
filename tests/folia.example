@@ -40,7 +40,7 @@
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1">
             <t>Stemma</t>
-	    <noteref id="footnote_1"/>
+	    <ref id="footnote_1" type="note"/>
             <pos class="N(soort,ev,basis,onz,stan)"/>
             <lemma class="stemma"/>
           </w>
