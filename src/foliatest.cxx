@@ -143,7 +143,7 @@ void sanity_test002(){
   startTestSerie(" Sentence count " );
   vector<Sentence*> v;
   assertNoThrow( v = sanityDoc.sentences() );
-  assertEqual( size_t(13), v.size() );
+  assertEqual( size_t(14), v.size() );
 
 }
 
