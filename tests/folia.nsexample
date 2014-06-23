@@ -980,26 +980,26 @@
     </fl:div>
     <fl:div xml:id="sandbox" class="test">
       <fl:list xml:id="sandbox.list.1">
-        <fl:listitem xml:id="sandbox.list.1.listitem.1">
-          <fl:s xml:id="sandbox.list.1.listitem.1.s.1">
-            <fl:w xml:id="sandbox.list.1.listitem.1.s.1.w.1">
+        <fl:item xml:id="sandbox.list.1.item.1">
+          <fl:s xml:id="sandbox.list.1.item.1.s.1">
+            <fl:w xml:id="sandbox.list.1.item.1.s.1.w.1">
               <fl:t>Eerste</fl:t>
             </fl:w>
-            <fl:w xml:id="sandbox.list.1.listitem.1.s.1.w.2">
+            <fl:w xml:id="sandbox.list.1.item.1.s.1.w.2">
               <fl:t>testitem</fl:t>
             </fl:w>
           </fl:s>
-        </fl:listitem>
-        <fl:listitem xml:id="sandbox.list.1.listitem.2">
-          <fl:s xml:id="sandbox.list.1.listitem.2.s.1">
-            <fl:w xml:id="sandbox.list.1.listitem.2.s.1.w.1">
+        </fl:item>
+        <fl:item xml:id="sandbox.list.1.item.2">
+          <fl:s xml:id="sandbox.list.1.item.2.s.1">
+            <fl:w xml:id="sandbox.list.1.item.2.s.1.w.1">
               <fl:t>Tweede</fl:t>
             </fl:w>
-            <fl:w xml:id="sandbox.list.1.listitem.2.s.1.w.2">
+            <fl:w xml:id="sandbox.list.1.item.2.s.1.w.2">
               <fl:t>testitem</fl:t>
             </fl:w>
           </fl:s>
-        </fl:listitem>
+        </fl:item>
       </fl:list>
       <fl:figure xml:id="sandbox.figure.1" src="http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg">
         <fl:desc>Stamboom plaatje van wikipedia</fl:desc>
@@ -1024,4 +1024,3 @@ Wikipedia® is een geregistreerd handelsmerk van de Wikimedia Foundation, Inc., 
     </fl:gap>
   </fl:text>
 </fl:FoLiA>
-

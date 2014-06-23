@@ -758,7 +758,7 @@ void sanity_test030b( ){
 
 void sanity_test031( ){
   startTestSerie(" Lexical Semantic Sense Annotation " );
-  FoliaElement *w = sanityDoc["sandbox.list.1.listitem.1.s.1.w.1"];
+  FoliaElement *w = sanityDoc["sandbox.list.1.item.1.s.1.w.1"];
   FoliaElement *sense = w->annotation<SenseAnnotation>( );
   assertTrue( sense->cls() == "some.sense.id" );
   assertTrue( sense->feat("synset") == "some.synset.id" );
@@ -777,10 +777,10 @@ void sanity_test032( ){
 void sanity_test033( ){
   startTestSerie(" List " );
   FoliaElement *l = sanityDoc["sandbox.list.1"];
-  assertTrue( l->index(0)->isinstance<ListItem>() );
+  assertTrue( l->index(0)->isinstance<Item>() );
   assertTrue( l->index(0)->n() == "1" );
   assertTrue( l->index(0)->text() == "Eerste testitem" );
-  assertTrue( l->rindex(0)->isinstance<ListItem>() );
+  assertTrue( l->rindex(0)->isinstance<Item>() );
   assertTrue( l->rindex(0)->n() == "2" );
   assertTrue( l->rindex(0)->text() == "Tweede testitem" );
 
