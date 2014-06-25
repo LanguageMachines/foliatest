@@ -1047,6 +1047,7 @@
         </item>
       </list>
       <event xml:id="sandbox.event.1" actor="proycon" begindatetime="2011-12-15T19:01" class="presentation" enddatetime="2011-12-15T19:05">
+        <event xml:id="sandbox.event.2" actor="audience" class="applause"/>
         <figure xml:id="sandbox.figure.1" src="http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg">
           <desc>Stamboom plaatje van wikipedia</desc>
           <caption xml:id="sandbox.figure.1.caption.1">
