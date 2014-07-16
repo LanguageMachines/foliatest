@@ -1103,7 +1103,7 @@
       <div xml:id="sandbox.3">
 	<head xml:id="sandbox.3.head">
 	  <!-- Not tokenised! -->
-	  <t>De <t-str id="sandbox.3.str"><t-style xml:id="sandbox.3.str.bold" class="bold">FoLiA</t-style> developers</t-str> zijn:</t>
+	  <t>De <t-str id="sandbox.3.str"><t-style xml:id="sandbox.3.str.bold" class="bold">FoLiA</t-style> developers </t-str> zijn:</t>
 	  <str xml:id="sandbox.3.str">
 	    <t offset="3">FoLiA developers</t>
 	    <lang class="eng"/>
