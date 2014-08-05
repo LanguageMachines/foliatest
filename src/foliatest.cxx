@@ -2087,6 +2087,24 @@ void edit_test013(){
   assertTrue( layer->xmlstring() == "<syntax xmlns=\"http://ilk.uvt.nl/folia\"><su class=\"s\"><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.1\" t=\"De\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.2\" t=\"hoofdletter\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.3\" t=\"A\"/></su></su><su class=\"vp\"><su class=\"vp\"><su class=\"v\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.4\" t=\"wordt\"/></su><su class=\"participle\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.5\" t=\"gebruikt\"/></su></su><su class=\"pp\"><su class=\"prep\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.6\" t=\"voor\"/></su><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.7\" t=\"het\"/></su><su class=\"adj\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.8\" t=\"originele\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.9\" t=\"handschrift\"/></su></su></su></su></su></syntax>" );
 }
 
+void edit_test013b() {
+  startTestSerie( " Correction a Span Annotation " );
+  Document editDoc( "file='tests/folia.example'" );
+  FoliaElement *cell = 0;
+  assertNoThrow( cell = editDoc["example.cell"] );
+  FoliaElement *el = 0;
+  assertNoThrow( el = cell->annotation<EntitiesLayer>() );
+  FoliaElement *old = editDoc["example.radboud.university.nijmegen.org"];
+  vector<FoliaElement*> wrefs = editDoc["example.radboud.university.nijmegen.org"]->wrefs();
+  FoliaElement *newEnt = new Entity( &editDoc, "cls='loc', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  for ( size_t i=0; i < wrefs.size(); ++i ){
+    newEnt->append( wrefs[i] );
+  }
+  KWargs args = getArgs( "set='corrections',cls='wrongclass'" );
+  assertNoThrow( el->correct(old,newEnt,args) );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
+}
+
 void edit_test014() {
   startTestSerie( " Replacing an annotation " );
   Document editDoc( "file='tests/folia.example'" );
@@ -2771,6 +2789,7 @@ int main(){
   edit_test011();
   edit_test012();
   edit_test013();
+  edit_test013b();
   edit_test014();
   edit_test015();
   edit_test016();
