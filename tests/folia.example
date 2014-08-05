@@ -1144,7 +1144,7 @@
 		</entity>
 	      </entities>
 	    </cell>
-	    <cell>
+	    <cell xml:id="example.cell">
 	      <w xml:id="example.table.1.w.6">
 		<t>Radboud</t>
 	      </w>
@@ -1186,7 +1186,7 @@
                 </entity>
               </entities>
 	    </cell>
-	    <cell>
+	    <cell xml:id="example.last.cell">
 	      <w xml:id="example.table.1.w.13">
 		<t>Tilburg</t>
 	      </w>
@@ -1194,11 +1194,20 @@
 		<t>University</t>
 	      </w>
               <entities>
-                <entity set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" class="org">
-                  <wref id="example.table.1.w.13" t="Tilburg" />
-                  <wref id="example.table.1.w.14" t="University" />
-                </entity>
-              </entities>
+		<correction xml:id="span.correction" class="entity">
+		  <new>
+                    <entity xml:id="example.tilburg.university.org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" class="org">
+                      <wref id="example.table.1.w.13" t="Tilburg" />
+                      <wref id="example.table.1.w.14" t="University" />
+                    </entity>
+		  </new>
+		  <original auth="no">
+		    <entity xml:id="example.tilburg.loc" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" class="loc">
+		      <wref id="example.table.1.w.13" t="Tilburg" />
+		    </entity>
+		  </original>
+		</correction>
+	      </entities>
 	    </cell>
 	  </row>
 	</table>
