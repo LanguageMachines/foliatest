@@ -1014,6 +1014,13 @@ void sanity_test044(){
 	       sanityDoc["sandbox.3.str.bold"] );
 }
 
+void sanity_test045(){
+  startTestSerie( " Sanity check - Corrections over Span elements" );
+  FoliaElement *cell = sanityDoc["example.last.cell"];
+  vector<Entity*> v = cell->select<Entity>();
+  assertEqual( len(v), size_t(1) );
+  assertEqual( v[0]->id(), "example.tilburg.university.org" );
+}
 
 void sanity_test099(){
   startTestSerie(" Writing to file " );
@@ -2742,6 +2749,7 @@ int main(){
   sanity_test042();
   sanity_test043();
   sanity_test044();
+  sanity_test045();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
