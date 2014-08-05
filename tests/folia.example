@@ -1155,7 +1155,7 @@
 		<t>Nijmegen</t>
 	      </w>
               <entities>
-                <entity class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+                <entity xml:id="example.radboud.university.nijmegen.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                   <wref id="example.table.1.w.6" t="Radboud" />
                   <wref id="example.table.1.w.7" t="University" />
                   <wref id="example.table.1.w.8" t="Nijmegen" />
