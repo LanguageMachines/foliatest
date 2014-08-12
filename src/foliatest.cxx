@@ -369,7 +369,8 @@ string repr( FoliaElement *a ){
     return "[null]";
 }
 
-void check( FoliaElement *parent, const string& indent, ostream& os ){
+int check( FoliaElement *parent, const string& indent, ostream& os, int& fails ){
+  int count = 0;
   for ( size_t i=0; i < parent->size(); ++i ){
     FoliaElement *child = parent->index(i);
     os << indent << repr( child ) << endl;
@@ -384,18 +385,24 @@ void check( FoliaElement *parent, const string& indent, ostream& os ){
 	      || parent->isinstance( Headwords_t )
 	      || parent->isinstance( DependencyDependent_t ) )
 	     && ( child->isinstance( Word_t ) || child->isinstance( Morpheme_t )) ) ){
-      assertEqual( parent, child->parent() );
-      check( child, indent + " ", os );
+      ++count;
+      if ( parent != child->parent() ){
+	//	os << indent << "^ DAAR!" << endl;
+	++fails;
+      }
+      count += check( child, indent + " ", os, fails );
     }
   }
+  return count;
 }
 
 void sanity_test015( ){
   startTestSerie(" Checking if all elements know who's their daddy " );
   ofstream os( "/tmp/foliaparent.txt" );
-  TEST_SILENT_ON();
-  check( sanityDoc.doc(), "",  os );
-  TEST_SILENT_OFF();
+  int fails = 0;
+  int cnt = check( sanityDoc.doc(), "",  os, fails );
+  cerr << "         - checked " << cnt << " parents" << endl;
+  assertEqual( fails, 0 );
   int stat = system( "diff -b /tmp/foliaparent.txt tests/foliaparent.ok" );
   assertMessage( "/tmp/foliaparent.txt tests/foliaparent.ok differ!",
 		 stat == 0 );
@@ -1853,7 +1860,7 @@ void edit_test005a( ){
   assertTrue( alt.size() == 1 );
   assertTrue( alt2.size() == 1 );
   assertTrue( alt[0] == alt2[0] );
-  FoliaElement *p;
+  FoliaElement *p = 0;
   assertTrue( p = w->annotation<PosAnnotation>( sett ) );
   assertTrue( p->isinstance<PosAnnotation>() );
 
