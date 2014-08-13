@@ -2206,7 +2206,7 @@ void create_test001( ){
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
   KWargs kw = getArgs( "id='" + id + "'" );
-  assertNoThrow( text = d.addNode( Text_t, kw ) );
+  assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( &d, "generate_id='" + text->id() + "'" ) );
@@ -2241,7 +2241,7 @@ void create_test002( ){
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
   KWargs kw = getArgs( "id='" + id + "'" );
-  assertNoThrow( text = d.addNode( Text_t, kw ) );
+  assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( &d, "generate_id='" + text->id() + "'" ) );
@@ -2285,7 +2285,7 @@ void create_test003( ){
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
   KWargs kw = getArgs( "id='" + id + "'" );
-  assertNoThrow( text = d.addNode( Text_t, kw ) );
+  assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   kw["set"] = "gap-set";
   kw["cls"] = "NP";
@@ -2313,7 +2313,7 @@ void correction_test001a( ){
 				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
-  assertNoThrow( corDoc->append( text ) );
+  assertNoThrow( corDoc->addText( text ) );
   FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"  ) );
   s->append( new Word( corDoc, "text='De', id='" + corDoc->id() + ".s.1.w.1'" ) );
   s->append( new Word( corDoc, "text='site', id='" + corDoc->id() + ".s.1.w.2'" ) );
@@ -2340,7 +2340,7 @@ void correction_test001b( ){
 				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
-  assertNoThrow( corDoc->append( text ) );
+  assertNoThrow( corDoc->addText( text ) );
   FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"  ) );
   s->append( new Word( corDoc, "text='De', id='" + corDoc->id() + ".s.1.w.1'" ) );
   s->append( new Word( corDoc, "text='site', id='" + corDoc->id() + ".s.1.w.2'" ) );
@@ -2368,7 +2368,7 @@ void correction_test002(){
 				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
-  assertNoThrow( corDoc->append( text ) );
+  assertNoThrow( corDoc->addText( text ); );
   FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"	 ) );
   s->append( new Word( corDoc, "text='De', id='" + corDoc->id() + ".s.1.w.1'" ) );
   s->append( new Word( corDoc, "text='site', id='" + corDoc->id() + ".s.1.w.2'" ) );
@@ -2399,7 +2399,7 @@ void correction_test003(){
 				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
-  assertNoThrow( corDoc->append( text ) );
+  assertNoThrow( corDoc->addText( text ) );
   FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"	 ) );
   s->append( new Word( corDoc, "text='Ik', id='" + corDoc->id() + ".s.1.w.1'" ) );
   s->append( new Word( corDoc, "text='zie', id='" + corDoc->id() + ".s.1.w.2'" ) );
@@ -2422,7 +2422,7 @@ void correction_test004(){
 				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
-  assertNoThrow( corDoc->append( text ) );
+  assertNoThrow( corDoc->addText( text ) );
   FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"	 ) );
   s->append( new Word( corDoc, "text='Ik', id='" + corDoc->id() + ".s.1.w.1'" ) );
   s->append( new Word( corDoc, "text='zie', id='" + corDoc->id() + ".s.1.w.2'" ) );
@@ -2554,8 +2554,8 @@ void query_test005(){
 void query_test006(){
   startTestSerie( " Find words with overlap " );
   Document doc( "id='test'" );
-  FoliaElement *text = new Text( "id='test.text'" );
-  doc.append( text );
+  Text *text = new Text( "id='test.text'" );
+  doc.addText( text );
   FoliaElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
   text->append( s );
   s->addWord( "text='a'" );
@@ -2652,8 +2652,8 @@ void query_test010a(){
 void query_test010b(){
   startTestSerie( " Find words with wildcard and overlap " );
   Document doc( "id='test'" );
-  FoliaElement *text = new Text( "id='test.text'" );
-  doc.append( text );
+  Text *text = new Text( "id='test.text'" );
+  doc.addText( text );
   FoliaElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
   text->append( s );
   s->addWord( "text='a'" );
