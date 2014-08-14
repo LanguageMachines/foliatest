@@ -2000,14 +2000,14 @@ void edit_test009a( ){
 // }
 
 void edit_test010( ){
-  startTestSerie( " Creating an initially editDocument-less tokenannotation element and adding it to a word " );
+  startTestSerie( " Creating an initially document-less tokenannotation element and adding it to a word " );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   FoliaElement *pos = 0;
-  assertThrow( pos = new PosAnnotation( &editDoc, "set='fakecgn', cls='N'" ), ValueError );
+  assertThrow( pos = new PosAnnotation( "set='fakecgn', cls='N'" ), ValueError );
   assertNoThrow( editDoc.declare( AnnotationType::POS,
-					"fakecgn") );
+				  "fakecgn") );
   assertNoThrow( pos = new PosAnnotation( &editDoc, "set='fakecgn', cls='N'" ) );
   assertNoThrow( w->append( pos ) );
   assertTrue( pos == w->annotation<PosAnnotation>("fakecgn") );
