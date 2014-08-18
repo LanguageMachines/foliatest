@@ -961,7 +961,7 @@ void sanity_test041(){
   startTestSerie( "Sanity check - Find spans given words" );
   UnicodeString res;
   FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.4"];
-  vector<FoliaElement*> spans;
+  vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<EntitiesLayer>() );
   for( size_t i=0; i < spans.size(); ++i ){
     vector<FoliaElement*> wv = spans[i]->wrefs();
