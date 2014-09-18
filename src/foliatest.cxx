@@ -124,6 +124,19 @@ void test6() {
   assertThrow( d2.readFromFile( "tests/include2.xml" ), XmlError );
 }
 
+void test7() {
+  startTestSerie( " Test inlezen van een FoLiA file zonder namespace declaratie" );
+  Document d;
+  assertNoThrow( d.readFromFile( "tests/noname.xml" ) );
+}
+
+void test8() {
+  startTestSerie( " Test inlezen van een FoLiA file met foute namespace declaratie" );
+  Document d;
+  assertThrow( d.readFromFile( "tests/wrongname.xml" ), XmlError );
+}
+
+
 Document sanityDoc( "file='tests/folia.example'" );
 
 void sanity_test000( ){
@@ -2692,6 +2705,8 @@ int main(){
   test4();
   test5();
   test6();
+  test7();
+  test8();
   sanity_test000();
   sanity_test001();
   sanity_test002();
