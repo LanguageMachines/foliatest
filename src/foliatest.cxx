@@ -127,7 +127,7 @@ void test6() {
 void test7() {
   startTestSerie( " Test inlezen van een FoLiA file zonder namespace declaratie" );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/noname.xml" ) );
+  assertThrow( d.readFromFile( "tests/noname.xml" ), XmlError );
 }
 
 void test8() {
