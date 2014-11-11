@@ -1832,8 +1832,14 @@ void edit_test004a( ){
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
   // add a pos annotation without specifying a set (should take default set), but this will clash with existing tag!
   KWargs args = getArgs( "cls='N', annotator='testscript', annotatortype='auto'" );
+  // will add an alternative
+  assertNoThrow( w->addPosAnnotation( args ) );
+  // will throw, because alternative already exists
   assertThrow( w->addPosAnnotation( args ), DuplicateAnnotationError );
   args = getArgs( "cls='naam', annotator='testscript', annotatortype='auto'" );
+  // will add an alternative
+  assertNoThrow( w->addLemmaAnnotation( args ) );
+  // will throw, because alternative already exists
   assertThrow( w->addLemmaAnnotation( args ), DuplicateAnnotationError );
 }
 
