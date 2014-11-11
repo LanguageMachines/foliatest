@@ -1830,7 +1830,7 @@ void edit_test004a( ){
   // grab a word (naam)
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
-  // add a pos annotation without specifying a set (should take default set), but this will clash with existing tag!
+  // add a pos annotation without specifying a set (should take default set)
   KWargs args = getArgs( "cls='N', annotator='testscript', annotatortype='auto'" );
   // will add an alternative
   assertNoThrow( w->addPosAnnotation( args ) );
@@ -1840,7 +1840,28 @@ void edit_test004a( ){
   // will add an alternative
   assertNoThrow( w->addLemmaAnnotation( args ) );
   // will not throw, because an new alternative is created
+  args["cls"] = "name";
   assertNoThrow( w->addLemmaAnnotation( args ) );
+  // lemma in different set
+  vector<LemmaAnnotation*> vec;
+  LemmaAnnotation *l = w->getLemmaAnnotations( "", vec ); // return all lemma's
+  assertTrue( l != 0 );
+  assertEqual( vec.size(), 2 );
+  assertNoThrow( editDoc.declare( AnnotationType::LEMMA,
+				  "andere-set") );
+  args["set"] = "andere-set";
+  assertNoThrow( w->addLemmaAnnotation( args ) );
+  args["cls"] = "naam";
+  assertNoThrow( w->addLemmaAnnotation( args ) ); // add an alternative
+  l = w->getLemmaAnnotations( "andere-set", vec ); // get all lemma's in andere-set
+  assertTrue( l != 0 );
+  assertEqual( vec.size(), 1 );
+  l = w->getLemmaAnnotations( "lemmas-nl", vec );// get all lemma's in lemmas-nl (the former default set)
+  assertTrue( l != 0 );
+  assertEqual( vec.size(), 2 );
+  l = w->getLemmaAnnotations( "", vec ); // get ALL lemma's and alternatives
+  assertTrue( l != 0 );
+  assertEqual( vec.size(), 3 );
 }
 
 void edit_test004b( ){
