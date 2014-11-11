@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="main" generator="libfolia-v0.12">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="main" generator="libfolia-v0.13">
   <metadata type="native">
     <annotations/>
   </metadata>
@@ -17,3 +17,4 @@
     <external src="chapter3.xml"/>
   </text>
 </FoLiA>
+

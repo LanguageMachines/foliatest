@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.12" version="0.10.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.13" version="0.10.0">
   <metadata type="native">
     <annotations>
       <token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
@@ -11,7 +11,7 @@
       <lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/>
       <sense-annotation set="sense-set"/>
       <syntax-annotation set="syntax-set"/>
-      <entity-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" />
+      <entity-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml"/>
       <entity-annotation set="mwu-set"/>
       <correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/>
       <errordetection-annotation set="error-set"/>
@@ -40,7 +40,7 @@
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1">
             <t>Stemma</t>
-	    <ref id="footnote_1" type="note"/>
+            <ref id="footnote_1" type="note"/>
             <pos class="N(soort,ev,basis,onz,stan)"/>
             <lemma class="stemma"/>
           </w>
@@ -72,7 +72,7 @@
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5">
             <t>woord</t>
             <pos class="N(soort,ev,basis,onz,stan)"/>
-	    <!-- numb comment -->
+            <!-- numb comment -->
             <lemma class="woord"/>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.6">
@@ -94,7 +94,7 @@
           <entities>
             <entity class="ander_woord" set="mwu-set">
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander"/>
-	      <!-- no idea why you would like to comment on this -->
+              <!-- no idea why you would like to comment on this -->
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.5" t="woord"/>
             </entity>
           </entities>
@@ -314,27 +314,27 @@
             <pos class="VZ(init)"/>
             <lemma class="tussen"/>
           </w>
-	  <correction xml:id="correction.join" class="join">
-	    <new>
+          <correction xml:id="correction.join" class="join">
+            <new>
               <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.24-25">
-		<t>handschriften</t>
-		<pos class="N(soort,mv,basis,onz,stan)"/>
-		<lemma class="handschrift"/>
-	      </w>
-	    </new>
+                <t>handschriften</t>
+                <pos class="N(soort,mv,basis,onz,stan)"/>
+                <lemma class="handschrift"/>
+              </w>
+            </new>
             <original auth="no">
               <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.24">
-		<t>handschrift</t>
-		<pos class="N(soort,ev,basis,onz,stan)"/>
-		<lemma class="handschrift"/>
+                <t>handschrift</t>
+                <pos class="N(soort,ev,basis,onz,stan)"/>
+                <lemma class="handschrift"/>
               </w>
               <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.25">
-		<t>en</t>
-		<pos class="VG(neven)"/>
-		<lemma class="en"/>
+                <t>en</t>
+                <pos class="VG(neven)"/>
+                <lemma class="en"/>
               </w>
-	    </original>
-	  </correction>
+            </original>
+          </correction>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.26">
             <t>weer</t>
             <pos class="BW()"/>
@@ -1063,159 +1063,159 @@
         </figure>
       </event>
       <div xml:id="sandbox.2">
-	<s xml:id="WR-P-E-J-0000000001.sandbox.2.s.1">
-	  <t>De CDA-lijsttrekker heeft fors verloren.</t>
-	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1">
-	    <t offset="0">De</t>
-	  </w>
-	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.2">
-	    <t offset="3">CDA-lijsttrekker</t>
-	    <morphology>
-	      <morpheme xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" class="lexical">
-		<t offset="0">CDA</t>
-	      </morpheme>
-	      <morpheme class="lexical">
-		<t offset="4">lijsttrekker</t>
-		<pos class="n" />
-		<lemma class="lijsttrekker"/>
-	      </morpheme>
-	    </morphology>
-	  </w>
-	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.3">
-	    <t offset="18">heeft</t>
-	  </w>
-	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.4">
-	    <t offset="24">fors</t>
-	  </w>
-	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.5">
-	    <t offset="29">verloren</t>
-	  </w>
-	  <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.6">
-	    <t offset="37">.</t>
-	  </w>
-	  <entities>
-	    <entity class="politicalparty" set="mwu-set">
-             <wref id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" t="CDA"/>
-	    </entity>
-	  </entities>
-	</s>
+        <s xml:id="WR-P-E-J-0000000001.sandbox.2.s.1">
+          <t>De CDA-lijsttrekker heeft fors verloren.</t>
+          <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1">
+            <t offset="0">De</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.2">
+            <t offset="3">CDA-lijsttrekker</t>
+            <morphology>
+              <morpheme xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" class="lexical">
+                <t offset="0">CDA</t>
+              </morpheme>
+              <morpheme class="lexical">
+                <t offset="4">lijsttrekker</t>
+                <pos class="n"/>
+                <lemma class="lijsttrekker"/>
+              </morpheme>
+            </morphology>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.3">
+            <t offset="18">heeft</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.4">
+            <t offset="24">fors</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.5">
+            <t offset="29">verloren</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.6">
+            <t offset="37">.</t>
+          </w>
+          <entities>
+            <entity class="politicalparty" set="mwu-set">
+              <wref id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" t="CDA"/>
+            </entity>
+          </entities>
+        </s>
       </div>
       <div xml:id="sandbox.3">
-	<head xml:id="sandbox.3.head">
-	  <!-- Not tokenised! -->
-	  <t>De <t-str id="sandbox.3.str"><t-style xml:id="sandbox.3.str.bold" class="bold">FoLiA</t-style> developers </t-str> zijn:</t>
-	  <str xml:id="sandbox.3.str">
-	    <t offset="3">FoLiA developers</t>
-	    <lang class="eng"/>
-	    <metric class="wordcount" value="2"/>
-	  </str>
-	</head>
-	<table xml:id="example.table.1">
-	  <tablehead>
-	    <row>
-	      <cell>
-		<w xml:id="example.table.1.w.1">
-		  <t>Naam</t>
-		</w>
-	      </cell>
-	      <cell>
-		<w xml:id="example.table.1.w.2">
-		  <t>Universiteit</t>
-		</w>
-	      </cell>
-	    </row>
-	  </tablehead>
-	  <row>
-	    <cell>
-	      <w xml:id="example.table.1.w.3">
-		<t>Maarten</t>
-	      </w>
-	      <w xml:id="example.table.1.w.4">
-		<t>van</t>
-	      </w>
-	      <w xml:id="example.table.1.w.5">
-		<t>Gompel</t>
-	      </w>
+        <head xml:id="sandbox.3.head">
+          <!-- Not tokenised! -->
+          <t>De <t-str id="sandbox.3.str"><t-style xml:id="sandbox.3.str.bold" class="bold">FoLiA</t-style> developers </t-str> zijn:</t>
+          <str xml:id="sandbox.3.str">
+            <t offset="3">FoLiA developers</t>
+            <lang class="eng"/>
+            <metric class="wordcount" value="2"/>
+          </str>
+        </head>
+        <table xml:id="example.table.1">
+          <tablehead>
+            <row>
+              <cell>
+                <w xml:id="example.table.1.w.1">
+                  <t>Naam</t>
+                </w>
+              </cell>
+              <cell>
+                <w xml:id="example.table.1.w.2">
+                  <t>Universiteit</t>
+                </w>
+              </cell>
+            </row>
+          </tablehead>
+          <row>
+            <cell>
+              <w xml:id="example.table.1.w.3">
+                <t>Maarten</t>
+              </w>
+              <w xml:id="example.table.1.w.4">
+                <t>van</t>
+              </w>
+              <w xml:id="example.table.1.w.5">
+                <t>Gompel</t>
+              </w>
               <entities>
                 <entity class="per" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
-                  <wref id="example.table.1.w.3" t="Maarten" />
-                  <wref id="example.table.1.w.4" t="van" />
-                  <wref id="example.table.1.w.5" t="Gompel" />
-		</entity>
-	      </entities>
-	    </cell>
-	    <cell xml:id="example.cell">
-	      <w xml:id="example.table.1.w.6">
-		<t>Radboud</t>
-	      </w>
-	      <w xml:id="example.table.1.w.7">
-		<t>University</t>
-	      </w>
-	      <w xml:id="example.table.1.w.8">
-		<t>Nijmegen</t>
-	      </w>
+                  <wref id="example.table.1.w.3" t="Maarten"/>
+                  <wref id="example.table.1.w.4" t="van"/>
+                  <wref id="example.table.1.w.5" t="Gompel"/>
+                </entity>
+              </entities>
+            </cell>
+            <cell xml:id="example.cell">
+              <w xml:id="example.table.1.w.6">
+                <t>Radboud</t>
+              </w>
+              <w xml:id="example.table.1.w.7">
+                <t>University</t>
+              </w>
+              <w xml:id="example.table.1.w.8">
+                <t>Nijmegen</t>
+              </w>
               <entities>
                 <entity xml:id="example.radboud.university.nijmegen.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
-                  <wref id="example.table.1.w.6" t="Radboud" />
-                  <wref id="example.table.1.w.7" t="University" />
-                  <wref id="example.table.1.w.8" t="Nijmegen" />
+                  <wref id="example.table.1.w.6" t="Radboud"/>
+                  <wref id="example.table.1.w.7" t="University"/>
+                  <wref id="example.table.1.w.8" t="Nijmegen"/>
                 </entity>
               </entities>
-	    </cell>
-	  </row>
-	  <row>
-	    <cell>
-	      <w xml:id="example.table.1.w.9">
-		<t>Ko</t>
-	      </w>
-	      <w xml:id="example.table.1.w.10">
-		<t>van</t>
-	      </w>
-	      <w xml:id="example.table.1.w.11">
-		<t>der</t>
-	      </w>
-	      <w xml:id="example.table.1.w.12">
-		<t>Sloot</t>
-	      </w>
+            </cell>
+          </row>
+          <row>
+            <cell>
+              <w xml:id="example.table.1.w.9">
+                <t>Ko</t>
+              </w>
+              <w xml:id="example.table.1.w.10">
+                <t>van</t>
+              </w>
+              <w xml:id="example.table.1.w.11">
+                <t>der</t>
+              </w>
+              <w xml:id="example.table.1.w.12">
+                <t>Sloot</t>
+              </w>
               <entities>
                 <entity class="per" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
-                  <wref id="example.table.1.w.9" t="Ko" />
-                  <wref id="example.table.1.w.10" t="van" />
-                  <wref id="example.table.1.w.11" t="der" />
-                  <wref id="example.table.1.w.12" t="Sloot" />
+                  <wref id="example.table.1.w.9" t="Ko"/>
+                  <wref id="example.table.1.w.10" t="van"/>
+                  <wref id="example.table.1.w.11" t="der"/>
+                  <wref id="example.table.1.w.12" t="Sloot"/>
                 </entity>
               </entities>
-	    </cell>
-	    <cell xml:id="example.last.cell">
-	      <w xml:id="example.table.1.w.13">
-		<t>Tilburg</t>
-	      </w>
-	      <w xml:id="example.table.1.w.14">
-		<t>University</t>
-	      </w>
+            </cell>
+            <cell xml:id="example.last.cell">
+              <w xml:id="example.table.1.w.13">
+                <t>Tilburg</t>
+              </w>
+              <w xml:id="example.table.1.w.14">
+                <t>University</t>
+              </w>
               <entities>
-		<correction xml:id="span.correction" class="entity">
-		  <new>
-                    <entity xml:id="example.tilburg.university.org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" class="org">
-                      <wref id="example.table.1.w.13" t="Tilburg" />
-                      <wref id="example.table.1.w.14" t="University" />
+                <correction xml:id="span.correction" class="entity">
+                  <new>
+                    <entity xml:id="example.tilburg.university.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+                      <wref id="example.table.1.w.13" t="Tilburg"/>
+                      <wref id="example.table.1.w.14" t="University"/>
                     </entity>
-		  </new>
-		  <original auth="no">
-		    <entity xml:id="example.tilburg.loc" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" class="loc">
-		      <wref id="example.table.1.w.13" t="Tilburg" />
-		    </entity>
-		  </original>
-		</correction>
-	      </entities>
-	    </cell>
-	  </row>
-	</table>
+                  </new>
+                  <original auth="no">
+                    <entity xml:id="example.tilburg.loc" class="loc" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+                      <wref id="example.table.1.w.13" t="Tilburg"/>
+                    </entity>
+                  </original>
+                </correction>
+              </entities>
+            </cell>
+          </row>
+        </table>
       </div>
       <note xml:id="footnote1">
-	<s xml:id="note1">
-	  <t> Dit is een opmerking</t>
-	</s>
+        <s xml:id="note1">
+          <t> Dit is een opmerking</t>
+        </s>
       </note>
     </div>
     <gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter">
@@ -1227,3 +1227,4 @@
     </gap>
   </text>
 </FoLiA>
+
