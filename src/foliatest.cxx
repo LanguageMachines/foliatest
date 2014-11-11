@@ -1834,13 +1834,13 @@ void edit_test004a( ){
   KWargs args = getArgs( "cls='N', annotator='testscript', annotatortype='auto'" );
   // will add an alternative
   assertNoThrow( w->addPosAnnotation( args ) );
-  // will throw, because alternative already exists
-  assertThrow( w->addPosAnnotation( args ), DuplicateAnnotationError );
+  // will not throw, because an new alternative is created
+  assertNoThrow( w->addPosAnnotation( args ) );
   args = getArgs( "cls='naam', annotator='testscript', annotatortype='auto'" );
   // will add an alternative
   assertNoThrow( w->addLemmaAnnotation( args ) );
-  // will throw, because alternative already exists
-  assertThrow( w->addLemmaAnnotation( args ), DuplicateAnnotationError );
+  // will not throw, because an new alternative is created
+  assertNoThrow( w->addLemmaAnnotation( args ) );
 }
 
 void edit_test004b( ){
@@ -1872,7 +1872,7 @@ void edit_test005a( ){
   Document doc( "file='tests/folia.example'" );
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
   KWargs args = getArgs( "cls='V'" );
-  assertNoThrow( w->addAlternative<PosAnnotation>( args ) );
+  assertNoThrow( w->addPosAnnotation( args ) );
   vector<Alternative*> alt = w->alternatives(); // all alternatives
   string sett = doc.defaultset(AnnotationType::POS);
   vector<Alternative*> alt2 = w->alternatives(sett);
@@ -1888,7 +1888,7 @@ void edit_test005a( ){
   assertTrue( alt3.size() == 1 );
   assertTrue( alt[0] == alt3[0] );
 
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\"/><lemma class=\"naam\"/><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt.1\" auth=\"no\"><pos class=\"V\"/></alt></w>" );
+  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\"/><lemma class=\"naam\"/><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt-pos.1\" auth=\"no\"><pos class=\"V\"/></alt></w>" );
 
 }
 
@@ -1898,10 +1898,11 @@ void edit_test005b( ){
   Document editDoc( "file='tests/folia.example'" );
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"] );
   // add morhological information without specifying a set (should take default
-  // set), but this will clash with existing tag!
+  // set),
 
   MorphologyLayer *l = 0;
-  assertNoThrow( l = w->addAlternative<MorphologyLayer>() );
+  KWargs args;
+  assertNoThrow( l = w->addMorphologyLayer(args) );
   FoliaElement *m = new Morpheme( &editDoc );
   l->append( m );
   FoliaElement *t = new TextContent( &editDoc, "value='hand', offset='0'");
@@ -2040,13 +2041,13 @@ void edit_test011(){
   startTestSerie( " Adding Subtoken annotation (morphological analysis)" );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.5.w.3"];
-  FoliaElement *l = new MorphologyLayer(0);
+  MorphologyLayer *l = new MorphologyLayer(0);
   w->append( l );
-  FoliaElement *m = new Morpheme( &editDoc );
+  Morpheme *m = new Morpheme( &editDoc );
   l->append( m );
-  FoliaElement *t = new TextContent( &editDoc, "value='handschrift', offset='0'");
+  TextContent *t = new TextContent( &editDoc, "value='handschrift', offset='0'");
   m->append( t );
-  FoliaElement *f = new Feature( &editDoc, "subset='type', cls='stem'");
+  Feature *f = new Feature( &editDoc, "subset='type', cls='stem'");
   m->append( f );
   f = new Feature( &editDoc, "subset='function', cls='lexical'");
   m->append( f );
