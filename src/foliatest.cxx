@@ -1890,6 +1890,14 @@ void edit_test005a( ){
 
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\"/><lemma class=\"naam\"/><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt-pos.1\" auth=\"no\"><pos class=\"V\"/></alt></w>" );
 
+  std::vector<PosAnnotation*> pv;
+  PosAnnotation *pos1 = w->getPosAnnotations( sett, pv );
+  assertTrue( pos1 != 0 );
+  assertEqual( pv.size(), 1 );
+  assertEqual( pos1->xmlstring(), "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"N(soort,ev,basis,zijd,stan)\"/>" );
+  assertEqual( pv[0]->xmlstring(), "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"V\"/>" );
+
+
 }
 
 void edit_test005b( ){
