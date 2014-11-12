@@ -1841,14 +1841,14 @@ void edit_test004a( ){
   assertNoThrow( w->addLemmaAnnotation( args ) );
   // will not throw, because an new alternative is created
   args["cls"] = "name";
-  //  args["generate_id"] = "blaat";
+  args["generate_id"] = "blaat";
   assertNoThrow( w->addLemmaAnnotation( args ) );
   // lemma in different set
   vector<LemmaAnnotation*> vec;
   LemmaAnnotation *l = w->getLemmaAnnotations( "", vec ); // return all lemma's
   assertTrue( l != 0 );
   assertEqual( vec.size(), 2 );
-  assertEqual( vec[1]->xmlstring(), "<lemma xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"testscript\" class=\"name\"/>" );
+  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\"/><lemma class=\"naam\"/><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt-pos.1\" auth=\"no\"><pos annotator=\"testscript\" class=\"N\"/></alt><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt-pos.2\" auth=\"no\"><pos annotator=\"testscript\" class=\"N\"/></alt><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt-lem.1\" auth=\"no\"><lemma annotator=\"testscript\" class=\"naam\"/></alt><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.blaat.1\" auth=\"no\"><lemma annotator=\"testscript\" class=\"name\"/></alt></w>" );
 
   assertNoThrow( editDoc.declare( AnnotationType::LEMMA,
 				  "andere-set") );
