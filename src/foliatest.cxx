@@ -1841,12 +1841,15 @@ void edit_test004a( ){
   assertNoThrow( w->addLemmaAnnotation( args ) );
   // will not throw, because an new alternative is created
   args["cls"] = "name";
+  //  args["generate_id"] = "blaat";
   assertNoThrow( w->addLemmaAnnotation( args ) );
   // lemma in different set
   vector<LemmaAnnotation*> vec;
   LemmaAnnotation *l = w->getLemmaAnnotations( "", vec ); // return all lemma's
   assertTrue( l != 0 );
   assertEqual( vec.size(), 2 );
+  assertEqual( vec[1]->xmlstring(), "<lemma xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"testscript\" class=\"name\"/>" );
+
   assertNoThrow( editDoc.declare( AnnotationType::LEMMA,
 				  "andere-set") );
   args["set"] = "andere-set";
