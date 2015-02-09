@@ -2448,7 +2448,7 @@ void correction_test002(){
 				  "adhocset",
 				  "annotator='proycon'" ) );
   Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
-  assertNoThrow( corDoc->addText( text ); );
+  assertNoThrow( corDoc->addText( text ) );
   FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"	 ) );
   s->append( new Word( corDoc, "text='De', id='" + corDoc->id() + ".s.1.w.1'" ) );
   s->append( new Word( corDoc, "text='site', id='" + corDoc->id() + ".s.1.w.2'" ) );
