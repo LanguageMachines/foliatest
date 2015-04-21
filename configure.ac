@@ -4,7 +4,7 @@
 # $URL: https://ilk.uvt.nl/svn/sources/ucto/trunk/configure.ac $
 
 AC_PREREQ(2.59)
-AC_INIT([foliatest], [0.1], [timbl@uvt.nl])
+AC_INIT([foliatest], [0.2], [timbl@uvt.nl])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -50,7 +50,7 @@ AC_ARG_WITH(icu,
 	fi] )
 
 if test "$useICU" = "1"; then
-  AX_ICU_CHECK( [3.6],
+  AX_ICU_CHECK( [4.2],
 		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
 		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
 		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )

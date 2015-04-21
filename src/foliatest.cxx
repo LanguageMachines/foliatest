@@ -1551,8 +1551,75 @@ void sanity_test103( ){
 
 }
 
-
 void sanity_test104( ){
+  startTestSerie(" Sanity Check - Speech data (without attributes)" );
+  /*
+  string xml = "<?xml version=\"1.0\"?>\n"
+    "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"manual\" version=\"0.12\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <utterance-annotation set=\"utterances\" />\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <speech xml:id=\"example.speech\">\n"
+    "    <utt xml:id=\"example.speech.utt.1\">\n"
+    "      <ph>həlˈəʊ wˈɜːld</ph>\n"
+    "    </utt>\n"
+    "    <utt xml:id=\"example.speech.utt.2\">\n"
+    "      <w xml:id=\"example.speech.utt.2.w.1\">\n"
+    "        <ph>həlˈəʊ</ph>\n"
+    "      </w>\n"
+    "      <w xml:id=\"example.speech.utt.2.w.2\">\n"
+    "        <ph>wˈɜːld</ph>\n"
+    "      </w>\n"
+    "    </utt>\n"
+    "  </speech>\n"
+    "</FoLiA>\n";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  assertTrue( isinstance(doc.doc(), folia.Speech) );
+  assertTrue( isinstance(doc["example.speech.utt.1"], folia.Utterance) );
+  assertThrow( doc["example.speech.utt.1"].phon(), "həlˈəʊ wˈɜːld" );
+  assertThrow( folia.NoSuchText, doc["example.speech.utt.1"].text ); // doesn't exist
+  assertEqual( doc["example.speech.utt.2"].phon(), "həlˈəʊ wˈɜːld" );
+  */
+}
+
+void sanity_test104b( ){
+  startTestSerie(" Sanity Check - Speech data (with speech attributes)" );
+  /*
+  string xml = "<?xml version=\"1.0\"?>\n"
+    "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"manual\" version=\"0.12\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <utterance-annotation set=\"utterances\" />\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <speech xml:id=\"example.speech\">\n"
+    "    <utt xml:id=\"example.speech.utt.1\">\n"
+    "      <ph>həlˈəʊ wˈɜːld</ph>\n"
+    "    </utt>\n"
+    "    <utt xml:id=\"example.speech.utt.2\">\n"
+    "      <w xml:id=\"example.speech.utt.2.w.1\">\n"
+    "        <ph>həlˈəʊ</ph>\n"
+    "      </w>\n"
+    "      <w xml:id=\"example.speech.utt.2.w.2\">\n"
+    "        <ph>wˈɜːld</ph>\n"
+    "      </w>\n"
+    "    </utt>\n"
+    "  </speech>\n"
+    "</FoLiA>\n";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  assertTrue( isinstance(doc.doc(), folia.Speech) );
+  assertTrue( isinstance(doc["example.speech.utt.1"], folia.Utterance) );
+  assertThrow( doc["example.speech.utt.1"].phon(), "həlˈəʊ wˈɜːld" );
+  assertThrow( folia.NoSuchText, doc["example.speech.utt.1"].text ); // doesn't exist
+  assertEqual( doc["example.speech.utt.2"].phon(), "həlˈəʊ wˈɜːld" );
+  */
+}
+
+void sanity_test105( ){
   startTestSerie(" embedded sentences " );
   string xml = "<?xml version=\"1.0\"?>\n"
     " <FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"doc\">\n"
@@ -1651,11 +1718,10 @@ void sanity_test104( ){
   assertTrue( v[3]->str() == "eerste" );
   v = s[2]->wordParts();
   assertTrue( v[3]->str() == "tweede" );
-
 }
 
-void sanity_test105( ){
-  startTestSerie("105");
+void sanity_test106( ){
+  startTestSerie("106");
   Document doc;
   assertNoThrow( doc.readFromFile("tests/fg.xml") );
   vector<Sentence *> s = doc.sentenceParts();
@@ -1666,7 +1732,7 @@ void sanity_test105( ){
 
 }
 
-void sanity_test106( ){
+void sanity_test107( ){
   Document doc;
   startTestSerie( " Attributes - invalid values " );
   string xml = "<?xml version=\"1.0\"?>\n"
@@ -2863,8 +2929,10 @@ int main(){
   sanity_test102l();
   sanity_test103();
   sanity_test104();
+  sanity_test104b();
   sanity_test105();
   sanity_test106();
+  sanity_test107();
   edit_test001a();
   edit_test001b();
   edit_test002();
