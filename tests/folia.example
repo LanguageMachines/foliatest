@@ -28,6 +28,8 @@
       <lang-annotation set="ISO639"/>
       <table-annotation set="table-set"/>
       <style-annotation set="styles"/>
+      <definition-annotation set="definitions"/>
+      <phonetic-annotation set="phonetics-set"/>
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
@@ -1016,7 +1018,7 @@
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.6.w.1" t="Verdwenen"/>
             <hd>
-              <wref id="WR-P-E-J-0000000001.p.1.s.6.w.2" t="handschriften"/>
+               <wref id="WR-P-E-J-0000000001.p.1.s.6.w.2" t="handschriften"/>
             </hd>
           </coreferencelink>
           <coreferencelink>
@@ -1024,6 +1026,57 @@
           </coreferencelink>
         </coreferencechain>
       </coreferences>
+    </div>
+    <div xml:id="glossary">
+      <head xml:id="glossary.head">
+      <t>Woordenboek-voorbeeld</t>
+      </head>
+      <entry xml:id="entry.1">
+        <term xml:id="entry.1.term.1">
+          <w xml:id="entry.1.term.1.w.1" src="stemma.wav" begintime="00:00:00:000" endtime="00:00:01:300" speaker="proycon">
+            <t>Stemma</t>
+            <ph>stɛːma</ph>
+            <pos class="N(eigen,ev,basis,zijd,stan)" />
+            <lemma class="stemma" />
+            <sense class="some.fictitious.stemma.id" />
+            <phonetics>
+              <phoneme xml:id="ph1" begintime="00:00:00:000" endtime="00:00:00:250">
+		<ph>s</ph>
+	      </phoneme>
+              <phoneme xml:id="ph2">
+		<ph>t</ph>
+	      </phoneme>
+              <phoneme xml:id="ph3">
+		<ph>ɛː</ph>
+	      </phoneme>
+              <phoneme xml:id="ph4">
+		<ph>m</ph>
+	      </phoneme>
+              <phoneme xml:id="ph5">
+		<ph>a</ph>
+	      </phoneme>
+            </phonetics>
+          </w>
+	</term>
+	<def xml:id="entry.1.def.1" class="sense">
+          <p xml:id="entry.1.def.1.p.1">
+            <t>Term uit de editiewetenschap en tekstkritiek voor de schematische weergave in de vorm van een boomdiagram van de onderlinge verwantschap van documentaire bronnen (handschrift, codex, druk), waarin een tekst bewaard is gebleven.</t>
+          </p>
+          <ref id="bib.1" type="note">
+	    <t>[Bork et al, 2012]</t>
+	  </ref>
+	</def>
+	<def xml:id="entry.1.def.2" class="etym">
+          <p xml:id="entry.1.def.2.p.1">
+            <t>Van het oud-Griekse "στέμμα", via het Latijnse "stemma"</t>
+          </p>
+	</def>
+	<ex xml:id="entry.1.ex.1">
+          <s xml:id="entry.1.ex.1.s.1">
+            <t>Dit wordt neergezet in een stemma.</t>
+          </s>
+	</ex>
+      </entry>
     </div>
     <div xml:id="sandbox">
       <list xml:id="sandbox.list.1">
