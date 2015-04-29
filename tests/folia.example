@@ -20,14 +20,14 @@
       <dependency-annotation set="alpino-set"/>
       <timesegment-annotation set="event-set"/>
       <gap-annotation set="gap-set"/>
+      <note-annotation set="footnote-set"/>
       <alignment-annotation set="alignment-set"/>
       <coreference-annotation set="coreference-set"/>
       <semrole-annotation set="semrole-set"/>
       <metric-annotation set="metric-set"/>
-      <table-annotation set="table-set"/>
       <lang-annotation set="ISO639"/>
+      <table-annotation set="table-set"/>
       <style-annotation set="styles"/>
-      <note-annotation set="footnote-set"/>
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
