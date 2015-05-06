@@ -815,7 +815,7 @@ void sanity_test031( ){
 
 void sanity_test032( ){
   startTestSerie(" Events " );
-  FoliaElement *l = sanityDoc["sandbox.list.1"];
+  FoliaElement *l = sanityDoc["sandbox"];
   FoliaElement *event = l->annotation<Event>();
   assertTrue( event->cls() == "applause" );
   assertTrue( event->feat("actor") == "audience" );
