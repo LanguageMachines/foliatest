@@ -176,7 +176,7 @@ void sanity_test000( ){
 
 void sanity_test001( ){
   startTestSerie(" Paragraph count " );
-  assertTrue( sanityDoc.paragraphs().size() == 1 );
+  assertEqual( sanityDoc.paragraphs().size(), 3 );
 
 }
 
@@ -184,7 +184,7 @@ void sanity_test002(){
   startTestSerie(" Sentence count " );
   vector<Sentence*> v;
   assertNoThrow( v = sanityDoc.sentences() );
-  assertEqual( size_t(14), v.size() );
+  assertEqual( size_t(15), v.size() );
 
 }
 
@@ -192,7 +192,7 @@ void sanity_test003( ){
   startTestSerie(" Word count " );
   vector<Word*> v;
   assertNoThrow( v = sanityDoc.words() );
-  assertEqual( 176, v.size() );
+  assertEqual( 177, v.size() );
 
 }
 
@@ -1746,11 +1746,11 @@ void sanity_test107( ){
 }
 
 void edit_test001a( ){
-  startTestSerie( " Add a sentence to the last paragraph ");
+  startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
-  // grab last paragraph
+  // grab first paragraph
   Document editDoc( "file='tests/folia.example'" );
-  assertNoThrow( p = editDoc.rparagraphs(0) );
+  assertNoThrow( p = editDoc.paragraphs(0) );
   size_t tmp = p->size();
   // add a sentence
   FoliaElement *s = 0;
@@ -1796,16 +1796,16 @@ void edit_test001a( ){
 
   // all well?
 
-  assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\" annotator=\"testscript\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\" annotator=\"testscript\"><t>is</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\" annotator=\"testscript\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\" annotator=\"testscript\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\" annotator=\"testscript\" space=\"no\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" annotator=\"testscript\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\" annotator=\"testscript\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\" annotator=\"testscript\"><t>is</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\" annotator=\"testscript\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\" annotator=\"testscript\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\" annotator=\"testscript\" space=\"no\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" annotator=\"testscript\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
 }
 
 
 void edit_test001b( ){
-  startTestSerie( " Add a sentence to the last paragraph (shortcuts)" );
+  startTestSerie( " Add a sentence to the first paragraph (shortcuts)" );
   FoliaElement *p = 0;
   Document editDoc( "file='tests/folia.example'" );
-  // grab last paragraph
-  assertNoThrow( p = editDoc.rparagraphs(0) );
+  // grab first paragraph
+  assertNoThrow( p = editDoc.paragraphs(0) );
   size_t tmp = p->size();
   // add a sentence
   FoliaElement *s = 0;
@@ -1836,7 +1836,7 @@ void edit_test001b( ){
   assertTrue( p->rindex(0) == s );
 
   // all well?
-  assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\"><t>is</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\"><t>is</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
 
 }
 
