@@ -1000,7 +1000,7 @@
         </s>
       </p>
       <coreferences>
-        <coreferencechain class="ident">
+        <coreferencechain class="handschriften">
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.3.w.5" t="handschriften"/>
           </coreferencelink>
@@ -1014,7 +1014,7 @@
             <wref id="WR-P-E-J-0000000001.p.1.s.7.w.7" t="de"/>
           </coreferencelink>
         </coreferencechain>
-        <coreferencechain class="ident">
+        <coreferencechain class="verdwenen_handschriften">
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.6.w.1" t="Verdwenen"/>
             <hd>
