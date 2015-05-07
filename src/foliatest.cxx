@@ -339,7 +339,9 @@ void sanity_test009( ){
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( w->annotation<PosAnnotation>() == w->select<PosAnnotation>()[0] );
   assertTrue( w->annotation<PosAnnotation>()->isinstance(Pos_t ) );
-  //  assertTrue( issubclass( PosAnnotation, AbstractTokenAnnotation ) );
+  assertTrue( isSubClass( Pos_t, TokenAnnotation_t ) );
+  bool test = isSubClass<PosAnnotation, AbstractTokenAnnotation>();
+  assertTrue( test );
   assertTrue( w->annotation<PosAnnotation>()->cls() == "N(soort,ev,basis,onz,stan)" );
   assertTrue( w->pos() == "N(soort,ev,basis,onz,stan)" );
   assertTrue( w->annotation<PosAnnotation>()->sett() == "cgn-combinedtags" );
