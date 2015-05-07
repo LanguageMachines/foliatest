@@ -2905,6 +2905,7 @@ int main(){
   sanity_test020c();
   sanity_test020d();
   sanity_test020e();
+  sanity_test020f();
   sanity_test021();
   sanity_test022();
   sanity_test023a();
