@@ -371,6 +371,7 @@ void sanity_test011( ){
   FoliaElement *w = 0;
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( len( w->select<SenseAnnotation>() ) == 0 );
+  assertTrue( w->select<SenseAnnotation>().size() == 0 );
   assertThrow( w->annotation<SenseAnnotation>(),
 			NoSuchAnnotation );
 
@@ -386,7 +387,9 @@ void sanity_test012( ){
   assertTrue( len( c->getOriginal() ) == 1 );
   assertTrue( w->text() == "vierkante" );
   assertTrue( c->getNew()->index(0)->text() == "vierkante" );
+  assertTrue( c->getNew(0)->text() == "vierkante" );
   assertTrue( c->getOriginal()->index(0)->text() == "vierkant" );
+  assertTrue( c->getOriginal(0)->text() == "vierkant" );
 
 }
 
@@ -401,6 +404,7 @@ void sanity_test013( ){
   assertTrue( w->annotation<LemmaAnnotation>()->cls() == "haak" );
   assertTrue( (*c->getNew())[0]->cls() == "haak" );
   assertTrue( (*c->getOriginal())[0]->cls() == "haaak" );
+  assertTrue( c->getOriginal(0)->cls() == "haaak" );
 
 }
 
@@ -497,7 +501,7 @@ void sanity_test018(){
 }
 
 void sanity_test019(){
-  startTestSerie(" Alignment in same sanityDocument" );
+  startTestSerie(" Alignment in same Document" );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.3.w.10"];
   Alignment *aref = 0;
   assertNoThrow( aref = w->annotation<Alignment>() );
@@ -590,6 +594,23 @@ void sanity_test020e(){
   assertEqual( l->index(0)->text(),  "een ander woord" ) ;
   assertEqual( l->index(1)->cls(), "cough" );
   assertEqual( l->index(2)->text(),  "voor stamboom" );
+}
+
+void sanity_test020f(){
+  startTestSerie( " Span Annotation (Co-reference) " );
+  FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.div0.1"];
+  DependenciesLayer *l = 0;
+  assertNoThrow( l = s->annotation<DependenciesLayer>() );
+  vector<Dependency*> deps;
+  assertNoThrow( deps = l->annotations<Dependency>() );
+  assertEqual( deps[0]->cls(), "su" );
+  assertEqual( deps[1]->cls(), "predc" );
+  assertEqual( deps[2]->cls(), "det" );
+  assertEqual( deps[3]->cls(), "mod" );
+  assertEqual( deps[4]->cls(), "mod" );
+  assertEqual( deps[5]->cls(), "obj1" );
+  assertEqual( deps[2]->head()->wrefs()[0], sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.5"] );
+  assertEqual( deps[2]->dependent()->wrefs()[0], sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.3"] );
 }
 
 void sanity_test021(){
