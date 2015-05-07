@@ -1084,23 +1084,23 @@
       </head>
       <event xml:id="sandbox.event.0" actor="audience" class="applause"/>
       <list xml:id="sandbox.list.1">
-        <item xml:id="sandbox.list.1.item.1" n="1">
-          <s xml:id="sandbox.list.1.item.1.s.1">
-            <w xml:id="sandbox.list.1.item.1.s.1.w.1">
+        <item xml:id="sandbox.list.1.listitem.1" n="1">
+          <s xml:id="sandbox.list.1.listitem.1.s.1">
+            <w xml:id="sandbox.list.1.listitem.1.s.1.w.1">
               <t>Eerste</t>
               <sense class="some.sense.id" synset="some.synset.id"/>
             </w>
-            <w xml:id="sandbox.list.1.item.1.s.1.w.2">
+            <w xml:id="sandbox.list.1.listitem.1.s.1.w.2">
               <t>testitem</t>
             </w>
           </s>
         </item>
-        <item xml:id="sandbox.list.1.item.2" n="2">
-          <s xml:id="sandbox.list.1.item.2.s.1">
-            <w xml:id="sandbox.list.1.item.2.s.1.w.1">
+        <item xml:id="sandbox.list.1.listitem.2" n="2">
+          <s xml:id="sandbox.list.1.listitem.2.s.1">
+            <w xml:id="sandbox.list.1.listitem.2.s.1.w.1">
               <t>Tweede</t>
             </w>
-            <w xml:id="sandbox.list.1.item.2.s.1.w.2">
+            <w xml:id="sandbox.list.1.listitem.2.s.1.w.2">
               <t>testitem</t>
             </w>
           </s>
