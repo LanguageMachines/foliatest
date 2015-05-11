@@ -660,9 +660,9 @@ void sanity_test023b(){
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
   vector<Word*> context = w->leftcontext(3);
   assertTrue( context.size() == 3 );
-  assertTrue( context[0] == 0 );
-  assertTrue( context[1]->text() == "Stemma" );
-  assertTrue( context[2]->text() == "Stemma" );
+  assertTrue( context[0] == 0 );                // no words
+  assertTrue( context[1]->text() == "Stemma" ); // from the head
+  assertTrue( context[2]->text() == "Stemma" ); // w.1
 
 }
 
