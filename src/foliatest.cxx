@@ -613,6 +613,19 @@ void sanity_test020f(){
   assertEqual( deps[2]->dependent()->wrefs()[0], sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.3"] );
 }
 
+void sanity_test020g(){
+  startTestSerie( " Semantic Role Labelling " );
+  FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.7"];
+  SemanticRolesLayer *l = 0;
+  assertNoThrow( l = s->annotation<SemanticRolesLayer>() );
+  vector<SemanticRole*> roles = l->annotations<SemanticRole>();
+  assertEqual( roles[0]->cls(), "actor" );
+  assertEqual( roles[1]->cls(),  "patient" );
+  assertEqual( roles[0]->wrefs(0), sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.3"] );
+  assertEqual( roles[1]->wrefs(0), sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.4"] );
+  assertEqual( roles[1]->wrefs(1), sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.5"] );
+}
+
 void sanity_test021(){
   startTestSerie(" Obtaining previous word " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
@@ -2906,6 +2919,7 @@ int main(){
   sanity_test020d();
   sanity_test020e();
   sanity_test020f();
+  sanity_test020g();
   sanity_test021();
   sanity_test022();
   sanity_test023a();
