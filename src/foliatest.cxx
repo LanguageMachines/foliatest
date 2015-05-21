@@ -78,6 +78,7 @@ void test1() {
   assertNoThrow( d.readFromFile( "tests/folia.example" ) );
 }
 
+
 void test1a() {
   startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
   Document d1;
