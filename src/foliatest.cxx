@@ -848,10 +848,10 @@ void sanity_test030b( ){
   FoliaElement *head = sanityDoc["sandbox.3.head"];
   TextContent *t = head->textcontent();
   assertTrue( len(t) == 3 );
-  assertEqual( t->text(), "De FoLiA developers  zijn:" ); // 2 spaces!
+  assertEqual( t->text(), "De FoLiA developers zijn:" );
   assertEqual( t->index(0)->text(), "De ");
   assertTrue( isinstance( t->index(1), TextMarkupString_t ) );
-  assertEqual( t->index(1)->text(), "FoLiA developers " );
+  assertEqual( t->index(1)->text(), "FoLiA developers" );
   assertEqual( t->index(2)->text(), " zijn:" );
 }
 
@@ -1094,8 +1094,8 @@ void sanity_test044(){
   assertEqual( len(t->select<TextMarkupString>()), size_t(1) );
   vector<TextMarkupString*> v = t->select<TextMarkupString>();
   TextMarkupString *st = v[0];
-  // testing value (full text value inclusive space!)
-  assertEqual( st->text(), "FoLiA developers " ) ;
+  // testing value (full text value)
+  assertEqual( st->text(), "FoLiA developers" ) ;
   const FoliaElement *r1 =  st->resolveid();
   FoliaElement *r2 = sanityDoc["sandbox.3.str"];
   assertEqual( r1, r2 ); // testing resolving references
