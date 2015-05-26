@@ -999,11 +999,8 @@ void sanity_test037b( ){
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
   PosAnnotation* p = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
   vector<string> v = p->feats("x");
-  assertEqual( v.size(), size_t(3) );
-  assertTrue( v[0] == "a" );
-  assertTrue( v[1] == "b" );
-  assertTrue( v[2] == "c" );
-
+  vector<string> vok = {"a","b","c"};
+  assertTrue( v == vok );
 }
 
 void sanity_test038a(){
@@ -1016,7 +1013,7 @@ void sanity_test038b(){
   startTestSerie( "Sanity check - Obtaining morphemes and token annotation under morphemes" );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"];
   vector<Morpheme*> l = w->morphemes(); //get all morphemes
-  assertEqual( l.size(), size_t(2) );
+  assertEqual( l.size(), 2 );
   Morpheme *m = w->morpheme(1); // #get second morpheme
   assertEqual( m->annotation<PosAnnotation>()->cls(), "n" );
 }
@@ -1025,7 +1022,7 @@ void sanity_test039(){
   startTestSerie( "Sanity Check - Find span on layer" );
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.7"];
   SemanticRolesLayer *semrolelayer = s->annotation<SemanticRolesLayer>();
-  vector<SemanticRole*> roles = semrolelayer->annotations<SemanticRole>();
+  auto roles = semrolelayer->annotations<SemanticRole>();
   vector<FoliaElement*> wv;
   wv.push_back( sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.4"] );
   wv.push_back( sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.5"] );
@@ -1035,33 +1032,57 @@ void sanity_test039(){
 void sanity_test040(){
   startTestSerie( "Sanity Check - Iteration over spans" );
   FoliaElement *sentence = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
-  vector<EntitiesLayer*> el = sentence->select<EntitiesLayer>();
   UnicodeString res;
-  for ( size_t i=0; i < el.size(); ++i ){
-    vector<Entity*> ev = el[i]->select<Entity>();
-    for ( size_t j=0; j < ev.size(); ++j ){
-      vector<FoliaElement*> wv = ev[i]->wrefs();
-      for ( size_t k=0; k < wv.size(); ++k ){
-	res += " " + wv[k]->text();
+  for ( auto lay : sentence->select<EntitiesLayer>() ){
+    for ( auto ent : lay->select<Entity>() ){
+      for ( auto word : ent->wrefs() ){
+	res += " " + word->text();
       }
     }
   }
   assertEqual( res, " ander woord" );
 }
 
-void sanity_test041(){
-  startTestSerie( "Sanity check - Find spans given words" );
+void sanity_test041a(){
+  startTestSerie( "Sanity check - Find spans given words (no set)" );
   UnicodeString res;
   FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.4"];
   vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<EntitiesLayer>() );
-  for( size_t i=0; i < spans.size(); ++i ){
-    vector<FoliaElement*> wv = spans[i]->wrefs();
-    for ( size_t k=0; k < wv.size(); ++k ){
-      res += " " + wv[k]->text();
+  for( auto span: spans ){
+    for ( auto word: span->wrefs() ){
+      res += " " + word->text();
     }
   }
   assertEqual( res, " ander woord" );
+}
+
+void sanity_test041b(){
+  startTestSerie( "Sanity check - Find spans given words (specific set)" );
+  UnicodeString res;
+  FoliaElement *word = sanityDoc["example.table.1.w.3"];
+  vector<AbstractSpanAnnotation*> spans;
+  assertNoThrow( spans = word->findspans<EntitiesLayer>("http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml") );
+  for( auto span: spans ){
+    for ( auto word: span->wrefs() ){
+      res += " " + word->text();
+    }
+  }
+  assertEqual( res, " Maarten van Gompel" );
+}
+
+void sanity_test041c(){
+  startTestSerie( "Sanity check - Find spans given words (specific set, Direct Entities)" );
+  UnicodeString res;
+  FoliaElement *word = sanityDoc["example.table.1.w.3"];
+  vector<AbstractSpanAnnotation*> spans;
+  assertNoThrow( spans = word->findspans<Entity>("http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml") );
+  for( auto span: spans ){
+    for ( auto word: span->wrefs() ){
+      res += " " + word->text();
+    }
+  }
+  assertEqual( res, " Maarten van Gompel" );
 }
 
 void sanity_test042(){
@@ -2265,7 +2286,7 @@ void edit_test012(){
 }
 
 void edit_test013(){
-  startTestSerie( " Adding Span Annotatation (syntax) " );
+  startTestSerie( " Adding Span Annotation (syntax) " );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.4"];
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
@@ -2313,7 +2334,7 @@ void edit_test013b() {
   }
   KWargs args = getArgs( "set='corrections',cls='wrongclass'" );
   assertNoThrow( el->correct(old,newEnt,args) );
-  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
 }
 
 void edit_test014() {
@@ -2961,7 +2982,9 @@ int main(){
   sanity_test038a();
   sanity_test039();
   sanity_test040();
-  sanity_test041();
+  sanity_test041a();
+  sanity_test041b();
+  sanity_test041c();
   sanity_test042();
   sanity_test043();
   sanity_test044();
