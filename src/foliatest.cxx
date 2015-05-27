@@ -2834,11 +2834,8 @@ void query_test007(){
 
 void query_test008(){
   startTestSerie( " Find Words with 'disjunction' (by using regexp) ");
-  vector<string> words;
-  words.push_back( "de" );
-  words.push_back( "regexp('historische|hedendaagse')" );
-  words.push_back( "wetenschap" );
-  words.push_back( "wordt" );
+  vector<string> words = { "de", "regexp('historische|hedendaagse')",
+			   "wetenschap", "wordt" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
   assertEqual( matches.size(), 1 );
   assertEqual( len(matches[0]), 4 );
@@ -2851,11 +2848,8 @@ void query_test008(){
 
 void query_test009(){
   startTestSerie( " Find Words with regular expressions " );
-  vector<string> words;
-  words.push_back( "de" );
-  words.push_back( "regexp('hist.*')" );
-  words.push_back( "regexp('.*schap')" );
-  words.push_back( "regexp('w[oae]rdt')" );
+  vector<string> words = { "de", "regexp('hist.*')", "regexp('.*schap')",
+			   "regexp('w[oae]rdt')" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
   assertEqual( matches.size(), 1 );
   assertEqual( len(matches[0]), 4 );
@@ -2868,11 +2862,7 @@ void query_test009(){
 
 void query_test010a(){
   startTestSerie( " Find Words with variable wildcard " );
-  vector<string> words;
-  words.push_back( "de" );
-  words.push_back( "laatste" );
-  words.push_back( "*" );
-  words.push_back( "alfabet" );
+  vector<string> words = { "de", "laatste", "*", "alfabet" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
   assertEqual( matches.size(), 1 );
   assertEqual( len(matches[0]), 6 );
@@ -2899,11 +2889,7 @@ void query_test010b(){
   s->addWord( "text='a'" );
   s->addWord( "text='b'" );
   s->addWord( "text='c'" );
-  vector<string> words;
-  words.push_back( "a" );
-  words.push_back( "*" );
-  words.push_back( "c" );
-  vector<vector<Word*> > matches = doc.findwords( Pattern(words) );
+  vector<vector<Word*> > matches = doc.findwords( Pattern({"a","*","c"}) );
   assertEqual( matches.size(), 3 );
 }
 
