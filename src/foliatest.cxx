@@ -2352,6 +2352,28 @@ void edit_test013c() {
   assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.head.1.s.1.w.1\" t=\"Stemma\"/></entity></entities>" );
 }
 
+
+void edit_test013d() {
+  startTestSerie( " default set for SpanAnnotation " );
+  Document editDoc( "file='tests/folia.example'" );
+  FoliaElement *sent = 0;
+  assertNoThrow( sent = editDoc["WR-P-E-J-0000000001.p.1.s.1"] ); // first sentence
+  FoliaElement *el = 0;
+  assertNoThrow( el = new EntitiesLayer( &editDoc ) );
+  assertNoThrow( sent->append( el ) );
+  FoliaElement *word1 = editDoc["WR-P-E-J-0000000001.p.1.s.1.w.1"];
+  FoliaElement *word2 = editDoc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
+  FoliaElement *ent1 = new Entity( &editDoc, "cls='org', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  assertNoThrow( ent1->append( word1 ) );
+  FoliaElement *ent2 = new Entity( &editDoc, "cls='rel', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  assertNoThrow( ent2->append( word2 ) );
+  KWargs args = getArgs( "set='corrections',cls='wrongclass'" );
+  Correction *corr = 0;
+  assertNoThrow( corr = sent->correct(ent1,ent2,args) );
+  assertNoThrow( el->append( corr ) );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.1.correction.1\" class=\"wrongclass\"><new><entity class=\"rel\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.2\" t=\"is\"/></entity></new><original auth=\"no\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.1\" t=\"Stemma\"/></entity></original></correction></entities>" );
+}
+
 void edit_test014() {
   startTestSerie( " Replacing an annotation " );
   Document editDoc( "file='tests/folia.example'" );
@@ -3055,6 +3077,7 @@ int main(){
   edit_test013();
   edit_test013b();
   edit_test013c();
+  edit_test013d();
   edit_test014();
   edit_test015();
   edit_test016();
