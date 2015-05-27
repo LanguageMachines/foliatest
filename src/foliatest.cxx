@@ -2320,7 +2320,7 @@ void edit_test013(){
 }
 
 void edit_test013b() {
-  startTestSerie( " Correction a Span Annotation " );
+  startTestSerie( " Correction of a Span Annotation " );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *cell = 0;
   assertNoThrow( cell = editDoc["example.cell"] );
@@ -2335,6 +2335,21 @@ void edit_test013b() {
   KWargs args = getArgs( "set='corrections',cls='wrongclass'" );
   assertNoThrow( el->correct(old,newEnt,args) );
   assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
+}
+
+void edit_test013c() {
+  startTestSerie( " default set for SpanAnnotation " );
+  Document editDoc( "file='tests/folia.example'" );
+  FoliaElement *sent = 0;
+  assertNoThrow( sent = editDoc["WR-P-E-J-0000000001.p.1.s.1"] ); // first sentence
+  FoliaElement *el = 0;
+  assertNoThrow( el = new EntitiesLayer( &editDoc ) );
+  assertNoThrow( sent->append( el ) );
+  FoliaElement *word = editDoc["WR-P-E-J-0000000001.head.1.s.1.w.1"];
+  FoliaElement *newEnt = new Entity( &editDoc, "cls='org', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  assertNoThrow( newEnt->append( word ) );
+  assertNoThrow( el->append( newEnt ) );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.head.1.s.1.w.1\" t=\"Stemma\"/></entity></entities>" );
 }
 
 void edit_test014() {
@@ -3039,6 +3054,7 @@ int main(){
   edit_test012();
   edit_test013();
   edit_test013b();
+  edit_test013c();
   edit_test014();
   edit_test015();
   edit_test016();
