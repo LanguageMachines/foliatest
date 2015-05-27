@@ -1648,7 +1648,7 @@ void sanity_test104a( ){
     "</FoLiA>\n";
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-  assertNoThrow( doc.save( "/tmp/test104a.xml" ) );
+  //  assertNoThrow( doc.save( "/tmp/test104a.xml" ) );
   //  assertTrue( isinstance(doc.doc(0), Speech_t) );
   assertTrue( isinstance(doc["example.speech.utt.1"], Utterance_t) );
   cerr << endl << "TOT HIER OK" << endl;
@@ -1659,36 +1659,43 @@ void sanity_test104a( ){
 
 void sanity_test104b( ){
   startTestSerie(" Sanity Check - Speech data (with speech attributes)" );
-  /*
-  string xml = "<?xml version=\"1.0\"?>\n"
+  string xml="<?xml version=\"1.0\"?>\n"
     "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"manual\" version=\"0.12\">\n"
     "  <metadata type=\"native\">\n"
     "    <annotations>\n"
     "      <utterance-annotation set=\"utterances\" />\n"
     "    </annotations>\n"
     "  </metadata>\n"
-    "  <speech xml:id=\"example.speech\">\n"
-    "    <utt xml:id=\"example.speech.utt.1\">\n"
+    "  <speech xml:id=\"example.speech\" src=\"helloworld.ogg\" speaker=\"proycon\">\n"
+    "    <utt xml:id=\"example.speech.utt.1\" begintime=\"00:00:00\" endtime=\"00:00:02.012\">\n"
     "      <ph>həlˈəʊ wˈɜːld</ph>\n"
     "    </utt>\n"
     "    <utt xml:id=\"example.speech.utt.2\">\n"
-    "      <w xml:id=\"example.speech.utt.2.w.1\">\n"
+    "      <w xml:id=\"example.speech.utt.2.w.1\" begintime=\"00:00:00\" endtime=\"00:00:01\">\n"
     "        <ph>həlˈəʊ</ph>\n"
     "      </w>\n"
-    "      <w xml:id=\"example.speech.utt.2.w.2\">\n"
+    "      <w xml:id=\"example.speech.utt.2.w.2\" begintime=\"00:00:01.267\" endtime=\"00:00:02.012\">\n"
     "        <ph>wˈɜːld</ph>\n"
     "      </w>\n"
     "    </utt>\n"
     "  </speech>\n"
     "</FoLiA>\n";
+
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-  assertTrue( isinstance(doc.doc(), folia.Speech) );
-  assertTrue( isinstance(doc["example.speech.utt.1"], folia.Utterance) );
-  assertThrow( doc["example.speech.utt.1"].phon(), "həlˈəʊ wˈɜːld" );
-  assertThrow( folia.NoSuchText, doc["example.speech.utt.1"].text ); // doesn't exist
-  assertEqual( doc["example.speech.utt.2"].phon(), "həlˈəʊ wˈɜːld" );
-  */
+  assertNoThrow( doc.save( "/tmp/test104b.xml" ) );
+  //assertTrue( isinstance(doc.doc(), folia.Speech) );
+  assertTrue( isinstance(doc["example.speech.utt.1"], Utterance_t) );
+  assertEqual( doc["example.speech.utt.1"]->phon(), "həlˈəʊ wˈɜːld" );
+  assertThrow( doc["example.speech.utt.1"]->text(), NoSuchText ); // doesn't exist
+  assertEqual( doc["example.speech.utt.2"]->phon(), "həlˈəʊ wˈɜːld" );
+  assertEqual( doc["example.speech"]->speech_speaker(), "proycon" );
+  assertEqual( doc["example.speech"]->speech_src(), "helloworld.ogg" );
+  assertEqual( doc["example.speech.utt.1"]->begintime(), "00:00:00.000" );
+  assertEqual( doc["example.speech.utt.1"]->endtime(), "00:00:02.012" );
+  assertEqual( doc["example.speech.utt.2.w.2"]->speech_speaker(), "proycon" );
+  assertEqual( doc["example.speech.utt.2.w.2"]->speech_src(), "helloworld.ogg" );
+
 }
 
 void sanity_test105( ){
