@@ -1695,7 +1695,8 @@ void sanity_test104b( ){
   assertEqual( doc["example.speech.utt.1"]->endtime(), "00:00:02.012" );
   assertEqual( doc["example.speech.utt.2.w.2"]->speech_speaker(), "proycon" );
   assertEqual( doc["example.speech.utt.2.w.2"]->speech_src(), "helloworld.ogg" );
-
+  assertEqual( doc["example.speech.utt.2.w.2"]->begintime(), "00:00:01.267" );
+  assertEqual( doc["example.speech.utt.2.w.2"]->endtime(), "00:00:02.012" );
 }
 
 void sanity_test105( ){
