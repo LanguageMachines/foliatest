@@ -238,7 +238,7 @@ void sanity_test006a( ){
   FoliaElement* s = 0;
   assertNoThrow( s = sanityDoc.sentences(1) );
   assertTrue( isinstance( s, Sentence_t ) );
-  assertTrue( s->id() == "WR-P-E-J-0000000001.p.1.s.1" );
+  assertEqual( s->id(), "WR-P-E-J-0000000001.p.1.s.1" );
   assertTrue( !s->hastext() );
   assertEqual( s->str() , "Stemma is een ander woord voor stamboom ." );
 }
@@ -276,7 +276,7 @@ void sanity_test007( ){
   assertTrue( e->isinstance( Word_t ) );
   assertEqual( e, sanityDoc.index("WR-P-E-J-0000000001.p.1.s.2.w.7") );
   assertEqual( e->id(), string("WR-P-E-J-0000000001.p.1.s.2.w.7") );
-  assertTrue( e->text() == "stamboom" );
+  assertEqual( e->text(), "stamboom" );
 
 }
 
@@ -2379,8 +2379,8 @@ void edit_test014() {
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
   word->replace( new PosAnnotation( &editDoc, "cls='BOGUS'") );
-  assertTrue( len(word->annotations<PosAnnotation>() ) ==  1 );
-  assertTrue(  word->annotation<PosAnnotation>()->cls() == "BOGUS" );
+  assertEqual( len(word->annotations<PosAnnotation>() ) , 1 );
+  assertEqual( word->annotation<PosAnnotation>()->cls(), "BOGUS" );
   assertTrue( word->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.3.w.14\"><t>plaats</t><lemma class=\"plaats\"/><pos class=\"BOGUS\"/></w>" );
 }
 
@@ -2425,6 +2425,8 @@ void edit_test018a(){
   s->settext( "Hooked on text." );
   assertTrue( s->hastext() ); // Now there IS direct text
   assertEqual( s->stricttext() , "Hooked on text." );
+  // but text() still is retrieved from children.
+  assertTrue( s->text() == "Stemma is een ander woord voor stamboom ." );
 }
 
 void edit_test018b(){
@@ -2453,7 +2455,7 @@ void edit_test019(){
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"]; // stippelijn
   word->append( new ErrorDetection(&editDoc,"cls='spelling', annotator='testscript', annotatortype='auto'" ) );
-  assertTrue( word->annotation<ErrorDetection>()->cls() == "spelling" );
+  assertEqual( word->annotation<ErrorDetection>()->cls(), "spelling" );
 }
 
 
@@ -2461,13 +2463,12 @@ void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
   Document d( "id='example'" );
   assertNoThrow( d.declare( AnnotationType::TOKEN,
-				      "adhocset",
-				      "annotator='proycon'" ) );
-  assertTrue( d.defaultset(AnnotationType::TOKEN) == "adhocset" );
-  assertTrue( d.defaultannotator(AnnotationType::TOKEN) == "proycon" );
-  string id = d.id() + ".text.1";
+			    "adhocset",
+			    "annotator='proycon'" ) );
+  assertEqual( d.defaultset(AnnotationType::TOKEN), "adhocset" );
+  assertEqual( d.defaultannotator(AnnotationType::TOKEN), "proycon" );
   FoliaElement *text = 0;
-  KWargs kw = getArgs( "id='" + id + "'" );
+  KWargs kw = getArgs( "id='" + d.id() + ".text.1'" );
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
@@ -2484,8 +2485,7 @@ void create_test001( ){
   assertNoThrow( s->addWord( kw ) );
   kw["text"] = ".";
   assertNoThrow( s->addWord( kw ) );
-  //  assertNoThrow( d.save( "/tmp/foliacreatetest001.xml" ) );
-  assertTrue( d[id+".s.1"]->size() == 5 );
+  assertEqual( d[s->id()]->size(), 5 );
 }
 
 void create_test002( ){
@@ -2497,9 +2497,9 @@ void create_test002( ){
   assertNoThrow( d.declare( AnnotationType::POS,
 				      "myset",
 				      "annotator='sloot'" ) );
-  assertTrue( d.defaultset(AnnotationType::POS) == "" );
-  assertTrue( d.defaultannotator(AnnotationType::POS) == "" );
-  assertTrue( d.defaultannotator(AnnotationType::POS, "myset") == "sloot" );
+  assertEqual( d.defaultset(AnnotationType::POS), "" );
+  assertEqual( d.defaultannotator(AnnotationType::POS), "" );
+  assertEqual( d.defaultannotator(AnnotationType::POS, "myset"), "sloot" );
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
   KWargs kw = getArgs( "id='" + id + "'" );
@@ -2520,15 +2520,15 @@ void create_test002( ){
   kw["set"] = "adhocset";
   assertNoThrow( w->addAnnotation<PosAnnotation>( kw ) );
   vector<PosAnnotation*> v = w->select<PosAnnotation>( "adhocset" );
-  assertTrue( v.size() == 1 );
+  assertEqual( v.size(), 1 );
   vector<PosAnnotation*> v1 = w->select<PosAnnotation>( "myset" );
-  assertTrue( v1.size() == 1 );
+  assertEqual( v1.size(), 1 );
   vector<PosAnnotation*> v2 = w->select<PosAnnotation>( "noset" );
-  assertTrue( v2.size() == 0 );
+  assertEqual( v2.size(), 0 );
   vector<PosAnnotation*> v3 = w->select<PosAnnotation>();
-  assertTrue( v3.size() == 2 );
+  assertEqual( v3.size(), 2 );
   assertNoThrow( d.save( "/tmp/foliacreatetest002.xml" ) );
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>landen</t><pos class=\"NP\" set=\"myset\"/><pos class=\"VP\" set=\"adhocset\"/></w>" );
+  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1.s.1.w.1\"><t>landen</t><pos class=\"NP\" set=\"myset\"/><pos class=\"VP\" set=\"adhocset\"/></w>" );
 }
 
 void create_test003( ){
@@ -2540,10 +2540,10 @@ void create_test003( ){
   assertNoThrow( d.declare( AnnotationType::GAP,
 				      "extended-gap-set",
 				      "annotator='sloot'" ) );
-  assertTrue( d.defaultset(AnnotationType::GAP) == "" );
-  assertTrue( d.defaultannotator(AnnotationType::GAP) == "" );
-  assertTrue( d.defaultannotator(AnnotationType::GAP, "gap-set") == "sloot" );
-  assertTrue( d.defaultannotator(AnnotationType::GAP, "extended-gap-set") == "sloot" );
+  assertEqual( d.defaultset(AnnotationType::GAP), "" );
+  assertEqual( d.defaultannotator(AnnotationType::GAP), "" );
+  assertEqual( d.defaultannotator(AnnotationType::GAP, "gap-set"), "sloot" );
+  assertEqual( d.defaultannotator(AnnotationType::GAP, "extended-gap-set"), "sloot" );
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
   KWargs kw = getArgs( "id='" + id + "'" );
@@ -2560,12 +2560,12 @@ void create_test003( ){
   assertNoThrow( g = new Gap( &d, kw ) );
   text->append( g );
   vector<Gap*> v = text->select<Gap>( "gap-set" );
-  assertTrue( v.size() == 1 );
+  assertEqual( v.size(), 1 );
   vector<Gap*> v1 = text->select<Gap>( "extended-gap-set" );
-  assertTrue( v1.size() == 1 );
+  assertEqual( v1.size(), 1 );
   vector<Gap*> v3 = text->select<Gap>();
-  assertTrue( v3.size() == 2 );
-  assertTrue( text->xmlstring() == "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\" set=\"extended-gap-set\"/></text>" );
+  assertEqual( v3.size(), 2 );
+  assertEqual( text->xmlstring(), "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\" set=\"extended-gap-set\"/></text>" );
 }
 
 void correction_test001a( ){
@@ -2587,11 +2587,11 @@ void correction_test001a( ){
    	    new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.4b', text='line'" ) );
   //  assertNoThrow( corDoc->save( "/tmp/foliasplit1a.xml" ) );
   s = corDoc->index("example.s.1");
-  assertTrue( s->rwords(2)->text() == "on" );
-  assertTrue( s->rwords(1)->text() == "line" );
-  assertTrue( s->text() == "De site staat on line ." );
-  assertTrue( len( s->words() ) == 6 );
-  assertTrue( s->xmlstring() ==  "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4a\"><t>on</t></w><w xml:id=\"example.s.1.w.4b\"><t>line</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>online</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
+  assertEqual( s->rwords(2)->text(), "on" );
+  assertEqual( s->rwords(1)->text(), "line" );
+  assertEqual( s->text(), "De site staat on line ." );
+  assertEqual( len( s->words() ), 6 );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4a\"><t>on</t></w><w xml:id=\"example.s.1.w.4b\"><t>line</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>online</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
   delete corDoc;
 }
 
@@ -2613,13 +2613,12 @@ void correction_test001b( ){
   Word *w1 = new Word( corDoc, "generate_id='" + s->id() + "',text='on'" );
   Word *w2 = new Word( corDoc, "generate_id='" + s->id() + "',text='line'" );
   w->split( w1, w2, "suggest='true'" );
-  assertNoThrow( corDoc->save( "/tmp/foliasplit1b.xml" ) );
+  //  assertNoThrow( corDoc->save( "/tmp/foliasplit1b.xml" ) );
   s = corDoc->index("example.s.1");
-  assertTrue( len( s->words() ) == 5 );
-  assertTrue( len( corDoc->words() ) == 5 );
-  assertTrue( s->rwords(1)->text() == "online" );
-  assertTrue( s->text() == "De site staat online ." );
-  assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>");
+  assertEqual( len( s->words() ), 5 );
+  assertEqual( s->rwords(1)->text(), "online" );
+  assertEqual( s->text(), "De site staat online ." );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>");
   delete corDoc;
 }
 
@@ -2644,13 +2643,13 @@ void correction_test002(){
   ow.push_back( corDoc->index(corDoc->id() + ".s.1.w.5") );
   s->mergewords( new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.4-5', text='online'" ), ow );
   //  assertNoThrow( corDoc->save( "/tmp/foliamerge002.xml" ) );
-  assertTrue( len(s->words() ) ==  5 );
-  assertTrue( s->text() == "De site staat online ." );
+  assertEqual( len(s->words() ),  5 );
+  assertEqual( s->text(), "De site staat online ." );
   // incorrection() test, check if newly added word correctly reports being part of a correction
   FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.4-5");
   assertTrue( isinstance(w->incorrection(), Correction_t) );
   //incorrection return the correction the word is part of, or None if not part of a correction,
-  assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
   delete corDoc;
 }
 
@@ -2671,9 +2670,9 @@ void correction_test003(){
   s->append( new Word( corDoc, "text='.', id='" + corDoc->id() + ".s.1.w.6'" ) );
 
   s->deleteword( corDoc->index( corDoc->id() + ".s.1.w.4" ) );
-  assertNoThrow( corDoc->save( "/tmp/foliadelete003.xml" ) );
-  assertTrue( s->text() == "Ik zie een huis ." );
-  assertTrue( s->xmlstring() =="<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>groot</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>huis</t></w><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>");
+  //  assertNoThrow( corDoc->save( "/tmp/foliadelete003.xml" ) );
+  assertEqual( s->text(), "Ik zie een huis ." );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>groot</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>huis</t></w><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>");
   delete corDoc;
 }
 
@@ -2693,9 +2692,10 @@ void correction_test004(){
   s->append( new Word( corDoc, "text='.', id='" + corDoc->id() + ".s.1.w.5'" ) );
 
   s->insertword( new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.3b', text='groot'" ), corDoc->index( corDoc->id() + ".s.1.w.3" ) );
-  assertNoThrow( corDoc->save( "/tmp/foliainsert004.xml" ) );
+  //  assertNoThrow( corDoc->save( "/tmp/foliainsert004.xml" ) );
+  assertEqual( s->words().size(), 6 );
   assertEqual( s->text(), "Ik zie een groot huis ." );
-  assertTrue( s->xmlstring() == "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.3b\"><t>groot</t></w></new><original auth=\"no\"/></correction><w xml:id=\"example.s.1.w.4\"><t>huis</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.3b\"><t>groot</t></w></new><original auth=\"no\"/></correction><w xml:id=\"example.s.1.w.4\"><t>huis</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
   delete corDoc;
 }
 
@@ -2705,24 +2705,24 @@ void correction_test005(){
   corDoc->readFromFile( "tests/folia.example" );
   FoliaElement *w = corDoc->index("WR-P-E-J-0000000001.p.1.s.8.w.11"); // stippelijn
   assertNoThrow( w->correct("suggestion='stippellijn', set='corrections', cls='spelling',annotator='testscript', annotatortype='auto'" ) );
-  assertNoThrow( corDoc->save( "/tmp/foliainsert005-1.xml" ) );
+  //  assertNoThrow( corDoc->save( "/tmp/foliainsert005-1.xml" ) );
   FoliaElement *c = 0;
   assertNoThrow( c = w->annotation<Correction>() );
-  assertTrue( c->suggestions()[0]->text() == "stippellijn" );
-  assertTrue( w->text() == "stippelijn" );
+  assertEqual( c->suggestions(0)->text(), "stippellijn" );
+  assertEqual( w->text(), "stippelijn" );
 
   assertNoThrow( w->correct("new='stippellijn', set='corrections', cls='spelling',annotator='John Doe', annotatortype='manual', reuse='" + c->id() + "'" ) );
 
-  assertTrue( w->text() == "stippellijn" );
-  assertTrue( len(w->annotations<Correction>()) == 1 );
-  assertTrue( w->annotation<Correction>()->suggestions()[0]->text() == "stippellijn" );
-  assertTrue( w->annotation<Correction>()->suggestions()[0]->annotator() == "testscript" );
-  assertTrue( w->annotation<Correction>()->suggestions()[0]->annotatortype() == AUTO );
-  assertTrue( w->annotation<Correction>()->getNew()->text() == "stippellijn" );
-  assertTrue( w->annotation<Correction>()->annotator() == "John Doe" );
-  assertTrue( w->annotation<Correction>()->annotatortype() == MANUAL );
+  assertEqual( w->text(), "stippellijn" );
+  assertEqual( len(w->annotations<Correction>()), 1 );
+  assertEqual( w->annotation<Correction>()->suggestions(0)->text(), "stippellijn" );
+  assertEqual( w->annotation<Correction>()->suggestions(0)->annotator(), "testscript" );
+  assertEqual( w->annotation<Correction>()->suggestions(0)->annotatortype(), AUTO );
+  assertEqual( w->annotation<Correction>()->getNew()->text(), "stippellijn" );
+  assertEqual( w->annotation<Correction>()->annotator(), "John Doe" );
+  assertEqual( w->annotation<Correction>()->annotatortype(), MANUAL );
 
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion annotator=\"testscript\" annotatortype=\"auto\" auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
+  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion annotator=\"testscript\" annotatortype=\"auto\" auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
   delete corDoc;
 }
 
@@ -2731,86 +2731,63 @@ Document qDoc( "file='tests/folia.example'" );
 
 void query_test001(){
   startTestSerie( " Find Words (simple) " );
-  vector<string> words;
-  words.push_back( "van" );
-  words.push_back( "het" );
-  words.push_back( "alfabet" );
+  vector<string> words = { "van", "het", "alfabet" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 3 );
-  assertTrue( matches[0][0]->text() == "van" );
-  assertTrue( matches[0][1]->text() == "het" );
-  assertTrue( matches[0][2]->text() == "alfabet" );
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 3 );
+  assertEqual( matches[0][0]->text(), "van" );
+  assertEqual( matches[0][1]->text(), "het" );
+  assertEqual( matches[0][2]->text(), "alfabet" );
 }
 
 void query_test002(){
   startTestSerie( " Find Words (with wildcard) ");
-  vector<string> words;
-  words.push_back( "van" );
-  words.push_back( "het" );
-  words.push_back( "*:1" );
+  vector<string> words = { "van", "het", "*:1" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 3 );
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 3 );
 
-  assertTrue( matches[0][0]->text() == "van" );
-  assertTrue( matches[0][1]->text() == "het" );
-  assertTrue( matches[0][2]->text() == "alfabet" );
+  assertEqual( matches[0][0]->text(), "van" );
+  assertEqual( matches[0][1]->text(), "het" );
+  assertEqual( matches[0][2]->text(), "alfabet" );
 }
 
 void query_test003(){
   startTestSerie( " Find Words by annotation " );
-  vector<string> words;
-  words.push_back( "de" );
-  words.push_back( "historisch" );
-  words.push_back( "wetenschap" );
-  words.push_back( "worden" );
-  vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
-							 Lemma_t ) );
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 4 );
+  vector<string> words = { "de", "historisch", "wetenschap", "worden" };
+  vector<vector<Word*> >matches = qDoc.findwords( Pattern( words,
+							   Lemma_t ) );
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 4 );
 
-  assertTrue( matches[0][0]->text() == "de" );
-  assertTrue( matches[0][1]->text() == "historische" );
-  assertTrue( matches[0][2]->text() == "wetenschap" );
-  assertTrue( matches[0][3]->text() == "wordt" );
+  assertEqual( matches[0][0]->text(),"de" );
+  assertEqual( matches[0][1]->text(), "historische" );
+  assertEqual( matches[0][2]->text(), "wetenschap" );
+  assertEqual( matches[0][3]->text(), "wordt" );
 }
 
 void query_test004(){
   startTestSerie( " Find Words using multiple patterns " );
-  vector<string> words;
-  words.push_back( "de" );
-  words.push_back( "historische" );
-  words.push_back( "*" );
-  words.push_back( "wordt" );
-  Pattern p1(words);
-  words.clear();
-  words.push_back( "de" );
-  words.push_back( "historisch" );
-  words.push_back( "wetenschap" );
-  words.push_back( "worden" );
-  Pattern p2(words,Lemma_t );
+  Pattern p1( { "de", "historische", "*", "wordt" } );
+  Pattern p2( { "de", "historisch", "wetenschap", "worden" }, Lemma_t );
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
   vector<vector<Word*> >matches = qDoc.findwords( l );
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 4 );
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 4 );
 
-  assertTrue( matches[0][0]->text() == "de" );
-  assertTrue( matches[0][1]->text() == "historische" );
-  assertTrue( matches[0][2]->text() == "wetenschap" );
-  assertTrue( matches[0][3]->text() == "wordt" );
+  assertEqual( matches[0][0]->text(), "de" );
+  assertEqual( matches[0][1]->text(), "historische" );
+  assertEqual( matches[0][2]->text(), "wetenschap" );
+  assertEqual( matches[0][3]->text(), "wordt" );
 }
 
 void query_test005(){
   startTestSerie( " Find Words that aren't there " );
-  vector<string> words;
-  words.push_back( "bli" );
-  words.push_back( "bla" );
-  words.push_back( "blu" );
-  vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 0 );
+  vector<vector<Word*> >matches
+    = qDoc.findwords( Pattern({"bli","bla","blue"}) );
+  assertEqual( matches.size(), 0 );
 }
 
 void query_test006(){
@@ -2827,35 +2804,32 @@ void query_test006(){
   s->addWord( "text='b'" );
   s->addWord( "text='a'" );
   s->addWord( "text='a'" );
-  vector<string> words;
-  words.push_back( "a" );
-  words.push_back( "a" );
-  vector<vector<Word*> > matches = doc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 4 );
-  matches = doc.findwords( Pattern(words,"casesensitive='1'") );
-  assertTrue( matches.size() == 3 );
+
+  Pattern pat1( {"a","a"} );
+  vector<vector<Word*> > matches = doc.findwords( pat1 );
+  assertEqual( matches.size(), 4 );
+  Pattern pat2( {"a","a"}, "casesensitive='1'" );
+  matches = doc.findwords( pat2 );
+  assertEqual( matches.size(), 3 );
 }
 
 void query_test007(){
   startTestSerie( " Find Words with context " );
-  vector<string> words;
-  words.push_back( "van" );
-  words.push_back( "het" );
-  words.push_back( "alfabet" );
-  vector<vector<Word*> >matches = qDoc.findwords( Pattern(words),
-						  "leftcontext='3', rightcontext='3'");
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 9 );
+  Pattern p( {"van", "het", "alfabet" } );
+  vector<vector<Word*> >matches
+    = qDoc.findwords( p, "leftcontext='3', rightcontext='3'");
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 9 );
 
-  assertTrue( matches[0][0]->text() == "de" );
-  assertTrue( matches[0][1]->text() == "laatste" );
-  assertTrue( matches[0][2]->text() == "letters" );
-  assertTrue( matches[0][3]->text() == "van" );
-  assertTrue( matches[0][4]->text() == "het" );
-  assertTrue( matches[0][5]->text() == "alfabet" );
-  assertTrue( matches[0][6]->text() == "en" );
-  assertTrue( matches[0][7]->text() == "worden" );
-  assertTrue( matches[0][8]->text() == "tussen" );
+  assertEqual( matches[0][0]->text(), "de" );
+  assertEqual( matches[0][1]->text(), "laatste" );
+  assertEqual( matches[0][2]->text(), "letters" );
+  assertEqual( matches[0][3]->text(), "van" );
+  assertEqual( matches[0][4]->text(), "het" );
+  assertEqual( matches[0][5]->text(), "alfabet" );
+  assertEqual( matches[0][6]->text(), "en" );
+  assertEqual( matches[0][7]->text(), "worden" );
+  assertEqual( matches[0][8]->text(), "tussen" );
 }
 
 void query_test008(){
@@ -2866,13 +2840,13 @@ void query_test008(){
   words.push_back( "wetenschap" );
   words.push_back( "wordt" );
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 4 );
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 4 );
 
-  assertTrue( matches[0][0]->text() == "de" );
-  assertTrue( matches[0][1]->text() == "historische" );
-  assertTrue( matches[0][2]->text() == "wetenschap" );
-  assertTrue( matches[0][3]->text() == "wordt" );
+  assertEqual( matches[0][0]->text(), "de" );
+  assertEqual( matches[0][1]->text(), "historische" );
+  assertEqual( matches[0][2]->text(), "wetenschap" );
+  assertEqual( matches[0][3]->text(), "wordt" );
 }
 
 void query_test009(){
@@ -2883,13 +2857,13 @@ void query_test009(){
   words.push_back( "regexp('.*schap')" );
   words.push_back( "regexp('w[oae]rdt')" );
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 4 );
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 4 );
 
-  assertTrue( matches[0][0]->text() == "de" );
-  assertTrue( matches[0][1]->text() == "historische" );
-  assertTrue( matches[0][2]->text() == "wetenschap" );
-  assertTrue( matches[0][3]->text() == "wordt" );
+  assertEqual( matches[0][0]->text(), "de" );
+  assertEqual( matches[0][1]->text(), "historische" );
+  assertEqual( matches[0][2]->text(), "wetenschap" );
+  assertEqual( matches[0][3]->text(), "wordt" );
 }
 
 void query_test010a(){
@@ -2900,15 +2874,15 @@ void query_test010a(){
   words.push_back( "*" );
   words.push_back( "alfabet" );
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 1 );
-  assertTrue( len(matches[0]) == 6 );
+  assertEqual( matches.size(), 1 );
+  assertEqual( len(matches[0]), 6 );
 
-  assertTrue( matches[0][0]->text() == "de" );
-  assertTrue( matches[0][1]->text() == "laatste" );
-  assertTrue( matches[0][2]->text() == "letters" );
-  assertTrue( matches[0][3]->text() == "van" );
-  assertTrue( matches[0][4]->text() == "het" );
-  assertTrue( matches[0][5]->text() == "alfabet" );
+  assertEqual( matches[0][0]->text(), "de" );
+  assertEqual( matches[0][1]->text(), "laatste" );
+  assertEqual( matches[0][2]->text(), "letters" );
+  assertEqual( matches[0][3]->text(), "van" );
+  assertEqual( matches[0][4]->text(), "het" );
+  assertEqual( matches[0][5]->text(), "alfabet" );
 }
 
 void query_test010b(){
@@ -2930,7 +2904,7 @@ void query_test010b(){
   words.push_back( "*" );
   words.push_back( "c" );
   vector<vector<Word*> > matches = doc.findwords( Pattern(words) );
-  assertTrue( matches.size() == 3 );
+  assertEqual( matches.size(), 3 );
 }
 
 void query_test011(){
@@ -2941,7 +2915,7 @@ void query_test011(){
   words.push_back( "blu" );
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
 							 Sense_t ) );
-  assertTrue( matches.size() == 0 );
+  assertEqual( matches.size(), 0 );
 }
 
 int main(){
