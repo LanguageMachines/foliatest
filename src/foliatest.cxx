@@ -1623,9 +1623,8 @@ void sanity_test103( ){
 
 }
 
-void sanity_test104( ){
+void sanity_test104a( ){
   startTestSerie(" Sanity Check - Speech data (without attributes)" );
-  /*
   string xml = "<?xml version=\"1.0\"?>\n"
     "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"manual\" version=\"0.12\">\n"
     "  <metadata type=\"native\">\n"
@@ -1649,12 +1648,13 @@ void sanity_test104( ){
     "</FoLiA>\n";
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-  assertTrue( isinstance(doc.doc(), folia.Speech) );
-  assertTrue( isinstance(doc["example.speech.utt.1"], folia.Utterance) );
-  assertThrow( doc["example.speech.utt.1"].phon(), "həlˈəʊ wˈɜːld" );
-  assertThrow( folia.NoSuchText, doc["example.speech.utt.1"].text ); // doesn't exist
-  assertEqual( doc["example.speech.utt.2"].phon(), "həlˈəʊ wˈɜːld" );
-  */
+  assertNoThrow( doc.save( "/tmp/test104a.xml" ) );
+  //  assertTrue( isinstance(doc.doc(0), Speech_t) );
+  assertTrue( isinstance(doc["example.speech.utt.1"], Utterance_t) );
+  cerr << endl << "TOT HIER OK" << endl;
+  assertEqual( doc["example.speech.utt.1"]->phon(), "həlˈəʊ wˈɜːld" );
+  assertThrow( doc["example.speech.utt.1"]->text(), NoSuchText ); // doesn't exist
+  assertEqual( doc["example.speech.utt.2"]->phon(), "həlˈəʊ wˈɜːld" );
 }
 
 void sanity_test104b( ){
@@ -2895,12 +2895,9 @@ void query_test010b(){
 
 void query_test011(){
   startTestSerie( " Find Words by non existing annotation " );
-  vector<string> words;
-  words.push_back( "bla" );
-  words.push_back( "bla" );
-  words.push_back( "blu" );
+  vector<string> words = { "bli", "bla", "blu" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
-							 Sense_t ) );
+							  Sense_t ) );
   assertEqual( matches.size(), 0 );
 }
 
@@ -3009,7 +3006,7 @@ int main(){
   sanity_test102k();
   sanity_test102l();
   sanity_test103();
-  sanity_test104();
+  sanity_test104a();
   sanity_test104b();
   sanity_test105();
   sanity_test106();
