@@ -304,7 +304,7 @@ void sanity_test008c(){
   startTestSerie(" empty text  " );
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
-"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
 "      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
@@ -915,7 +915,7 @@ void sanity_test037a( ){
   startTestSerie(" Feature test & Ambiguitity resolution of head as PoS Feature and as structure element " );
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
-"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata src=\"test.cmdi.xml\" type=\"cmdi\">\n"
 "    <annotations>\n"
 "      <pos-annotation set=\"test\"/>\n"
@@ -969,7 +969,7 @@ void sanity_test037a( ){
 void sanity_test037b( ){
   startTestSerie(" Multiclass Feature " );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata src=\"test.cmdi.xml\" type=\"cmdi\">\n"
 "    <annotations>\n"
@@ -1213,7 +1213,7 @@ void sanity_test102( ){
 void sanity_test102a(){
   startTestSerie(" Declarations - Default set " );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1237,7 +1237,7 @@ void sanity_test102a(){
 void sanity_test102b(){
   startTestSerie(" Declarations - Set mismatching" );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1257,7 +1257,7 @@ void sanity_test102b(){
 void sanity_test102c(){
   startTestSerie(" Declarations - Multiple sets for the same annotation type " );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1281,7 +1281,7 @@ void sanity_test102c(){
 void sanity_test102d1(){
   startTestSerie(" Declarations - Multiple sets for the same annotation type (testing failure)" );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1303,7 +1303,7 @@ void sanity_test102d1(){
 void sanity_test102d2(){
   startTestSerie(" Declarations - Multiple sets for the same annotation type (testing failure)" );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1325,7 +1325,7 @@ void sanity_test102d2(){
 void sanity_test102d3(){
   startTestSerie(" Declarations - Ignore Duplicates" );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.9\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1349,7 +1349,7 @@ void sanity_test102d3(){
 void sanity_test102e(){
   startTestSerie(" Declarations - Missing declaration " );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1368,7 +1368,7 @@ void sanity_test102e(){
 void sanity_test102f(){
   startTestSerie(" Declarations - Declaration not needed " );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1389,7 +1389,7 @@ void sanity_test102f(){
 void sanity_test102g(){
   startTestSerie(" Declarations - Empty set " );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1420,7 +1420,7 @@ void sanity_test102g(){
 void sanity_test102h(){
   startTestSerie(" Declarations - Adding a declaration in same set. (other annotator)" );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1445,7 +1445,7 @@ void sanity_test102h(){
 void sanity_test102i(){
   startTestSerie(" Declarations - miscellanious trouble" );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1492,7 +1492,7 @@ void sanity_test102i(){
 void sanity_test102j(){
   startTestSerie(" Declarations - Adding a declaration in other set." );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1527,7 +1527,7 @@ void sanity_test102j(){
 void sanity_test102k(){
   startTestSerie(" Declarations - Several annotator types." );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1568,7 +1568,7 @@ void sanity_test102k(){
 void sanity_test102l(){
   startTestSerie(" Declarations - Datetime default." );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "  <metadata type=\"native\">\n"
 "    <annotations>\n"
@@ -1594,7 +1594,7 @@ void sanity_test102l(){
 void sanity_test103( ){
   startTestSerie(" Alien namespaces - Checking whether properly ignored " );
   string xml = "<?xml version=\"1.0\"?>\n"
-    " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+    " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
     "xmlns=\"http://ilk.uvt.nl/folia\" xmlns:alien=\"http://somewhere.else\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
     "  <metadata type=\"native\">\n"
     "    <annotations/>\n"
@@ -1815,7 +1815,7 @@ void sanity_test107( ){
   Document doc;
   startTestSerie( " Attributes - invalid values " );
   string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "</FoLiA>\n" ;
   assertThrow( doc.readFromString(xml), XmlError );
