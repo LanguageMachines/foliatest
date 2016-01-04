@@ -1,18 +1,16 @@
 /*
-  $Id$
-  $URL$
+  Copyright (c) 2006 - 2016
+  CLST  - Radboud University
+  ILK   - Tilburg University
 
-  Copyright (c) 2006 - 2015
-  Tilburg University
+  This file is part of foliatest
 
-  This file is part of ticcutils.
-
-  ticcutils is free software; you can redistribute it and/or modify
+  foliatest is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 3 of the License, or
   (at your option) any later version.
 
-  ticcutils is distributed in the hope that it will be useful,
+  foliatest is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
@@ -21,9 +19,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   For questions and suggestions, see:
-      http://ilk.uvt.nl/software.html
+      https://github.com/LanguageMachines/foliatest/issues
   or send mail to:
-      timbl@uvt.nl
+      lamasoftware (at ) science.ru.nl
+
 */
 
 #include <cstdlib>
