@@ -1,3 +1,8 @@
-* 14-07-2011 Ko vd Sloot
-- created and added to SVN
+foliatest 0.2 2016-01-14
+[Ko van der Sloot]
+* repository moved to GitHub
+* added Travis support
+* added/adapted some tests, follow newest FoLiA standards
 
+14-07-2011 Ko vd Sloot
+- created and added to SVN

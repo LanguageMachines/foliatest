@@ -8,4 +8,4 @@ SUBDIRS = src
 EXTRA_DIST = bootstrap.sh AUTHORS TODO NEWS
 
 ChangeLog: NEWS
-	svn update; svn2cl --include-rev
+	git pull; git2cl > ChangeLog
