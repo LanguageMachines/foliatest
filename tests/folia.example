@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.13" version="0.10.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.14" version="0.10.0">
   <metadata type="native">
     <annotations>
       <token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
@@ -485,7 +485,7 @@
           <t>De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
           <t class="original">De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
           <t class="translate">Uppercase A is used for the original.</t>
-	  <part xml:id="WR-P-E-J-0000000001.p.1.s.4.part.1">
+          <part xml:id="WR-P-E-J-0000000001.p.1.s.4.part.1">
             <w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.1">
               <t offset="0">De</t>
               <t class="original" offset="0">De</t>
@@ -502,8 +502,8 @@
               <pos class="SPEC(symb)"/>
               <lemma class="_"/>
             </w>
-	  </part>
-	  <part xml:id="WR-P-E-J-0000000001.p.1.s.4.part.2">
+          </part>
+          <part xml:id="WR-P-E-J-0000000001.p.1.s.4.part.2">
             <w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.4">
               <t>wordt</t>
               <pos class="WW(pv,tgw,met-t)"/>
@@ -539,7 +539,7 @@
               <pos class="LET()"/>
               <lemma class="."/>
             </w>
-	  </part>
+          </part>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.5">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.5.w.1">
@@ -1018,7 +1018,7 @@
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.6.w.1" t="Verdwenen"/>
             <hd>
-               <wref id="WR-P-E-J-0000000001.p.1.s.6.w.2" t="handschriften"/>
+              <wref id="WR-P-E-J-0000000001.p.1.s.6.w.2" t="handschriften"/>
             </hd>
           </coreferencelink>
           <coreferencelink>
@@ -1029,58 +1029,58 @@
     </div>
     <div xml:id="glossary">
       <head xml:id="glossary.head">
-      <t>Woordenboek-voorbeeld</t>
+        <t>Woordenboek-voorbeeld</t>
       </head>
       <entry xml:id="entry.1">
         <term xml:id="entry.1.term.1">
-          <w xml:id="entry.1.term.1.w.1" src="stemma.wav" begintime="00:00:00.000" endtime="00:00:01.300" speaker="proycon">
+          <w xml:id="entry.1.term.1.w.1" begintime="00:00:00.000" endtime="00:00:01.300" speaker="proycon" src="stemma.wav">
             <t>Stemma</t>
             <ph>stɛːma</ph>
-            <pos class="N(eigen,ev,basis,zijd,stan)" />
-            <lemma class="stemma" />
-            <sense class="some.fictitious.stemma.id" />
+            <pos class="N(eigen,ev,basis,zijd,stan)"/>
+            <lemma class="stemma"/>
+            <sense class="some.fictitious.stemma.id"/>
             <phonology>
               <phoneme xml:id="ph1" begintime="00:00:00.000" endtime="00:00:00.250">
-		<ph>s</ph>
-	      </phoneme>
+                <ph>s</ph>
+              </phoneme>
               <phoneme xml:id="ph2">
-		<ph>t</ph>
-	      </phoneme>
+                <ph>t</ph>
+              </phoneme>
               <phoneme xml:id="ph3">
-		<ph>ɛː</ph>
-	      </phoneme>
+                <ph>ɛː</ph>
+              </phoneme>
               <phoneme xml:id="ph4">
-		<ph>m</ph>
-	      </phoneme>
+                <ph>m</ph>
+              </phoneme>
               <phoneme xml:id="ph5">
-		<ph>a</ph>
-	      </phoneme>
+                <ph>a</ph>
+              </phoneme>
             </phonology>
           </w>
-	</term>
-	<def xml:id="entry.1.def.1" class="sense">
+        </term>
+        <def xml:id="entry.1.def.1" class="sense">
           <p xml:id="entry.1.def.1.p.1">
             <t>Term uit de editiewetenschap en tekstkritiek voor de schematische weergave in de vorm van een boomdiagram van de onderlinge verwantschap van documentaire bronnen (handschrift, codex, druk), waarin een tekst bewaard is gebleven.</t>
           </p>
           <ref id="bib.1" type="note">
-	    <t>[Bork et al, 2012]</t>
-	  </ref>
-	</def>
-	<def xml:id="entry.1.def.2" class="etym">
+            <t>[Bork et al, 2012]</t>
+          </ref>
+        </def>
+        <def xml:id="entry.1.def.2" class="etym">
           <p xml:id="entry.1.def.2.p.1">
             <t>Van het oud-Griekse "στέμμα", via het Latijnse "stemma"</t>
           </p>
-	</def>
-	<ex xml:id="entry.1.ex.1">
+        </def>
+        <ex xml:id="entry.1.ex.1">
           <s xml:id="entry.1.ex.1.s.1">
             <t>Dit wordt neergezet in een stemma.</t>
           </s>
-	</ex>
+        </ex>
       </entry>
     </div>
     <div xml:id="sandbox">
       <head xml:id="sandbox.head">
-	<t>Tests van verschillende structuur en annotatieelementen</t>
+        <t>Tests van verschillende structuur en annotatieelementen</t>
       </head>
       <event xml:id="sandbox.event.0" actor="audience" class="applause"/>
       <list xml:id="sandbox.list.1">
@@ -1273,17 +1273,17 @@
         </table>
       </div>
       <note xml:id="footnote1" class="footnote">
-	<s xml:id="footnote.1.s.1">
-          <t>Een deel van deze pagina komt oorspronkelijk van <t-str xlink:type="simple" xlink:href="http://www.wikipedia.org">wikipedia</t-str>.</t>
-	</s>
+        <s xml:id="footnote.1.s.1">
+          <t>Een deel van deze pagina komt oorspronkelijk van <t-str xlink:href="http://www.wikipedia.org" xlink:type="simple">wikipedia</t-str>.</t>
+        </s>
       </note>
     </div>
     <div xml:id="bibliography" class="bibliography">
       <head xml:id="bibhead">
-	<t>Bibliography</t>
+        <t>Bibliography</t>
       </head>
       <note xml:id="bib.1" class="bibref">
-	<t>G.J. van Bork, D. Delabastita, H. van Gorp, P.J. Verkruijsse en G.J. Vis - Algemeen Letterkunding lexicon. DBNL (2012)</t>
+        <t>G.J. van Bork, D. Delabastita, H. van Gorp, P.J. Verkruijsse en G.J. Vis - Algemeen Letterkunding lexicon. DBNL (2012)</t>
       </note>
     </div>
     <gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter">
