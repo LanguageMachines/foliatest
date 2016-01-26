@@ -1826,6 +1826,17 @@ void sanity_test107( ){
   assertThrow( new Sentence(&doc, "id='dit:ook:niet'" ), XmlError );
 }
 
+void sanity_test108( ){
+  Document doc;
+  startTestSerie( " type hierarchy " );
+  assertTrue( isSubClass( PlaceHolder_t, Structure_t ) );
+  assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
+  assertTrue( isSubClass( PlaceHolder_t, Word_t ) );
+  assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
+  assertTrue( isSubClass( Pos_t, TokenAnnotation_t ) );
+  assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
+}
+
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
@@ -3020,6 +3031,7 @@ int main(){
   sanity_test105();
   sanity_test106();
   sanity_test107();
+  sanity_test108();
   edit_test001a();
   edit_test001b();
   edit_test002();
