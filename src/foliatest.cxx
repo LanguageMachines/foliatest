@@ -344,8 +344,8 @@ void sanity_test009( ){
   FoliaElement *w = 0;
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( w->annotation<PosAnnotation>() == w->select<PosAnnotation>()[0] );
-  assertTrue( w->annotation<PosAnnotation>()->isinstance(Pos_t ) );
-  assertTrue( isSubClass( Pos_t, TokenAnnotation_t ) );
+  assertTrue( w->annotation<PosAnnotation>()->isinstance(PosAnnotation_t ) );
+  assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
   bool test = isSubClass<PosAnnotation, AbstractTokenAnnotation>();
   assertTrue( test );
   assertTrue( w->annotation<PosAnnotation>()->cls() == "N(soort,ev,basis,onz,stan)" );
@@ -363,7 +363,7 @@ void sanity_test010( ){
   FoliaElement *l = 0;
   assertNoThrow( l = w->annotation<LemmaAnnotation>() );
   assertTrue( l == w->select<LemmaAnnotation>()[0] );
-  assertTrue( isinstance( l, Lemma_t ) );
+  assertTrue( isinstance( l, LemmaAnnotation_t ) );
   assertTrue( l->cls() == "stemma" );
   assertTrue( w->lemma() == "stemma" );
   assertTrue( l->sett() == "lemmas-nl" );
@@ -445,7 +445,7 @@ int check( FoliaElement *parent, const string& indent, ostream& os, int& fails )
 	      || parent->isinstance( TimingLayer_t )
 	      || parent->isinstance( CoreferenceChain_t )
 	      || parent->isinstance( CoreferenceLink_t )
-	      || parent->isinstance( Semrole_t )
+	      || parent->isinstance( SemanticRole_t )
 	      || parent->isinstance( Headwords_t )
 	      || parent->isinstance( DependencyDependent_t ) )
 	     && ( child->isinstance( Word_t ) || child->isinstance( Morpheme_t )) ) ){
@@ -758,8 +758,8 @@ void sanity_test026a(){
   startTestSerie(" Features " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
   FoliaElement *pos = w->annotation<PosAnnotation>();
-  assertTrue( pos->isSubClass( TokenAnnotation_t ) );
-  assertTrue( pos->isinstance(Pos_t) );
+  assertTrue( pos->isSubClass( AbstractTokenAnnotation_t ) );
+  assertTrue( pos->isinstance(PosAnnotation_t) );
   assertTrue( pos->cls() == "WW(vd,prenom,zonder)" );
   assertTrue( len(pos) ==  1 );
   vector<Feature*> features = pos->select<Feature>();
@@ -775,7 +775,7 @@ void sanity_test026a(){
 void sanity_test026b(){
   startTestSerie(" Metric " );
   FoliaElement *p= sanityDoc.paragraphs(0);
-  FoliaElement *m = p->annotation<MetricAnnotation>();
+  FoliaElement *m = p->annotation<Metric>();
   assertTrue( isinstance(m, Metric_t ) );
   assertEqual( m->cls(), "sentenceCount" );
   assertEqual( m->feat("value"), "8" );
@@ -1829,11 +1829,11 @@ void sanity_test107( ){
 void sanity_test108( ){
   Document doc;
   startTestSerie( " type hierarchy " );
-  assertTrue( isSubClass( PlaceHolder_t, Structure_t ) );
+  assertTrue( isSubClass( PlaceHolder_t, AbstractStructureElement_t ) );
   assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
   assertTrue( isSubClass( PlaceHolder_t, Word_t ) );
   assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
-  assertTrue( isSubClass( Pos_t, TokenAnnotation_t ) );
+  assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
 }
 
@@ -2094,7 +2094,7 @@ void edit_test005a( ){
   assertTrue( p->isinstance<PosAnnotation>() );
 
   std::vector<Alternative *> alt3;
-  assertNoThrow( alt3 = w->alternatives(Pos_t, sett) );
+  assertNoThrow( alt3 = w->alternatives(PosAnnotation_t, sett) );
   assertTrue( alt3.size() == 1 );
   assertTrue( alt[0] == alt3[0] );
 
@@ -2776,7 +2776,7 @@ void query_test003(){
   startTestSerie( " Find Words by annotation " );
   vector<string> words = { "de", "historisch", "wetenschap", "worden" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern( words,
-							   Lemma_t ) );
+							   LemmaAnnotation_t ) );
   assertEqual( matches.size(), 1 );
   assertEqual( len(matches[0]), 4 );
 
@@ -2789,7 +2789,7 @@ void query_test003(){
 void query_test004(){
   startTestSerie( " Find Words using multiple patterns " );
   Pattern p1( { "de", "historische", "*", "wordt" } );
-  Pattern p2( { "de", "historisch", "wetenschap", "worden" }, Lemma_t );
+  Pattern p2( { "de", "historisch", "wetenschap", "worden" }, LemmaAnnotation_t );
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
@@ -2917,7 +2917,7 @@ void query_test011(){
   startTestSerie( " Find Words by non existing annotation " );
   vector<string> words = { "bli", "bla", "blu" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
-							  Sense_t ) );
+							  SenseAnnotation_t ) );
   assertEqual( matches.size(), 0 );
 }
 
