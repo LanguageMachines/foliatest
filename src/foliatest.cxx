@@ -40,6 +40,7 @@
 #include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
 #include "libfolia/foliautils.h"
+#include "libfolia/foliatypes.h"
 #include "libfolia/folia.h"
 #include "libfolia/document.h"
 
@@ -490,7 +491,7 @@ void sanity_test016b(){
 void sanity_test017(){
   startTestSerie(" Check - Gap " );
   FoliaElement *gap = sanityDoc["WR-P-E-J-0000000001.gap.1"];
-  assertEqual( strip(gap->content()).substr(0,11), string("De tekst is") );
+  assertEqual( TiCC::trim(gap->content()).substr(0,11), string("De tekst is") );
   assertTrue( gap->cls() == "backmatter" );
   assertTrue( gap->description() == "Backmatter" );
 
