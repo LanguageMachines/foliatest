@@ -39,10 +39,7 @@
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
-#include "libfolia/foliautils.h"
-#include "libfolia/foliatypes.h"
 #include "libfolia/folia.h"
-#include "libfolia/document.h"
 
 #include <ticcutils/UnitTest.h>
 
