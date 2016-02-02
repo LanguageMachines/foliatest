@@ -481,7 +481,7 @@ void sanity_test016a(){
 void sanity_test016b(){
   startTestSerie(" Check - Error on non-existing description " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.7"];
-  assertThrow( w->description(), NoSuchAnnotation );
+  assertEqual( w->description(), "" );
 
 }
 
