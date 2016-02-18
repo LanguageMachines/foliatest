@@ -1183,21 +1183,21 @@ void sanity_test101( ){
 
 void sanity_test101a(){
   startTestSerie(" Metadata external reference (CMDI) " );
-  Document doc = Document("file='tests/folia.cmdi.xml'");
+  Document doc( "file='tests/folia.cmdi.xml'" );
   assertTrue( doc.metadatatype() == CMDI );
   assertTrue( doc.metadatafile() == "test.cmdi.xml" );
 }
 
 void sanity_test101b(){
   startTestSerie(" Metadata external reference (IMDI) " );
-  Document doc = Document("file='tests/folia.imdi.xml'");
+  Document doc( "file='tests/folia.imdi.xml'" );
   assertTrue( doc.metadatatype() == IMDI );
   assertTrue( doc.metadatafile() == "test.imdi.xml" );
 }
 
 void sanity_test101c(){
   startTestSerie(" Metadata (native) " );
-  Document doc = Document("file='tests/folia.example'");
+  Document doc( "file='tests/folia.example'" );
   assertTrue( doc.metadatatype() == NATIVE );
   assertNoThrow( doc.set_metadata( "name", "Mijn document" ) );
   assertEqual( doc.get_metadata( "genre" ), "artikel" );
