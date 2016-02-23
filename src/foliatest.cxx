@@ -1825,7 +1825,6 @@ void sanity_test107( ){
 }
 
 void sanity_test108( ){
-  Document doc;
   startTestSerie( " type hierarchy " );
   assertTrue( isSubClass( PlaceHolder_t, AbstractStructureElement_t ) );
   assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
@@ -1833,6 +1832,47 @@ void sanity_test108( ){
   assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
+}
+
+void sanity_test109(){
+  startTestSerie( "Sanity Check - Complex alignment" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"0.8\" generator=\"libfolia-v0.4\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <complexalignment-annotation />\n"
+    "      <alignment-annotation set=\"blah\" />\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"test.text\">\n"
+    "    <p xml:id=\"p.1\">\n"
+    "      <s xml:id=\"p.1.s.1\"><t>Dit is een test.</t></s>\n"
+    "      <s xml:id=\"p.1.s.2\"><t>Ik wil kijken of het werkt.</t></s>\n"
+    "      <complexalignments>\n"
+    "        <complexalignment>\n"
+    "          <alignment>\n"
+    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
+    "            <aref id=\"p.1.s.2\" type=\"s\" />\n"
+    "	       </alignment>\n"
+    "          <alignment class=\"translation\" xlink:href=\"en.folia.xml\" xlink:type=\"simple\">\n"
+    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
+    "	       </alignment>\n"
+    "        </complexalignment>\n"
+    "      </complexalignments>\n"
+    "    </p>\n"
+    "  </text>\n"
+    "</FoLiA>\n";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  //        self.assertTrue(doc.xml() is not None) #serialisation check
+  vector<Paragraph*> pargs;
+  assertNoThrow( pargs = doc.paragraphs() );
+  vector<ComplexAlignmentLayer*> cal = pargs[0]->annotations<ComplexAlignmentLayer>();
+  assertEqual( len(cal),1);
+  vector<ComplexAlignment*> ca = cal[0]->annotations<ComplexAlignment>();
+  assertEqual( len(ca),1);
+  vector<Alignment*> alignments = ca[0]->select<Alignment>();
+  assertEqual(len(alignments),2);
 }
 
 void edit_test001a( ){
@@ -3030,6 +3070,7 @@ int main(){
   sanity_test106();
   sanity_test107();
   sanity_test108();
+  sanity_test109();
   edit_test001a();
   edit_test001b();
   edit_test002();
