@@ -1100,7 +1100,7 @@ void sanity_test042(){
 void sanity_test043(){
   startTestSerie( " Sanity check - String " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  assertTrue( head->hasannotation<String>() );
+  assertTrue( head->hasannotation<String>() > 0 );
   vector<String*> v = head->select<String>();
   String* st = v[0];
   assertEqual( st->text(), "FoLiA developers" );
