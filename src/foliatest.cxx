@@ -935,16 +935,6 @@ void sanity_test037a( ){
 "        <s xml:id=\"p.1.s.1\">\n"
 "            <w xml:id=\"p.1.s.1.w.1\">\n"
 "                <t>blah</t>\n"
-"                <pos class=\"NN(blah)\">\n"
-"                    <headfeature class=\"NN\" />\n"
-"                </pos>\n"
-"            </w>\n"
-"        </s>\n"
-"    </p>\n"
-"    <p xml:id=\"p.2\">\n"
-"        <s xml:id=\"p.2.s.1\">\n"
-"            <w xml:id=\"p.2.s.1.w.1\">\n"
-"                <t>blah</t>\n"
 "                <pos class=\"BB(blah)\">\n"
 "                    <feat subset=\"head\" class=\"BB\" />\n"
 "                </pos>\n"
@@ -959,11 +949,8 @@ void sanity_test037a( ){
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc["head.1.s.1.w.1"]->pos() == "NN(blah)" );
   assertTrue( doc["head.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
-  assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(blah)" );
-  assertTrue( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
-  assertTrue( doc["p.2.s.1.w.1"]->pos() == "BB(blah)" );
-  assertTrue( doc["p.2.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
-
+  assertTrue( doc["p.1.s.1.w.1"]->pos() == "BB(blah)" );
+  assertTrue( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
 }
 
 void sanity_test037b( ){
