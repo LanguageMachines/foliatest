@@ -29,7 +29,7 @@
       <table-annotation set="table-set"/>
       <style-annotation set="styles"/>
       <definition-annotation set="definitions"/>
-      <phonology-annotation set="phonology-set"/>
+      <phonological-annotation set="phonological-set"/>
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
