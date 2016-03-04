@@ -1132,8 +1132,8 @@ void sanity_test045(){
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
-  assertNoThrow( sanityDoc.save( "/tmp/savetest.canonical.xml", true ) );
-
+  // disable for now:
+  //  assertNoThrow( sanityDoc.save( "/tmp/savetest.canonical.xml", true ) );
 }
 
 void sanity_test100a( ){
@@ -1143,11 +1143,12 @@ void sanity_test100a( ){
     assertNoThrow( d.readFromFile( "/tmp/savetest.xml" ) );
     assertTrue( d == sanityDoc );
   }
-  {
-    Document d;
-    assertNoThrow( d.readFromFile( "/tmp/savetest.canonical.xml" ) );
-    assertTrue( d == sanityDoc );
-  }
+  // disabled canonical output
+  // {
+  //   Document d;
+  //   assertNoThrow( d.readFromFile( "/tmp/savetest.canonical.xml" ) );
+  //   assertTrue( d == sanityDoc );
+  // }
 
 }
 
