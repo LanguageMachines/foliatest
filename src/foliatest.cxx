@@ -876,10 +876,10 @@ void sanity_test032( ){
 void sanity_test033( ){
   startTestSerie(" List " );
   FoliaElement *l = sanityDoc["sandbox.list.1"];
-  assertTrue( l->index(0)->isinstance<Item>() );
+  assertTrue( l->index(0)->isinstance<ListItem>() );
   assertTrue( l->index(0)->n() == "1" );
   assertTrue( l->index(0)->text() == "Eerste testitem" );
-  assertTrue( l->rindex(0)->isinstance<Item>() );
+  assertTrue( l->rindex(0)->isinstance<ListItem>() );
   assertTrue( l->rindex(0)->n() == "2" );
   assertTrue( l->rindex(0)->text() == "Tweede testitem" );
 
@@ -1121,7 +1121,7 @@ void sanity_test044(){
   FoliaElement *r2 = sanityDoc["sandbox.3.str"];
   assertEqual( r1, r2 ); // testing resolving references
   t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->textcontent();
-  assertTrue( t->index(t->size()-1)->isinstance( LineBreak_t) );  // did we get the linebreak properly?
+  assertTrue( t->index(t->size()-1)->isinstance( Linebreak_t) );  // did we get the linebreak properly?
   // testing nesting
   assertEqual( len(st), size_t(2) );
   assertEqual( st->index(0), sanityDoc["sandbox.3.str.bold"] );
