@@ -990,6 +990,45 @@ void sanity_test037b( ){
   assertTrue( v == vok );
 }
 
+void sanity_test037c( ){
+  startTestSerie(" Multiclass Feature for a known Feature" );
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata src=\"test.cmdi.xml\" type=\"cmdi\">\n"
+"    <annotations>\n"
+"      <pos-annotation set=\"test\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"test.text\">\n"
+"    <div xml:id=\"div\">\n"
+"     <p xml:id=\"p.1\">\n"
+"       <s xml:id=\"p.1.s.1\">\n"
+"         <w xml:id=\"p.1.s.1.w.1\">\n"
+"           <t>blah</t>\n"
+"           <pos class=\"NN(a,b,c)\">\n"
+"           <feat subset=\"author\" class=\"Jan\" />\n"
+"           <feat subset=\"author\" class=\"Piet\" />\n"
+"           <feat subset=\"author\" class=\"Klaas\" />\n"
+"           </pos>\n"
+"         </w>\n"
+"       </s>\n"
+"     </p>\n"
+"   </div>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
+  PosAnnotation* pos = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
+  vector<string> v = pos->feats("author");
+  vector<string> vok = {"Jan","Piet","Klaas"};
+  assertTrue( v == vok );
+  string xml_out = pos->xmlstring();
+  assertEqual( xml_out, "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"NN(a,b,c)\"><feat class=\"Jan\" subset=\"author\"/><feat class=\"Piet\" subset=\"author\"/><feat class=\"Klaas\" subset=\"author\"/></pos>" );
+}
+
 void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
   PosAnnotation *p =0;
@@ -1372,7 +1411,6 @@ void sanity_test102f(){
 
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-
 }
 
 void sanity_test102g(){
@@ -3044,6 +3082,7 @@ int main(){
   sanity_test036();
   sanity_test037a();
   sanity_test037b();
+  sanity_test037c();
   sanity_test038a();
   sanity_test038a();
   sanity_test039();
