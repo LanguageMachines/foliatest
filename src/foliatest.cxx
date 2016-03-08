@@ -880,8 +880,8 @@ void sanity_test033( ){
   assertTrue( l->index(0)->n() == "1" );
   assertTrue( l->index(0)->text() == "Eerste testitem" );
   assertTrue( l->rindex(0)->isinstance<ListItem>() );
-  assertTrue( l->rindex(0)->n() == "2" );
-  assertTrue( l->rindex(0)->text() == "Tweede testitem" );
+  assertTrue( l->rindex(1)->n() == "2" );
+  assertTrue( l->rindex(1)->text() == "Tweede testitem" );
 
 }
 
