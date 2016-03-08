@@ -3081,7 +3081,7 @@ int main(){
   sanity_test037b();
   sanity_test037c();
   sanity_test038a();
-  sanity_test038a();
+  sanity_test038b();
   sanity_test039();
   sanity_test040();
   sanity_test041a();
