@@ -2676,168 +2676,163 @@ void create_test003( ){
 
 void correction_test001a( ){
   startTestSerie( " Split correction " );
-  Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
-				  "adhocset",
-				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
-  assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'") ) );
-  s->append( new Word( getArgs("text='De', id='" + corDoc->id() + ".s.1.w.1'" ),
-		        corDoc ));
-  s->append( new Word( getArgs("text='site', id='" + corDoc->id() + ".s.1.w.2'" ),
-		        corDoc ));
-  s->append( new Word( getArgs("text='staat', id='" + corDoc->id() + ".s.1.w.3'" ),
-		        corDoc ));
-  s->append( new Word( getArgs("text='online', id='" + corDoc->id() + ".s.1.w.4'" ),
-		        corDoc ));
-  s->append( new Word( getArgs("text='.', id='" + corDoc->id() + ".s.1.w.5'" ),
-		       corDoc ));
-  FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.4");
-  w->split( new Word( getArgs("id='" + corDoc->id() + ".s.1.w.4a', text='on'" ),
-		       corDoc ),
-   	    new Word( getArgs("id='" + corDoc->id() + ".s.1.w.4b', text='line'" ),
-		      corDoc ));
-  //  assertNoThrow( corDoc->save( "/tmp/foliasplit1a.xml" ) );
-  s = corDoc->index("example.s.1");
+  Document corDoc( "id='example'" );
+  assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
+				 "adhocset",
+				 "annotator='proycon'" ) );
+  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  assertNoThrow( corDoc.addText( text ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'") ) );
+  s->append( new Word( getArgs("text='De', id='" + corDoc.id() + ".s.1.w.1'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='site', id='" + corDoc.id() + ".s.1.w.2'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='staat', id='" + corDoc.id() + ".s.1.w.3'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='online', id='" + corDoc.id() + ".s.1.w.4'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='.', id='" + corDoc.id() + ".s.1.w.5'" ),
+		       &corDoc ));
+  FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4");
+  w->split( new Word( getArgs("id='" + corDoc.id() + ".s.1.w.4a', text='on'" ),
+		      &corDoc ),
+   	    new Word( getArgs("id='" + corDoc.id() + ".s.1.w.4b', text='line'" ),
+		      &corDoc ));
+  //  assertNoThrow( corDoc.save( "/tmp/foliasplit1a.xml" ) );
+  s = corDoc.index("example.s.1");
   assertEqual( s->rwords(2)->text(), "on" );
   assertEqual( s->rwords(1)->text(), "line" );
   assertEqual( s->text(), "De site staat on line ." );
   assertEqual( len( s->words() ), 6 );
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4a\"><t>on</t></w><w xml:id=\"example.s.1.w.4b\"><t>line</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>online</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
-  delete corDoc;
 }
 
 void correction_test001b( ){
   startTestSerie( " Split suggestion " );
-  Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
-				  "adhocset",
-				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs( "id='" + corDoc->id() + ".text.1'") );
-  assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"  ) ) );
-  s->append( new Word( getArgs( "text='De', id='" + corDoc->id() + ".s.1.w.1'" ),
-		       corDoc ) );
-  s->append( new Word( getArgs( "text='site', id='" + corDoc->id() + ".s.1.w.2'" ),
-		        corDoc ) );
-  s->append( new Word( getArgs("text='staat', id='" + corDoc->id() + ".s.1.w.3'" ),
-		       corDoc ));
-  s->append( new Word( getArgs( "text='online', id='" + corDoc->id() + ".s.1.w.4'" ),
-		       corDoc ));
-  s->append( new Word( getArgs( "text='.', id='" + corDoc->id() + ".s.1.w.5'" ),
-		       corDoc ));
-  FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.4");
+  Document corDoc( "id='example'" );
+  assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
+				 "adhocset",
+				 "annotator='proycon'" ) );
+  Text *text = new Text( getArgs( "id='" + corDoc.id() + ".text.1'") );
+  assertNoThrow( corDoc.addText( text ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"  ) ) );
+  s->append( new Word( getArgs( "text='De', id='" + corDoc.id() + ".s.1.w.1'" ),
+		       &corDoc ) );
+  s->append( new Word( getArgs( "text='site', id='" + corDoc.id() + ".s.1.w.2'" ),
+		       &corDoc ) );
+  s->append( new Word( getArgs("text='staat', id='" + corDoc.id() + ".s.1.w.3'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs( "text='online', id='" + corDoc.id() + ".s.1.w.4'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs( "text='.', id='" + corDoc.id() + ".s.1.w.5'" ),
+		       &corDoc ));
+  FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4");
   Word *w1 = new Word( getArgs("generate_id='" + s->id() + "',text='on'"),
-		       corDoc );
+		       &corDoc );
   Word *w2 = new Word( getArgs("generate_id='" + s->id() + "',text='line'" ),
-		       corDoc );
+		       &corDoc );
   w->split( w1, w2, "suggest='true'" );
-  //  assertNoThrow( corDoc->save( "/tmp/foliasplit1b.xml" ) );
-  s = corDoc->index("example.s.1");
+  //  assertNoThrow( corDoc.save( "/tmp/foliasplit1b.xml" ) );
+  s = corDoc.index("example.s.1");
   assertEqual( len( s->words() ), 5 );
   assertEqual( s->rwords(1)->text(), "online" );
   assertEqual( s->text(), "De site staat online ." );
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>");
-  delete corDoc;
 }
 
 void correction_test002(){
   startTestSerie( " Merge corrections " );
-  Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+  Document corDoc( "id='example'" );
+  assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
-  assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs( "text='De', id='" + corDoc->id() + ".s.1.w.1'" ),
-		        corDoc ) );
-  s->append( new Word( getArgs( "text='site', id='" + corDoc->id() + ".s.1.w.2'" ),
-		        corDoc ) );
-  s->append( new Word( getArgs( "text='staat', id='" + corDoc->id() + ".s.1.w.3'" ),
-		       corDoc ) );
-  s->append( new Word( getArgs( "text='on', id='" + corDoc->id() + ".s.1.w.4'" ),
-		        corDoc ) );
-  s->append( new Word( getArgs( "text='line', id='" + corDoc->id() + ".s.1.w.5'" ),
-		        corDoc ) );
-  s->append( new Word( getArgs( "text='.', id='" + corDoc->id() + ".s.1.w.6'" ),
-		       corDoc ) );
+  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  assertNoThrow( corDoc.addText( text ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='De', id='" + corDoc.id() + ".s.1.w.1'" ),
+		       &corDoc ) );
+  s->append( new Word( getArgs( "text='site', id='" + corDoc.id() + ".s.1.w.2'" ),
+		       &corDoc ) );
+  s->append( new Word( getArgs( "text='staat', id='" + corDoc.id() + ".s.1.w.3'" ),
+		       &corDoc ) );
+  s->append( new Word( getArgs( "text='on', id='" + corDoc.id() + ".s.1.w.4'" ),
+		       &corDoc ) );
+  s->append( new Word( getArgs( "text='line', id='" + corDoc.id() + ".s.1.w.5'" ),
+		       &corDoc ) );
+  s->append( new Word( getArgs( "text='.', id='" + corDoc.id() + ".s.1.w.6'" ),
+		       &corDoc ) );
 
   vector<FoliaElement *> ow;
-  ow.push_back( corDoc->index(corDoc->id() + ".s.1.w.4") );
-  ow.push_back( corDoc->index(corDoc->id() + ".s.1.w.5") );
-  s->mergewords( new Word( getArgs("id='" + corDoc->id() + ".s.1.w.4-5', text='online'"),
-			   corDoc ),
+  ow.push_back( corDoc.index(corDoc.id() + ".s.1.w.4") );
+  ow.push_back( corDoc.index(corDoc.id() + ".s.1.w.5") );
+  s->mergewords( new Word( getArgs("id='" + corDoc.id() + ".s.1.w.4-5', text='online'"),
+			   &corDoc ),
 		 ow );
-  //  assertNoThrow( corDoc->save( "/tmp/foliamerge002.xml" ) );
+  //  assertNoThrow( corDoc.save( "/tmp/foliamerge002.xml" ) );
   assertEqual( len(s->words() ),  5 );
   assertEqual( s->text(), "De site staat online ." );
   // incorrection() test, check if newly added word correctly reports being part of a correction
-  FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.4-5");
+  FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4-5");
   assertTrue( isinstance(w->incorrection(), Correction_t) );
   //incorrection return the correction the word is part of, or None if not part of a correction,
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
-  delete corDoc;
 }
 
 void correction_test003(){
   startTestSerie( " Delete corrections " );
-  Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+  Document corDoc( "id='example'" );
+  assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
-  assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs( "text='Ik', id='" + corDoc->id() + ".s.1.w.1'"),
-		       corDoc ) );
-  s->append( new Word( getArgs( "text='zie', id='" + corDoc->id() + ".s.1.w.2'" ),
-		       corDoc ));
-  s->append( new Word( getArgs( "text='een', id='" + corDoc->id() + ".s.1.w.3'" ),
-		       corDoc ));
-  s->append( new Word( getArgs("text='groot', id='" + corDoc->id() + ".s.1.w.4'" ),
-		       corDoc ));
-  s->append( new Word( getArgs("text='huis', id='" + corDoc->id() + ".s.1.w.5'" ),
-		       corDoc ));
-  s->append( new Word( getArgs("text='.', id='" + corDoc->id() + ".s.1.w.6'" ),
-		       corDoc ));
+  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  assertNoThrow( corDoc.addText( text ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='Ik', id='" + corDoc.id() + ".s.1.w.1'"),
+		       &corDoc ) );
+  s->append( new Word( getArgs( "text='zie', id='" + corDoc.id() + ".s.1.w.2'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs( "text='een', id='" + corDoc.id() + ".s.1.w.3'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='groot', id='" + corDoc.id() + ".s.1.w.4'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='huis', id='" + corDoc.id() + ".s.1.w.5'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='.', id='" + corDoc.id() + ".s.1.w.6'" ),
+		       &corDoc ));
 
-  s->deleteword( corDoc->index( corDoc->id() + ".s.1.w.4" ) );
-  //  assertNoThrow( corDoc->save( "/tmp/foliadelete003.xml" ) );
+  s->deleteword( corDoc.index( corDoc.id() + ".s.1.w.4" ) );
+  //  assertNoThrow( corDoc.save( "/tmp/foliadelete003.xml" ) );
   assertEqual( s->text(), "Ik zie een huis ." );
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>groot</t></w></original></correction><w xml:id=\"example.s.1.w.5\"><t>huis</t></w><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>");
-  delete corDoc;
 }
 
 void correction_test004(){
   startTestSerie( " Insert corrections " );
-  Document *corDoc = new Document( "id='example'" );
-  assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
+  Document corDoc( "id='example'" );
+  assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
-  assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs("text='Ik', id='" + corDoc->id() + ".s.1.w.1'" ),
-		       corDoc ));
-  s->append( new Word( getArgs("text='zie', id='" + corDoc->id() + ".s.1.w.2'"),
-		       corDoc ));
-  s->append( new Word( getArgs( "text='een', id='" + corDoc->id() + ".s.1.w.3'" ),
-		       corDoc ));
-  s->append( new Word( getArgs("text='huis', id='" + corDoc->id() + ".s.1.w.4'" ),
-		       corDoc ));
-  s->append( new Word( getArgs("text='.', id='" + corDoc->id() + ".s.1.w.5'" ),
-		       corDoc ));
+  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  assertNoThrow( corDoc.addText( text ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs("text='Ik', id='" + corDoc.id() + ".s.1.w.1'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='zie', id='" + corDoc.id() + ".s.1.w.2'"),
+		       &corDoc ));
+  s->append( new Word( getArgs( "text='een', id='" + corDoc.id() + ".s.1.w.3'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='huis', id='" + corDoc.id() + ".s.1.w.4'" ),
+		       &corDoc ));
+  s->append( new Word( getArgs("text='.', id='" + corDoc.id() + ".s.1.w.5'" ),
+		       &corDoc ));
 
-  s->insertword( new Word( getArgs( "id='" + corDoc->id() + ".s.1.w.3b', text='groot'"),
-			   corDoc ),
-		 corDoc->index( corDoc->id() + ".s.1.w.3" ) );
-  //  assertNoThrow( corDoc->save( "/tmp/foliainsert004.xml" ) );
+  s->insertword( new Word( getArgs( "id='" + corDoc.id() + ".s.1.w.3b', text='groot'"),
+			   &corDoc ),
+		 corDoc.index( corDoc.id() + ".s.1.w.3" ) );
+  //  assertNoThrow( corDoc.save( "/tmp/foliainsert004.xml" ) );
   assertEqual( s->words().size(), 6 );
   assertEqual( s->text(), "Ik zie een groot huis ." );
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.3b\"><t>groot</t></w></new><original auth=\"no\"/></correction><w xml:id=\"example.s.1.w.4\"><t>huis</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
-  delete corDoc;
 }
 
 void correction_test005(){
