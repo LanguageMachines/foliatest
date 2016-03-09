@@ -39,9 +39,7 @@
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
-#include "libfolia/foliautils.h"
 #include "libfolia/folia.h"
-#include "libfolia/document.h"
 
 #include <ticcutils/UnitTest.h>
 
@@ -59,14 +57,14 @@ void test0() {
   assertThrow( bla = getArgs( "dit=fout" ), ArgsError );
   assertNoThrow( bla = getArgs( "cls='o\\'k'" ) );
   assertTrue( bla["cls"] == "o'k" );
-  assertNoThrow( bla = getArgs( "cls='o\\k'" ) );
-  assertTrue( bla["cls"] == "o\\k" );
+  assertNoThrow( bla = getArgs( "class='o\\k'" ) );
+  assertTrue( bla["class"] == "o\\k" );
   assertNoThrow( bla = getArgs( "cls='o\"k'" ) );
   assertTrue( bla["cls"] == "o\"k" );
   assertNoThrow( bla = getArgs( "cls='o""k'" ) );
   assertTrue( bla["cls"] == "ok" );
-  assertNoThrow( bla = getArgs( "cls='ok\\a', bli='bla'" ) );
-  assertTrue( bla["cls"] == "ok\\a" );
+  assertNoThrow( bla = getArgs( "class='ok\\a', bli='bla'" ) );
+  assertTrue( bla["class"] == "ok\\a" );
   assertTrue( bla["bli"] == "bla" );
   assertNoThrow( bla = getArgs( "cls='ok\\\\', bli='bla'" ) );
   assertTrue( bla["cls"] == "ok\\" );
@@ -298,7 +296,7 @@ void sanity_test008b(){
   FoliaElement *d = 0;
   assertNoThrow( d = sanityDoc["WR-P-E-J-0000000001.div0.1"] );
   FoliaElement *e = 0;
-  assertNoThrow( e = new Head( &sanityDoc, "id='whatever'" ) );
+  assertNoThrow( e = new Head( getArgs("id='whatever'"), &sanityDoc ) );
   assertThrow( d->append(e), DuplicateAnnotationError );
 }
 
@@ -323,9 +321,9 @@ void sanity_test008c(){
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *t = 0;
   // creating an empty text is forbidden
-  assertThrow( t = new TextContent( &doc, "value=''" ), ArgsError );
+  assertThrow( t = new TextContent( getArgs("value=''"), &doc ), ArgsError );
   // creating a not quite empty text is allowed
-  assertNoThrow( t = new TextContent( &doc, "value=' '" ) );
+  assertNoThrow( t = new TextContent( getArgs("value=' '"), &doc ) );
   FoliaElement *p = 0;
   assertNoThrow( p = doc["par"] );
   // appending a not quite empty text is allowed
@@ -334,7 +332,7 @@ void sanity_test008c(){
   assertNoThrow( w = doc["word"] );
   // appending a node twice is NOT allowed
   assertThrow( w->append(t), XmlError );
-  assertNoThrow( t = new TextContent( &doc, "value='  '" ) );
+  assertNoThrow( t = new TextContent(  getArgs("value='  '"), &doc ) );
   // appending a not quite empty text is NOT allowed for WORDS!
   assertThrow( w->append(t), ValueError );
 }
@@ -344,8 +342,8 @@ void sanity_test009( ){
   FoliaElement *w = 0;
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( w->annotation<PosAnnotation>() == w->select<PosAnnotation>()[0] );
-  assertTrue( w->annotation<PosAnnotation>()->isinstance(Pos_t ) );
-  assertTrue( isSubClass( Pos_t, TokenAnnotation_t ) );
+  assertTrue( w->annotation<PosAnnotation>()->isinstance(PosAnnotation_t ) );
+  assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
   bool test = isSubClass<PosAnnotation, AbstractTokenAnnotation>();
   assertTrue( test );
   assertTrue( w->annotation<PosAnnotation>()->cls() == "N(soort,ev,basis,onz,stan)" );
@@ -363,7 +361,7 @@ void sanity_test010( ){
   FoliaElement *l = 0;
   assertNoThrow( l = w->annotation<LemmaAnnotation>() );
   assertTrue( l == w->select<LemmaAnnotation>()[0] );
-  assertTrue( isinstance( l, Lemma_t ) );
+  assertTrue( isinstance( l, LemmaAnnotation_t ) );
   assertTrue( l->cls() == "stemma" );
   assertTrue( w->lemma() == "stemma" );
   assertTrue( l->sett() == "lemmas-nl" );
@@ -445,8 +443,8 @@ int check( FoliaElement *parent, const string& indent, ostream& os, int& fails )
 	      || parent->isinstance( TimingLayer_t )
 	      || parent->isinstance( CoreferenceChain_t )
 	      || parent->isinstance( CoreferenceLink_t )
-	      || parent->isinstance( Semrole_t )
-	      || parent->isinstance( Headwords_t )
+	      || parent->isinstance( SemanticRole_t )
+	      || parent->isinstance( Headspan_t )
 	      || parent->isinstance( DependencyDependent_t ) )
 	     && ( child->isinstance( Word_t ) || child->isinstance( Morpheme_t )) ) ){
       ++count;
@@ -483,14 +481,14 @@ void sanity_test016a(){
 void sanity_test016b(){
   startTestSerie(" Check - Error on non-existing description " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.7"];
-  assertThrow( w->description(), NoSuchAnnotation );
+  assertEqual( w->description(), "" );
 
 }
 
 void sanity_test017(){
   startTestSerie(" Check - Gap " );
   FoliaElement *gap = sanityDoc["WR-P-E-J-0000000001.gap.1"];
-  assertEqual( strip(gap->content()).substr(0,11), string("De tekst is") );
+  assertEqual( TiCC::trim(gap->content()).substr(0,11), string("De tekst is") );
   assertTrue( gap->cls() == "backmatter" );
   assertTrue( gap->description() == "Backmatter" );
 
@@ -758,8 +756,8 @@ void sanity_test026a(){
   startTestSerie(" Features " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
   FoliaElement *pos = w->annotation<PosAnnotation>();
-  assertTrue( pos->isSubClass( TokenAnnotation_t ) );
-  assertTrue( pos->isinstance(Pos_t) );
+  assertTrue( pos->isSubClass( AbstractTokenAnnotation_t ) );
+  assertTrue( pos->isinstance(PosAnnotation_t) );
   assertTrue( pos->cls() == "WW(vd,prenom,zonder)" );
   assertTrue( len(pos) ==  1 );
   vector<Feature*> features = pos->select<Feature>();
@@ -775,7 +773,7 @@ void sanity_test026a(){
 void sanity_test026b(){
   startTestSerie(" Metric " );
   FoliaElement *p= sanityDoc.paragraphs(0);
-  FoliaElement *m = p->annotation<MetricAnnotation>();
+  FoliaElement *m = p->annotation<Metric>();
   assertTrue( isinstance(m, Metric_t ) );
   assertEqual( m->cls(), "sentenceCount" );
   assertEqual( m->feat("value"), "8" );
@@ -878,12 +876,12 @@ void sanity_test032( ){
 void sanity_test033( ){
   startTestSerie(" List " );
   FoliaElement *l = sanityDoc["sandbox.list.1"];
-  assertTrue( l->index(0)->isinstance<Item>() );
+  assertTrue( l->index(0)->isinstance<ListItem>() );
   assertTrue( l->index(0)->n() == "1" );
   assertTrue( l->index(0)->text() == "Eerste testitem" );
-  assertTrue( l->rindex(0)->isinstance<Item>() );
-  assertTrue( l->rindex(0)->n() == "2" );
-  assertTrue( l->rindex(0)->text() == "Tweede testitem" );
+  assertTrue( l->rindex(0)->isinstance<ListItem>() );
+  assertTrue( l->rindex(1)->n() == "2" );
+  assertTrue( l->rindex(1)->text() == "Tweede testitem" );
 
 }
 
@@ -937,16 +935,6 @@ void sanity_test037a( ){
 "        <s xml:id=\"p.1.s.1\">\n"
 "            <w xml:id=\"p.1.s.1.w.1\">\n"
 "                <t>blah</t>\n"
-"                <pos class=\"NN(blah)\">\n"
-"                    <headfeature class=\"NN\" />\n"
-"                </pos>\n"
-"            </w>\n"
-"        </s>\n"
-"    </p>\n"
-"    <p xml:id=\"p.2\">\n"
-"        <s xml:id=\"p.2.s.1\">\n"
-"            <w xml:id=\"p.2.s.1.w.1\">\n"
-"                <t>blah</t>\n"
 "                <pos class=\"BB(blah)\">\n"
 "                    <feat subset=\"head\" class=\"BB\" />\n"
 "                </pos>\n"
@@ -961,11 +949,8 @@ void sanity_test037a( ){
   assertNoThrow( doc.readFromString(xml) );
   assertTrue( doc["head.1.s.1.w.1"]->pos() == "NN(blah)" );
   assertTrue( doc["head.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
-  assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(blah)" );
-  assertTrue( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
-  assertTrue( doc["p.2.s.1.w.1"]->pos() == "BB(blah)" );
-  assertTrue( doc["p.2.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
-
+  assertTrue( doc["p.1.s.1.w.1"]->pos() == "BB(blah)" );
+  assertTrue( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
 }
 
 void sanity_test037b( ){
@@ -1003,6 +988,45 @@ void sanity_test037b( ){
   vector<string> v = p->feats("x");
   vector<string> vok = {"a","b","c"};
   assertTrue( v == vok );
+}
+
+void sanity_test037c( ){
+  startTestSerie(" Multiclass Feature for a known Feature" );
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata src=\"test.cmdi.xml\" type=\"cmdi\">\n"
+"    <annotations>\n"
+"      <pos-annotation set=\"test\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"test.text\">\n"
+"    <div xml:id=\"div\">\n"
+"     <p xml:id=\"p.1\">\n"
+"       <s xml:id=\"p.1.s.1\">\n"
+"         <w xml:id=\"p.1.s.1.w.1\">\n"
+"           <t>blah</t>\n"
+"           <pos class=\"NN(a,b,c)\">\n"
+"           <feat subset=\"author\" class=\"Jan\" />\n"
+"           <feat subset=\"author\" class=\"Piet\" />\n"
+"           <feat subset=\"author\" class=\"Klaas\" />\n"
+"           </pos>\n"
+"         </w>\n"
+"       </s>\n"
+"     </p>\n"
+"   </div>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
+  PosAnnotation* pos = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
+  vector<string> v = pos->feats("author");
+  vector<string> vok = {"Jan","Piet","Klaas"};
+  assertTrue( v == vok );
+  string xml_out = pos->xmlstring();
+  assertEqual( xml_out, "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"NN(a,b,c)\"><feat class=\"Jan\" subset=\"author\"/><feat class=\"Piet\" subset=\"author\"/><feat class=\"Klaas\" subset=\"author\"/></pos>" );
 }
 
 void sanity_test038a(){
@@ -1102,7 +1126,7 @@ void sanity_test042(){
 void sanity_test043(){
   startTestSerie( " Sanity check - String " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  assertTrue( head->hasannotation<String>() );
+  assertTrue( head->hasannotation<String>() > 0 );
   vector<String*> v = head->select<String>();
   String* st = v[0];
   assertEqual( st->text(), "FoLiA developers" );
@@ -1123,7 +1147,7 @@ void sanity_test044(){
   FoliaElement *r2 = sanityDoc["sandbox.3.str"];
   assertEqual( r1, r2 ); // testing resolving references
   t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->textcontent();
-  assertTrue( t->index(t->size()-1)->isinstance( LineBreak_t) );  // did we get the linebreak properly?
+  assertTrue( t->index(t->size()-1)->isinstance( Linebreak_t) );  // did we get the linebreak properly?
   // testing nesting
   assertEqual( len(st), size_t(2) );
   assertEqual( st->index(0), sanityDoc["sandbox.3.str.bold"] );
@@ -1148,7 +1172,6 @@ void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.canonical.xml", true ) );
-
 }
 
 void sanity_test100a( ){
@@ -1163,7 +1186,6 @@ void sanity_test100a( ){
     assertNoThrow( d.readFromFile( "/tmp/savetest.canonical.xml" ) );
     assertTrue( d == sanityDoc );
   }
-
 }
 
 void sanity_test100b( ){
@@ -1178,28 +1200,29 @@ void sanity_test101( ){
   startTestSerie(" Add a sentence at wrong position " );
   FoliaElement *p = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   FoliaElement *s = 0;
-  assertNoThrow( s = new Sentence( &sanityDoc, "generate_id='" + p->id() + "'" ) );
+  assertNoThrow( s = new Sentence( getArgs( "generate_id='" + p->id() + "'" ),
+				    &sanityDoc ) );
   assertThrow( p->append( s ), ValueError );
 
 }
 
 void sanity_test101a(){
   startTestSerie(" Metadata external reference (CMDI) " );
-  Document doc = Document("file='tests/folia.cmdi.xml'");
+  Document doc( "file='tests/folia.cmdi.xml'" );
   assertTrue( doc.metadatatype() == CMDI );
   assertTrue( doc.metadatafile() == "test.cmdi.xml" );
 }
 
 void sanity_test101b(){
   startTestSerie(" Metadata external reference (IMDI) " );
-  Document doc = Document("file='tests/folia.imdi.xml'");
+  Document doc( "file='tests/folia.imdi.xml'" );
   assertTrue( doc.metadatatype() == IMDI );
   assertTrue( doc.metadatafile() == "test.imdi.xml" );
 }
 
 void sanity_test101c(){
   startTestSerie(" Metadata (native) " );
-  Document doc = Document("file='tests/folia.example'");
+  Document doc( "file='tests/folia.example'" );
   assertTrue( doc.metadatatype() == NATIVE );
   assertNoThrow( doc.set_metadata( "name", "Mijn document" ) );
   assertEqual( doc.get_metadata( "genre" ), "artikel" );
@@ -1385,7 +1408,6 @@ void sanity_test102f(){
 
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-
 }
 
 void sanity_test102g(){
@@ -1469,18 +1491,18 @@ void sanity_test102i(){
   assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap1-set") == "" );
   assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap2-set") == "sloot" );
   FoliaElement *text = doc["example.text.1"];
-  KWargs args = getArgs( "set='gap1-set', cls='Y', annotator='proycon'" );
+  KWargs args = getArgs( "set='gap1-set', class='Y', annotator='proycon'" );
   FoliaElement *g = 0;
-  assertNoThrow( g = new Gap( &doc, args ) );
+  assertNoThrow( g = new Gap( args, &doc ) );
   assertNoThrow( text->append( g ) );
-  args = getArgs( "set='gap1-set', cls='Z1'" );
-  assertNoThrow( g = new Gap( &doc, args ) );
+  args = getArgs( "set='gap1-set', class='Z1'" );
+  assertNoThrow( g = new Gap( args, &doc ) );
   assertNoThrow( text->append( g ) );
-  args = getArgs( "set='gap2-set', cls='Z2'" );
-  assertNoThrow( g = new Gap( &doc, args ) );
+  args = getArgs( "set='gap2-set', class='Z2'" );
+  assertNoThrow( g = new Gap( args, &doc ) );
   assertNoThrow( text->append( g ) );
-  args = getArgs( "set='gap2-set', cls='Y2', annotator='onbekend'" );
-  assertNoThrow( g = new Gap( &doc, args ) );
+  args = getArgs( "set='gap2-set', class='Y2', annotator='onbekend'" );
+  assertNoThrow( g = new Gap( args, &doc ) );
   assertNoThrow( text->append( g ) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap1-set\"/>" );
@@ -1512,12 +1534,12 @@ void sanity_test102j(){
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"other-set",
 					"annotator='proycon'" ) );
-  KWargs args = getArgs( "set='other-set', cls='Y', annotator='proycon'" );
+  KWargs args = getArgs( "set='other-set', class='Y', annotator='proycon'" );
   FoliaElement *g = 0;
-  assertNoThrow( g = new Gap( &doc, args ) );
+  assertNoThrow( g = new Gap( args,  &doc ) );
   text->append( g );
-  args = getArgs( "set='other-set', cls='Z'" );
-  assertNoThrow( g = new Gap( &doc, args ) );
+  args = getArgs( "set='other-set', class='Z'" );
+  assertNoThrow( g = new Gap( args, &doc ) );
   text->append( g );
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\" set=\"gap-set\"/>" );
@@ -1551,14 +1573,14 @@ void sanity_test102k(){
 					"gap-set",
 					"annotatortype='manual'" ) );
   assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "" );
-  KWargs args = getArgs( "set='gap-set', cls='Y', annotatortype='unknown'" );
+  KWargs args = getArgs( "set='gap-set', class='Y', annotatortype='unknown'" );
   FoliaElement *g = 0;
-  assertThrow( g = new Gap( &doc, args ), ValueError );
-  args = getArgs( "set='gap-set', cls='Y', annotatortype='manual'" );
-  assertNoThrow( g = new Gap( &doc, args ) );
+  assertThrow( g = new Gap( args, &doc ), ValueError );
+  args = getArgs( "set='gap-set', class='Y', annotatortype='manual'" );
+  assertNoThrow( g = new Gap( args, &doc ) );
   text->append( g );
-  args = getArgs( "set='gap-set', cls='Z', annotatortype='auto'" );
-  assertNoThrow( g = new Gap( &doc, args ) );
+  args = getArgs( "set='gap-set', class='Z', annotatortype='auto'" );
+  assertNoThrow( g = new Gap( args, &doc ) );
   text->append( g );
   v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
@@ -1821,20 +1843,61 @@ void sanity_test107( ){
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "</FoLiA>\n" ;
   assertThrow( doc.readFromString(xml), XmlError );
-  assertThrow( new Sentence(&doc, "id='dit mag ook niet'" ), XmlError );
-  assertThrow( new Sentence(&doc, "id='1.ook.niet'" ), XmlError );
-  assertThrow( new Sentence(&doc, "id='dit:ook:niet'" ), XmlError );
+  assertThrow( new Sentence( getArgs("id='dit mag ook niet'"), &doc ),
+	       XmlError );
+  assertThrow( new Sentence( getArgs("id='1.ook.niet'"), &doc ), XmlError );
+  assertThrow( new Sentence( getArgs("id='dit:ook:niet'"), &doc ), XmlError );
 }
 
 void sanity_test108( ){
-  Document doc;
   startTestSerie( " type hierarchy " );
-  assertTrue( isSubClass( PlaceHolder_t, Structure_t ) );
+  assertTrue( isSubClass( PlaceHolder_t, AbstractStructureElement_t ) );
   assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
   assertTrue( isSubClass( PlaceHolder_t, Word_t ) );
   assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
-  assertTrue( isSubClass( Pos_t, TokenAnnotation_t ) );
+  assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
+}
+
+void sanity_test109(){
+  startTestSerie( "Sanity Check - Complex alignment" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"0.8\" generator=\"libfolia-v0.4\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <complexalignment-annotation />\n"
+    "      <alignment-annotation set=\"blah\" />\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"test.text\">\n"
+    "    <p xml:id=\"p.1\">\n"
+    "      <s xml:id=\"p.1.s.1\"><t>Dit is een test.</t></s>\n"
+    "      <s xml:id=\"p.1.s.2\"><t>Ik wil kijken of het werkt.</t></s>\n"
+    "      <complexalignments>\n"
+    "        <complexalignment>\n"
+    "          <alignment>\n"
+    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
+    "            <aref id=\"p.1.s.2\" type=\"s\" />\n"
+    "	       </alignment>\n"
+    "          <alignment class=\"translation\" xlink:href=\"en.folia.xml\" xlink:type=\"simple\">\n"
+    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
+    "	       </alignment>\n"
+    "        </complexalignment>\n"
+    "      </complexalignments>\n"
+    "    </p>\n"
+    "  </text>\n"
+    "</FoLiA>\n";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  //        self.assertTrue(doc.xml() is not None) #serialisation check
+  vector<Paragraph*> pargs;
+  assertNoThrow( pargs = doc.paragraphs() );
+  vector<ComplexAlignmentLayer*> cal = pargs[0]->annotations<ComplexAlignmentLayer>();
+  assertEqual( len(cal),1);
+  vector<ComplexAlignment*> ca = cal[0]->annotations<ComplexAlignment>();
+  assertEqual( len(ca),1);
+  vector<Alignment*> alignments = ca[0]->select<Alignment>();
+  assertEqual(len(alignments),2);
 }
 
 void edit_test001a( ){
@@ -1846,21 +1909,22 @@ void edit_test001a( ){
   size_t tmp = p->size();
   // add a sentence
   FoliaElement *s = 0;
-  assertNoThrow( s = new Sentence( &editDoc, "generate_id='" + p->id() + "'" ) );
+  assertNoThrow( s = new Sentence( getArgs("generate_id='" + p->id() + "'"),
+				   &editDoc ) );
   p->append( s );
   // add words to the sentence
   Word *w = 0;
-  assertNoThrow( w = new Word( &editDoc, "text='Dit', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
+  assertNoThrow( w = new Word( getArgs("text='Dit', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ), &editDoc ));
   s->append( w );
-  assertNoThrow( w = new Word( &editDoc, "text='is', annotator='testscript', annotatortype='AUTO', generate_id='" + s->id() + "'" ) );
+  assertNoThrow( w = new Word( getArgs("text='is', annotator='testscript', annotatortype='AUTO', generate_id='" + s->id() + "'" ), &editDoc ));
   s->append( w );
-  assertNoThrow( w = new Word( &editDoc, "text='een', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
+  assertNoThrow( w = new Word( getArgs("text='een', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ), &editDoc ));
   s->append( w );
-  assertNoThrow( w = new Word( &editDoc, "text='nieuwe', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
+  assertNoThrow( w = new Word( getArgs("text='nieuwe', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ), &editDoc ));
   s->append( w );
-  assertNoThrow( w = new Word( &editDoc, "text='zin', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "', space='no'" ) );
+  assertNoThrow( w = new Word( getArgs("text='zin', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "', space='no'" ), &editDoc ));
   s->append( w );
-  assertNoThrow( w = new Word( &editDoc, "text='.', cls='PUNCTUATION', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ) );
+  assertNoThrow( w = new Word( getArgs("text='.', class='PUNCTUATION', annotator='testscript', annotatortype='auto', generate_id='" + s->id() + "'" ),  &editDoc ) );
   s->append( w );
   for ( int i=0; i < 6; ++i ){
     assertTrue( s->index(i)->id() == s->id() + ".w." + TiCC::toString(i+1) );
@@ -1915,7 +1979,7 @@ void edit_test001b( ){
   FoliaElement *w = 0;
   assertNoThrow( w = s->addWord( ann ) );
   FoliaElement *w2 = 0;
-  assertNoThrow( w2 = s->addWord( "text='.', cls='PUNCTUATION'" ) );
+  assertNoThrow( w2 = s->addWord( "text='.', class='PUNCTUATION'" ) );
 
   assertTrue( len(s->words()) == 6 );
   assertTrue( w->text() == "zin" );
@@ -1946,9 +2010,9 @@ void edit_test002( ){
 					"adhoclemma") );
 
   // add a pos annotation (in a different set than the one already present, to prevent conflict)
-  KWargs args = getArgs( "set='adhocpos', cls='NOUN', annotator='testscript', annotatortype='auto'" );
+  KWargs args = getArgs( "set='adhocpos', class='NOUN', annotator='testscript', annotatortype='auto'" );
   assertNoThrow( w->addPosAnnotation( args ) );
-  args = getArgs( "set='adhoclemma', cls='NAAM', annotator='testscript', annotatortype='auto', datetime='1982-12-15T19:00:01'");
+  args = getArgs( "set='adhoclemma', class='NAAM', annotator='testscript', annotatortype='auto', datetime='1982-12-15T19:00:01'");
   assertNoThrow( w->addLemmaAnnotation( args ) );
 
   FoliaElement *p = 0;
@@ -1977,9 +2041,9 @@ void edit_test003( ){
   assertNoThrow( editDoc.declare( AnnotationType::LEMMA, "adhoclemma") );
 
   // add a pos annotation (in a different set than the one already present, to prevent conflict)
-  KWargs args = getArgs( "set='adhocpos', cls='NOUN', annotator='testscript', annotatortype='auto'" );
+  KWargs args = getArgs( "set='adhocpos', class='NOUN', annotator='testscript', annotatortype='auto'" );
   assertNoThrow( w->addAnnotation<PosAnnotation>( args ) );
-  args = getArgs( "set='adhoclemma', cls='NAAM', annotator='testscript', annotatortype='auto'" );
+  args = getArgs( "set='adhoclemma', class='NAAM', annotator='testscript', annotatortype='auto'" );
   assertNoThrow( w->addAnnotation<LemmaAnnotation>( args ) );
 
   FoliaElement *p = 0;
@@ -2006,7 +2070,7 @@ void edit_test003b( ){
 
   // add a pos annotation (in a different set than the one declared,
   // to generate a conflict)
-  KWargs args = getArgs( "set='adhopcos', cls='NOUN', annotator='testscript', annotatortype='auto'" );
+  KWargs args = getArgs( "set='adhopcos', class='NOUN', annotator='testscript', annotatortype='auto'" );
   assertThrow( w->addAnnotation<PosAnnotation>( args ), ValueError );
 }
 
@@ -2017,16 +2081,16 @@ void edit_test004a( ){
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
   // add a pos annotation without specifying a set (should take default set)
-  KWargs args = getArgs( "cls='N', annotator='testscript', annotatortype='auto'" );
+  KWargs args = getArgs( "class='N', annotator='testscript', annotatortype='auto'" );
   // will add an alternative
   assertNoThrow( w->addPosAnnotation( args ) );
   // will not throw, because an new alternative is created
   assertNoThrow( w->addPosAnnotation( args ) );
-  args = getArgs( "cls='naam', annotator='testscript', annotatortype='auto'" );
+  args = getArgs( "class='naam', annotator='testscript', annotatortype='auto'" );
   // will add an alternative
   assertNoThrow( w->addLemmaAnnotation( args ) );
   // will not throw, because an new alternative is created
-  args["cls"] = "name";
+  args["class"] = "name";
   args["generate_id"] = "blaat";
   assertNoThrow( w->addLemmaAnnotation( args ) );
   // lemma in different set
@@ -2040,7 +2104,7 @@ void edit_test004a( ){
 				  "andere-set") );
   args["set"] = "andere-set";
   assertNoThrow( w->addLemmaAnnotation( args ) );
-  args["cls"] = "naam";
+  args["class"] = "naam";
   assertNoThrow( w->addLemmaAnnotation( args ) ); // add an alternative
   l = w->getLemmaAnnotations( "andere-set", vec ); // get all lemma's in andere-set
   assertTrue( l != 0 );
@@ -2064,15 +2128,16 @@ void edit_test004b( ){
   FoliaElement *l = new MorphologyLayer( &editDoc );
   FoliaElement *m = new Morpheme( &editDoc );
   l->append( m );
-  FoliaElement *t = new TextContent( &editDoc, "value='hand', offset='0'");
+  FoliaElement *t = new TextContent( getArgs("value='hand', offset='0'"),
+				     &editDoc );
   m->append( t );
   m = new Morpheme( &editDoc );
   l->append( m );
-  t = new TextContent( &editDoc, "value='schrift', offset='4'");
+  t = new TextContent( getArgs("value='schrift', offset='4'"), &editDoc );
   m->append( t );
   m = new Morpheme( &editDoc );
   l->append( m );
-  t = new TextContent( &editDoc, "value='en', offset='11'");
+  t = new TextContent( getArgs("value='en', offset='11'"), &editDoc );
   m->append( t );
   assertThrow( w->append( l ), DuplicateAnnotationError );
 }
@@ -2081,7 +2146,7 @@ void edit_test005a( ){
   startTestSerie( " Adding an alternative token annotation " );
   Document doc( "file='tests/folia.example'" );
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
-  KWargs args = getArgs( "cls='V'" );
+  KWargs args = getArgs( "class='V'" );
   assertNoThrow( w->addPosAnnotation( args ) );
   vector<Alternative*> alt = w->alternatives(); // all alternatives
   string sett = doc.defaultset(AnnotationType::POS);
@@ -2094,7 +2159,7 @@ void edit_test005a( ){
   assertTrue( p->isinstance<PosAnnotation>() );
 
   std::vector<Alternative *> alt3;
-  assertNoThrow( alt3 = w->alternatives(Pos_t, sett) );
+  assertNoThrow( alt3 = w->alternatives(PosAnnotation_t, sett) );
   assertTrue( alt3.size() == 1 );
   assertTrue( alt[0] == alt3[0] );
 
@@ -2123,15 +2188,16 @@ void edit_test005b( ){
   assertNoThrow( l = w->addMorphologyLayer(args) );
   FoliaElement *m = new Morpheme( &editDoc );
   l->append( m );
-  FoliaElement *t = new TextContent( &editDoc, "value='hand', offset='0'");
+  FoliaElement *t = new TextContent( getArgs("value='hand', offset='0'"),
+				     &editDoc );
   m->append( t );
   m = new Morpheme( &editDoc );
   l->append( m );
-  t = new TextContent( &editDoc, "value='schrift', offset='4'");
+  t = new TextContent( getArgs("value='schrift', offset='4'"),  &editDoc );
   m->append( t );
   m = new Morpheme( &editDoc );
   l->append( m );
-  t = new TextContent( &editDoc, "value='en', offset='11'");
+  t = new TextContent( getArgs("value='en', offset='11'"), &editDoc );
   m->append( t );
 }
 
@@ -2140,9 +2206,10 @@ void edit_test005c( ){
   FoliaElement *s = 0;
   Document editDoc( "file='tests/folia.example'" );
   assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
-  FoliaElement *t = new TextContent( &editDoc, "value='text1', class='test1'");
+  FoliaElement *t = new TextContent( getArgs( "value='text1', class='test1'"),
+				      &editDoc );
   assertNoThrow( s->append( t ) );
-  t = new TextContent( &editDoc, "value='text1', class='test2'");
+  t = new TextContent( getArgs("value='text1', class='test2'"), &editDoc);
   assertNoThrow( s->append( t ) );
 }
 
@@ -2153,10 +2220,10 @@ void edit_test005d( ){
   assertNoThrow( editDoc.declare( AnnotationType::STRING,
 				  "stringtypes") );
   assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
-  FoliaElement *t = new String( &editDoc, "class='test1'");
+  FoliaElement *t = new String( getArgs("class='test1'"), &editDoc );
   assertNoThrow( t->settext( "text1", "test1" ) );
   assertNoThrow( s->append( t ) );
-  t = new String( &editDoc, "class='test2'");
+  t = new String( getArgs("class='test2'"), &editDoc );
   assertNoThrow( s->append( t ) );
   assertNoThrow( t->settext( "text2" ) );
   assertNoThrow( t->settext( "text2" , "test2" ) );
@@ -2168,7 +2235,7 @@ void edit_test006( ){
   FoliaElement *w = 0;
   Document doc( "file='tests/folia.example'" );
   assertNoThrow( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] ); // stippelijn
-  assertNoThrow( w->correct("new='stippellijn', set='corrections', cls='spelling',annotator='testscript', annotatortype='auto'"  ) );
+  assertNoThrow( w->correct("new='stippellijn', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'"  ) );
   FoliaElement *c = 0;
   assertNoThrow( c = w->annotation<Correction>() );
   assertTrue( c->getOriginal()->index(0)->text() == "stippelijn" );
@@ -2185,8 +2252,10 @@ void edit_test007( ){
   FoliaElement *w = 0;
   assertNoThrow( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] ); // alweer stippelijn
   FoliaElement *oldpos = w->annotation<PosAnnotation>();
-  FoliaElement *newpos = new PosAnnotation( &doc, "cls='N(soort,ev,basis,zijd,stan)'" );
-  KWargs args = getArgs( "set='corrections', cls='spelling', annotator='testscript', annotatortype='auto'" );
+  FoliaElement *newpos
+    = new PosAnnotation( getArgs( "class='N(soort,ev,basis,zijd,stan)'" ),
+			  &doc );
+  KWargs args = getArgs( "set='corrections', class='spelling', annotator='testscript', annotatortype='auto'" );
   assertNoThrow( w->correct( oldpos, newpos, args ) );
   FoliaElement *c = 0;
   assertTrue( (c = w->annotation<Correction>()) != 0 );
@@ -2200,7 +2269,7 @@ void edit_test008( ){
   startTestSerie( " Suggesting a text correction " );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"]; // stippelijn
-  assertNoThrow( w->correct( "suggestion='stippellijn', set='corrections', cls='spelling',annotator='testscript', annotatortype='auto'" ) );
+  assertNoThrow( w->correct( "suggestion='stippellijn', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
   FoliaElement *c = 0;
   assertNoThrow( c = w->annotation<Correction>() );
   assertNoThrow( c = c->suggestions()[0] );
@@ -2243,10 +2312,13 @@ void edit_test010( ){
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   FoliaElement *pos = 0;
-  assertThrow( pos = new PosAnnotation( "set='fakecgn', cls='N'" ), ValueError );
+  assertThrow( pos
+	       = new PosAnnotation( getArgs("set='fakecgn', class='N'") ),
+	       ValueError );
   assertNoThrow( editDoc.declare( AnnotationType::POS,
 				  "fakecgn") );
-  assertNoThrow( pos = new PosAnnotation( &editDoc, "set='fakecgn', cls='N'" ) );
+  assertNoThrow( pos = new PosAnnotation( getArgs("set='fakecgn', class='N'" ),
+					   &editDoc ) );
   assertNoThrow( w->append( pos ) );
   assertTrue( pos == w->annotation<PosAnnotation>("fakecgn") );
   assertTrue( pos->parent() == w );
@@ -2263,19 +2335,22 @@ void edit_test011(){
   w->append( l );
   Morpheme *m = new Morpheme( &editDoc );
   l->append( m );
-  TextContent *t = new TextContent( &editDoc, "value='handschrift', offset='0'");
+  TextContent *t = new TextContent( getArgs("value='handschrift', offset='0'"),
+				    &editDoc );
   m->append( t );
-  Feature *f = new Feature( &editDoc, "subset='type', cls='stem'");
+  Feature *f = new Feature( getArgs("subset='type', class='stem'"),
+			    &editDoc );
   m->append( f );
-  f = new Feature( &editDoc, "subset='function', cls='lexical'");
+  f = new Feature( getArgs("subset='function', class='lexical'"),
+		   &editDoc );
   m->append( f );
   m = new Morpheme( &editDoc );
   l->append( m );
-  t = new TextContent( &editDoc, "value='en', offset='11'");
+  t = new TextContent( getArgs("value='en', offset='11'"), &editDoc );
   m->append( t );
-  f = new Feature( &editDoc, "subset='type', cls='suffix'");
+  f = new Feature( getArgs( "subset='type', class='suffix'" ), &editDoc );
   m->append( f );
-  f = new Feature( &editDoc, "subset='function', cls='plural'" );
+  f = new Feature( getArgs("subset='function', class='plural'"), &editDoc );
   m->append( f );
   assertTrue( len(l) ==  2 );  // 2 morphemes
   assertTrue( isinstance( l->index(0), Morpheme_t ) );
@@ -2292,13 +2367,13 @@ void edit_test012(){
   startTestSerie( " Edit Check - Adding Alignment" );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.6.w.8"];
-  Alignment *a = new Alignment( &editDoc, "cls='coreference'" );
+  Alignment *a = new Alignment( getArgs("class='coreference'"), &editDoc );
   w->append( a );
-  AlignReference *ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.1', type='w'" );
+  AlignReference *ar = new AlignReference( getArgs("id='WR-P-E-J-0000000001.p.1.s.6.w.1', type='w'") );
   a->append(ar);
-  assertThrow( ar = new AlignReference( "id='wrong', type='word'" ), XmlError );
-  assertThrow( ar = new AlignReference( "id='wrong'" ), XmlError );
-  ar = new AlignReference( "id='WR-P-E-J-0000000001.p.1.s.6.w.2', type='w'" );
+  assertThrow( ar = new AlignReference( getArgs("id='wrong', type='word'") ), XmlError );
+  assertThrow( ar = new AlignReference( getArgs("id='wrong'") ), XmlError );
+  ar = new AlignReference( getArgs("id='WR-P-E-J-0000000001.p.1.s.6.w.2', type='w'") );
   a->append(ar);
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
   assertEqual( a->resolve()[1], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.2"] );
@@ -2311,29 +2386,37 @@ void edit_test013(){
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.4"];
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
   FoliaElement *layer = s->append( new SyntaxLayer(&editDoc) );
-  FoliaElement *sent = layer->append( new SyntacticUnit( &editDoc, "cls='s'" ) );
-  FoliaElement *np = sent->append( new SyntacticUnit( &editDoc,"cls='np'" ) );
-  FoliaElement *su = np->append( new SyntacticUnit( &editDoc,"cls='det'" ) );
+  FoliaElement *sent = layer->append( new SyntacticUnit( getArgs("class='s'" ),
+							 &editDoc ));
+  FoliaElement *np = sent->append( new SyntacticUnit( getArgs("class='np'"),
+						      &editDoc ) );
+  FoliaElement *su = np->append( new SyntacticUnit( getArgs("class='det'" ),
+						     &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.1"] );
-  su = np->append( new SyntacticUnit( &editDoc,"cls='n'" ) );
+  su = np->append( new SyntacticUnit( getArgs("class='n'"), &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.2"] );
-  su = np->append( new SyntacticUnit( &editDoc,"cls='n'" ) );
+  su = np->append( new SyntacticUnit( getArgs("class='n'"), &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.3"] );
-  FoliaElement *vp = sent->append( new SyntacticUnit( &editDoc,"cls='vp'" ) );
-  FoliaElement *vps = vp->append( new SyntacticUnit(&editDoc, "cls='vp'" ) );
-  su = vps->append( new SyntacticUnit( &editDoc,"cls='v'" ) );
+  FoliaElement *vp = sent->append( new SyntacticUnit( getArgs("class='vp'"),
+						       &editDoc ) );
+  FoliaElement *vps = vp->append( new SyntacticUnit( getArgs("class='vp'" ),
+						     &editDoc ) );
+  su = vps->append( new SyntacticUnit( getArgs("class='v'"), &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.4"] );
-  su = vps->append( new SyntacticUnit( &editDoc,"cls='participle'" ) );
+  su = vps->append( new SyntacticUnit( getArgs("class='participle'"),
+				       &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.5"] );
-  FoliaElement *pp = vp->append( new SyntacticUnit( &editDoc,"cls='pp'" ) );
-  su = pp->append( new SyntacticUnit( &editDoc,"cls='prep'" ) );
+  FoliaElement *pp = vp->append( new SyntacticUnit( getArgs("class='pp'"),
+						    &editDoc ) );
+  su = pp->append( new SyntacticUnit( getArgs("class='prep'"), &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.6"] );
-  FoliaElement *nps = pp->append( new SyntacticUnit( &editDoc,"cls='np'" ) );
-  su = nps->append( new SyntacticUnit( &editDoc,"cls='det'" ) );
+  FoliaElement *nps = pp->append( new SyntacticUnit( getArgs("class='np'"),
+						      &editDoc ) );
+  su = nps->append( new SyntacticUnit( getArgs("class='det'"), &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.7"] );
-  su = nps->append( new SyntacticUnit( &editDoc,"cls='adj'" ) );
+  su = nps->append( new SyntacticUnit( getArgs("class='adj'"), &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.8"] );
-  su = nps->append( new SyntacticUnit( &editDoc,"cls='n'" ) );
+  su = nps->append( new SyntacticUnit( getArgs("class='n'"), &editDoc ) );
   su->append( editDoc["WR-P-E-J-0000000001.p.1.s.4.w.9"] );
 
   assertTrue( layer->xmlstring() == "<syntax xmlns=\"http://ilk.uvt.nl/folia\"><su class=\"s\"><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.1\" t=\"De\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.2\" t=\"hoofdletter\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.3\" t=\"A\"/></su></su><su class=\"vp\"><su class=\"vp\"><su class=\"v\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.4\" t=\"wordt\"/></su><su class=\"participle\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.5\" t=\"gebruikt\"/></su></su><su class=\"pp\"><su class=\"prep\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.6\" t=\"voor\"/></su><su class=\"np\"><su class=\"det\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.7\" t=\"het\"/></su><su class=\"adj\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.8\" t=\"originele\"/></su><su class=\"n\"><wref id=\"WR-P-E-J-0000000001.p.1.s.4.w.9\" t=\"handschrift\"/></su></su></su></su></su></syntax>" );
@@ -2348,11 +2431,12 @@ void edit_test013b() {
   assertNoThrow( el = cell->annotation<EntitiesLayer>() );
   FoliaElement *old = editDoc["example.radboud.university.nijmegen.org"];
   vector<FoliaElement*> wrefs = editDoc["example.radboud.university.nijmegen.org"]->wrefs();
-  FoliaElement *newEnt = new Entity( &editDoc, "cls='loc', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  FoliaElement *newEnt = new Entity( getArgs("class='loc', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'"),
+				     &editDoc );
   for ( size_t i=0; i < wrefs.size(); ++i ){
     newEnt->append( wrefs[i] );
   }
-  KWargs args = getArgs( "set='corrections',cls='wrongclass'" );
+  KWargs args = getArgs( "set='corrections',class='wrongclass'" );
   assertNoThrow( el->correct(old,newEnt,args) );
   assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
 }
@@ -2366,7 +2450,8 @@ void edit_test013c() {
   assertNoThrow( el = new EntitiesLayer( &editDoc ) );
   assertNoThrow( sent->append( el ) );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.head.1.s.1.w.1"];
-  FoliaElement *newEnt = new Entity( &editDoc, "cls='org', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  FoliaElement *newEnt = new Entity( getArgs("class='org', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" ),
+				      &editDoc );
   assertNoThrow( newEnt->append( word ) );
   assertNoThrow( el->append( newEnt ) );
   assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.head.1.s.1.w.1\" t=\"Stemma\"/></entity></entities>" );
@@ -2383,11 +2468,12 @@ void edit_test013d() {
   assertNoThrow( sent->append( el ) );
   FoliaElement *word1 = editDoc["WR-P-E-J-0000000001.p.1.s.1.w.1"];
   FoliaElement *word2 = editDoc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
-  FoliaElement *ent1 = new Entity( &editDoc, "cls='org', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  FoliaElement *ent1 = new Entity( getArgs("class='org', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" ), &editDoc );
   assertNoThrow( ent1->append( word1 ) );
-  FoliaElement *ent2 = new Entity( &editDoc, "cls='rel', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'" );
+  FoliaElement *ent2 = new Entity( getArgs("class='rel', set='http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml'"),
+				    &editDoc );
   assertNoThrow( ent2->append( word2 ) );
-  KWargs args = getArgs( "set='corrections',cls='wrongclass'" );
+  KWargs args = getArgs( "set='corrections',class='wrongclass'" );
   Correction *corr = 0;
   assertNoThrow( corr = sent->correct(ent1,ent2,args) );
   assertNoThrow( el->append( corr ) );
@@ -2398,7 +2484,7 @@ void edit_test014() {
   startTestSerie( " Replacing an annotation " );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
-  word->replace( new PosAnnotation( &editDoc, "cls='BOGUS'") );
+  word->replace( new PosAnnotation( getArgs("class='BOGUS'"),  &editDoc ) );
   assertEqual( len(word->annotations<PosAnnotation>() ) , 1 );
   assertEqual( word->annotation<PosAnnotation>()->cls(), "BOGUS" );
   assertTrue( word->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.3.w.14\"><t>plaats</t><lemma class=\"plaats\"/><pos class=\"BOGUS\"/></w>" );
@@ -2474,7 +2560,7 @@ void edit_test019(){
   startTestSerie( " Error Detection " );
   Document editDoc( "file='tests/folia.example'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"]; // stippelijn
-  word->append( new ErrorDetection(&editDoc,"cls='spelling', annotator='testscript', annotatortype='auto'" ) );
+  word->append( new ErrorDetection( getArgs("class='spelling', annotator='testscript', annotatortype='auto'"),  &editDoc ) );
   assertEqual( word->annotation<ErrorDetection>()->cls(), "spelling" );
 }
 
@@ -2492,7 +2578,7 @@ void create_test001( ){
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
-  assertNoThrow( s = new Sentence( &d, "generate_id='" + text->id() + "'" ) );
+  assertNoThrow( s = new Sentence( getArgs("generate_id='" + text->id() + "'"),  &d ) );
   text->append( s );
   kw.clear();
   kw["text"] = "De";
@@ -2526,7 +2612,7 @@ void create_test002( ){
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
-  assertNoThrow( s = new Sentence( &d, "generate_id='" + text->id() + "'" ) );
+  assertNoThrow( s = new Sentence( getArgs("generate_id='" + text->id() + "'"), &d ) );
   text->append( s );
   kw.clear();
   kw["text"] = "landen";
@@ -2534,9 +2620,9 @@ void create_test002( ){
   assertNoThrow( w = s->addWord( kw ) );
   kw.clear();
   kw["set"] = "myset";
-  kw["cls"] = "NP";
+  kw["class"] = "NP";
   assertNoThrow( w->addAnnotation<PosAnnotation>( kw ) );
-  kw["cls"] = "VP";
+  kw["class"] = "VP";
   kw["set"] = "adhocset";
   assertNoThrow( w->addAnnotation<PosAnnotation>( kw ) );
   vector<PosAnnotation*> v = w->select<PosAnnotation>( "adhocset" );
@@ -2570,14 +2656,14 @@ void create_test003( ){
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   kw["set"] = "gap-set";
-  kw["cls"] = "NP";
+  kw["class"] = "NP";
   FoliaElement *g = 0;
-  assertNoThrow( g = new Gap( &d, kw ) );
+  assertNoThrow( g = new Gap( kw, &d ) );
   text->append( g );
   kw.clear();
   kw["set"] = "extended-gap-set";
-  kw["cls"] = "VP";
-  assertNoThrow( g = new Gap( &d, kw ) );
+  kw["class"] = "VP";
+  assertNoThrow( g = new Gap( kw, &d ) );
   text->append( g );
   vector<Gap*> v = text->select<Gap>( "gap-set" );
   assertEqual( v.size(), 1 );
@@ -2594,17 +2680,24 @@ void correction_test001a( ){
   assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
+  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
   assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"  ) );
-  s->append( new Word( corDoc, "text='De', id='" + corDoc->id() + ".s.1.w.1'" ) );
-  s->append( new Word( corDoc, "text='site', id='" + corDoc->id() + ".s.1.w.2'" ) );
-  s->append( new Word( corDoc, "text='staat', id='" + corDoc->id() + ".s.1.w.3'" ) );
-  s->append( new Word( corDoc, "text='online', id='" + corDoc->id() + ".s.1.w.4'" ) );
-  s->append( new Word( corDoc, "text='.', id='" + corDoc->id() + ".s.1.w.5'" ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'") ) );
+  s->append( new Word( getArgs("text='De', id='" + corDoc->id() + ".s.1.w.1'" ),
+		        corDoc ));
+  s->append( new Word( getArgs("text='site', id='" + corDoc->id() + ".s.1.w.2'" ),
+		        corDoc ));
+  s->append( new Word( getArgs("text='staat', id='" + corDoc->id() + ".s.1.w.3'" ),
+		        corDoc ));
+  s->append( new Word( getArgs("text='online', id='" + corDoc->id() + ".s.1.w.4'" ),
+		        corDoc ));
+  s->append( new Word( getArgs("text='.', id='" + corDoc->id() + ".s.1.w.5'" ),
+		       corDoc ));
   FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.4");
-  w->split( new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.4a', text='on'" ),
-   	    new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.4b', text='line'" ) );
+  w->split( new Word( getArgs("id='" + corDoc->id() + ".s.1.w.4a', text='on'" ),
+		       corDoc ),
+   	    new Word( getArgs("id='" + corDoc->id() + ".s.1.w.4b', text='line'" ),
+		      corDoc ));
   //  assertNoThrow( corDoc->save( "/tmp/foliasplit1a.xml" ) );
   s = corDoc->index("example.s.1");
   assertEqual( s->rwords(2)->text(), "on" );
@@ -2621,17 +2714,24 @@ void correction_test001b( ){
   assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
+  Text *text = new Text( getArgs( "id='" + corDoc->id() + ".text.1'") );
   assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"  ) );
-  s->append( new Word( corDoc, "text='De', id='" + corDoc->id() + ".s.1.w.1'" ) );
-  s->append( new Word( corDoc, "text='site', id='" + corDoc->id() + ".s.1.w.2'" ) );
-  s->append( new Word( corDoc, "text='staat', id='" + corDoc->id() + ".s.1.w.3'" ) );
-  s->append( new Word( corDoc, "text='online', id='" + corDoc->id() + ".s.1.w.4'" ) );
-  s->append( new Word( corDoc, "text='.', id='" + corDoc->id() + ".s.1.w.5'" ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"  ) ) );
+  s->append( new Word( getArgs( "text='De', id='" + corDoc->id() + ".s.1.w.1'" ),
+		       corDoc ) );
+  s->append( new Word( getArgs( "text='site', id='" + corDoc->id() + ".s.1.w.2'" ),
+		        corDoc ) );
+  s->append( new Word( getArgs("text='staat', id='" + corDoc->id() + ".s.1.w.3'" ),
+		       corDoc ));
+  s->append( new Word( getArgs( "text='online', id='" + corDoc->id() + ".s.1.w.4'" ),
+		       corDoc ));
+  s->append( new Word( getArgs( "text='.', id='" + corDoc->id() + ".s.1.w.5'" ),
+		       corDoc ));
   FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.4");
-  Word *w1 = new Word( corDoc, "generate_id='" + s->id() + "',text='on'" );
-  Word *w2 = new Word( corDoc, "generate_id='" + s->id() + "',text='line'" );
+  Word *w1 = new Word( getArgs("generate_id='" + s->id() + "',text='on'"),
+		       corDoc );
+  Word *w2 = new Word( getArgs("generate_id='" + s->id() + "',text='line'" ),
+		       corDoc );
   w->split( w1, w2, "suggest='true'" );
   //  assertNoThrow( corDoc->save( "/tmp/foliasplit1b.xml" ) );
   s = corDoc->index("example.s.1");
@@ -2648,20 +2748,28 @@ void correction_test002(){
   assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
+  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
   assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"	 ) );
-  s->append( new Word( corDoc, "text='De', id='" + corDoc->id() + ".s.1.w.1'" ) );
-  s->append( new Word( corDoc, "text='site', id='" + corDoc->id() + ".s.1.w.2'" ) );
-  s->append( new Word( corDoc, "text='staat', id='" + corDoc->id() + ".s.1.w.3'" ) );
-  s->append( new Word( corDoc, "text='on', id='" + corDoc->id() + ".s.1.w.4'" ) );
-  s->append( new Word( corDoc, "text='line', id='" + corDoc->id() + ".s.1.w.5'" ) );
-  s->append( new Word( corDoc, "text='.', id='" + corDoc->id() + ".s.1.w.6'" ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='De', id='" + corDoc->id() + ".s.1.w.1'" ),
+		        corDoc ) );
+  s->append( new Word( getArgs( "text='site', id='" + corDoc->id() + ".s.1.w.2'" ),
+		        corDoc ) );
+  s->append( new Word( getArgs( "text='staat', id='" + corDoc->id() + ".s.1.w.3'" ),
+		       corDoc ) );
+  s->append( new Word( getArgs( "text='on', id='" + corDoc->id() + ".s.1.w.4'" ),
+		        corDoc ) );
+  s->append( new Word( getArgs( "text='line', id='" + corDoc->id() + ".s.1.w.5'" ),
+		        corDoc ) );
+  s->append( new Word( getArgs( "text='.', id='" + corDoc->id() + ".s.1.w.6'" ),
+		       corDoc ) );
 
   vector<FoliaElement *> ow;
   ow.push_back( corDoc->index(corDoc->id() + ".s.1.w.4") );
   ow.push_back( corDoc->index(corDoc->id() + ".s.1.w.5") );
-  s->mergewords( new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.4-5', text='online'" ), ow );
+  s->mergewords( new Word( getArgs("id='" + corDoc->id() + ".s.1.w.4-5', text='online'"),
+			   corDoc ),
+		 ow );
   //  assertNoThrow( corDoc->save( "/tmp/foliamerge002.xml" ) );
   assertEqual( len(s->words() ),  5 );
   assertEqual( s->text(), "De site staat online ." );
@@ -2679,15 +2787,21 @@ void correction_test003(){
   assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
+  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
   assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"	 ) );
-  s->append( new Word( corDoc, "text='Ik', id='" + corDoc->id() + ".s.1.w.1'" ) );
-  s->append( new Word( corDoc, "text='zie', id='" + corDoc->id() + ".s.1.w.2'" ) );
-  s->append( new Word( corDoc, "text='een', id='" + corDoc->id() + ".s.1.w.3'" ) );
-  s->append( new Word( corDoc, "text='groot', id='" + corDoc->id() + ".s.1.w.4'" ) );
-  s->append( new Word( corDoc, "text='huis', id='" + corDoc->id() + ".s.1.w.5'" ) );
-  s->append( new Word( corDoc, "text='.', id='" + corDoc->id() + ".s.1.w.6'" ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='Ik', id='" + corDoc->id() + ".s.1.w.1'"),
+		       corDoc ) );
+  s->append( new Word( getArgs( "text='zie', id='" + corDoc->id() + ".s.1.w.2'" ),
+		       corDoc ));
+  s->append( new Word( getArgs( "text='een', id='" + corDoc->id() + ".s.1.w.3'" ),
+		       corDoc ));
+  s->append( new Word( getArgs("text='groot', id='" + corDoc->id() + ".s.1.w.4'" ),
+		       corDoc ));
+  s->append( new Word( getArgs("text='huis', id='" + corDoc->id() + ".s.1.w.5'" ),
+		       corDoc ));
+  s->append( new Word( getArgs("text='.', id='" + corDoc->id() + ".s.1.w.6'" ),
+		       corDoc ));
 
   s->deleteword( corDoc->index( corDoc->id() + ".s.1.w.4" ) );
   //  assertNoThrow( corDoc->save( "/tmp/foliadelete003.xml" ) );
@@ -2702,16 +2816,23 @@ void correction_test004(){
   assertNoThrow( corDoc->declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( "id='" + corDoc->id() + ".text.1'" );
+  Text *text = new Text( getArgs("id='" + corDoc->id() + ".text.1'") );
   assertNoThrow( corDoc->addText( text ) );
-  FoliaElement *s = text->append( new Sentence( "id='" + corDoc->id() + ".s.1'"	 ) );
-  s->append( new Word( corDoc, "text='Ik', id='" + corDoc->id() + ".s.1.w.1'" ) );
-  s->append( new Word( corDoc, "text='zie', id='" + corDoc->id() + ".s.1.w.2'" ) );
-  s->append( new Word( corDoc, "text='een', id='" + corDoc->id() + ".s.1.w.3'" ) );
-  s->append( new Word( corDoc, "text='huis', id='" + corDoc->id() + ".s.1.w.4'" ) );
-  s->append( new Word( corDoc, "text='.', id='" + corDoc->id() + ".s.1.w.5'" ) );
+  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc->id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs("text='Ik', id='" + corDoc->id() + ".s.1.w.1'" ),
+		       corDoc ));
+  s->append( new Word( getArgs("text='zie', id='" + corDoc->id() + ".s.1.w.2'"),
+		       corDoc ));
+  s->append( new Word( getArgs( "text='een', id='" + corDoc->id() + ".s.1.w.3'" ),
+		       corDoc ));
+  s->append( new Word( getArgs("text='huis', id='" + corDoc->id() + ".s.1.w.4'" ),
+		       corDoc ));
+  s->append( new Word( getArgs("text='.', id='" + corDoc->id() + ".s.1.w.5'" ),
+		       corDoc ));
 
-  s->insertword( new Word( corDoc, "id='" + corDoc->id() + ".s.1.w.3b', text='groot'" ), corDoc->index( corDoc->id() + ".s.1.w.3" ) );
+  s->insertword( new Word( getArgs( "id='" + corDoc->id() + ".s.1.w.3b', text='groot'"),
+			   corDoc ),
+		 corDoc->index( corDoc->id() + ".s.1.w.3" ) );
   //  assertNoThrow( corDoc->save( "/tmp/foliainsert004.xml" ) );
   assertEqual( s->words().size(), 6 );
   assertEqual( s->text(), "Ik zie een groot huis ." );
@@ -2724,14 +2845,14 @@ void correction_test005(){
   Document *corDoc = new Document();
   corDoc->readFromFile( "tests/folia.example" );
   FoliaElement *w = corDoc->index("WR-P-E-J-0000000001.p.1.s.8.w.11"); // stippelijn
-  assertNoThrow( w->correct("suggestion='stippellijn', set='corrections', cls='spelling',annotator='testscript', annotatortype='auto'" ) );
+  assertNoThrow( w->correct("suggestion='stippellijn', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
   //  assertNoThrow( corDoc->save( "/tmp/foliainsert005-1.xml" ) );
   FoliaElement *c = 0;
   assertNoThrow( c = w->annotation<Correction>() );
   assertEqual( c->suggestions(0)->text(), "stippellijn" );
   assertEqual( w->text(), "stippelijn" );
 
-  assertNoThrow( w->correct("new='stippellijn', set='corrections', cls='spelling',annotator='John Doe', annotatortype='manual', reuse='" + c->id() + "'" ) );
+  assertNoThrow( w->correct("new='stippellijn', set='corrections', class='spelling',annotator='John Doe', annotatortype='manual', reuse='" + c->id() + "'" ) );
 
   assertEqual( w->text(), "stippellijn" );
   assertEqual( len(w->annotations<Correction>()), 1 );
@@ -2776,7 +2897,7 @@ void query_test003(){
   startTestSerie( " Find Words by annotation " );
   vector<string> words = { "de", "historisch", "wetenschap", "worden" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern( words,
-							   Lemma_t ) );
+							   LemmaAnnotation_t ) );
   assertEqual( matches.size(), 1 );
   assertEqual( len(matches[0]), 4 );
 
@@ -2789,7 +2910,7 @@ void query_test003(){
 void query_test004(){
   startTestSerie( " Find Words using multiple patterns " );
   Pattern p1( { "de", "historische", "*", "wordt" } );
-  Pattern p2( { "de", "historisch", "wetenschap", "worden" }, Lemma_t );
+  Pattern p2( { "de", "historisch", "wetenschap", "worden" }, LemmaAnnotation_t );
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
@@ -2813,9 +2934,9 @@ void query_test005(){
 void query_test006(){
   startTestSerie( " Find words with overlap " );
   Document doc( "id='test'" );
-  Text *text = new Text( "id='test.text'" );
+  Text *text = new Text( getArgs("id='test.text'") );
   doc.addText( text );
-  FoliaElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
+  FoliaElement *s = new Sentence( getArgs( "id='" + doc.id() + ".s.1'") );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='a'" );
@@ -2898,9 +3019,9 @@ void query_test010a(){
 void query_test010b(){
   startTestSerie( " Find words with wildcard and overlap " );
   Document doc( "id='test'" );
-  Text *text = new Text( "id='test.text'" );
+  Text *text = new Text( getArgs("id='test.text'") );
   doc.addText( text );
-  FoliaElement *s = new Sentence( "id='" + doc.id() + ".s.1'" );
+  FoliaElement *s = new Sentence( getArgs("id='" + doc.id() + ".s.1'") );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='b'" );
@@ -2917,7 +3038,7 @@ void query_test011(){
   startTestSerie( " Find Words by non existing annotation " );
   vector<string> words = { "bli", "bla", "blu" };
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
-							  Sense_t ) );
+							  SenseAnnotation_t ) );
   assertEqual( matches.size(), 0 );
 }
 
@@ -2992,8 +3113,9 @@ int main(){
   sanity_test036();
   sanity_test037a();
   sanity_test037b();
+  sanity_test037c();
   sanity_test038a();
-  sanity_test038a();
+  sanity_test038b();
   sanity_test039();
   sanity_test040();
   sanity_test041a();
@@ -3032,6 +3154,7 @@ int main(){
   sanity_test106();
   sanity_test107();
   sanity_test108();
+  sanity_test109();
   edit_test001a();
   edit_test001b();
   edit_test002();
