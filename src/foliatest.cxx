@@ -1209,23 +1209,33 @@ void sanity_test101( ){
 void sanity_test101a(){
   startTestSerie(" Metadata external reference (CMDI) " );
   Document doc( "file='tests/folia.cmdi.xml'" );
-  assertTrue( doc.metadatatype() == CMDI );
+  assertTrue( doc.metadatatype() == "cmdi" );
   assertTrue( doc.metadatafile() == "test.cmdi.xml" );
 }
 
 void sanity_test101b(){
   startTestSerie(" Metadata external reference (IMDI) " );
   Document doc( "file='tests/folia.imdi.xml'" );
-  assertTrue( doc.metadatatype() == IMDI );
+  assertTrue( doc.metadatatype() == "imdi" );
   assertTrue( doc.metadatafile() == "test.imdi.xml" );
 }
 
 void sanity_test101c(){
   startTestSerie(" Metadata (native) " );
   Document doc( "file='tests/folia.example'" );
-  assertTrue( doc.metadatatype() == NATIVE );
+  assertTrue( doc.metadatatype() == "native" );
   assertNoThrow( doc.set_metadata( "name", "Mijn document" ) );
   assertEqual( doc.get_metadata( "genre" ), "artikel" );
+}
+
+void sanity_test101d(){
+  startTestSerie(" Metadata (foreign) " );
+  Document doc( "file='tests/folia.foreign.xml'" );
+  assertTrue( doc.metadatatype() == "pm" );
+  assertNoThrow( doc.save( "/tmp/saveforeign.xml" ) );
+  int stat = system( "xmldiff /tmp/saveforeign.xml tests/folia.foreign.xml" );
+  assertMessage( "/tmp/saveforeign.xml tests/folia.foreign.xml differ!",
+		 stat == 0 );
 }
 
 void sanity_test102( ){
@@ -3128,6 +3138,7 @@ int main(){
   sanity_test101a();
   sanity_test101b();
   sanity_test101c();
+  sanity_test101d();
   sanity_test102();
   sanity_test102a();
   sanity_test102b();
