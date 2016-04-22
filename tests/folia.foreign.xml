@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.1" version="1.0" >
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.1" version="1.0">
   <metadata type="pm">
     <annotations>
-	<event-annotation set="test"/>
+      <event-annotation set="test"/>
     </annotations>
-    <foreign-data xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pm="http://www.politicalmashup.nl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ilk.uvt.nl/folia">
+    <foreign-data xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pm="http://www.politicalmashup.nl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <dc:identifier>nl.proc.ob.d.h-tk-20122013-33-7</dc:identifier>
       <dc:format>text/xml</dc:format>
       <dc:type>Verbatim Proceedings</dc:type>
@@ -19,5 +19,5 @@
       </dc:relation>
     </foreign-data>
   </metadata>
-  <text xml:id="test.text" />
+  <text xml:id="test.text"/>
 </FoLiA>
