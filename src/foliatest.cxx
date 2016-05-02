@@ -2307,14 +2307,17 @@ void edit_test009a( ){
 //   assertThrow( w->settext( "bla", "original" ), ValueError );
 // }
 
-// void edit_test009c( ){
-//   startTestSerie( " Exception on adding duplicate TextContent " );
-//   Document editDoc( "file='tests/folia.example'" );
-//   FoliaElement *w = 0;
-//   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
-//   TextContent *t = new TextContent( "value='blah', corrected='yes'" );
-//   assertThrow( w->append( t ), DuplicateAnnotationError );
-// }
+void edit_test009c( ){
+  startTestSerie( " Exception on adding duplicate TextContent " );
+   Document editDoc( "file='tests/folia.example'" );
+   FoliaElement *w = 0;
+   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
+   KWargs args;
+   args["value"] = "blah";
+   args["class"] = "current";
+   TextContent *t = new TextContent( args );
+   assertThrow( w->append( t ), DuplicateAnnotationError );
+}
 
 void edit_test010( ){
   startTestSerie( " Creating an initially document-less tokenannotation element and adding it to a word " );
@@ -3178,7 +3181,7 @@ int main(){
   edit_test008();
   edit_test009a();
   // edit_test009b();
-  // edit_test009c();
+  edit_test009c();
   edit_test010();
   edit_test011();
   edit_test012();
