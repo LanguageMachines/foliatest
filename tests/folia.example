@@ -49,6 +49,7 @@
         </s>
       </head>
       <p xml:id="WR-P-E-J-0000000001.p.1" class="firstparagraph">
+        <alignment class="book" format="image/pdf" xlink:href="http://archief.nl/artikel.pdf" xlink:type="simple"/>
         <metric class="sentenceCount" value="8"/>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
@@ -1105,8 +1106,7 @@
             </w>
           </s>
         </item>
-	<item xml:id="sandbox.list.1.listitem.3" n="3">
-	</item>
+        <item xml:id="sandbox.list.1.listitem.3" n="3"/>
       </list>
       <event xml:id="sandbox.event.1" actor="proycon" begindatetime="2011-12-15T19:01" class="presentation" enddatetime="2011-12-15T19:05">
         <figure xml:id="sandbox.figure.1" src="http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg">
