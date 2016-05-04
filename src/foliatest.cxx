@@ -2384,8 +2384,9 @@ void edit_test012(){
   w->append( a );
   AlignReference *ar = new AlignReference( getArgs("id='WR-P-E-J-0000000001.p.1.s.6.w.1', type='w', t='appel'") );
   a->append(ar);
-  assertThrow( ar = new AlignReference( getArgs("id='wrong', type='word'") ), XmlError );
-  assertThrow( ar = new AlignReference( getArgs("id='wrong'") ), XmlError );
+  // missing type or some random type is no longer an error
+  assertNoThrow( ar = new AlignReference( getArgs("id='wrong', type='word'") ) );
+  assertNoThrow( ar = new AlignReference( getArgs("id='wrong'") ));
   ar = new AlignReference( getArgs("id='WR-P-E-J-0000000001.p.1.s.6.w.2', type='w'") );
   a->append(ar);
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
