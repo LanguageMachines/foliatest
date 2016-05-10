@@ -1639,7 +1639,7 @@ void sanity_test103( ){
     "        <w xml:id=\"example.text.1.s.1.alienword\">\n"
     "        </w>\n"
     "      </alien:blah >\n"
-    "      <w xml:id=\"example.text.1.s.1.w.1\">\n"
+    "      <w xml:id=\"example.text.1.s.1.w.1\" alien:at=\"alien\">\n"
     "          <t>word</t>\n"
     "          <alien:invasion number=\"99999\" />\n"
     "      </w>\n"
@@ -1648,7 +1648,7 @@ void sanity_test103( ){
     "</FoLiA>\n" ;
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-  assertTrue( len(doc.words()) == 1 ); // second word is in alien namespace
+  assertTrue( len(doc.words()) == 1 ); // first word is in alien namespace
   // not read
   FoliaElement *w = doc["example.text.1.s.1.alienword"];
   assertTrue( w == 0 );   // doesn't exist
