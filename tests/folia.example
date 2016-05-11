@@ -1276,7 +1276,7 @@
       </div>
       <note xml:id="footnote1" class="footnote">
         <s xml:id="footnote.1.s.1">
-          <t>Een deel van deze pagina komt oorspronkelijk van <t-str xlink:href="http://www.wikipedia.org" xlink:type="simple">wikipedia</t-str>.</t>
+          <t>Een deel van deze pagina komt oorspronkelijk van <t-str xlink:href="http://www.wikipedia.org" xlink:title="Wikipedia Artikel" xlink:type="locator">wikipedia</t-str>.</t>
         </s>
       </note>
     </div>
