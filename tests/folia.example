@@ -74,6 +74,7 @@
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5">
             <t>woord</t>
+	    <ph>wort</ph>
             <pos class="N(soort,ev,basis,onz,stan)"/>
             <!-- numb comment -->
             <lemma class="woord"/>
@@ -837,6 +838,7 @@
             <pos class="LET()"/>
             <lemma class="."/>
           </w>
+	  <br/>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.7">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.1">
