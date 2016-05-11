@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.2" version="0.20.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="manual" version="1.2">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
-      <division-annotation set="divs"/>
-      <paragraph-annotation annotator="ucto" annotatortype="auto" set="paragraphs"/>
-      <sentence-annotation annotator="ucto" annotatortype="auto" set="sentences"/>
-      <pos-annotation annotator="tadpole" annotatortype="auto" set="cgn-combinedtags"/>
-      <lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/>
-      <sense-annotation set="sense-set"/>
-      <syntax-annotation set="syntax-set"/>
-      <entity-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml"/>
-      <entity-annotation set="mwu-set"/>
-      <correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/>
-      <errordetection-annotation set="error-set"/>
-      <morphological-annotation set="morph-set"/>
-      <event-annotation set="event-set"/>
-      <dependency-annotation set="alpino-set"/>
-      <timesegment-annotation set="event-set"/>
-      <gap-annotation set="gap-set"/>
-      <note-annotation set="footnote-set"/>
-      <alignment-annotation set="alignment-set"/>
-      <coreference-annotation set="coreference-set"/>
-      <semrole-annotation set="semrole-set"/>
-      <metric-annotation set="metric-set"/>
-      <lang-annotation set="ISO639"/>
-      <table-annotation set="table-set"/>
-      <style-annotation set="styles"/>
-      <definition-annotation set="definitions"/>
-      <phonological-annotation set="phonological-set"/>
+      <token-annotation annotator="ilktok" annotatortype="auto" />
+      <sentence-annotation set="sentences" annotator="ucto" annotatortype="auto" />
+      <paragraph-annotation set="paragraphs" annotator="ucto" annotatortype="auto" />
+      <pos-annotation set="cgn-combinedtags" annotator="tadpole" annotatortype="auto" />
+      <lemma-annotation set="lemmas-nl" annotator="tadpole" annotatortype="auto" />
+      <correction-annotation set="corrections" annotator="proycon" annotatortype="manual" />
+      <errordetection-annotation set="corrections" annotator="proycon" annotatortype="manual" />
+      <morphological-annotation annotator="proycon" annotatortype="manual" />
+      <gap-annotation annotator="proycon" annotatortype="manual" />
+      <sense-annotation set="sense-set" />
+      <event-annotation set="event-set" />
+      <timesegment-annotation set="event-set" />
+      <entity-annotation set="mwu-set" />
+      <entity-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" />
+      <syntax-annotation set="syntax-set" />
+      <dependency-annotation set="alpino-set" />
+      <alignment-annotation set="alignment-set" />
+      <semrole-annotation set="semrole-set" />
+      <chunking-annotation set="chunk-set" />
+      <coreference-annotation set="coreference-set" />
+      <lang-annotation set="lang-set" />
+      <metric-annotation set="metric-set" />
+      <table-annotation set="table-set" />
+      <style-annotation set="style" />
+      <division-annotation set="divs" />
+      <note-annotation set="notes" />
+      <part-annotation set="parts" />
+      <term-annotation set="words" />
+      <definition-annotation set="definitions" />
+      <example-annotation set="examples" />
+      <phonological-annotation set="phonology-set" />
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
@@ -45,7 +49,7 @@
             <pos class="N(soort,ev,basis,onz,stan)"/>
             <lemma class="stemma"/>
           </w>
-          <ref id="footnote_1" type="note"/>
+          <ref id="footnote.1" type="note"/>
         </s>
       </head>
       <p xml:id="WR-P-E-J-0000000001.p.1" class="firstparagraph">
@@ -651,7 +655,7 @@
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.6" class="sentence">
-          <t>Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen <t-correction id="WR-P-E-J-0000000001.p.1.s.6.w.31.c.1" class="spelling" original="vierkant">vierkante</t-correction> haken geplaatst.<br/></t>
+          <t>Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letter van het alfabet en worden tussen <t-correction id="WR-P-E-J-0000000001.p.1.s.6.w.31.c.1" class="spelling" original="vierkant">vierkante</t-correction> haken geplaatst.<br/></t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.1">
             <t>Verdwenen</t>
             <pos class="WW(vd,prenom,zonder)">
@@ -1277,7 +1281,7 @@
           </row>
         </table>
       </div>
-      <note xml:id="footnote1" class="footnote">
+      <note xml:id="footnote.1" class="footnote">
         <s xml:id="footnote.1.s.1">
           <t>Een deel van deze pagina komt oorspronkelijk van <t-str xlink:href="http://www.wikipedia.org" xlink:title="Wikipedia Artikel" xlink:type="locator">wikipedia</t-str>.</t>
         </s>
