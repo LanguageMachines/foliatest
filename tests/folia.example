@@ -49,7 +49,7 @@
         </s>
       </head>
       <p xml:id="WR-P-E-J-0000000001.p.1" class="firstparagraph">
-        <alignment class="book" format="image/pdf" xlink:role="verwijzing" xlink:href="http://archief.nl/artikel.pdf" xlink:type="simple"/>
+        <alignment class="book" format="image/pdf" xlink:href="http://archief.nl/artikel.pdf" xlink:role="verwijzing" xlink:type="simple"/>
         <metric class="sentenceCount" value="8"/>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
@@ -94,7 +94,7 @@
             <pos class="LET()"/>
             <lemma class="."/>
           </w>
-          <entities set="mwu-set">
+          <entities>
             <entity class="ander_woord" set="mwu-set">
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander"/>
               <!-- no idea why you would like to comment on this -->
@@ -1155,7 +1155,7 @@
           <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.6">
             <t offset="37">.</t>
           </w>
-          <entities set="mwu-set">
+          <entities>
             <entity class="politicalparty" set="mwu-set">
               <wref id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" t="CDA"/>
             </entity>
@@ -1198,7 +1198,7 @@
               <w xml:id="example.table.1.w.5">
                 <t>Gompel</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <entity class="per" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                   <wref id="example.table.1.w.3" t="Maarten"/>
                   <wref id="example.table.1.w.4" t="van"/>
@@ -1216,7 +1216,7 @@
               <w xml:id="example.table.1.w.8">
                 <t>Nijmegen</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <entity xml:id="example.radboud.university.nijmegen.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                   <wref id="example.table.1.w.6" t="Radboud"/>
                   <wref id="example.table.1.w.7" t="University"/>
@@ -1239,7 +1239,7 @@
               <w xml:id="example.table.1.w.12">
                 <t>Sloot</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <entity class="per" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                   <wref id="example.table.1.w.9" t="Ko"/>
                   <wref id="example.table.1.w.10" t="van"/>
@@ -1255,7 +1255,7 @@
               <w xml:id="example.table.1.w.14">
                 <t>University</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <correction xml:id="span.correction" class="entity">
                   <new>
                     <entity xml:id="example.tilburg.university.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">

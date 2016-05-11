@@ -2453,7 +2453,7 @@ void edit_test013b() {
   }
   KWargs args = getArgs( "set='corrections',class='wrongclass'" );
   assertNoThrow( el->correct(old,newEnt,args) );
-  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
 }
 
 void edit_test013c() {
@@ -2469,7 +2469,7 @@ void edit_test013c() {
 				      &editDoc );
   assertNoThrow( newEnt->append( word ) );
   assertNoThrow( el->append( newEnt ) );
-  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.head.1.s.1.w.1\" t=\"Stemma\"/></entity></entities>" );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.head.1.s.1.w.1\" t=\"Stemma\"/></entity></entities>" );
 }
 
 
@@ -2492,7 +2492,7 @@ void edit_test013d() {
   Correction *corr = 0;
   assertNoThrow( corr = sent->correct(ent1,ent2,args) );
   assertNoThrow( el->append( corr ) );
-  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.1.correction.1\" class=\"wrongclass\"><new><entity class=\"rel\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.2\" t=\"is\"/></entity></new><original auth=\"no\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.1\" t=\"Stemma\"/></entity></original></correction></entities>" );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.1.correction.1\" class=\"wrongclass\"><new><entity class=\"rel\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.2\" t=\"is\"/></entity></new><original auth=\"no\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.1\" t=\"Stemma\"/></entity></original></correction></entities>" );
 }
 
 void edit_test014() {
