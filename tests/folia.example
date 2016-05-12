@@ -72,7 +72,7 @@
             <lemma class="een"/>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4">
-            <t>ander</t>
+            <t xmlns:bla="alien" bla:at="scary">ander</t>
             <pos class="ADJ(prenom,basis,zonder)"/>
             <lemma class="ander"/>
           </w>
@@ -1297,7 +1297,7 @@
     </div>
     <gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter">
       <desc>Backmatter</desc>
-      <content><!-- TEST --><![CDATA[
+      <content><![CDATA[
       De tekst is beschikbaar onder de licentie Creative Commons Naamsvermelding/Gelijk delen, er kunnen aanvullende voorwaarden van toepassing zijn. Zie de Gebruiksvoorwaarden voor meer informatie.
       Wikipedia® is een geregistreerd handelsmerk van de Wikimedia Foundation, Inc., een organisatie zonder winstoogmerk.
       ]]></content>
