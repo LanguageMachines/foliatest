@@ -1,6 +1,5 @@
 [text]
  [lang]
- [foreign-data]
  [div]
   [head]
    [s]
@@ -1176,3 +1175,4 @@
  [gap]
   [desc]
   [content]
+ [foreign-data]
