@@ -1312,5 +1312,15 @@
 	</fd:sub>
       </fd:node>
     </foreign-data>
+    <foreign-data xmlns:fd="foreign">
+      <fd:node>
+	<fd:sub att="1">
+	  test
+	</fd:sub>
+	<fd:sub att="2">
+	  meer
+	</fd:sub>
+      </fd:node>
+    </foreign-data>
   </text>
 </FoLiA>

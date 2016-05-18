@@ -1238,6 +1238,16 @@ void sanity_test101d(){
 		 stat == 0 );
 }
 
+void sanity_test101e(){
+  startTestSerie(" Metadata (foreign) " );
+  Document doc( "file='tests/folia.foreign2.xml'" );
+  assertTrue( doc.metadatatype() == "pm" );
+  assertNoThrow( doc.save( "/tmp/saveforeign2.xml" ) );
+  int stat = system( "xmldiff /tmp/saveforeign2.xml tests/folia.foreign2.xml" );
+  assertMessage( "/tmp/saveforeign2.xml tests/folia.foreign2.xml differ!",
+		 stat == 0 );
+}
+
 void sanity_test102( ){
   startTestSerie(" Add a word at wrong position " );
   FoliaElement *p = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
@@ -3143,6 +3153,7 @@ int main(){
   sanity_test101b();
   sanity_test101c();
   sanity_test101d();
+  sanity_test101e();
   sanity_test102();
   sanity_test102a();
   sanity_test102b();
