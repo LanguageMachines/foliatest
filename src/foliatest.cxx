@@ -1258,6 +1258,7 @@ void sanity_test101f(){
   int stat = system( "./tests/foliadiff.sh /tmp/foreignmeta.out tests/foreignmeta.out" );
   assertMessage( "/tmp/foreignmeta.out tests/foreignmeta.out differ!",
 		 stat == 0 );
+  assertThrow( f_doc.set_foreign_metadata( root ), XmlError );
   xmlFreeDoc( x_doc );
 }
 
