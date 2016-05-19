@@ -1239,13 +1239,26 @@ void sanity_test101d(){
 }
 
 void sanity_test101e(){
-  startTestSerie(" Metadata (foreign) " );
+  startTestSerie(" Metadata (foreign with namespace) " );
   Document doc( "file='tests/folia.foreign2.xml'" );
   assertTrue( doc.metadatatype() == "pm" );
   assertNoThrow( doc.save( "/tmp/saveforeign2.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/saveforeign2.xml tests/folia.foreign2.xml" );
   assertMessage( "/tmp/saveforeign2.xml tests/folia.foreign2.xml differ!",
 		 stat == 0 );
+}
+
+void sanity_test101f(){
+  startTestSerie(" Metadata (set from external XML) " );
+  Document f_doc( "file='tests/minimal.xml'" );
+  xmlDoc *x_doc = xmlReadFile( "tests/foreignmeta.xml", NULL, 0 );
+  xmlNode *root = xmlDocGetRootElement( x_doc );
+  assertNoThrow( f_doc.set_foreign_metadata( root ) );
+  assertNoThrow( f_doc.save( "/tmp/foreignmeta.out" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/foreignmeta.out tests/foreignmeta.out" );
+  assertMessage( "/tmp/foreignmeta.out tests/foreignmeta.out differ!",
+		 stat == 0 );
+  xmlFreeDoc( x_doc );
 }
 
 void sanity_test102( ){
@@ -3154,6 +3167,7 @@ int main(){
   sanity_test101c();
   sanity_test101d();
   sanity_test101e();
+  sanity_test101f();
   sanity_test102();
   sanity_test102a();
   sanity_test102b();
