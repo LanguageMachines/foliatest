@@ -77,7 +77,7 @@ void test1() {
   Document d;
   assertNoThrow( d.readFromFile( "tests/folia.example" ) );
   assertNoThrow( d.save( "/tmp/folia.example" ) );
-  int stat = system( "xmldiff /tmp/folia.example tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.example tests/folia.example" );
   assertMessage( "/tmp/folia.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -90,7 +90,7 @@ void test1a() {
   Document d2;
   assertNoThrow( d2.readFromFile( "/tmp/folia.example.bz2" ) );
   assertNoThrow( d2.save( "/tmp/folia.example" ) );
-  int stat = system( "xmldiff /tmp/folia.example tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.example tests/folia.example" );
   assertMessage( "/tmp/folia.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -103,7 +103,7 @@ void test1b() {
   Document d2;
   assertNoThrow( d2.readFromFile( "/tmp/folia.example.gz" ) );
   assertNoThrow( d2.save( "/tmp/folia.gz.example" ) );
-  int stat = system( "xmldiff /tmp/folia.gz.example tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.gz.example tests/folia.example" );
   assertMessage( "/tmp/folia.gz.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -139,7 +139,7 @@ void test5() {
   Document d;
   assertNoThrow( d.readFromFile( "tests/folia.nsexample" ) );
   assertNoThrow( d.save( "/tmp/test5.out", "fl", false ) );
-  int stat = system( "xmldiff /tmp/test5.out tests/folia.nsexample" );
+  int stat = system( "./tests/foliadiff.sh /tmp/test5.out tests/folia.nsexample" );
   assertMessage( "/tmp/test5.out tests/folia.nsexample differ!",
    		 (stat == 0) );
 }
@@ -149,7 +149,7 @@ void test6() {
   Document d;
   assertNoThrow( d.readFromFile( "tests/include1.xml" ) );
   assertNoThrow( d.save( "/tmp/include.out" ) );
-  int stat = system( "xmldiff /tmp/include.out tests/include.ok" );
+  int stat = system( "./tests/foliadiff.sh /tmp/include.out tests/include.ok" );
   assertMessage( "/tmp/include.out tests/include.ok differ!",
    		 (stat == 0) );
   Document d2;
@@ -1190,7 +1190,7 @@ void sanity_test100a( ){
 
 void sanity_test100b( ){
   startTestSerie(" Checking saved file against input file " );
-  int stat = system( "xmldiff /tmp/savetest.xml tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/savetest.xml tests/folia.example" );
   assertMessage( "/tmp/savetest.xml tests/folia.example differ!",
 		 stat == 0 );
 
@@ -1233,7 +1233,7 @@ void sanity_test101d(){
   Document doc( "file='tests/folia.foreign.xml'" );
   assertTrue( doc.metadatatype() == "pm" );
   assertNoThrow( doc.save( "/tmp/saveforeign.xml" ) );
-  int stat = system( "xmldiff /tmp/saveforeign.xml tests/folia.foreign.xml" );
+  int stat = system( "./tests/foliadiff.sh /tmp/saveforeign.xml tests/folia.foreign.xml" );
   assertMessage( "/tmp/saveforeign.xml tests/folia.foreign.xml differ!",
 		 stat == 0 );
 }
@@ -1243,7 +1243,7 @@ void sanity_test101e(){
   Document doc( "file='tests/folia.foreign2.xml'" );
   assertTrue( doc.metadatatype() == "pm" );
   assertNoThrow( doc.save( "/tmp/saveforeign2.xml" ) );
-  int stat = system( "xmldiff /tmp/saveforeign2.xml tests/folia.foreign2.xml" );
+  int stat = system( "./tests/foliadiff.sh /tmp/saveforeign2.xml tests/folia.foreign2.xml" );
   assertMessage( "/tmp/saveforeign2.xml tests/folia.foreign2.xml differ!",
 		 stat == 0 );
 }
