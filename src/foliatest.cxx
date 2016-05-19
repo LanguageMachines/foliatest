@@ -1233,7 +1233,7 @@ void sanity_test101d(){
   Document doc( "file='tests/folia.foreign.xml'" );
   assertTrue( doc.metadatatype() == "pm" );
   assertNoThrow( doc.save( "/tmp/saveforeign.xml" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/saveforeign.xml tests/folia.foreign.xml" );
+  int stat = system( "xmldiff /tmp/saveforeign.xml tests/folia.foreign.xml" );
   assertMessage( "/tmp/saveforeign.xml tests/folia.foreign.xml differ!",
 		 stat == 0 );
 }
@@ -1255,10 +1255,23 @@ void sanity_test101f(){
   xmlNode *root = xmlDocGetRootElement( x_doc );
   assertNoThrow( f_doc.set_foreign_metadata( root ) );
   assertNoThrow( f_doc.save( "/tmp/foreignmeta.out" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/foreignmeta.out tests/foreignmeta.out" );
+  int stat = system( "xmldiff /tmp/foreignmeta.out tests/foreignmeta.out" );
   assertMessage( "/tmp/foreignmeta.out tests/foreignmeta.out differ!",
 		 stat == 0 );
   assertThrow( f_doc.set_foreign_metadata( root ), XmlError );
+  xmlFreeDoc( x_doc );
+}
+
+void sanity_test101g(){
+  startTestSerie(" Metadata (set from external foreign-data) " );
+  Document f_doc( "file='tests/minimal.xml'" );
+  xmlDoc *x_doc = xmlReadFile( "tests/foreignmeta2.xml", NULL, 0 );
+  xmlNode *root = xmlDocGetRootElement( x_doc );
+  assertNoThrow( f_doc.set_foreign_metadata( root ) );
+  assertNoThrow( f_doc.save( "/tmp/foreignmeta2.out" ) );
+  int stat = system( "xmldiff /tmp/foreignmeta2.out tests/foreignmeta.out" );
+  assertMessage( "/tmp/foreignmeta2.out tests/foreignmeta.out differ!",
+		 stat == 0 );
   xmlFreeDoc( x_doc );
 }
 
@@ -3169,6 +3182,7 @@ int main(){
   sanity_test101d();
   sanity_test101e();
   sanity_test101f();
+  sanity_test101g();
   sanity_test102();
   sanity_test102a();
   sanity_test102b();
