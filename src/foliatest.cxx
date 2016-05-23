@@ -75,43 +75,43 @@ void test0() {
 void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/folia.example" ) );
-  assertNoThrow( d.save( "/tmp/folia.example" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/folia.example tests/folia.example" );
-  assertMessage( "/tmp/folia.example tests/folia.example differ!",
+  assertNoThrow( d.readFromFile( "tests/example.xml" ) );
+  assertNoThrow( d.save( "/tmp/example.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
+  assertMessage( "/tmp/example.xml tests/example.xml differ!",
    		 (stat == 0) );
 }
 
 void test1a() {
   startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
   Document d1;
-  assertNoThrow( d1.readFromFile( "tests/folia.example" ) );
-  assertNoThrow( d1.save( "/tmp/folia.example.bz2" ) );
+  assertNoThrow( d1.readFromFile( "tests/example.xml" ) );
+  assertNoThrow( d1.save( "/tmp/example.xml.bz2" ) );
   Document d2;
-  assertNoThrow( d2.readFromFile( "/tmp/folia.example.bz2" ) );
-  assertNoThrow( d2.save( "/tmp/folia.example" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/folia.example tests/folia.example" );
-  assertMessage( "/tmp/folia.example tests/folia.example differ!",
+  assertNoThrow( d2.readFromFile( "/tmp/example.xml.bz2" ) );
+  assertNoThrow( d2.save( "/tmp/example.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
+  assertMessage( "/tmp/example.xml tests/example.xml differ!",
    		 (stat == 0) );
 }
 
 void test1b() {
   startTestSerie( " Test lezen en schrijven van een GZ FoLiA file " );
   Document d1;
-  assertNoThrow( d1.readFromFile( "tests/folia.example" ) );
-  assertNoThrow( d1.save( "/tmp/folia.example.gz" ) );
+  assertNoThrow( d1.readFromFile( "tests/example.xml" ) );
+  assertNoThrow( d1.save( "/tmp/example.xml.gz" ) );
   Document d2;
-  assertNoThrow( d2.readFromFile( "/tmp/folia.example.gz" ) );
+  assertNoThrow( d2.readFromFile( "/tmp/example.xml.gz" ) );
   assertNoThrow( d2.save( "/tmp/folia.gz.example" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/folia.gz.example tests/folia.example" );
-  assertMessage( "/tmp/folia.gz.example tests/folia.example differ!",
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.gz.example tests/example.xml" );
+  assertMessage( "/tmp/folia.gz.example tests/example.xml differ!",
    		 (stat == 0) );
 }
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
   string s;
-  ifstream is( "tests/folia.example" );
+  ifstream is( "tests/example.xml" );
   string line;
   while( getline( is, line ) ){
     s += line + "\n";
@@ -129,7 +129,7 @@ void test3() {
 void test4() {
   startTestSerie( " Test uitvoer van een FoLiA file naar string" );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/folia.example" ) );
+  assertNoThrow( d.readFromFile( "tests/example.xml" ) );
   string out;
   assertNoThrow( out = d.toXml() );
 }
@@ -169,7 +169,7 @@ void test8() {
 }
 
 
-Document sanityDoc( "file='tests/folia.example'" );
+Document sanityDoc( "file='tests/example.xml'" );
 
 void sanity_test000( ){
   startTestSerie( " Text count " );
@@ -1190,8 +1190,8 @@ void sanity_test100a( ){
 
 void sanity_test100b( ){
   startTestSerie(" Checking saved file against input file " );
-  int stat = system( "./tests/foliadiff.sh /tmp/savetest.xml tests/folia.example" );
-  assertMessage( "/tmp/savetest.xml tests/folia.example differ!",
+  int stat = system( "./tests/foliadiff.sh /tmp/savetest.xml tests/example.xml" );
+  assertMessage( "/tmp/savetest.xml tests/example.xml differ!",
 		 stat == 0 );
 
 }
@@ -1222,7 +1222,7 @@ void sanity_test101b(){
 
 void sanity_test101c(){
   startTestSerie(" Metadata (native) " );
-  Document doc( "file='tests/folia.example'" );
+  Document doc( "file='tests/example.xml'" );
   assertTrue( doc.metadatatype() == "native" );
   assertNoThrow( doc.set_metadata( "name", "Mijn document" ) );
   assertEqual( doc.get_metadata( "genre" ), "artikel" );
@@ -1951,7 +1951,7 @@ void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
   // grab first paragraph
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   assertNoThrow( p = editDoc.paragraphs(0) );
   size_t tmp = p->size();
   // add a sentence
@@ -2006,7 +2006,7 @@ void edit_test001a( ){
 void edit_test001b( ){
   startTestSerie( " Add a sentence to the first paragraph (shortcuts)" );
   FoliaElement *p = 0;
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   // grab first paragraph
   assertNoThrow( p = editDoc.paragraphs(0) );
   size_t tmp = p->size();
@@ -2045,7 +2045,7 @@ void edit_test001b( ){
 
 void edit_test002( ){
   startTestSerie( " Add an token annotation (pos, lemma) " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   // grab a word (naam)
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
@@ -2079,7 +2079,7 @@ void edit_test002( ){
 void edit_test003( ){
   startTestSerie( " Add an token annotation (pos, lemma) (alternative) " );
   // grab a word (naam)
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
 
@@ -2108,7 +2108,7 @@ void edit_test003( ){
 
 void edit_test003b( ){
   startTestSerie( " Add an token annotation (pos, lemma) with missing declaration ") ;
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   // grab a word (naam)
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
@@ -2123,7 +2123,7 @@ void edit_test003b( ){
 
 void edit_test004a( ){
   startTestSerie( " Add a token default-set annotation which gives a name clash " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   // grab a word (naam)
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.2.w.11"] );
@@ -2166,7 +2166,7 @@ void edit_test004a( ){
 
 void edit_test004b( ){
   startTestSerie( " Add a token default-set annotation which gives a name clash " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   // grab a word which already has morhological info)
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"] );
@@ -2191,7 +2191,7 @@ void edit_test004b( ){
 
 void edit_test005a( ){
   startTestSerie( " Adding an alternative token annotation " );
-  Document doc( "file='tests/folia.example'" );
+  Document doc( "file='tests/example.xml'" );
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
   KWargs args = getArgs( "class='V'" );
   assertNoThrow( w->addPosAnnotation( args ) );
@@ -2225,7 +2225,7 @@ void edit_test005a( ){
 void edit_test005b( ){
   startTestSerie( " Adding a morpology layer in a different set" );
   FoliaElement *w = 0;
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.5"] );
   // add morhological information without specifying a set (should take default
   // set),
@@ -2251,7 +2251,7 @@ void edit_test005b( ){
 void edit_test005c( ){
   startTestSerie( " Adding TextContents in different classes" );
   FoliaElement *s = 0;
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
   FoliaElement *t = new TextContent( getArgs( "value='text1', class='test1'"),
 				      &editDoc );
@@ -2263,7 +2263,7 @@ void edit_test005c( ){
 void edit_test005d( ){
   startTestSerie( " Adding String tags in several classes" );
   FoliaElement *s = 0;
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   assertNoThrow( editDoc.declare( AnnotationType::STRING,
 				  "stringtypes") );
   assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
@@ -2280,7 +2280,7 @@ void edit_test005d( ){
 void edit_test006( ){
   startTestSerie( " Correcting text " );
   FoliaElement *w = 0;
-  Document doc( "file='tests/folia.example'" );
+  Document doc( "file='tests/example.xml'" );
   assertNoThrow( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] ); // stippelijn
   assertNoThrow( w->correct("new='stippellijn', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'"  ) );
   FoliaElement *c = 0;
@@ -2295,7 +2295,7 @@ void edit_test006( ){
 
 void edit_test007( ){
   startTestSerie( " Correcting Token Annotation " );
-  Document doc( "file='tests/folia.example'" );
+  Document doc( "file='tests/example.xml'" );
   FoliaElement *w = 0;
   assertNoThrow( w = doc["WR-P-E-J-0000000001.p.1.s.8.w.11"] ); // alweer stippelijn
   FoliaElement *oldpos = w->annotation<PosAnnotation>();
@@ -2314,7 +2314,7 @@ void edit_test007( ){
 
 void edit_test008( ){
   startTestSerie( " Suggesting a text correction " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"]; // stippelijn
   assertNoThrow( w->correct( "suggestion='stippellijn', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
   FoliaElement *c = 0;
@@ -2326,7 +2326,7 @@ void edit_test008( ){
 
 void edit_test009a( ){
   startTestSerie( " Exception on duplicate ID " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   KWargs kw;
@@ -2338,7 +2338,7 @@ void edit_test009a( ){
 
 // void edit_test009b( ){
 //   startTestSerie( " Exception on adding TextContent of wrong level " );
-//   Document editDoc( "file='tests/folia.example'" );
+//   Document editDoc( "file='tests/example.xml'" );
 //   FoliaElement *w = 0;
 //   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
 //   assertThrow( w->settext( "bla", "original" ), ValueError );
@@ -2346,7 +2346,7 @@ void edit_test009a( ){
 
 void edit_test009c( ){
   startTestSerie( " Exception on adding duplicate TextContent " );
-   Document editDoc( "file='tests/folia.example'" );
+   Document editDoc( "file='tests/example.xml'" );
    FoliaElement *w = 0;
    assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
    KWargs args;
@@ -2358,7 +2358,7 @@ void edit_test009c( ){
 
 void edit_test010( ){
   startTestSerie( " Creating an initially document-less tokenannotation element and adding it to a word " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *w = 0;
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   FoliaElement *pos = 0;
@@ -2379,7 +2379,7 @@ void edit_test010( ){
 
 void edit_test011(){
   startTestSerie( " Adding Subtoken annotation (morphological analysis)" );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.5.w.3"];
   MorphologyLayer *l = new MorphologyLayer(0);
   w->append( l );
@@ -2415,7 +2415,7 @@ void edit_test011(){
 
 void edit_test012(){
   startTestSerie( " Edit Check - Adding Alignment" );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.6.w.8"];
   Alignment *a = new Alignment( getArgs("class='coreference'"), &editDoc );
   w->append( a );
@@ -2434,7 +2434,7 @@ void edit_test012(){
 
 void edit_test013(){
   startTestSerie( " Adding Span Annotation (syntax) " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.4"];
   //sentence: 'De hoofdletter A wordt gebruikt voor het originele handschrift .'
   FoliaElement *layer = s->append( new SyntaxLayer(&editDoc) );
@@ -2476,7 +2476,7 @@ void edit_test013(){
 
 void edit_test013b() {
   startTestSerie( " Correction of a Span Annotation " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *cell = 0;
   assertNoThrow( cell = editDoc["example.cell"] );
   FoliaElement *el = 0;
@@ -2495,7 +2495,7 @@ void edit_test013b() {
 
 void edit_test013c() {
   startTestSerie( " default set for SpanAnnotation " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *sent = 0;
   assertNoThrow( sent = editDoc["WR-P-E-J-0000000001.p.1.s.1"] ); // first sentence
   FoliaElement *el = 0;
@@ -2512,7 +2512,7 @@ void edit_test013c() {
 
 void edit_test013d() {
   startTestSerie( " default set for SpanAnnotation " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *sent = 0;
   assertNoThrow( sent = editDoc["WR-P-E-J-0000000001.p.1.s.1"] ); // first sentence
   FoliaElement *el = 0;
@@ -2534,7 +2534,7 @@ void edit_test013d() {
 
 void edit_test014() {
   startTestSerie( " Replacing an annotation " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
   word->replace( new PosAnnotation( getArgs("class='BOGUS'"),  &editDoc ) );
   assertEqual( len(word->annotations<PosAnnotation>() ) , 1 );
@@ -2544,7 +2544,7 @@ void edit_test014() {
 
 void edit_test015(){
   startTestSerie( " Removing an annotation " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
   word->remove( word->annotation<PosAnnotation>() );
   assertThrow( word->annotations<PosAnnotation>(), NoSuchAnnotation );
@@ -2553,7 +2553,7 @@ void edit_test015(){
 
 void edit_test016(){
   startTestSerie( " Time Stamp " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.16"];
   FoliaElement *pos = word->annotation<PosAnnotation>();
   assertNoThrow( pos->setDateTime( "1982-12-15T19:00:01" ) );
@@ -2563,7 +2563,7 @@ void edit_test016(){
 
 void edit_test017(){
   startTestSerie( " Altering word text" );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   // Important note: directly altering text is usually bad practise, you'll want to use proper corrections instead.
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
   assertTrue( word->text() == "terweil" );
@@ -2574,7 +2574,7 @@ void edit_test017(){
 
 void edit_test018a(){
   startTestSerie( " Altering sentence text (untokenized by definition)" );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.1"];
   assertTrue( !s->hastext() ); // No text directly associated
   // but text() can be retrieved from children.
@@ -2589,7 +2589,7 @@ void edit_test018a(){
 
 void edit_test018b(){
   startTestSerie( " Altering sentence text (untokenized by definition)" );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.8"];
   // 1 get text() dynamic from children
   assertEqual( s->text(), "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
@@ -2610,7 +2610,7 @@ void edit_test018b(){
 
 void edit_test019(){
   startTestSerie( " Error Detection " );
-  Document editDoc( "file='tests/folia.example'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"]; // stippelijn
   word->append( new ErrorDetection( getArgs("class='spelling', annotator='testscript', annotatortype='auto'"),  &editDoc ) );
   assertEqual( word->annotation<ErrorDetection>()->cls(), "spelling" );
@@ -2890,7 +2890,7 @@ void correction_test004(){
 void correction_test005(){
   startTestSerie( " Re-using a correction with only suggestions " );
   Document *corDoc = new Document();
-  corDoc->readFromFile( "tests/folia.example" );
+  corDoc->readFromFile( "tests/example.xml" );
   FoliaElement *w = corDoc->index("WR-P-E-J-0000000001.p.1.s.8.w.11"); // stippelijn
   assertNoThrow( w->correct("suggestion='stippellijn', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
   //  assertNoThrow( corDoc->save( "/tmp/foliainsert005-1.xml" ) );
@@ -2915,7 +2915,7 @@ void correction_test005(){
 }
 
 
-Document qDoc( "file='tests/folia.example'" );
+Document qDoc( "file='tests/example.xml'" );
 
 void query_test001(){
   startTestSerie( " Find Words (simple) " );
