@@ -2,7 +2,7 @@
 
 if [ "$my_bin" = "" ];
 then
-    my_bin="/home/sloot/usr/local/bin"
+    my_bin="/usr/local/bin"
 fi
 
 if [ $# -ne 2 ]
