@@ -77,7 +77,7 @@ void test1() {
   Document d;
   assertNoThrow( d.readFromFile( "tests/folia.example" ) );
   assertNoThrow( d.save( "/tmp/folia.example" ) );
-  int stat = system( "xmldiff /tmp/folia.example tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.example tests/folia.example" );
   assertMessage( "/tmp/folia.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -90,7 +90,7 @@ void test1a() {
   Document d2;
   assertNoThrow( d2.readFromFile( "/tmp/folia.example.bz2" ) );
   assertNoThrow( d2.save( "/tmp/folia.example" ) );
-  int stat = system( "xmldiff /tmp/folia.example tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.example tests/folia.example" );
   assertMessage( "/tmp/folia.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -103,7 +103,7 @@ void test1b() {
   Document d2;
   assertNoThrow( d2.readFromFile( "/tmp/folia.example.gz" ) );
   assertNoThrow( d2.save( "/tmp/folia.gz.example" ) );
-  int stat = system( "xmldiff /tmp/folia.gz.example tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.gz.example tests/folia.example" );
   assertMessage( "/tmp/folia.gz.example tests/folia.example differ!",
    		 (stat == 0) );
 }
@@ -139,7 +139,7 @@ void test5() {
   Document d;
   assertNoThrow( d.readFromFile( "tests/folia.nsexample" ) );
   assertNoThrow( d.save( "/tmp/test5.out", "fl", false ) );
-  int stat = system( "xmldiff /tmp/test5.out tests/folia.nsexample" );
+  int stat = system( "./tests/foliadiff.sh /tmp/test5.out tests/folia.nsexample" );
   assertMessage( "/tmp/test5.out tests/folia.nsexample differ!",
    		 (stat == 0) );
 }
@@ -149,7 +149,7 @@ void test6() {
   Document d;
   assertNoThrow( d.readFromFile( "tests/include1.xml" ) );
   assertNoThrow( d.save( "/tmp/include.out" ) );
-  int stat = system( "xmldiff /tmp/include.out tests/include.ok" );
+  int stat = system( "./tests/foliadiff.sh /tmp/include.out tests/include.ok" );
   assertMessage( "/tmp/include.out tests/include.ok differ!",
    		 (stat == 0) );
   Document d2;
@@ -1190,7 +1190,7 @@ void sanity_test100a( ){
 
 void sanity_test100b( ){
   startTestSerie(" Checking saved file against input file " );
-  int stat = system( "xmldiff /tmp/savetest.xml tests/folia.example" );
+  int stat = system( "./tests/foliadiff.sh /tmp/savetest.xml tests/folia.example" );
   assertMessage( "/tmp/savetest.xml tests/folia.example differ!",
 		 stat == 0 );
 
@@ -1236,6 +1236,43 @@ void sanity_test101d(){
   int stat = system( "xmldiff /tmp/saveforeign.xml tests/folia.foreign.xml" );
   assertMessage( "/tmp/saveforeign.xml tests/folia.foreign.xml differ!",
 		 stat == 0 );
+}
+
+void sanity_test101e(){
+  startTestSerie(" Metadata (foreign with namespace) " );
+  Document doc( "file='tests/folia.foreign2.xml'" );
+  assertTrue( doc.metadatatype() == "pm" );
+  assertNoThrow( doc.save( "/tmp/saveforeign2.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/saveforeign2.xml tests/folia.foreign2.xml" );
+  assertMessage( "/tmp/saveforeign2.xml tests/folia.foreign2.xml differ!",
+		 stat == 0 );
+}
+
+void sanity_test101f(){
+  startTestSerie(" Metadata (set from external XML) " );
+  Document f_doc( "file='tests/minimal.xml'" );
+  xmlDoc *x_doc = xmlReadFile( "tests/foreignmeta.xml", NULL, 0 );
+  xmlNode *root = xmlDocGetRootElement( x_doc );
+  assertNoThrow( f_doc.set_foreign_metadata( root ) );
+  assertNoThrow( f_doc.save( "/tmp/foreignmeta.out" ) );
+  int stat = system( "xmldiff /tmp/foreignmeta.out tests/foreignmeta.out" );
+  assertMessage( "/tmp/foreignmeta.out tests/foreignmeta.out differ!",
+		 stat == 0 );
+  assertThrow( f_doc.set_foreign_metadata( root ), XmlError );
+  xmlFreeDoc( x_doc );
+}
+
+void sanity_test101g(){
+  startTestSerie(" Metadata (set from external foreign-data) " );
+  Document f_doc( "file='tests/minimal.xml'" );
+  xmlDoc *x_doc = xmlReadFile( "tests/foreignmeta2.xml", NULL, 0 );
+  xmlNode *root = xmlDocGetRootElement( x_doc );
+  assertNoThrow( f_doc.set_foreign_metadata( root ) );
+  assertNoThrow( f_doc.save( "/tmp/foreignmeta2.out" ) );
+  int stat = system( "xmldiff /tmp/foreignmeta2.out tests/foreignmeta.out" );
+  assertMessage( "/tmp/foreignmeta2.out tests/foreignmeta.out differ!",
+		 stat == 0 );
+  xmlFreeDoc( x_doc );
 }
 
 void sanity_test102( ){
@@ -1639,7 +1676,7 @@ void sanity_test103( ){
     "        <w xml:id=\"example.text.1.s.1.alienword\">\n"
     "        </w>\n"
     "      </alien:blah >\n"
-    "      <w xml:id=\"example.text.1.s.1.w.1\">\n"
+    "      <w xml:id=\"example.text.1.s.1.w.1\" alien:at=\"alien\">\n"
     "          <t>word</t>\n"
     "          <alien:invasion number=\"99999\" />\n"
     "      </w>\n"
@@ -1648,7 +1685,7 @@ void sanity_test103( ){
     "</FoLiA>\n" ;
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
-  assertTrue( len(doc.words()) == 1 ); // second word is in alien namespace
+  assertTrue( len(doc.words()) == 1 ); // first word is in alien namespace
   // not read
   FoliaElement *w = doc["example.text.1.s.1.alienword"];
   assertTrue( w == 0 );   // doesn't exist
@@ -2384,8 +2421,9 @@ void edit_test012(){
   w->append( a );
   AlignReference *ar = new AlignReference( getArgs("id='WR-P-E-J-0000000001.p.1.s.6.w.1', type='w', t='appel'") );
   a->append(ar);
-  assertThrow( ar = new AlignReference( getArgs("id='wrong', type='word'") ), XmlError );
-  assertThrow( ar = new AlignReference( getArgs("id='wrong'") ), XmlError );
+  // missing type or some random type is no longer an error
+  assertNoThrow( ar = new AlignReference( getArgs("id='wrong', type='word'") ) );
+  assertNoThrow( ar = new AlignReference( getArgs("id='wrong'") ));
   ar = new AlignReference( getArgs("id='WR-P-E-J-0000000001.p.1.s.6.w.2', type='w'") );
   a->append(ar);
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
@@ -2452,7 +2490,7 @@ void edit_test013b() {
   }
   KWargs args = getArgs( "set='corrections',class='wrongclass'" );
   assertNoThrow( el->correct(old,newEnt,args) );
-  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><correction xml:id=\"example.cell.correction.1\" class=\"wrongclass\"><new><entity class=\"loc\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></new><original auth=\"no\"><entity xml:id=\"example.radboud.university.nijmegen.org\" class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"example.table.1.w.6\" t=\"Radboud\"/><wref id=\"example.table.1.w.7\" t=\"University\"/><wref id=\"example.table.1.w.8\" t=\"Nijmegen\"/></entity></original></correction></entities>" );
 }
 
 void edit_test013c() {
@@ -2468,7 +2506,7 @@ void edit_test013c() {
 				      &editDoc );
   assertNoThrow( newEnt->append( word ) );
   assertNoThrow( el->append( newEnt ) );
-  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.head.1.s.1.w.1\" t=\"Stemma\"/></entity></entities>" );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.head.1.s.1.w.1\" t=\"Stemma\"/></entity></entities>" );
 }
 
 
@@ -2491,7 +2529,7 @@ void edit_test013d() {
   Correction *corr = 0;
   assertNoThrow( corr = sent->correct(ent1,ent2,args) );
   assertNoThrow( el->append( corr ) );
-  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.1.correction.1\" class=\"wrongclass\"><new><entity class=\"rel\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.2\" t=\"is\"/></entity></new><original auth=\"no\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.1\" t=\"Stemma\"/></entity></original></correction></entities>" );
+  assertEqual( el->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.1.correction.1\" class=\"wrongclass\"><new><entity class=\"rel\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.2\" t=\"is\"/></entity></new><original auth=\"no\"><entity class=\"org\" set=\"http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml\"><wref id=\"WR-P-E-J-0000000001.p.1.s.1.w.1\" t=\"Stemma\"/></entity></original></correction></entities>" );
 }
 
 void edit_test014() {
@@ -3142,6 +3180,9 @@ int main(){
   sanity_test101b();
   sanity_test101c();
   sanity_test101d();
+  sanity_test101e();
+  sanity_test101f();
+  sanity_test101g();
   sanity_test102();
   sanity_test102a();
   sanity_test102b();

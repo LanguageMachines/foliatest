@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xml:id="minimal">
+  <text xml:id="test.text"/>
+</FoLiA>

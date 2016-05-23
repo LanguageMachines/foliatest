@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.1" version="0.20.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.2" version="1.2">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ilktok" annotatortype="auto" set="ucto"/>
-      <division-annotation set="divs"/>
-      <paragraph-annotation annotator="ucto" annotatortype="auto" set="paragraphs"/>
-      <sentence-annotation annotator="ucto" annotatortype="auto" set="sentences"/>
-      <pos-annotation annotator="tadpole" annotatortype="auto" set="cgn-combinedtags"/>
-      <lemma-annotation annotator="tadpole" annotatortype="auto" set="lemmas-nl"/>
-      <sense-annotation set="sense-set"/>
-      <syntax-annotation set="syntax-set"/>
-      <entity-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml"/>
-      <entity-annotation set="mwu-set"/>
-      <correction-annotation annotator="proycon" annotatortype="manual" set="corrections"/>
-      <errordetection-annotation set="error-set"/>
-      <morphological-annotation set="morph-set"/>
-      <event-annotation set="event-set"/>
-      <dependency-annotation set="alpino-set"/>
-      <timesegment-annotation set="event-set"/>
-      <gap-annotation set="gap-set"/>
-      <note-annotation set="footnote-set"/>
-      <alignment-annotation set="alignment-set"/>
-      <coreference-annotation set="coreference-set"/>
-      <semrole-annotation set="semrole-set"/>
-      <metric-annotation set="metric-set"/>
-      <lang-annotation set="ISO639"/>
-      <table-annotation set="table-set"/>
-      <style-annotation set="styles"/>
-      <definition-annotation set="definitions"/>
-      <phonological-annotation set="phonological-set"/>
+      <token-annotation annotator="ilktok" annotatortype="auto" />
+      <sentence-annotation set="sentences" annotator="ucto" annotatortype="auto" />
+      <paragraph-annotation set="paragraphs" annotator="ucto" annotatortype="auto" />
+      <pos-annotation set="cgn-combinedtags" annotator="tadpole" annotatortype="auto" />
+      <lemma-annotation set="lemmas-nl" annotator="tadpole" annotatortype="auto" />
+      <correction-annotation set="corrections" annotator="proycon" annotatortype="manual" />
+      <errordetection-annotation set="corrections" annotator="proycon" annotatortype="manual" />
+      <morphological-annotation annotator="proycon" annotatortype="manual" />
+      <gap-annotation annotator="proycon" annotatortype="manual" />
+      <sense-annotation set="sense-set" />
+      <event-annotation set="event-set" />
+      <timesegment-annotation set="event-set" />
+      <entity-annotation set="mwu-set" />
+      <entity-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml" />
+      <syntax-annotation set="syntax-set" />
+      <dependency-annotation set="alpino-set" />
+      <alignment-annotation set="alignment-set" />
+      <semrole-annotation set="semrole-set" />
+      <chunking-annotation set="chunk-set" />
+      <coreference-annotation set="coreference-set" />
+      <lang-annotation set="lang-set" />
+      <metric-annotation set="metric-set" />
+      <table-annotation set="table-set" />
+      <style-annotation set="style" />
+      <division-annotation set="divs" />
+      <note-annotation set="notes" />
+      <part-annotation set="parts" />
+      <term-annotation set="words" />
+      <definition-annotation set="definitions" />
+      <example-annotation set="examples" />
+      <phonological-annotation set="phonology-set" />
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
@@ -45,11 +49,11 @@
             <pos class="N(soort,ev,basis,onz,stan)"/>
             <lemma class="stemma"/>
           </w>
-          <ref id="footnote_1" type="note"/>
+          <ref id="footnote.1" type="note"/>
         </s>
       </head>
       <p xml:id="WR-P-E-J-0000000001.p.1" class="firstparagraph">
-        <alignment class="book" format="image/pdf" xlink:href="http://archief.nl/artikel.pdf" xlink:type="simple"/>
+        <alignment class="book" format="image/pdf" xlink:href="http://archief.nl/artikel.pdf" xlink:role="verwijzing" xlink:type="simple"/>
         <metric class="sentenceCount" value="8"/>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
@@ -74,6 +78,7 @@
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5">
             <t>woord</t>
+	    <ph>wort</ph>
             <pos class="N(soort,ev,basis,onz,stan)"/>
             <!-- numb comment -->
             <lemma class="woord"/>
@@ -94,7 +99,7 @@
             <pos class="LET()"/>
             <lemma class="."/>
           </w>
-          <entities set="mwu-set">
+          <entities>
             <entity class="ander_woord" set="mwu-set">
               <wref id="WR-P-E-J-0000000001.p.1.s.1.w.4" t="ander"/>
               <!-- no idea why you would like to comment on this -->
@@ -650,7 +655,7 @@
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.6" class="sentence">
-          <t>Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen <t-correction id="WR-P-E-J-0000000001.p.1.s.6.w.31.c.1" class="spelling" original="vierkant">vierkante</t-correction> haken geplaatst.<br/></t>
+          <t>Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letter van het alfabet en worden tussen <t-correction id="WR-P-E-J-0000000001.p.1.s.6.w.31.c.1" class="spelling" original="vierkant">vierkante</t-correction> haken geplaatst.<br/></t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.6.w.1">
             <t>Verdwenen</t>
             <pos class="WW(vd,prenom,zonder)">
@@ -837,6 +842,7 @@
             <pos class="LET()"/>
             <lemma class="."/>
           </w>
+	  <br/>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.7">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.7.w.1">
@@ -1013,6 +1019,7 @@
           </coreferencelink>
           <coreferencelink>
             <wref id="WR-P-E-J-0000000001.p.1.s.7.w.7" t="de"/>
+	    <wref id="WR-P-E-J-0000000001.p.1.s.7.w.8" t="handschriften"/>
           </coreferencelink>
         </coreferencechain>
         <coreferencechain class="verdwenen_handschriften">
@@ -1106,7 +1113,7 @@
             </w>
           </s>
         </item>
-        <item xml:id="sandbox.list.1.listitem.3" n="3"/>
+        <item xml:id="sandbox.list.1.listitem.3" n="3" xmlns:alien="http://some/foreign/namespace" alien:attrib="folia libraries will ignore alien-namespace attributes. You can use this, but it's recommended to use foreign-data instead"/>
       </list>
       <event xml:id="sandbox.event.1" actor="proycon" begindatetime="2011-12-15T19:01" class="presentation" enddatetime="2011-12-15T19:05">
         <figure xml:id="sandbox.figure.1" src="http://upload.wikimedia.org/wikipedia/commons/8/8e/Family_tree.svg">
@@ -1155,7 +1162,7 @@
           <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.6">
             <t offset="37">.</t>
           </w>
-          <entities set="mwu-set">
+          <entities>
             <entity class="politicalparty" set="mwu-set">
               <wref id="WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1" t="CDA"/>
             </entity>
@@ -1198,7 +1205,7 @@
               <w xml:id="example.table.1.w.5">
                 <t>Gompel</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <entity class="per" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                   <wref id="example.table.1.w.3" t="Maarten"/>
                   <wref id="example.table.1.w.4" t="van"/>
@@ -1216,7 +1223,7 @@
               <w xml:id="example.table.1.w.8">
                 <t>Nijmegen</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <entity xml:id="example.radboud.university.nijmegen.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                   <wref id="example.table.1.w.6" t="Radboud"/>
                   <wref id="example.table.1.w.7" t="University"/>
@@ -1239,7 +1246,7 @@
               <w xml:id="example.table.1.w.12">
                 <t>Sloot</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <entity class="per" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                   <wref id="example.table.1.w.9" t="Ko"/>
                   <wref id="example.table.1.w.10" t="van"/>
@@ -1255,7 +1262,7 @@
               <w xml:id="example.table.1.w.14">
                 <t>University</t>
               </w>
-              <entities set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
+              <entities>
                 <correction xml:id="span.correction" class="entity">
                   <new>
                     <entity xml:id="example.tilburg.university.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
@@ -1274,9 +1281,9 @@
           </row>
         </table>
       </div>
-      <note xml:id="footnote1" class="footnote">
+      <note xml:id="footnote.1" class="footnote">
         <s xml:id="footnote.1.s.1">
-          <t>Een deel van deze pagina komt oorspronkelijk van <t-str xlink:href="http://www.wikipedia.org" xlink:type="simple">wikipedia</t-str>.</t>
+          <t>Een deel van deze pagina komt oorspronkelijk van <t-str xlink:href="http://www.wikipedia.org" xlink:title="Wikipedia Artikel" xlink:type="locator">wikipedia</t-str>.</t>
         </s>
       </note>
     </div>
@@ -1290,10 +1297,30 @@
     </div>
     <gap xml:id="WR-P-E-J-0000000001.gap.1" class="backmatter">
       <desc>Backmatter</desc>
-      <content><!-- TEST --><![CDATA[
+      <content><![CDATA[
       De tekst is beschikbaar onder de licentie Creative Commons Naamsvermelding/Gelijk delen, er kunnen aanvullende voorwaarden van toepassing zijn. Zie de Gebruiksvoorwaarden voor meer informatie.
       Wikipedia® is een geregistreerd handelsmerk van de Wikimedia Foundation, Inc., een organisatie zonder winstoogmerk.
       ]]></content>
     </gap>
+    <foreign-data>
+      <fd:node xmlns:fd="foreign">
+	<fd:sub att="1">
+	  test
+	</fd:sub>
+	<fd:sub att="2">
+	  meer
+	</fd:sub>
+      </fd:node>
+    </foreign-data>
+    <foreign-data xmlns:fd="foreign">
+      <fd:node>
+	<fd:sub att="1">
+	  test
+	</fd:sub>
+	<fd:sub att="2">
+	  meer
+	</fd:sub>
+      </fd:node>
+    </foreign-data>
   </text>
 </FoLiA>
