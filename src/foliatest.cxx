@@ -1133,7 +1133,7 @@ void sanity_test043(){
   assertEqual( st->annotation<LangAnnotation>()->cls(), "eng" );
 }
 
-void sanity_test044(){
+void sanity_test044a(){
   startTestSerie( " Sanity check - Text Markup " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
   TextContent *t = head->textcontent();
@@ -1158,6 +1158,13 @@ void sanity_test044(){
   // resolving returns self if it's not a reference
   assertEqual( sanityDoc["sandbox.3.str.bold"]->resolveid(),
 	       sanityDoc["sandbox.3.str.bold"] );
+}
+
+void sanity_test044b(){
+  startTestSerie( " Sanity check - Text Markup (LineBreak)" );
+  FoliaElement *par = sanityDoc["entry.1.def.1.p.1"];
+  string txt = par->str();
+  assertEqual( txt, "Term uit de editiewetenschap en tekstkritiek voor de schematische weergave in de vorm van een boomdiagram van de onderlinge verwantschap van \n documentaire bronnen (handschrift, codex, druk), waarin een tekst bewaard is gebleven." );
 }
 
 void sanity_test045(){
@@ -3170,7 +3177,8 @@ int main(){
   sanity_test041c();
   sanity_test042();
   sanity_test043();
-  sanity_test044();
+  sanity_test044a();
+  sanity_test044b();
   sanity_test045();
   sanity_test099();
   sanity_test100a();
