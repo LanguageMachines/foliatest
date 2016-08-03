@@ -2282,6 +2282,11 @@ void edit_test005d( ){
   assertNoThrow( t->settext( "text2" ) );
   assertNoThrow( t->settext( "text2" , "test2" ) );
   assertTrue( t->xmlstring() == "<str xmlns=\"http://ilk.uvt.nl/folia\" class=\"test2\"><t>text2</t><t class=\"test2\">text2</t></str>" );
+  t = new String( getArgs("class='test3'"), &editDoc );
+  assertNoThrow( s->append( t ) );
+  assertNoThrow( t->settext( "V&D bestaat niet meer" ) );
+  assertEqual( t->xmlstring(), "<str xmlns=\"http://ilk.uvt.nl/folia\" class=\"test3\"><t>V&amp;D bestaat niet meer</t></str>" );
+  assertEqual( t->text(), "V&D bestaat niet meer" );
 }
 
 void edit_test006( ){
