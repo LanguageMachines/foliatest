@@ -1182,6 +1182,18 @@ void sanity_test045(){
   assertEqual( v[0]->id(), "example.tilburg.university.org" );
 }
 
+void sanity_test046(){
+  startTestSerie( "Sanity Check - Checking entry, term, definition and example");
+  FoliaElement *entry = sanityDoc["entry.1"];
+  vector<Term*> terms = entry->select<Term>();
+  assertEqual( len(terms), 1 );
+  assertEqual( terms[0]->text() ,"Stemma" );
+  vector<Definition*> definitions = entry->select<Definition>();
+  assertEqual( len(definitions), 2 );
+  vector<Example*> examples = entry->select<Example>();
+  assertEqual( len(examples), 1 );
+}
+
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
@@ -3192,6 +3204,7 @@ int main(){
   sanity_test044a();
   sanity_test044b();
   sanity_test045();
+  sanity_test046();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
