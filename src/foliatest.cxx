@@ -1226,9 +1226,33 @@ void sanity_test047(){
 void sanity_test048(){
   startTestSerie( "Sanity check - Observations" );
   FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
-  vector<AbstractSpanAnnotation*> observations = word->findspans<ObservationLayer>();
+  vector<AbstractSpanAnnotation*> observations;
+  assertNoThrow( observations = word->findspans<ObservationLayer>() );
   assertEqual( observations[0]->cls() , "ei_ij_error" );
   assertEqual( observations[0]->description() , "Confusion between EI and IJ diphtongues");
+}
+
+void sanity_test049(){
+  startTestSerie( "Sanity check - Sentiments" );
+  FoliaElement *sentence = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.3"];
+  SentimentLayer *sentiments = sentence->annotation<SentimentLayer>();
+  Sentiment *sentiment = sentiments->annotation<Sentiment>();
+  assertEqual( sentiment->cls() , "disappointment" );
+  assertEqual( sentiment->feat("polarity") , "negative");
+  assertEqual( sentiment->feat("strength") , "strong");
+  assertEqual( sentiment->annotation<Source>()->text(), "Hij");
+  assertEqual( sentiment->annotation<Headspan>()->text(), "erg teleurgesteld");
+}
+
+void sanity_test050(){
+  startTestSerie( "Sanity check - Statements" );
+  FoliaElement *sentence = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.2"];
+  StatementLayer *statements = sentence->annotation<StatementLayer>();
+  Statement *statement = statements->annotation<Statement>();
+  assertEqual( statement->cls() , "promise" );
+  assertEqual( statement->annotation<Source>()->text(), "Hij");
+  assertEqual( statement->annotation<Relation>()->text(), "had beloofd");
+  assertEqual( statement->annotation<Headspan>()->text(), "hij zou winnen");
 }
 
 void sanity_test099(){
@@ -3245,6 +3269,9 @@ int main(){
   sanity_test046a();
   sanity_test046b();
   sanity_test047();
+  sanity_test048();
+  sanity_test049();
+  sanity_test050();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
