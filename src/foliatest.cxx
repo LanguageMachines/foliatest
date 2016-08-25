@@ -1194,6 +1194,23 @@ void sanity_test046(){
   assertEqual( len(examples), 1 );
 }
 
+void sanity_test046a(){
+  startTestSerie( "Sanity Check - Text serialisation test with linebreaks and whitespaces" );
+  FoliaElement *p = sanityDoc["WR-P-E-J-0000000001.p.1"];
+    // this is a bit of a malformed paragraph due to the explicit whitespace
+    // and linebreaks in it, but makes for a nice test
+  assertEqual( p->text(), "Stemma is een ander woord voor stamboom . In de historische wetenschap wordt zo'n stamboom , onder de naam stemma codicum ( handschriftelijke genealogie ) , gebruikt om de verwantschap tussen handschriften weer te geven . \n\nWerkwijze\n\nHiervoor worden de handschriften genummerd en gedateerd zodat ze op de juiste plaats van hun afstammingsgeschiedenis geplaatst kunnen worden . De hoofdletter A wordt gebruikt voor het originele handschrift . De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring. Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkante haken geplaatst .\nTenslotte gaat men de verwantschap tussen de handschriften aanduiden . Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt .");
+}
+
+
+void sanity_test046b(){
+  startTestSerie( "Sanity Check - Text serialisation on lists" );
+  FoliaElement *l = sanityDoc["sandbox.list.1"];
+  // this is a bit of a malformed paragraph due to the explicit whitespace
+  // and linebreaks in it, but makes for a nice test.
+  assertEqual( l->text(), "Eerste testitem\nTweede testitem");
+}
+
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
@@ -3205,6 +3222,8 @@ int main(){
   sanity_test044b();
   sanity_test045();
   sanity_test046();
+  sanity_test046a();
+  sanity_test046b();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
