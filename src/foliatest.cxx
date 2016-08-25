@@ -1223,6 +1223,14 @@ void sanity_test047(){
   assertEqual( aref->t(), "handschriften" );
 }
 
+void sanity_test048(){
+  startTestSerie( "Sanity check - Observations" );
+  FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
+  vector<AbstractSpanAnnotation*> observations = word->findspans<ObservationLayer>();
+  assertEqual( observations[0]->cls() , "ei_ij_error" );
+  assertEqual( observations[0]->description() , "Confusion between EI and IJ diphtongues");
+}
+
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
