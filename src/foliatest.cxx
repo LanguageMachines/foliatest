@@ -1211,6 +1211,18 @@ void sanity_test046b(){
   assertEqual( l->text(), "Eerste testitem\nTweede testitem");
 }
 
+void sanity_test047(){
+  startTestSerie( "Sanity check - Alignment" );
+  FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.3.w.10"];
+  FoliaElement *a = word->annotation<Alignment>();
+  assertEqual( a->cls(), "reference" );
+  vector<AlignReference*> refs = a->select<AlignReference>();
+  AlignReference *aref = refs[0];
+  assertEqual( aref->refid(), "WR-P-E-J-0000000001.p.1.s.3.w.5" );
+  assertEqual( aref->type(), "w" );
+  assertEqual( aref->t(), "handschriften" );
+}
+
 void sanity_test099(){
   startTestSerie(" Writing to file " );
   assertNoThrow( sanityDoc.save( "/tmp/savetest.xml" ) );
@@ -3224,6 +3236,7 @@ int main(){
   sanity_test046();
   sanity_test046a();
   sanity_test046b();
+  sanity_test047();
   sanity_test099();
   sanity_test100a();
   sanity_test100b();
