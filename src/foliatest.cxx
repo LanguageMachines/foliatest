@@ -1856,7 +1856,48 @@ void sanity_test104b( ){
   assertEqual( doc["example.speech.utt.2.w.2"]->endtime(), "00:00:02.012" );
 }
 
-void sanity_test105( ){
+void sanity_test105(){
+  startTestSerie( "Sanity Check - Complex alignment" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"0.8\" generator=\"libfolia-v0.4\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <complexalignment-annotation />\n"
+    "      <alignment-annotation set=\"blah\" />\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"test.text\">\n"
+    "    <p xml:id=\"p.1\">\n"
+    "      <s xml:id=\"p.1.s.1\"><t>Dit is een test.</t></s>\n"
+    "      <s xml:id=\"p.1.s.2\"><t>Ik wil kijken of het werkt.</t></s>\n"
+    "      <complexalignments>\n"
+    "        <complexalignment>\n"
+    "          <alignment>\n"
+    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
+    "            <aref id=\"p.1.s.2\" type=\"s\" />\n"
+    "	       </alignment>\n"
+    "          <alignment class=\"translation\" xlink:href=\"en.folia.xml\" xlink:type=\"simple\">\n"
+    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
+    "	       </alignment>\n"
+    "        </complexalignment>\n"
+    "      </complexalignments>\n"
+    "    </p>\n"
+    "  </text>\n"
+    "</FoLiA>\n";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  //        self.assertTrue(doc.xml() is not None) #serialisation check
+  vector<Paragraph*> pargs;
+  assertNoThrow( pargs = doc.paragraphs() );
+  vector<ComplexAlignmentLayer*> cal = pargs[0]->annotations<ComplexAlignmentLayer>();
+  assertEqual( len(cal),1);
+  vector<ComplexAlignment*> ca = cal[0]->annotations<ComplexAlignment>();
+  assertEqual( len(ca),1);
+  vector<Alignment*> alignments = ca[0]->select<Alignment>();
+  assertEqual(len(alignments),2);
+}
+
+void sanity_test106( ){
   startTestSerie(" embedded sentences " );
   string xml = "<?xml version=\"1.0\"?>\n"
     " <FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"doc\">\n"
@@ -1957,8 +1998,8 @@ void sanity_test105( ){
   assertTrue( v[3]->str() == "tweede" );
 }
 
-void sanity_test106( ){
-  startTestSerie("106");
+void sanity_test107( ){
+  startTestSerie("107 Some quoting");
   Document doc;
   assertNoThrow( doc.readFromFile("tests/fg.xml") );
   vector<Sentence *> s = doc.sentenceParts();
@@ -1969,7 +2010,7 @@ void sanity_test106( ){
 
 }
 
-void sanity_test107( ){
+void sanity_test108( ){
   Document doc;
   startTestSerie( " Attributes - invalid values " );
   string xml = "<?xml version=\"1.0\"?>\n"
@@ -1983,7 +2024,7 @@ void sanity_test107( ){
   assertThrow( new Sentence( getArgs("id='dit:ook:niet'"), &doc ), XmlError );
 }
 
-void sanity_test108( ){
+void sanity_test109( ){
   startTestSerie( " type hierarchy " );
   assertTrue( isSubClass( PlaceHolder_t, AbstractStructureElement_t ) );
   assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
@@ -1991,47 +2032,6 @@ void sanity_test108( ){
   assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
-}
-
-void sanity_test109(){
-  startTestSerie( "Sanity Check - Complex alignment" );
-  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-    "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"0.8\" generator=\"libfolia-v0.4\">\n"
-    "  <metadata type=\"native\">\n"
-    "    <annotations>\n"
-    "      <complexalignment-annotation />\n"
-    "      <alignment-annotation set=\"blah\" />\n"
-    "    </annotations>\n"
-    "  </metadata>\n"
-    "  <text xml:id=\"test.text\">\n"
-    "    <p xml:id=\"p.1\">\n"
-    "      <s xml:id=\"p.1.s.1\"><t>Dit is een test.</t></s>\n"
-    "      <s xml:id=\"p.1.s.2\"><t>Ik wil kijken of het werkt.</t></s>\n"
-    "      <complexalignments>\n"
-    "        <complexalignment>\n"
-    "          <alignment>\n"
-    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
-    "            <aref id=\"p.1.s.2\" type=\"s\" />\n"
-    "	       </alignment>\n"
-    "          <alignment class=\"translation\" xlink:href=\"en.folia.xml\" xlink:type=\"simple\">\n"
-    "            <aref id=\"p.1.s.1\" type=\"s\" />\n"
-    "	       </alignment>\n"
-    "        </complexalignment>\n"
-    "      </complexalignments>\n"
-    "    </p>\n"
-    "  </text>\n"
-    "</FoLiA>\n";
-  Document doc;
-  assertNoThrow( doc.readFromString(xml) );
-  //        self.assertTrue(doc.xml() is not None) #serialisation check
-  vector<Paragraph*> pargs;
-  assertNoThrow( pargs = doc.paragraphs() );
-  vector<ComplexAlignmentLayer*> cal = pargs[0]->annotations<ComplexAlignmentLayer>();
-  assertEqual( len(cal),1);
-  vector<ComplexAlignment*> ca = cal[0]->annotations<ComplexAlignment>();
-  assertEqual( len(ca),1);
-  vector<Alignment*> alignments = ca[0]->select<Alignment>();
-  assertEqual(len(alignments),2);
 }
 
 void edit_test001a( ){
@@ -2970,9 +2970,11 @@ void correction_test004(){
   s->append( new Word( getArgs("text='.', id='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
 
-  s->insertword( new Word( getArgs( "id='" + corDoc.id() + ".s.1.w.3b', text='groot'"),
-			   &corDoc ),
-		 corDoc.index( corDoc.id() + ".s.1.w.3" ) );
+  Word *w = new Word( getArgs( "id='" + corDoc.id() + ".s.1.w.3b', text='groot'"), &corDoc );
+  FoliaElement *w2 = 0;
+  assertNoThrow( w2 = corDoc.index( corDoc.id() + ".s.1.w.3" ) );
+  assertNoThrow( s->insertword( w, w2 ) );
+
   //  assertNoThrow( corDoc.save( "/tmp/foliainsert004.xml" ) );
   assertEqual( s->words().size(), 6 );
   assertEqual( s->text(), "Ik zie een groot huis ." );
@@ -3004,6 +3006,84 @@ void correction_test005(){
 
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion annotator=\"testscript\" annotatortype=\"auto\" auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
   delete corDoc;
+}
+
+void correction_test006(){
+  startTestSerie( "Correction - Suggestion for deletion with parent merge suggestion" );
+  Document *corDoc = new Document();
+  corDoc->readFromFile( "tests/example.xml" );
+  KWargs args;
+  args["id"] = corDoc->id() + ".s.1";
+  Sentence *sent = new Sentence( args );
+  FoliaElement *text = 0;
+  assertNoThrow( text = (*corDoc)[0] );
+  assertNoThrow( text->append( sent ) );
+  args["id"] = corDoc->id() + ".s.1.w.1";
+  args["text"] = "De";
+  Word *wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.1.w.2";
+  args["text"] = "site";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.1.w.3";
+  args["text"] = "staat";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.1.w.4";
+  args["text"] = "on";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.1.w.5";
+  args["text"] = "line";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.1.w.6";
+  args["text"] = ".";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args.clear();
+  args["id"] = corDoc->id() + ".s.2";
+  sent = new Sentence( args);
+  text->append( sent );
+  args["id"] = corDoc->id() + ".s.2.w.1";
+  args["text"] = "sinds";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.2.w.2";
+  args["text"] = "vorige";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.2.w.3";
+  args["text"] = "week";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.2.w.4";
+  args["text"] = "zondag";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+  args["id"] = corDoc->id() + ".s.2.w.5";
+  args["text"] = ".";
+  wrd = new Word( args );
+  assertNoThrow( sent->append( wrd ) );
+
+  FoliaElement *s = corDoc->index(corDoc->id() + ".s.1");
+  FoliaElement *s2 = corDoc->index(corDoc->id() + ".s.2");
+  FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.6");
+  s->remove(w);
+  Correction *corr = new Correction();
+  assertNoThrow( s->append( corr ) );
+  Current *cur = new Current();
+  assertNoThrow( cur->append(w) );
+  assertNoThrow( corr->append(cur) );
+  args.clear();
+  args["merge"] = s2->id();
+  Suggestion *sug = 0;
+  assertNoThrow( sug = new Suggestion( args ) );
+  assertNoThrow( corr->append(sug) );
+
+  assertEqual( s->xmlstring(),
+	       "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w><correction><current><w xml:id=\"example.s.1.w.6\"><t>.</t></w></current><suggestion merge=\"example.s.2\" auth=\"no\"/></correction></s>" );
 }
 
 
@@ -3346,6 +3426,7 @@ int main(){
   correction_test003();
   correction_test004();
   correction_test005();
+  correction_test006();
   query_test001();
   query_test002();
   query_test003();
