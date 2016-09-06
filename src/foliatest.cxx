@@ -3070,7 +3070,7 @@ void correction_test006(){
   FoliaElement *s = corDoc->index(corDoc->id() + ".s.1");
   FoliaElement *s2 = corDoc->index(corDoc->id() + ".s.2");
   FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.6");
-  s->remove(w);
+  s->remove(w,false); // don't delete w, we gonna re-use it
   Correction *corr = new Correction();
   assertNoThrow( s->append( corr ) );
   Current *cur = new Current();
@@ -3083,7 +3083,7 @@ void correction_test006(){
   assertNoThrow( corr->append(sug) );
 
   assertEqual( s->xmlstring(),
-	       "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w><correction><current><w xml:id=\"example.s.1.w.6\"><t>.</t></w></current><suggestion merge=\"example.s.2\" auth=\"no\"/></correction></s>" );
+	       "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.s.1\"><w xml:id=\"WR-P-E-J-0000000001.s.1.w.1\"><t>De</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.2\"><t>site</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.3\"><t>staat</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.4\"><t>on</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.5\"><t>line</t></w><correction><current><w xml:id=\"WR-P-E-J-0000000001.s.1.w.6\"><t>.</t></w></current><suggestion auth=\"no\" merge=\"WR-P-E-J-0000000001.s.2\"/></correction></s>" );
 }
 
 
