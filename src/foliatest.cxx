@@ -1345,7 +1345,11 @@ void sanity_test101f(){
   int stat = system( "xmldiff /tmp/foreignmeta.out tests/foreignmeta.out" );
   assertMessage( "/tmp/foreignmeta.out tests/foreignmeta.out differ!",
 		 stat == 0 );
-  assertThrow( f_doc.set_foreign_metadata( root ), XmlError );
+  assertNoThrow( f_doc.set_foreign_metadata( root ) ); // append the same again
+  assertNoThrow( f_doc.save( "/tmp/foreignmeta3.out" ) );
+  int stat2 = system( "xmldiff /tmp/foreignmeta3.out tests/foreignmeta3.out" );
+  assertMessage( "/tmp/foreignmeta3.out tests/foreignmeta3.out differ!",
+		 stat2 == 0 );
   xmlFreeDoc( x_doc );
 }
 
