@@ -1139,6 +1139,8 @@ void sanity_test043(){
   assertEqual( st->text(), "FoLiA developers" );
   assertEqual( st->annotation<LangAnnotation>()->cls(), "eng" );
   assertEqual( st->language(), "eng" );
+  FoliaElement *wrd = sanityDoc["WR-P-E-J-0000000001.p.1.s.7.w.8"];
+  assertEqual( wrd->language(), "nl" );
 }
 
 void sanity_test044a(){
