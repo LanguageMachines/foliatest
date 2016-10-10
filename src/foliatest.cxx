@@ -1138,6 +1138,7 @@ void sanity_test043(){
   String* st = v[0];
   assertEqual( st->text(), "FoLiA developers" );
   assertEqual( st->annotation<LangAnnotation>()->cls(), "eng" );
+  assertEqual( st->language(), "eng" );
 }
 
 void sanity_test044a(){
