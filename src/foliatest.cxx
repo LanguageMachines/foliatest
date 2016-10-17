@@ -1161,7 +1161,8 @@ void sanity_test044a(){
   // testing nesting
   assertEqual( len(st), size_t(2) );
   assertEqual( st->index(0), sanityDoc["sandbox.3.str.bold"] );
-
+  // String should support str()
+  assertEqual( r2->str(), "FoLiA developers" );
   // testing TextMarkup.text()
   assertEqual( st->index(0)->text(), "FoLiA" );
 
