@@ -1820,6 +1820,8 @@ void sanity_test104a( ){
   assertEqual( doc["example.speech.utt.1"]->phon(), "həlˈəʊ wˈɜːld" );
   assertThrow( doc["example.speech.utt.1"]->text(), NoSuchText ); // doesn't exist
   assertEqual( doc["example.speech.utt.2"]->phon(), "həlˈəʊ wˈɜːld" );
+  // the str() function should return phon() for PhonContent
+  assertEqual( doc["example.speech.utt.2"]->str(), "həlˈəʊ wˈɜːld" );
 }
 
 void sanity_test104b( ){
