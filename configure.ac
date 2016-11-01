@@ -59,9 +59,6 @@ else
   AC_MSG_ERROR("ICU support is required")
 fi
 
-AX_CHECK_ZLIB( [],
-	       [AC_MSG_NOTICE([libz not found. (g)zip support disabled.])] )
-
 PKG_PROG_PKG_CONFIG
 # ugly hack when PKG_CONFIG_PATH isn't defined.
 # couldn't get it to work otherwise
