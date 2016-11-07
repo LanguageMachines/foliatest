@@ -168,6 +168,14 @@ void test8() {
   assertThrow( d.readFromFile( "tests/wrongname.xml" ), XmlError );
 }
 
+void test9() {
+  startTestSerie( " Test extracting text from a document" );
+  Document doc;
+  assertNoThrow( doc.readFromFile( "tests/text.xml" ) );
+  UnicodeString us;
+  assertNoThrow( us = doc.text() );
+  assertEqual( us, "chapter 1\n\nsentence 1" );
+}
 
 Document sanityDoc( "file='tests/example.xml'" );
 
@@ -3283,6 +3291,7 @@ int main(){
   test6();
   test7();
   test8();
+  test9();
   sanity_test000();
   sanity_test001();
   sanity_test002();
