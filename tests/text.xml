@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="chapter-2">
+  <metadata type="native">
+    <annotations/>
+    </metadata>
+  <text>
+    <div>
+      <head>
+        <t>chapter 1</t>
+      </head>
+      <s>
+	<t>sentence 1</t>
+      </s>
+    </div>
+  </text>
+</FoLiA>
