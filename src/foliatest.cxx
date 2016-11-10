@@ -782,7 +782,13 @@ void sanity_test026a(){
   assertTrue( isinstance(features[0], Feature_t ) );
   assertTrue( features[0]->subset() == "head" );
   assertTrue( features[0]->cls() == "WW" );
-
+  KWargs args;
+  args["subset"] = "subset";
+  args["class"] = "";
+  assertThrow( new Feature( args ), ValueError );
+  args["subset"] = "";
+  args["class"] = "class";
+  assertThrow( new Feature( args ), ValueError );
 }
 
 void sanity_test026b(){
