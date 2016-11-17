@@ -3110,6 +3110,21 @@ void correction_test006(){
 	       "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.s.1\"><w xml:id=\"WR-P-E-J-0000000001.s.1.w.1\"><t>De</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.2\"><t>site</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.3\"><t>staat</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.4\"><t>on</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.5\"><t>line</t></w><correction><current><w xml:id=\"WR-P-E-J-0000000001.s.1.w.6\"><t>.</t></w></current><suggestion auth=\"no\" merge=\"WR-P-E-J-0000000001.s.2\"/></correction></s>" );
 }
 
+void correction_test007(){
+  startTestSerie( " corrections on elements without an ID " );
+  Document corDoc;
+  corDoc.readFromFile( "tests/corr_str.xml" );
+  assertNoThrow( corDoc.declare( AnnotationType::CORRECTION,
+				 "corrections" ) );
+  FoliaElement *p = corDoc.index("p.4");
+  FoliaElement *w = p->index(8);
+  assertNoThrow( w->correct("new='behandeling', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
+  assertNoThrow( assertEqual( w->text(), "behandeling" ) );
+  w = p->index(12);
+  assertNoThrow( w->correct("new='Wijziging', set='corrections', class='spelling',annotator='John Doe', annotatortype='manual'" ) );
+  assertEqual( w->text(), "Wijziging" );
+}
+
 
 Document qDoc( "file='tests/example.xml'" );
 
@@ -3452,6 +3467,7 @@ int main(){
   correction_test004();
   correction_test005();
   correction_test006();
+  correction_test007();
   query_test001();
   query_test002();
   query_test003();
