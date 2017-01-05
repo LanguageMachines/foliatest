@@ -356,8 +356,8 @@ void sanity_test009( ){
   assertTrue( test );
   assertTrue( w->annotation<PosAnnotation>()->cls() == "N(soort,ev,basis,onz,stan)" );
   assertTrue( w->pos() == "N(soort,ev,basis,onz,stan)" );
-  assertTrue( w->annotation<PosAnnotation>()->sett() == "cgn-combinedtags" );
-  assertTrue( w->annotation<PosAnnotation>()->annotator() == "tadpole" );
+  assertTrue( w->annotation<PosAnnotation>()->sett() == "https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn" );
+  assertTrue( w->annotation<PosAnnotation>()->annotator() == "frog" );
   assertTrue( w->annotation<PosAnnotation>()->annotatortype() == AUTO );
 
 }
@@ -514,9 +514,9 @@ void sanity_test018(){
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.5"];
   PosAnnotation *m = 0;
   assertNoThrow( m = w->annotation<PosAnnotation>() );
-  assertEqual( m->feat("role"),"pv" );
-  assertEqual( m->feat("tense"), "tgw" );
-  assertEqual( m->feat("form") , "met-t" );
+  assertEqual( m->feat("wvorm"),"pv" );
+  assertEqual( m->feat("pvtijd"), "tgw" );
+  assertEqual( m->feat("pvagr") , "met-t" );
 }
 
 void sanity_test019(){
@@ -2183,7 +2183,7 @@ void edit_test002( ){
   assertTrue( p->isinstance<LemmaAnnotation>() );
   assertTrue( p->cls() == "NAAM" );
   assertTrue( w->lemma("adhoclemma") == "NAAM" );
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" datetime=\"1982-12-15T19:00:01\" set=\"adhoclemma\"/></w>");
+  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" datetime=\"1982-12-15T19:00:01\" set=\"adhoclemma\"/></w>");
 
 }
 
@@ -2214,7 +2214,7 @@ void edit_test003( ){
   assertTrue( p->cls() == "NAAM" );
 
   // check the outcome
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" set=\"adhoclemma\"/></w>");
+  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"naam\" set=\"lemmas-nl\"/><pos annotator=\"testscript\" annotatortype=\"auto\" class=\"NOUN\" set=\"adhocpos\"/><lemma annotator=\"testscript\" annotatortype=\"auto\" class=\"NAAM\" set=\"adhoclemma\"/></w>");
 }
 
 void edit_test003b( ){
@@ -2490,7 +2490,7 @@ void edit_test010( ){
   assertTrue( pos->parent() == w );
   assertTrue( pos->doc() == w->doc() );
 
-  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"cgn-combinedtags\"/><lemma class=\"stippelijn\"/><pos class=\"N\" set=\"fakecgn\"/></w>" );
+  assertTrue( w->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><pos class=\"N\" set=\"fakecgn\"/></w>" );
 }
 
 void edit_test011(){
