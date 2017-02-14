@@ -1771,6 +1771,36 @@ void sanity_test102l(){
 
 }
 
+void sanity_test102m(){
+  startTestSerie(" Declarations - removing." );
+  string xml = "<?xml version=\"1.0\"?>\n"
+    " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+    "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <gap-annotation set=\"gap-set\" datetime=\"2012-06-18T17:49\"/>\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"example.text.1\">\n"
+    "    <gap class=\"X\" />\n"
+    "    <gap class=\"Y\" datetime=\"2012-06-18T17:50\"/>\n"
+    "  </text>\n"
+    "</FoLiA>\n" ;
+
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.declare( AnnotationType::GAP,
+			      "gap-set2",
+			      "annotatortype='manual'" ) );
+  assertNoThrow( doc.save( "/tmp/declared1.out" ) );
+  assertNoThrow( doc.un_declare( AnnotationType::GAP,
+				 "gap-set2" ) );
+  assertNoThrow( doc.save( "/tmp/declared2.out" ) );
+  assertNoThrow( doc.un_declare( AnnotationType::GAP,
+				 "gap-set" ) );
+  assertNoThrow( doc.save( "/tmp/declared3.out" ) );
+}
+
 void sanity_test103( ){
   startTestSerie(" Alien namespaces - Checking whether properly ignored " );
   string xml = "<?xml version=\"1.0\"?>\n"
@@ -3418,6 +3448,7 @@ int main(){
   sanity_test102j();
   sanity_test102k();
   sanity_test102l();
+  sanity_test102m();
   sanity_test103();
   sanity_test104a();
   sanity_test104b();
