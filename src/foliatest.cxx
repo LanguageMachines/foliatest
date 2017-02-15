@@ -1796,8 +1796,7 @@ void sanity_test102m(){
   assertNoThrow( doc.un_declare( AnnotationType::GAP,
 				 "gap-set2" ) );
   assertNoThrow( doc.save( "/tmp/declared2.out" ) );
-  assertNoThrow( doc.un_declare( AnnotationType::GAP,
-				 "gap-set" ) );
+  assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ), XmlError );
   assertNoThrow( doc.save( "/tmp/declared3.out" ) );
 }
 
