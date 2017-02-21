@@ -1793,11 +1793,9 @@ void sanity_test102m(){
 			      "gap-set2",
 			      "annotatortype='manual'" ) );
   assertNoThrow( doc.save( "/tmp/declared1.out" ) );
-  assertNoThrow( doc.un_declare( AnnotationType::GAP,
-				 "gap-set2" ) );
+  assertNoThrow( doc.un_declare( AnnotationType::GAP, "gap-set2" ) );
   assertNoThrow( doc.save( "/tmp/declared2.out" ) );
-  assertNoThrow( doc.un_declare( AnnotationType::GAP,
-				 "gap-set" ) );
+  assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ), XmlError );
   assertNoThrow( doc.save( "/tmp/declared3.out" ) );
 }
 
