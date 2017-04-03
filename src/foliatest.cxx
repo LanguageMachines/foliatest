@@ -855,8 +855,11 @@ void sanity_test030( ){
 
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
   assertTrue( w->text() == "hoofdletter" );
-  assertTrue( w->textcontent()->text() == "hoofdletter" );
-  assertTrue( w->textcontent()->offset() == 3 );
+  const TextContent* t = 0;
+  assertNoThrow( t = w->textcontent() );
+  assertNoThrow( t = t->textcontent() ); // should deliver itself!
+  assertTrue( t->text() == "hoofdletter" );
+  assertTrue( t->offset() == 3 );
 
   FoliaElement *w2= sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
   assertTrue( w2->text() == "vierkante" );
@@ -867,7 +870,7 @@ void sanity_test030( ){
 void sanity_test030b( ){
   startTestSerie( " Sanity check - Text Content (2) " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  TextContent *t = head->textcontent();
+  const TextContent *t = head->textcontent();
   assertTrue( len(t) == 3 );
   assertEqual( t->text(), "De FoLiA developers zijn:" );
   assertEqual( t->index(0)->text(), "De ");
@@ -1160,7 +1163,7 @@ void sanity_test043(){
 void sanity_test044a(){
   startTestSerie( " Sanity check - Text Markup " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  TextContent *t = head->textcontent();
+  const TextContent *t = head->textcontent();
   assertEqual( len(head->select<TextMarkupString>()), size_t(1) );
   assertEqual( len(t->select<TextMarkupString>()), size_t(1) );
   vector<TextMarkupString*> v = t->select<TextMarkupString>();
