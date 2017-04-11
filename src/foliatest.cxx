@@ -270,7 +270,7 @@ void sanity_test006c(){
   Sentence *s = sanityDoc.sentences(4);
   assertTrue( s->hastext() );
   // The sentence has text of it's own
-  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
+  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   // The sentence has <w> children with tokenization too
   assertEqual( s->toktext("current"), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
   assertEqual( s->toktext(), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
@@ -848,7 +848,7 @@ void sanity_test029(){
 void sanity_test030( ){
   startTestSerie(" Text Content " );
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.4"];
-  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
+  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   assertEqual( s->stricttext(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   assertEqual( s->stricttext("original"), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   assertThrow( s->text( "BLAH" ), NoSuchText );
@@ -1220,7 +1220,7 @@ void sanity_test046a(){
   FoliaElement *p = sanityDoc["WR-P-E-J-0000000001.p.1"];
     // this is a bit of a malformed paragraph due to the explicit whitespace
     // and linebreaks in it, but makes for a nice test
-  assertEqual( p->text(), "Stemma is een ander woord voor stamboom . In de historische wetenschap wordt zo'n stamboom , onder de naam stemma codicum ( handschriftelijke genealogie ) , gebruikt om de verwantschap tussen handschriften weer te geven . \n\nWerkwijze\n\nHiervoor worden de handschriften genummerd en gedateerd zodat ze op de juiste plaats van hun afstammingsgeschiedenis geplaatst kunnen worden . De hoofdletter A wordt gebruikt voor het originele handschrift . De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring. Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkante haken geplaatst .\nTenslotte gaat men de verwantschap tussen de handschriften aanduiden . Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt .");
+  assertEqual( p->text(), "Stemma is een ander woord voor stamboom . In de historische wetenschap wordt zo'n stamboom , onder de naam stemma codicum ( handschriftelijke genealogie ) , gebruikt om de verwantschap tussen handschriften weer te geven . \n\nWerkwijze\n\nHiervoor worden de handschriften genummerd en gedateerd zodat ze op de juiste plaats van hun afstammingsgeschiedenis geplaatst kunnen worden . De hoofdletter A wordt gebruikt voor het originele handschrift. De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring. Verdwenen handschriften waarvan men toch vermoedt dat ze ooit bestaan hebben worden ook in het stemma opgenomen en worden weergegeven door de laatste letters van het alfabet en worden tussen vierkante haken geplaatst.\nTenslotte gaat men de verwantschap tussen de handschriften aanduiden . Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt .");
 }
 
 
