@@ -478,10 +478,8 @@
         </fl:s>
         <fl:s xml:id="WR-P-E-J-0000000001.p.1.s.4">
           <fl:t>De hoofdletter A wordt gebruikt voor het originele handschrift.</fl:t>
-          <fl:t class="original">De hoofdletter A wordt gebruikt voor het originele handschrift.</fl:t>
           <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.1">
             <fl:t offset="0">De</fl:t>
-            <fl:t class="original" offset="0">De</fl:t>
             <fl:pos class="LID(bep,stan,rest)"/>
             <fl:lemma class="de"/>
           </fl:w>
@@ -520,7 +518,7 @@
             <fl:pos class="ADJ(prenom,basis,met-e,stan)"/>
             <fl:lemma class="origineel"/>
           </fl:w>
-          <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.9">
+          <fl:w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.9" space="no">
             <fl:t>handschrift</fl:t>
             <fl:pos class="N(soort,ev,basis,onz,stan)"/>
             <fl:lemma class="handschrift"/>
