@@ -2377,17 +2377,13 @@ void edit_test005b( ){
   assertNoThrow( l = w->addMorphologyLayer(args) );
   FoliaElement *m = new Morpheme( &editDoc );
   l->append( m );
-  FoliaElement *t = new TextContent( getArgs("value='hand', offset='0'"),
-				     &editDoc );
-  m->append( t );
+  m->settext( "hand", 0 );
   m = new Morpheme( &editDoc );
   l->append( m );
-  t = new TextContent( getArgs("value='schrift', offset='4'"),  &editDoc );
-  m->append( t );
+  m->settext( "schrift", 4 );
   m = new Morpheme( &editDoc );
   l->append( m );
-  t = new TextContent( getArgs("value='en', offset='11'"), &editDoc );
-  m->append( t );
+  m->settext( "en", 11 );
 }
 
 void edit_test005c( ){
@@ -2395,11 +2391,8 @@ void edit_test005c( ){
   FoliaElement *s = 0;
   Document editDoc( "file='tests/example.xml'" );
   assertNoThrow( s = editDoc["WR-P-E-J-0000000001.p.1.s.1"] );
-  FoliaElement *t = new TextContent( getArgs( "value='text1', class='test1'"),
-				      &editDoc );
-  assertNoThrow( s->append( t ) );
-  t = new TextContent( getArgs("value='text1', class='test2'"), &editDoc);
-  assertNoThrow( s->append( t ) );
+  assertNoThrow( s->settext( "text1", "test1" ) );
+  assertNoThrow( s->settext( "text1", "test2" ) );
 }
 
 void edit_test005d( ){
@@ -2498,7 +2491,6 @@ void edit_test009c( ){
    assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
    KWargs args;
    args["value"] = "blah";
-   args["class"] = "current";
    TextContent *t = new TextContent( args );
    assertThrow( w->append( t ), DuplicateAnnotationError );
 }
