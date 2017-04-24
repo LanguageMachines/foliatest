@@ -2864,6 +2864,30 @@ void create_test003( ){
   assertEqual( text->xmlstring(), "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\" set=\"extended-gap-set\"/></text>" );
 }
 
+void create_test004( ){
+  startTestSerie( " Creating a document from scratch. appending text" );
+  Document d( "id='example'" );
+  string id = d.id() + ".text.1";
+  FoliaElement *text = 0;
+  KWargs kw = getArgs( "id='" + id + "'" );
+  assertNoThrow( text = d.addText( kw ) );
+  kw.clear();
+  FoliaElement *p = 0;
+  assertNoThrow( p = new Paragraph( getArgs("generate_id='" + text->id() + "'"), &d ) );
+  text->append( p );
+  FoliaElement *s = 0;
+  assertNoThrow( s = new Sentence( getArgs("generate_id='" + text->id() + "'"), &d ) );
+  p->append( s );
+  KWargs args;
+  args["value"] = "dit is een tekst";
+  TextContent *pT = new TextContent( args );
+  p->append( pT );
+  args["value"] = "een andere tekst";
+  TextContent *sT = new TextContent( args );
+  assertThrow( s->append( sT ), XmlError );
+}
+
+
 void correction_test001a( ){
   startTestSerie( " Split correction " );
   Document corDoc( "id='example'" );
@@ -3141,7 +3165,7 @@ void correction_test007(){
   FoliaElement *p = corDoc.index("p.4");
   FoliaElement *w = p->index(8);
   assertNoThrow( w->correct("new='behandeling', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
-  assertNoThrow( assertEqual( w->text(), "behandeling" ) );
+  assertEqual( w->text(), "behandeling" );
   w = p->index(12);
   assertNoThrow( w->correct("new='Wijziging', set='corrections', class='spelling',annotator='John Doe', annotatortype='manual'" ) );
   assertEqual( w->text(), "Wijziging" );
@@ -3483,6 +3507,7 @@ int main(){
   create_test001();
   create_test002();
   create_test003();
+  create_test004();
   correction_test001a();
   correction_test001b();
   correction_test002();
@@ -3503,5 +3528,5 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
-  summarize_tests();
+  summarize_tests(1);
 }
