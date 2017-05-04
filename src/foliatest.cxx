@@ -2707,7 +2707,7 @@ void edit_test016(){
 
 void edit_test017(){
   startTestSerie( " Altering word text" );
-  Document editDoc( "file='tests/example.xml', mode='checktext'" );
+  Document editDoc( "file='tests/example.xml'" );
   // Important note: directly altering text is usually bad practise, you'll want to use proper corrections instead.
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
   assertTrue( word->text() == "terweil" );
@@ -2729,7 +2729,7 @@ void edit_test018a(){
 
 void edit_test018b(){
   startTestSerie( " Altering sentence text (untokenized by definition)" );
-  Document editDoc( "file='tests/example.xml', mode='checktext'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.8"];
   // 1 get text() dynamic from children
   assertEqual( s->text(), "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
@@ -2867,22 +2867,25 @@ void create_test003( ){
 void create_test004( ){
   startTestSerie( " Creating a document from scratch. appending text" );
   Document d( "id='example'" );
-  string id = d.id() + ".text.1";
   FoliaElement *text = 0;
-  KWargs kw = getArgs( "id='" + id + "'" );
-  assertNoThrow( text = d.addText( kw ) );
-  kw.clear();
-  FoliaElement *p = 0;
-  assertNoThrow( p = new Paragraph( getArgs("generate_id='" + text->id() + "'"), &d ) );
-  text->append( p );
-  FoliaElement *s = 0;
-  assertNoThrow( s = new Sentence( getArgs("generate_id='" + text->id() + "'"), &d ) );
-  p->append( s );
   KWargs args;
+  args["id"] =  "t.1";
+  assertNoThrow( text = d.addText( args ) );
+  args["id"] = "p.1";
+  FoliaElement *p = 0;
+  assertNoThrow( p = new Paragraph( args ) );
+  text->append( p );
+  args["id"] = "s.1";
+  FoliaElement *s = 0;
+  assertNoThrow( s = new Sentence( args ) );
+  p->append( s );
+  args.clear();
   args["value"] = "dit is een tekst";
-  TextContent *pT = new TextContent( args );
+  args["class"] =  "new";
+  TextContent *pT = new TextContent( args  );
   p->append( pT );
   args["value"] = "een andere tekst";
+  args["class"] =  "new";
   TextContent *sT = new TextContent( args );
   assertThrow( s->append( sT ), XmlError );
 }
