@@ -2707,7 +2707,7 @@ void edit_test016(){
 
 void edit_test017(){
   startTestSerie( " Altering word text" );
-  Document editDoc( "file='tests/example.xml', mode='checktext'" );
+  Document editDoc( "file='tests/example.xml'" );
   // Important note: directly altering text is usually bad practise, you'll want to use proper corrections instead.
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
   assertTrue( word->text() == "terweil" );
@@ -2729,7 +2729,7 @@ void edit_test018a(){
 
 void edit_test018b(){
   startTestSerie( " Altering sentence text (untokenized by definition)" );
-  Document editDoc( "file='tests/example.xml', mode='checktext'" );
+  Document editDoc( "file='tests/example.xml'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.8"];
   // 1 get text() dynamic from children
   assertEqual( s->text(), "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
@@ -2863,6 +2863,33 @@ void create_test003( ){
   assertEqual( v3.size(), 2 );
   assertEqual( text->xmlstring(), "<text xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.text.1\"><gap class=\"NP\" set=\"gap-set\"/><gap class=\"VP\" set=\"extended-gap-set\"/></text>" );
 }
+
+void create_test004( ){
+  startTestSerie( " Creating a document from scratch. appending text" );
+  Document d( "id='example'" );
+  FoliaElement *text = 0;
+  KWargs args;
+  args["id"] =  "t.1";
+  assertNoThrow( text = d.addText( args ) );
+  args["id"] = "p.1";
+  FoliaElement *p = 0;
+  assertNoThrow( p = new Paragraph( args ) );
+  text->append( p );
+  args["id"] = "s.1";
+  FoliaElement *s = 0;
+  assertNoThrow( s = new Sentence( args ) );
+  p->append( s );
+  args.clear();
+  args["value"] = "dit is een tekst";
+  args["class"] =  "new";
+  TextContent *pT = new TextContent( args  );
+  p->append( pT );
+  args["value"] = "een andere tekst";
+  args["class"] =  "new";
+  TextContent *sT = new TextContent( args );
+  assertThrow( s->append( sT ), XmlError );
+}
+
 
 void correction_test001a( ){
   startTestSerie( " Split correction " );
@@ -3141,7 +3168,7 @@ void correction_test007(){
   FoliaElement *p = corDoc.index("p.4");
   FoliaElement *w = p->index(8);
   assertNoThrow( w->correct("new='behandeling', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
-  assertNoThrow( assertEqual( w->text(), "behandeling" ) );
+  assertEqual( w->text(), "behandeling" );
   w = p->index(12);
   assertNoThrow( w->correct("new='Wijziging', set='corrections', class='spelling',annotator='John Doe', annotatortype='manual'" ) );
   assertEqual( w->text(), "Wijziging" );
@@ -3483,6 +3510,7 @@ int main(){
   create_test001();
   create_test002();
   create_test003();
+  create_test004();
   correction_test001a();
   correction_test001b();
   correction_test002();
@@ -3503,5 +3531,5 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
-  summarize_tests();
+  summarize_tests(1);
 }
