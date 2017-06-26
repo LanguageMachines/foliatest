@@ -3504,7 +3504,7 @@ int main(){
   edit_test007();
   edit_test008();
   edit_test009a();
-  // edit_test009b();
+  //  edit_test009b();
   edit_test009c();
   edit_test010();
   edit_test011();
@@ -3544,5 +3544,5 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
-  summarize_tests(1);
+  summarize_tests(0);
 }
