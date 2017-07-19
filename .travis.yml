@@ -37,7 +37,7 @@ matrix:
     - os: linux
       compiler: clang
       env:
-        - COMPILER=clang++-3.7
+        - COMPILER=clang++
 
 
 before_install:
