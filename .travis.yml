@@ -42,7 +42,7 @@ matrix:
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive libicu-dev libxml2-dev libtar-dev libbz2-dev zlib1g-dev xmldiff
+    - sudo apt-get install pkg-config autoconf-archive libicu-dev libxml2-dev libtar-dev libbz2-dev zlib1g-dev xmldiff libboost-dev libboost-regex-dev
     - git clone https://github.com/LanguageMachines/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
