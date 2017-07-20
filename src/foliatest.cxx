@@ -2900,9 +2900,7 @@ void create_test004( ){
   args["value"] = "een andere tekst";
   args["class"] =  "new";
   TextContent *sT = new TextContent( args );
-  // for 1.5 this should fail!
-  // assertThrow( s->append( sT ), XmlError );
-  assertNoThrow( s->append( sT ) );
+  assertThrow( s->append( sT ), XmlError );
 }
 
 
