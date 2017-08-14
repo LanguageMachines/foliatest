@@ -248,7 +248,7 @@ void sanity_test006a( ){
   assertTrue( isinstance( s, Sentence_t ) );
   assertEqual( s->id(), "WR-P-E-J-0000000001.p.1.s.1" );
   assertTrue( !s->hastext() );
-  assertEqual( s->str() , "Stemma is een ander woord voor stamboom ." );
+  assertEqual( s->str() , "Stemma is een ander woord voor stamboom." );
 }
 
 void sanity_test006b(){
@@ -2726,9 +2726,9 @@ void edit_test018a(){
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.1"];
   assertTrue( !s->hastext() ); // No text directly associated
   // but text() can be retrieved from children.
-  assertTrue( s->text() == "Stemma is een ander woord voor stamboom ." );
+  assertTrue( s->text() == "Stemma is een ander woord voor stamboom." );
   // now set this text on the sentence too
-  assertNoThrow( s->settext( "Stemma is een ander woord voor stamboom ." ) );
+  assertNoThrow( s->settext( "Stemma is een ander woord voor stamboom." ) );
   assertTrue( s->hastext() ); // Now there IS direct text
 }
 
