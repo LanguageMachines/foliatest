@@ -95,7 +95,7 @@
             <pos class="VZ(init)" set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn"/>
             <lemma class="voor"/>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.7">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.7" space="no">
             <t>stamboom</t>
             <pos class="N(soort,ev,basis,zijd,stan)" set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn"/>
             <lemma class="stamboom"/>
