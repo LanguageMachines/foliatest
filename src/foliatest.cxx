@@ -1802,6 +1802,35 @@ void sanity_test102m(){
   assertNoThrow( doc.save( "/tmp/declared3.out" ) );
 }
 
+void sanity_test102n(){
+  startTestSerie(" Declarations - using an alias." );
+  string xml = "<?xml version=\"1.0\"?>\n"
+    " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+    "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <gap-annotation set=\"some very convoluted url or such which clutters all\" alias=\"gap-set\" datetime=\"2012-06-18T17:49\"/>\n"
+    "      <div-annotation set=\"a long div annotation name\" alias=\"div-set\" datetime=\"2012-06-18T17:49\"/>\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"example.text.1\">\n"
+    "    <gap class=\"X\" />\n"
+    "    <gap class=\"Y\" datetime=\"2012-06-18T17:50\"/>\n"
+    "  </text>\n"
+    "</FoLiA>\n" ;
+
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.declare( AnnotationType::GAP,
+			      "nog zon ingewikkelde en veels te lange declaratie",
+			      "annotatortype='manual', alias='gap-set2'" ) );
+  assertNoThrow( doc.save( "/tmp/declared1.out" ) );
+  assertNoThrow( doc.un_declare( AnnotationType::GAP, "gap-set2" ) );
+  assertNoThrow( doc.save( "/tmp/declared2.out" ) );
+  assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ), XmlError );
+  assertNoThrow( doc.save( "/tmp/declared3.out" ) );
+}
+
 void sanity_test103( ){
   startTestSerie(" Alien namespaces - Checking whether properly ignored " );
   string xml = "<?xml version=\"1.0\"?>\n"
@@ -3481,6 +3510,7 @@ int main(){
   sanity_test102k();
   sanity_test102l();
   sanity_test102m();
+  sanity_test102n();
   sanity_test103();
   sanity_test104a();
   sanity_test104b();
