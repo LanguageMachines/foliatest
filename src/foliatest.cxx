@@ -1825,6 +1825,24 @@ void sanity_test102n(){
 			      "nog zon ingewikkelde en veels te lange declaratie",
 			      "annotatortype='manual', alias='gap-set2'" ) );
   assertNoThrow( doc.save( "/tmp/declared1.out" ) );
+  // using a setname which is already an alias is a error
+  assertThrow( doc.declare( AnnotationType::GAP, "gap-set2", "alias='gap-set3'"),
+	       XmlError );
+  // using an alias  which is already an alias is a error
+  assertThrow( doc.declare( AnnotationType::GAP, "someset", "alias='gap-set'"),
+	       XmlError );
+  // using an alias  which is already a setname is a error
+  assertThrow( doc.declare( AnnotationType::GAP, "some_other_set", "alias='nog zon ingewikkelde en veels te lange declaratie'"),
+	       XmlError );
+  // just declaring again is NOT an error!
+  assertNoThrow( doc.declare( AnnotationType::GAP,
+			      "nog zon ingewikkelde en veels te lange declaratie",
+			      "annotatortype='manual', alias='gap-set2'" ) );
+  // declaring again with another alias IS an error!
+  assertThrow( doc.declare( AnnotationType::GAP,
+			      "nog zon ingewikkelde en veels te lange declaratie",
+			    "annotatortype='manual', alias='gap-set3'" ),
+	       XmlError) ;
   assertNoThrow( doc.un_declare( AnnotationType::GAP, "gap-set2" ) );
   assertNoThrow( doc.save( "/tmp/declared2.out" ) );
   assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ), XmlError );
