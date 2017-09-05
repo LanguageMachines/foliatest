@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="doc" version="0.8" generator="libfolia-v0.4">
+  <metadata>
+    <annotations>
+      <division-annotation set="a-set" alias="a"/>
+      <division-annotation set="b-set" alias="b"/>
+      <token-annotation set="a-set" alias="b"/>
+      <token-annotation set="b-set" alias="a"/>
+    </annotations>
+  </metadata>
+  <text xml:id="text">
+    <div set="a-set">
+      <s id="s.1">
+	<w id="w.1" class="WORD" set="b">
+	  <t>test</t>
+	</w>
+      </s>
+    </div>
+    <div set="b">
+      <s id="s.2">
+	<w id="w.2" class="WORD" set="b-set">
+	  <t>test</t>
+	</w>
+      </s>
+    </div>
+  </text>
+</FoLiA>

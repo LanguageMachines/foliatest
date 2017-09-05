@@ -1854,6 +1854,17 @@ void sanity_test102n(){
   assertNoThrow( doc.save( "/tmp/declared3.out" ) );
 }
 
+void sanity_test102o(){
+  startTestSerie(" Declarations - using same sets and aliases for different types." );
+  Document doc;
+  assertNoThrow( doc.readFromFile("tests/aliases.xml") );
+  assertNoThrow( doc.save( "/tmp/aliases.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/aliases.xml tests/aliases.xml" );
+  assertMessage( "/tmp/aliases.xml tests/aliases.xml differ!",
+   		 (stat == 0) );
+
+}
+
 void sanity_test103( ){
   startTestSerie(" Alien namespaces - Checking whether properly ignored " );
   string xml = "<?xml version=\"1.0\"?>\n"
@@ -3534,6 +3545,7 @@ int main(){
   sanity_test102l();
   sanity_test102m();
   sanity_test102n();
+  sanity_test102o();
   sanity_test103();
   sanity_test104a();
   sanity_test104b();
