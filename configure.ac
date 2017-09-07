@@ -43,7 +43,7 @@ PKG_PROG_PKG_CONFIG
 if test "x$PKG_CONFIG_PATH" = x; then
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig"
 else
-    export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH:"
+    export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
 
 AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
@@ -52,15 +52,15 @@ PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
 LIBS="$ICU_LIBS $LIBS"
 
-PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
-CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
-LIBS="$XML2_LIBS $LIBS"
-
 PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.1] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 
-PKG_CHECK_MODULES([folia],[folia >= 1.8])
+PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
+CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
+LIBS="$XML2_LIBS $LIBS"
+
+PKG_CHECK_MODULES([folia],[folia >= 1.9])
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
