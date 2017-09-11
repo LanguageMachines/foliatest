@@ -2229,7 +2229,8 @@ void edit_test001b( ){
   KWargs ann;
   ann["text"] = "nieuwe";
   ann["class"] = "WORD";
-  assertNoThrow( s->addWord( ann ) );
+  assertNoThrow( w = s->addWord( ann ) );
+  w->settext( "oude", "apart" );
   ann["text"] = "zin";
   w = 0;
   assertNoThrow( w = s->addWord( ann ) );
@@ -2247,9 +2248,9 @@ void edit_test001b( ){
   assertTrue( p->rindex(0) == s );
 
   // all well?
-  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\" textclass=\"apart\"><t>is</t><t class=\"apart\">was</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\" class=\"WORD\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\" class=\"WORD\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\" textclass=\"apart\"><t>is</t><t class=\"apart\">was</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\" class=\"WORD\"><t>nieuwe</t><t class=\"apart\">oude</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\" class=\"WORD\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
   assertEqual( s->text() ,"Dit is een nieuwe zin ." );
-  assertEqual( s->text("apart"), "was" );
+  assertEqual( s->text("apart"), "was oude" );
 }
 
 void edit_test002( ){
