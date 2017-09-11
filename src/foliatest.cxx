@@ -2219,17 +2219,19 @@ void edit_test001b( ){
   FoliaElement *s = 0;
   assertNoThrow( s = p->addSentence() );
   // add words to the sentence
+  Word *w = 0;
+  assertNoThrow( w = s->addWord() );
+  w->settext("Dit");
+  assertNoThrow( w = s->addWord( "textclass='apart'" ) );
+  w->settext( "is" );
+  w->settext( "was", "apart" );
+  assertNoThrow( w = s->addWord( "text='een'" ) );
   KWargs ann;
-  ann["text"] = "Dit";
-  assertNoThrow( s->addWord( ann ) );
-  assertNoThrow( s->addWord( "text='is', textclass='apart'" ) );
-  ann["text"] = "een";
-  assertNoThrow( s->addWord( ann ) );
   ann["text"] = "nieuwe";
   ann["class"] = "WORD";
   assertNoThrow( s->addWord( ann ) );
   ann["text"] = "zin";
-  FoliaElement *w = 0;
+  w = 0;
   assertNoThrow( w = s->addWord( ann ) );
   FoliaElement *w2 = 0;
   assertNoThrow( w2 = s->addWord( "text='.', class='PUNCTUATION'" ) );
@@ -2245,8 +2247,9 @@ void edit_test001b( ){
   assertTrue( p->rindex(0) == s );
 
   // all well?
-  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\" textclass=\"apart\"><t>is</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\" class=\"WORD\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\" class=\"WORD\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
-
+  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\" textclass=\"apart\"><t>is</t><t class=\"apart\">was</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\" class=\"WORD\"><t>nieuwe</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\" class=\"WORD\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
+  assertEqual( s->text() ,"Dit is een nieuwe zin ." );
+  assertEqual( s->text("apart"), "was" );
 }
 
 void edit_test002( ){
