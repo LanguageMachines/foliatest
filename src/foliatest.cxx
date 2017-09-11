@@ -2251,6 +2251,10 @@ void edit_test001b( ){
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.9\"><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.1\"><t>Dit</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.2\" textclass=\"apart\"><t>is</t><t class=\"apart\">was</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.3\"><t>een</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.4\" class=\"WORD\"><t>nieuwe</t><t class=\"apart\">oude</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.5\" class=\"WORD\"><t>zin</t></w><w xml:id=\"WR-P-E-J-0000000001.p.1.s.9.w.6\" class=\"PUNCTUATION\"><t>.</t></w></s>" );
   assertEqual( s->text() ,"Dit is een nieuwe zin ." );
   assertEqual( s->text("apart"), "was oude" );
+  vector<Word*> wv = s->select<Word>();
+  wv.erase(remove_if( wv.begin(), wv.end(),
+		      [](Word *w) { return w->textclass() != "apart"; }), wv.end());
+  assertEqual( wv.size(), 1 );
 }
 
 void edit_test002( ){
