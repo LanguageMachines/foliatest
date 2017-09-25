@@ -1810,7 +1810,7 @@ void sanity_test102n(){
     "  <metadata type=\"native\">\n"
     "    <annotations>\n"
     "      <gap-annotation set=\"some very convoluted url or such which clutters all\" alias=\"gap-set\" datetime=\"2012-06-18T17:49\"/>\n"
-    "      <div-annotation set=\"a long div annotation name\" alias=\"div-set\" datetime=\"2012-06-18T17:49\"/>\n"
+    "      <division-annotation set=\"a long div annotation name\" alias=\"div-set\" datetime=\"2012-06-18T17:49\"/>\n"
     "    </annotations>\n"
     "  </metadata>\n"
     "  <text xml:id=\"example.text.1\">\n"
