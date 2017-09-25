@@ -3006,6 +3006,41 @@ void create_test004( ){
 }
 
 
+void create_test005( ){
+  startTestSerie( " Creating a document from scratch. appending Words After Sentence" );
+  Document d( "id='example'" );
+  FoliaElement *text = 0;
+  KWargs args;
+  args["id"] =  "t.1";
+  assertNoThrow( text = d.addText( args ) );
+  args["id"] = "p.1";
+  FoliaElement *p = 0;
+  assertNoThrow( p = new Paragraph( args ) );
+  text->append( p );
+  args["id"] = "s.1";
+  FoliaElement *s = 0;
+  assertNoThrow( s = new Sentence( args ) );
+  p->append( s );
+  args.clear();
+  args["value"] = " dit is \t een \n tekst";
+  TextContent *t1 = new TextContent( args  );
+  p->append( t1 );
+  args["value"] = "dit is een tekst";
+  TextContent *t2 = new TextContent( args  );
+  // appending a text to the sentence with 'equivalent' text is OK
+  assertNoThrow( s->append( t2 ) );
+  args["value"] = " dit is een ander tekst";
+  TextContent *t3 = new TextContent( args  );
+  // appending a text to the sentence with 'different text is NOT OK
+  assertThrow( s->append( t3 ), XmlError );
+  s->addWord( "dit" );
+  s->addWord( "is" );
+  assertThrow( s->addWord( "geen" ), XmlError );
+  s->addWord( "een" );
+  s->addWord( "\t  tekst \n" );
+}
+
+
 void correction_test001a( ){
   startTestSerie( " Split correction " );
   Document corDoc( "id='example'" );
