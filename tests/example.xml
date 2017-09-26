@@ -43,11 +43,15 @@
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
     <meta id="genre">artikel</meta>
-    <submetadata xml:id="wikipedia.stemma" type="native">
-        <meta id="originalsource">https://nl.wikipedia.org/wiki/Stemma</meta>
+    <submetadata xml:id="external.metadata" type="outside" src="blaat"/>
+    <submetadata xml:id="foreign.metadata" type="strange">
+      <foreign-data id="ergens">proycon</foreign-data>
     </submetadata>
     <submetadata xml:id="sandbox.3.metadata" type="native">
-        <meta id="author">proycon</meta>
+      <meta id="author">proycon</meta>
+    </submetadata>
+    <submetadata xml:id="wikipedia.stemma" type="native">
+      <meta id="originalsource">https://nl.wikipedia.org/wiki/Stemma</meta>
     </submetadata>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -533,7 +537,7 @@
             </w>
             <w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.2">
               <t offset="3">hoofdletter</t>
-              <t offset="3" class="original">hoofdletter</t>
+              <t class="original" offset="3">hoofdletter</t>
               <pos class="N(soort,ev,basis,zijd,stan)" set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn"/>
               <lemma class="hoofdletter"/>
             </w>
@@ -1118,7 +1122,7 @@
         </term>
         <def xml:id="entry.1.def.1" class="sense">
           <p xml:id="entry.1.def.1.p.1">
-            <t>Term uit de editiewetenschap en tekstkritiek voor de schematische weergave in de vorm van een boomdiagram van de onderlinge verwantschap van <br linenr="1" newpage="yes" pagenr="23"/> documentaire bronnen (handschrift, codex, druk), waarin een tekst bewaard is gebleven.<br xlink:href="http://resources.huygens.knaw.nl/retroapp/service_declercq/1/images/FI.022.tiff" xlink:type="simple" linenr="2"/></t>
+            <t>Term uit de editiewetenschap en tekstkritiek voor de schematische weergave in de vorm van een boomdiagram van de onderlinge verwantschap van <br linenr="1" newpage="yes" pagenr="23"/> documentaire bronnen (handschrift, codex, druk), waarin een tekst bewaard is gebleven.<br linenr="2" xlink:href="http://resources.huygens.knaw.nl/retroapp/service_declercq/1/images/FI.022.tiff" xlink:type="simple"/></t>
           </p>
           <ref id="bib.1" type="note">
             <t>[Bork et al, 2012]</t>
