@@ -45,7 +45,11 @@
     <meta id="genre">artikel</meta>
     <submetadata xml:id="external.metadata" type="outside" src="blaat"/>
     <submetadata xml:id="foreign.metadata" type="strange">
-      <foreign-data id="ergens">proycon</foreign-data>
+      <foreign-data id="ergens">
+        <fd:node xmlns:fd="foreignns">
+	  <fd:sub att="1">test</fd:sub>
+	</fd:node>
+      </foreign-data>
     </submetadata>
     <submetadata xml:id="sandbox.3.metadata" type="native">
       <meta id="author">proycon</meta>
