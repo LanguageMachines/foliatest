@@ -46,7 +46,7 @@
     <submetadata xml:id="external.metadata" type="outside" src="blaat"/>
     <submetadata xml:id="foreign.metadata" type="strange">
       <foreign-data id="ergens">
-        <fd:node xmlns:fd="foreignns">
+        <fd:node xmlns:fd="foreigns">
 	  <fd:sub att="1">test</fd:sub>
 	</fd:node>
       </foreign-data>
@@ -1393,7 +1393,7 @@
                 <t>University</t>
               </w>
               <entities>
-                <correction xml:id="span.correction" class="entity">
+                <correction xml:id="span.correction" class="entity" metadata="external.metadata">
                   <new>
                     <entity xml:id="example.tilburg.university.org" class="org" set="http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml">
                       <wref id="example.table.1.w.13" t="Tilburg"/>
@@ -1417,7 +1417,7 @@
         </s>
       </note>
     </div>
-    <div xml:id="bibliography" class="bibliography">
+    <div xml:id="bibliography" class="bibliography" metadata="foreign.metadata">
       <head xml:id="bibhead">
         <t>Bibliography</t>
       </head>

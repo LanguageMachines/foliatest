@@ -39,12 +39,15 @@
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
+#include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
 
 #include <ticcutils/UnitTest.h>
 
 using namespace std;
 using namespace folia;
+
+using TiCC::operator<<;
 
 void test0() {
   startTestSerie( " Test lezen van KWargs " );
@@ -2152,6 +2155,39 @@ void sanity_test109( ){
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
 }
 
+void sanity_test110(){
+  startTestSerie( " Submetadata " );
+  Document doc( "file='tests/example.xml'" );
+  auto sm = doc["sandbox.3"]->getmetadata();
+  assertEqual( sm->type(), "NativeMetaData" );
+  KWargs att = sm->get_nodes();
+  assertEqual( att["author"], "proycon" );
+  sm = doc["example.table.1.w.1"]->getmetadata();
+  assertEqual( sm->type(), "NativeMetaData" );
+  att = sm->get_nodes();
+  assertEqual( att["author"], "proycon" );
+  string val = doc["example.table.1.w.1"]->getmetadata("author");
+  assertEqual( val, "proycon" );
+  sm = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata();
+  assertEqual( sm->type(), "NativeMetaData" );
+  att = sm->get_nodes();
+  assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
+  sm = doc["WR-P-E-J-0000000001.p.1.s.1.w.1"]->getmetadata();
+  assertEqual( sm->type(), "NativeMetaData" );
+  att = sm->get_nodes();
+  assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
+  val = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata("originalsource");
+  assertEqual( val, "https://nl.wikipedia.org/wiki/Stemma" );
+  sm = doc["span.correction"]->getmetadata();
+  assertEqual( sm->type(), "ExternalMetaData" );
+  assertEqual( sm->src(), "blaat" );
+  sm = doc["bibhead"]->getmetadata();
+  assertEqual( sm->type(), "ForeignMetaData" );
+  vector<FoliaElement*> fv = sm->get_foreigners();
+  string cont = fv[0]->xmlstring();
+  assertEqual( cont, "<foreign-data xmlns=\"http://ilk.uvt.nl/folia\" id=\"ergens\"><fd:node xmlns:fd=\"foreigns\"><fd:sub att=\"1\">test</fd:sub></fd:node></foreign-data>" );
+}
+
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
@@ -3628,6 +3664,7 @@ int main(){
   sanity_test107();
   sanity_test108();
   sanity_test109();
+  sanity_test110();
   edit_test001a();
   edit_test001b();
   edit_test002();
