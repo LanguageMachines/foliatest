@@ -2,8 +2,14 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.8" version="0.8" >
   <metadata src="test.imdi.xml" type="imdi">
     <annotations>
-	<event-annotation set="test"/>
+      <event-annotation set="test"/>
     </annotations>
+    <imdi:METATRANSCRIPT xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI">
+      <imdi:Session>
+	<imdi:Title>Een imdi file</imdi:Title>
+	<imdi:Date>28/09/2017</imdi:Date>
+      </imdi:Session>
+    </imdi:METATRANSCRIPT>
   </metadata>
-  <text xml:id="test.text" />
+  <text xml:id="test.text"/>
 </FoLiA>

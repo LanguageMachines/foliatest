@@ -1322,6 +1322,10 @@ void sanity_test101a(){
   Document doc( "file='tests/folia.cmdi.xml'" );
   assertTrue( doc.metadatatype() == "cmdi" );
   assertTrue( doc.metadatafile() == "test.cmdi.xml" );
+  assertNoThrow( doc.save( "/tmp/folia.cmdi.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.cmdi.xml tests/folia.cmdi.xml" );
+  assertMessage( "/tmp/folia.cmdi.xml tests/folia.cmdi.xml differ!",
+		 stat == 0 );
 }
 
 void sanity_test101b(){
@@ -1329,6 +1333,10 @@ void sanity_test101b(){
   Document doc( "file='tests/folia.imdi.xml'" );
   assertTrue( doc.metadatatype() == "imdi" );
   assertTrue( doc.metadatafile() == "test.imdi.xml" );
+  assertNoThrow( doc.save( "/tmp/folia.imdi.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/folia.imdi.xml tests/folia.imdi.xml" );
+  assertMessage( "/tmp/folia.imdi.xml tests/folia.imdi.xml differ!",
+		 stat == 0 );
 }
 
 void sanity_test101c(){
@@ -2159,30 +2167,30 @@ void sanity_test110(){
   startTestSerie( " Submetadata " );
   Document doc( "file='tests/example.xml'" );
   auto sm = doc["sandbox.3"]->getmetadata();
-  assertEqual( sm->type(), "native" );
-  KWargs att = sm->get_nodes();
+  assertEqual( sm->datatype(), "NativeMetaData" );
+  KWargs att = sm->get_avs();
   assertEqual( att["author"], "proycon" );
   sm = doc["example.table.1.w.1"]->getmetadata();
-  assertEqual( sm->type(), "native" );
-  att = sm->get_nodes();
+  assertEqual( sm->datatype(), "NativeMetaData" );
+  att = sm->get_avs();
   assertEqual( att["author"], "proycon" );
   string val = doc["example.table.1.w.1"]->getmetadata("author");
   assertEqual( val, "proycon" );
   sm = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata();
-  assertEqual( sm->type(), "native" );
-  att = sm->get_nodes();
+  assertEqual( sm->datatype(), "NativeMetaData" );
+  att = sm->get_avs();
   assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
   sm = doc["WR-P-E-J-0000000001.p.1.s.1.w.1"]->getmetadata();
-  assertEqual( sm->type(), "native" );
-  att = sm->get_nodes();
+  assertEqual( sm->datatype(), "NativeMetaData" );
+  att = sm->get_avs();
   assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
   val = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata("originalsource");
   assertEqual( val, "https://nl.wikipedia.org/wiki/Stemma" );
   sm = doc["span.correction"]->getmetadata();
-  assertEqual( sm->type(), "external" );
+  assertEqual( sm->datatype(), "ExternalMetaData" );
   assertEqual( sm->src(), "blaat" );
   sm = doc["bibhead"]->getmetadata();
-  assertEqual( sm->type(), "foreign" );
+  assertEqual( sm->datatype(), "ForeignMetaData" );
   vector<FoliaElement*> fv = sm->get_foreigners();
   string cont = fv[0]->xmlstring();
   assertEqual( cont, "<foreign-data xmlns=\"http://ilk.uvt.nl/folia\" id=\"ergens\"><fd:node xmlns:fd=\"foreigns\"><fd:sub att=\"1\">test</fd:sub></fd:node></foreign-data>" );
