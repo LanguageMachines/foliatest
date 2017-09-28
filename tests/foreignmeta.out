@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="minimal" generator="libfolia-v1.5">
-  <metadata type="native">
+  <metadata type="foreign">
     <annotations/>
     <foreign-data>
       <pm:meta xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pm="http://www.politicalmashup.nl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

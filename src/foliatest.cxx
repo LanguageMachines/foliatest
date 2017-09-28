@@ -1320,8 +1320,8 @@ void sanity_test101( ){
 void sanity_test101a(){
   startTestSerie(" Metadata external reference (CMDI) " );
   Document doc( "file='tests/folia.cmdi.xml'" );
-  assertTrue( doc.metadatatype() == "cmdi" );
-  assertTrue( doc.metadatafile() == "test.cmdi.xml" );
+  assertEqual( doc.metadatatype(), "cmdi" );
+  assertEqual( doc.metadatafile(), "test.cmdi.xml" );
   assertNoThrow( doc.save( "/tmp/folia.cmdi.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/folia.cmdi.xml tests/folia.cmdi.xml" );
   assertMessage( "/tmp/folia.cmdi.xml tests/folia.cmdi.xml differ!",
@@ -1331,8 +1331,8 @@ void sanity_test101a(){
 void sanity_test101b(){
   startTestSerie(" Metadata external reference (IMDI) " );
   Document doc( "file='tests/folia.imdi.xml'" );
-  assertTrue( doc.metadatatype() == "imdi" );
-  assertTrue( doc.metadatafile() == "test.imdi.xml" );
+  assertEqual( doc.metadatatype(), "imdi" );
+  assertEqual( doc.metadatafile(), "" );
   assertNoThrow( doc.save( "/tmp/folia.imdi.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/folia.imdi.xml tests/folia.imdi.xml" );
   assertMessage( "/tmp/folia.imdi.xml tests/folia.imdi.xml differ!",
