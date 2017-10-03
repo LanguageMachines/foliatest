@@ -25,7 +25,7 @@
           <lemma class="zijn"/>
         </w>
         <w xml:id="example.p.1.s.1.w.2" class="WORD">
-          <t>het</t>
+          <t offset="3">het</t>
           <pos class="LID(bep,stan,evon)" confidence="0.714286" head="LID">
             <feat class="bep" subset="lwtype"/>
             <feat class="stan" subset="naamval"/>
@@ -34,7 +34,7 @@
           <lemma class="het"/>
         </w>
         <w xml:id="example.p.1.s.1.w.3" class="WORD">
-          <t>creëren</t>
+          <t offset="7" >creëren</t>
           <pos class="WW(inf,vrij,zonder)" confidence="0.5" head="WW">
             <feat class="inf" subset="wvorm"/>
             <feat class="vrij" subset="positie"/>

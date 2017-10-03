@@ -2839,7 +2839,7 @@ void edit_test017b(){
   // Important note: directly altering text is usually bad practise, you'll want to use proper corrections instead.
   FoliaElement *word = editDoc["example.p.1.s.1.w.8"];
   assertTrue( word->text() == "oeuvre" );
-  assertThrow( word->settext("œuvre"), XmlError );
+  assertThrow( word->settext("œuvre"), InconsistentText );
   assertEqual( word->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.p.1.s.1.w.8\" class=\"WORD\"><t>oeuvre</t><t class=\"original\"> œuvre  </t><pos class=\"N(soort,ev,basis,onz,stan)\" confidence=\"0.996804\" head=\"N\"><feat class=\"soort\" subset=\"ntype\"/><feat class=\"ev\" subset=\"getal\"/><feat class=\"basis\" subset=\"graad\"/><feat class=\"onz\" subset=\"genus\"/><feat class=\"stan\" subset=\"naamval\"/></pos><lemma class=\"oeuvre\"/></w>" );
 }
 
@@ -2885,7 +2885,7 @@ void edit_test018c(){
 "	als Couperus, 	Haasse, of\n"
 "	Grunberg?" );
   // 3 try to change the text
-  assertThrow( s->settext("This MUST fail!" ), XmlError );
+  assertThrow( s->settext("This MUST fail!" ), InconsistentText );
   // 4 but we may add differnet text in another class
   assertNoThrow( s->settext("And now for something completely different.", "larch" ) );
   // 5 get the text from the children
@@ -2901,7 +2901,7 @@ void edit_test018c(){
   // check the normalized value
   assertEqual( normalize(w->text("original")), "œuvre" );
   // We may NOT changed te text
-  assertThrow( w->settext("oeuvre","original"), XmlError );
+  assertThrow( w->settext("oeuvre","original"), InconsistentText );
   // But we MAY change the formatting
   assertNoThrow( w->settext("œuvre", "original") );
   assertEqual( w->text("original"), "œuvre" );
@@ -2915,6 +2915,321 @@ void edit_test019(){
   assertEqual( word->annotation<ErrorDetection>()->cls(), "spelling" );
 }
 
+void text_test03(){
+  startTestSerie( " Invalid Text (Misspelled word) " );
+  string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"    <p xml:id=\"example.p.1\">"
+"      <t>Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg?</t>"
+"      <s xml:id=\"example.p.1.s.1\">"
+"        <t>Is het creëren van een volwaardig literrair oeuvre voorbehouden aan schrijvers"
+"	als Couperus, 	Haasse, of"
+"	Grunberg?</t>"
+"      </s>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertThrow( doc.readFromString(xml), InconsistentText );
+}
+
+
+void text_test04(){
+  startTestSerie( " Invalid Text (Missing word) " );
+  string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"    <p xml:id=\"example.p.1\">"
+"      <t>Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg?</t>"
+"      <s xml:id=\"example.p.1.s.1\">"
+"        <t>Is het creëren van een volwaardig oeuvre voorbehouden aan schrijvers"
+"	als Couperus, 	Haasse, of"
+"	Grunberg?</t>"
+"      </s>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertThrow( doc.readFromString(xml), InconsistentText );
+}
+
+
+void text_test05(){
+  startTestSerie( " Valid Text (Inytermittent Redundancy) " );
+  string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"      <t>Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg? Of kan ik het ook?</t>"
+"    <p xml:id=\"example.p.1\">"
+"      <!-- Note: no text here on paragraph level -->"
+"      <s xml:id=\"example.p.1.s.1\">"
+"        <t>Is het creëren van een volwaardig oeuvre voorbehouden aan schrijvers"
+"	als Couperus, 	Haasse, of"
+"	Grunberg?</t>"
+"      </s>"
+"      <s xml:id=\"example.p.1.s.2\">"
+"        <t>Of kan ik"
+"het    ook   ?"
+"            </t>"
+"      </s>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertThrow( doc.readFromString(xml), InconsistentText );
+}
+
+void text_test06(){
+  startTestSerie( " Vallid Text (Multiple classes) " );
+  string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"    <p xml:id=\"example.p.1\">"
+"      <t>Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg?</t>"
+"      <t class=\"missingword\">Is het creëren van een volwaardig oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg?</t>"
+"      <s xml:id=\"example.p.1.s.1\">"
+"        <t>Is het creëren van een volwaardig literrair oeuvre voorbehouden aan schrijvers"
+"	als Couperus, 	Haasse, of"
+"	Grunberg?</t>"
+"        <t class=\"missingword\">Is het creëren van een volwaardig oeuvre voorbehouden aan schrijvers"
+"	als Couperus, 	Haasse, of"
+"	Grunberg?</t>"
+"      </s>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertThrow( doc.readFromString(xml), InconsistentText );
+}
+
+void text_test07(){
+  startTestSerie( "Validation - No text checking on (nested) morphemes" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"      <pos-annotation set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\" annotator=\"frog\" annotatortype=\"auto\" />"
+"      <pos-annotation annotator=\"frog-mbma-1.0\" annotatortype=\"auto\" datetime=\"2017-04-20T16:48:45\" set=\"http://ilk.uvt.nl/folia/sets/frog-mbpos-clex\"/>"
+"      <lemma-annotation set=\"lemmas-nl\" annotator=\"tadpole\" annotatortype=\"auto\" />"
+"      <morphological-annotation annotator=\"proycon\" annotatortype=\"manual\" />"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"      <w xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.16\">"
+"        <t>genealogie</t>"
+"        <pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/>"
+"        <lemma class=\"genealogie\"/>"
+"        <morphology>"
+"          <morpheme class=\"complex\">"
+"            <t>genealogie</t>"
+"            <feat class=\"[[genealogisch]adjective[ie]]noun/singular\" subset=\"structure\"/>"
+"            <pos class=\"N\" set=\"http://ilk.uvt.nl/folia/sets/frog-mbpos-clex\"/>"
+"            <morpheme class=\"complex\">"
+"              <feat class=\"N_A*\" subset=\"applied_rule\"/>"
+"              <feat class=\"[[genealogisch]adjective[ie]]noun\" subset=\"structure\"/>"
+"              <pos class=\"N\" set=\"http://ilk.uvt.nl/folia/sets/frog-mbpos-clex\"/>"
+"              <morpheme class=\"stem\">"
+"                <t>genealogisch</t>"
+"                <pos class=\"A\" set=\"http://ilk.uvt.nl/folia/sets/frog-mbpos-clex\"/>"
+"              </morpheme>"
+"              <morpheme class=\"affix\">"
+"                <t>ie</t>"
+"                <feat class=\"[ie]\" subset=\"structure\"/>"
+"              </morpheme>"
+"             </morpheme>"
+"             <morpheme class=\"inflection\">"
+"              <feat class=\"singular\" subset=\"inflection\"/>"
+"             </morpheme>"
+"          </morpheme>"
+"        </morphology>"
+"      </w>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+}
+
+void text_test08(){
+  startTestSerie( "Text - Offset validation" );
+  string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"    <p xml:id=\"example.p.1\">"
+"      <s xml:id=\"example.p.1.s.1\">"
+"        <t>Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers"
+"	 als Couperus, 	Haasse, of"
+"	 Grunberg?</t>"
+"        <w xml:id=\"example.p.1.s.1.w.1\" class=\"WORD\">"
+"          <t offset=\"0\">Is</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.2\" class=\"WORD\">"
+"          <t offset=\"3\">het</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.3\" class=\"WORD\">"
+"          <t offset=\"7\">creëren</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.4\" class=\"WORD\">"
+"          <t offset=\"15\">van</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.5\" class=\"WORD\">"
+"          <t offset=\"19\">een</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.6\" class=\"WORD\">"
+"          <t offset=\"23\">volwaardig</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.7\" class=\"WORD\">"
+"          <t offset=\"34\">literair</t>"
+"         </w>"
+"       <w xml:id=\"example.p.1.s.1.w.8\" class=\"WORD\">"
+"         <t offset=\"43\">oeuvre</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.9\" class=\"WORD\">"
+"         <t offset=\"50\">voorbehouden</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.10\" class=\"WORD\">"
+"         <t offset=\"63\">aan</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.11\" class=\"WORD\">"
+"         <t offset=\"67\">schrijvers</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.12\" class=\"WORD\">"
+"         <t offset=\"79\">als</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.13\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"83\">Couperus</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.14\" class=\"PUNCTUATION\">"
+"         <t offset=\"91\">,</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.15\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"94\">Haasse</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.16\" class=\"PUNCTUATION\">"
+"         <t offset=\"100\">,</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.17\" class=\"WORD\">"
+"         <t offset=\"102\">of</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.18\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"106\">Grunberg</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.19\" class=\"PUNCTUATION\">"
+"         <t offset=\"114\">?</t>"
+"        </w>"
+"      </s>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+}
+
+void text_test09(){
+  startTestSerie( "Text - Offset validation (invalid)" );
+  string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"    <p xml:id=\"example.p.1\">"
+"      <s xml:id=\"example.p.1.s.1\">"
+"        <t>Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers"
+"	 als Couperus, 	Haasse, of"
+"	 Grunberg?</t>"
+"        <w xml:id=\"example.p.1.s.1.w.1\" class=\"WORD\">"
+"          <t offset=\"0\">Is</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.2\" class=\"WORD\">"
+"          <t offset=\"3\">het</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.3\" class=\"WORD\">"
+"          <t offset=\"7\">creëren</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.4\" class=\"WORD\">"
+"          <t offset=\"15\">van</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.5\" class=\"WORD\">"
+"          <t offset=\"19\">een</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.6\" class=\"WORD\">"
+"          <t offset=\"24\">volwaardig</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.7\" class=\"WORD\">"
+"          <t offset=\"34\">literair</t>"
+"         </w>"
+"       <w xml:id=\"example.p.1.s.1.w.8\" class=\"WORD\">"
+"         <t offset=\"43\">oeuvre</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.9\" class=\"WORD\">"
+"         <t offset=\"50\">voorbehouden</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.10\" class=\"WORD\">"
+"         <t offset=\"63\">aan</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.11\" class=\"WORD\">"
+"         <t offset=\"67\">schrijvers</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.12\" class=\"WORD\">"
+"         <t offset=\"79\">als</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.13\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"83\">Couperus</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.14\" class=\"PUNCTUATION\">"
+"         <t offset=\"91\">,</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.15\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"94\">Haasse</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.16\" class=\"PUNCTUATION\">"
+"         <t offset=\"100\">,</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.17\" class=\"WORD\">"
+"         <t offset=\"102\">of</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.18\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"106\">Grunberg</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.19\" class=\"PUNCTUATION\">"
+"         <t offset=\"114\">?</t>"
+"        </w>"
+"      </s>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertThrow( doc.readFromString(xml), InconsistentText );
+}
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
@@ -3048,7 +3363,7 @@ void create_test004( ){
   args["value"] = "een andere tekst";
   args["class"] =  "new";
   TextContent *sT = new TextContent( args );
-  assertThrow( s->append( sT ), XmlError );
+  assertThrow( s->append( sT ), InconsistentText );
 }
 
 
@@ -3708,6 +4023,13 @@ int main(){
   edit_test018b();
   edit_test018c();
   edit_test019();
+  text_test03();
+  text_test04();
+  text_test05();
+  text_test06();
+  text_test07();
+  text_test08();
+  text_test09();
   create_test001();
   create_test002();
   create_test003();
