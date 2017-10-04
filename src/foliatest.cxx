@@ -3313,6 +3313,88 @@ void text_test10(){
 	       doc["example.p.1"] ); // testing resolving explicit reference
 }
 
+void text_test11(){
+  startTestSerie( "Text - Offset validation with text markup (with text modifiers like br" );
+  string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"      <token-annotation annotator=\"ucto\" annotatortype=\"auto\" datetime=\"2017-09-25T10:29:52\" set=\"tokconfig-nld\"/>"
+"      <style-annotation />"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"example.text\">"
+"    <p xml:id=\"example.p.1\">"
+"      <s xml:id=\"example.p.1.s.1\">"
+"        <t>Is het creëren van een <t-style class=\"emphasis\">volwaardig</t-style> literair oeuvre voorbehouden aan schrijvers<br/>\tals <t-str xlink:href=\"https://nl.wikipedia.org/wiki/Louis_Couperus\" xlink:type=\"simple\">Couperus</t-str>, 	Haasse, of \tGrunberg?</t>"
+"        <w xml:id=\"example.p.1.s.1.w.1\" class=\"WORD\">"
+"          <t offset=\"0\">Is</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.2\" class=\"WORD\">"
+"          <t offset=\"3\">het</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.3\" class=\"WORD\">"
+"          <t offset=\"7\">creëren</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.4\" class=\"WORD\">"
+"          <t offset=\"15\">van</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.5\" class=\"WORD\">"
+"          <t offset=\"19\">een</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.6\" class=\"WORD\">"
+"          <t offset=\"23\">volwaardig</t>"
+"        </w>"
+"        <w xml:id=\"example.p.1.s.1.w.7\" class=\"WORD\">"
+"          <t offset=\"34\">literair</t>"
+"         </w>"
+"       <w xml:id=\"example.p.1.s.1.w.8\" class=\"WORD\">"
+"         <t offset=\"43\">oeuvre</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.9\" class=\"WORD\">"
+"         <t offset=\"50\">voorbehouden</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.10\" class=\"WORD\">"
+"         <t offset=\"63\">aan</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.11\" class=\"WORD\">"
+"         <t offset=\"67\">schrijvers</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.12\" class=\"WORD\">"
+"         <t offset=\"79\">als</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.13\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"83\">Couperus</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.14\" class=\"PUNCTUATION\">"
+"         <t offset=\"91\">,</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.15\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"94\">Haasse</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.16\" class=\"PUNCTUATION\">"
+"         <t offset=\"100\">,</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.17\" class=\"WORD\">"
+"         <t offset=\"102\">of</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.18\" class=\"WORD\" space=\"no\">"
+"         <t offset=\"106\">Grunberg</t>"
+"       </w>"
+"       <w xml:id=\"example.p.1.s.1.w.19\" class=\"PUNCTUATION\">"
+"         <t offset=\"114\">?</t>"
+"        </w>"
+"      </s>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertNoThrow( doc.readFromString(xml) );
+  assertEqual( doc["example.p.1.s.1.w.19"]->textcontent()->getreference(),
+	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
+}
+
+
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
@@ -4114,6 +4196,7 @@ int main(){
   text_test08();
   text_test09();
   text_test10();
+  text_test11();
   create_test001();
   create_test002();
   create_test003();
