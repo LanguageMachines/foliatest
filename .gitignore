@@ -30,3 +30,5 @@ src/tst.sh.log
 src/tst.sh.trs
 stamp-h1
 test-driver
+*~
+tests/*~
