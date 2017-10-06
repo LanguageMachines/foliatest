@@ -3859,6 +3859,41 @@ void text_test13e(){
   assertNoThrow( doc.readFromString( xml ) );
 }
 
+void text_test13f(){
+  startTestSerie( "Validation - Text Validation with redundancy on construction" );
+  Document doc( "id='example'" );
+  KWargs args;
+  args["id"] = doc.id() + ".text.1";
+  Text *text = new Text(args,&doc);
+  doc.append( text );
+  args["id"] = doc.id() + ".s.1";
+  Sentence *s = new Sentence( args, &doc );
+  s->settext( "De site staat online . " ); //Spaces here!
+  text->append( s );
+  args["id"] = doc.id() + ".s.1.w.1";
+  args["text"] =  "De";
+  Word *w = new Word( args, &doc );
+  s->append( w );
+  args["id"] = doc.id() + ".s.1.w.2";
+  args["text"] =  "site";
+  w = new Word( args, &doc );
+  s->append( w );
+  args["id"] = doc.id() + ".s.1.w.3";
+  args["text"] =  "staat";
+  w = new Word( args, &doc );
+  s->append( w );
+  args["id"] = doc.id() + ".s.1.w.4";
+  args["text"] =  "online";
+  w = new Word( args, &doc );
+  s->append( w );
+  args["id"] = doc.id() + ".s.1.w.5";
+  args["text"] =  "."; // No spaces here!
+  w = new Word( args, &doc );
+  s->append( w );
+  assertEqual( doc.doc()->xmlstring(),"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\"><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>" ); // serialisation forces validation
+}
+
+
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
   Document d( "id='example'" );
@@ -4666,6 +4701,7 @@ int main(){
   text_test13c();
   text_test13d();
   text_test13e();
+  text_test13f();
   create_test001();
   create_test002();
   create_test003();
