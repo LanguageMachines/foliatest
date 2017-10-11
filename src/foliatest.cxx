@@ -3899,6 +3899,12 @@ void text_test13f(){
 "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v1.10\" version=\"1.5.0\"><metadata type=\"native\"><annotations/></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
 }
 
+void text_test14(){
+  startTestSerie( "Validation - Text Validation with weird formatting" );
+  Document doc;
+  assertNoThrow( doc.readFromFile( "tests/textproblem.xml" ) );
+}
+
 void text_test15(){
   startTestSerie( "Validation - Text Validation with with sentence text delimiter inheritance" );
   string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -4727,6 +4733,7 @@ int main(){
   text_test13d();
   text_test13e();
   text_test13f();
+  text_test14();
   text_test15();
   create_test001();
   create_test002();
