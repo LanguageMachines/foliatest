@@ -2844,7 +2844,7 @@ void edit_test017b(){
   FoliaElement *word = editDoc["example.p.1.s.1.w.8"];
   assertTrue( word->text() == "oeuvre" );
   assertThrow( word->settext("œuvre"), InconsistentText );
-  assertEqual( word->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.p.1.s.1.w.8\" class=\"WORD\"><t>oeuvre</t><t class=\"original\"> œuvre  </t><pos class=\"N(soort,ev,basis,onz,stan)\" confidence=\"0.996804\" head=\"N\"><feat class=\"soort\" subset=\"ntype\"/><feat class=\"ev\" subset=\"getal\"/><feat class=\"basis\" subset=\"graad\"/><feat class=\"onz\" subset=\"genus\"/><feat class=\"stan\" subset=\"naamval\"/></pos><lemma class=\"oeuvre\"/></w>" );
+  assertThrow( string s = word->xmlstring(),  InconsistentText);
 }
 
 void edit_test018a(){
