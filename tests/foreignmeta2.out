@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="minimal" generator="libfolia-v1.10">
+  <metadata type="foreign">
+    <annotations/>
+    <foreign-data>
+  <pm:meta xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pm="http://www.politicalmashup.nl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <dc:identifier>nl.proc.ob.d.h-tk-20122013-33-7</dc:identifier>
+    <dc:format>text/xml</dc:format>
+    <dc:type>Verbatim Proceedings</dc:type>
+    <dc:contributor>http://www.politicalmashup.nl</dc:contributor>
+    <dc:creator>http://www.politicalmashup.nl</dc:creator>
+    <dc:relation>
+      <pm:subject xsi:type="speaker">
+	<pm:actor>
+          <pm:person pm:speaker="Van Miltenburg" pm:role="chair" pm:member-ref="nl.m.02413" pm:function="De voorzitter"/>
+      </pm:actor>
+      </pm:subject>
+    </dc:relation>
+  </pm:meta>
+</foreign-data>
+  </metadata>
+  <text xml:id="test.text"/>
+</FoLiA>

@@ -1394,7 +1394,7 @@ void sanity_test101g(){
   xmlNode *root = xmlDocGetRootElement( x_doc );
   assertNoThrow( f_doc.set_foreign_metadata( root ) );
   assertNoThrow( f_doc.save( "/tmp/foreignmeta2.out" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/foreignmeta2.out tests/foreignmeta.out" );
+  int stat = system( "./tests/foliadiff.sh /tmp/foreignmeta2.out tests/foreignmeta2.out" );
   assertMessage( "/tmp/foreignmeta2.out tests/foreignmeta.out differ!",
 		 stat == 0 );
   xmlFreeDoc( x_doc );
@@ -2195,7 +2195,11 @@ void sanity_test110(){
   assertEqual( sm->datatype(), "ForeignMetaData" );
   vector<FoliaElement*> fv = sm->get_foreigners();
   string cont = fv[0]->xmlstring();
-  assertEqual( cont, "<foreign-data xmlns=\"http://ilk.uvt.nl/folia\" id=\"ergens\"><fd:node xmlns:fd=\"foreigns\"><fd:sub att=\"1\">test</fd:sub></fd:node></foreign-data>" );
+  assertEqual( cont, "<foreign-data xmlns=\"http://ilk.uvt.nl/folia\" id=\"ergens\">\n"
+"        <fd:node xmlns:fd=\"foreigns\">\n"
+"	  <fd:sub att=\"1\">test</fd:sub>\n"
+"	</fd:node>\n"
+"      </foreign-data>" );
 }
 
 void edit_test001a( ){
