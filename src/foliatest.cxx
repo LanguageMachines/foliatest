@@ -3900,13 +3900,13 @@ void text_test13f(){
 }
 
 void text_test14(){
-  startTestSerie( "Validation - Text Validation with weird formatting" );
+  startTestSerie( "Validation - Text Validation with sentence text delimiter inheritance" );
   Document doc;
   assertNoThrow( doc.readFromFile( "tests/textproblem.xml" ) );
 }
 
 void text_test15(){
-  startTestSerie( "Validation - Text Validation with with sentence text delimiter inheritance" );
+  startTestSerie( "Validation - Whitespace in text content sanity check" );
   string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
 "  <metadata type=\"native\">"
