@@ -3899,6 +3899,26 @@ void text_test13f(){
 "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v1.10\" version=\"1.5.0\"><metadata type=\"native\"><annotations/></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
 }
 
+void text_test15(){
+  startTestSerie( "Validation - Text Validation with with sentence text delimiter inheritance" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"test.t\">"
+"      <s xml:id=\"test.s\"><t>Dit\n"
+"         is een rare test.\n"
+"         </t>"
+"      </s>"
+"    </text>"
+"</FoLiA>";
+  Document doc;
+  assertNoThrow( doc.readFromString( xml ) );
+  assertEqual( doc["test.s"]->text(), "Dit\n         is een rare test.\n         ");
+}
+
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
   Document d( "id='example'" );
@@ -4707,6 +4727,7 @@ int main(){
   text_test13d();
   text_test13e();
   text_test13f();
+  text_test15();
   create_test001();
   create_test002();
   create_test003();
