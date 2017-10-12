@@ -534,14 +534,14 @@
           <t class="translate">Uppercase A is used for the original.</t>
           <part xml:id="WR-P-E-J-0000000001.p.1.s.4.part.1">
             <w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.1">
-              <t offset="0">De</t>
-              <t class="original" offset="0">De</t>
+              <t offset="0" ref="WR-P-E-J-0000000001.p.1.s.4">De</t>
+              <t class="original" offset="0" ref="WR-P-E-J-0000000001.p.1.s.4">De</t>
               <pos class="LID(bep,stan,rest)" set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn"/>
               <lemma class="de"/>
             </w>
             <w xml:id="WR-P-E-J-0000000001.p.1.s.4.w.2">
-              <t offset="3">hoofdletter</t>
-              <t class="original" offset="3">hoofdletter</t>
+              <t offset="3" ref="WR-P-E-J-0000000001.p.1.s.4">hoofdletter</t>
+              <t class="original" offset="3" ref="WR-P-E-J-0000000001.p.1.s.4">hoofdletter</t>
               <pos class="N(soort,ev,basis,zijd,stan)" set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn"/>
               <lemma class="hoofdletter"/>
             </w>
@@ -1209,16 +1209,16 @@
             </morphology>
           </w>
           <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.3">
-            <t offset="18">heeft</t>
+            <t offset="20">heeft</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.4">
-            <t offset="24">fors</t>
+            <t offset="26">fors</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.5" space="no">
-            <t offset="29">verloren</t>
+            <t offset="31">verloren</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.sandbox.2.s.1.w.6">
-            <t offset="37">.</t>
+            <t offset="39">.</t>
           </w>
           <entities>
             <entity class="politicalparty" set="mwu-set">
@@ -1303,7 +1303,7 @@
         <head xml:id="sandbox.3.head">
           <t>De <t-str id="sandbox.3.str"><t-style xml:id="sandbox.3.str.bold" class="bold"><br/>FoLiA</t-style> developers</t-str> zijn:</t>
           <str xml:id="sandbox.3.str">
-            <t offset="3">FoLiA developers</t>
+            <t offset="4">FoLiA developers</t>
             <lang class="eng"/>
             <metric class="wordcount" value="2"/>
           </str>
