@@ -2843,8 +2843,10 @@ void edit_test017b(){
   // Important note: directly altering text is usually bad practise, you'll want to use proper corrections instead.
   FoliaElement *word = editDoc["example.p.1.s.1.w.8"];
   assertTrue( word->text() == "oeuvre" );
-  assertThrow( word->settext("œuvre"), InconsistentText );
-  assertThrow( string s = word->xmlstring(),  InconsistentText);
+  string s;
+  assertNoThrow( s = word->xmlstring() ); // a valid doc
+  assertThrow( word->settext("œuvre"), InconsistentText ); // invalid attempt
+  assertNoThrow( s = word->xmlstring() ); // make sure the doc is unhurted
 }
 
 void edit_test018a(){
