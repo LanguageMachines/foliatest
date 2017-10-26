@@ -2454,6 +2454,25 @@ void edit_test004b( ){
   assertThrow( w->append( l ), DuplicateAnnotationError );
 }
 
+void edit_test004c( ){
+  startTestSerie( " Add an Entity in another set. giving a name clash " );
+  Document editDoc( "file='tests/example.xml'" );
+  // grab all entity layers
+  vector<EntitiesLayer *> elv = editDoc.doc()->select<EntitiesLayer>();
+  assertEqual( elv.size(), 6 );
+  assertEqual( elv[1]->sett(), "mwu-set" );
+  KWargs args;
+  args["set"] = "mwu-set";
+  args["class"] = "OKE";
+  Entity *e = new Entity( args, &editDoc );
+  assertNoThrow( elv[1]->append( e ) );
+  args["set"] = "http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml";
+  args["class"] = "WRONG";
+  e = new Entity( args, &editDoc );
+  assertThrow( elv[1]->append( e ), DuplicateAnnotationError );
+  assertEqual( elv[1]->xmlstring(), "<entities xmlns=\"http://ilk.uvt.nl/folia\"><entity class=\"politicalparty\" set=\"mwu-set\"><wref id=\"WR-P-E-J-0000000001.sandbox.2.s.1.w.1.m.1\" t=\"CDA\"/></entity><entity class=\"OKE\" set=\"mwu-set\"/></entities>" );
+}
+
 void edit_test005a( ){
   startTestSerie( " Adding an alternative token annotation " );
   Document doc( "file='tests/example.xml'" );
@@ -4696,6 +4715,7 @@ int main(){
   edit_test003b();
   edit_test004a();
   edit_test004b();
+  edit_test004c();
   edit_test005a();
   edit_test005b();
   edit_test005c();
