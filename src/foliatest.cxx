@@ -3949,6 +3949,25 @@ void text_test15(){
   assertEqual( doc["test.s"]->text(), "Dit\n         is een rare test.\n         ");
 }
 
+void text_test16(){
+  startTestSerie( "Validation - coment in text content sanity check" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
+"  <metadata type=\"native\">"
+"    <annotations>"
+"    </annotations>"
+"  </metadata>"
+"  <text xml:id=\"test.t\">"
+"      <t>This is the real text<comment annotator=\"pkampschreur\" annotatortype=\"manual\" datetime=\"2017-11-01T20:55:50\">Overbodig</comment>.</t>"
+"    </text>"
+"</FoLiA>";
+  Document doc;
+  assertNoThrow( doc.readFromString( xml ) );
+  UnicodeString txt;
+  assertNoThrow( txt = doc["test.t"]->text() );
+  assertEqual( txt, "This is the real text.");
+}
+
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
   Document d( "id='example'" );
@@ -4760,6 +4779,7 @@ int main(){
   text_test13f();
   text_test14();
   text_test15();
+  text_test16();
   create_test001();
   create_test002();
   create_test003();
