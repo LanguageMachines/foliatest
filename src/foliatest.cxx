@@ -2202,6 +2202,16 @@ void sanity_test110(){
 "      </foreign-data>" );
 }
 
+void sanity_test120( ){
+  startTestSerie( " Word References - Forward and backward " );
+  Document d;
+  assertNoThrow( d.readFromFile( "tests/wordref.xml" ) );
+  assertNoThrow( d.save( "/tmp/wordref.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/wordref.xml tests/wordref.ok" );
+  assertMessage( "/tmp/wordref.xml tests/wordref.ok differ!",
+   		 (stat == 0) );
+}
+
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
@@ -4727,6 +4737,7 @@ int main(){
   sanity_test108();
   sanity_test109();
   sanity_test110();
+  sanity_test120();
   edit_test001a();
   edit_test001b();
   edit_test002();
