@@ -2205,11 +2205,32 @@ void sanity_test110(){
 void sanity_test120( ){
   startTestSerie( " Word References - Forward and backward " );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/wordref.xml" ) );
-  assertNoThrow( d.save( "/tmp/wordref.xml" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/wordref.xml tests/wordref.ok" );
-  assertMessage( "/tmp/wordref.xml tests/wordref.ok differ!",
-   		 (stat == 0) );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"doc\" version=\"1.5\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <entity-annotation/>\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"text\">\n"
+    "    <s xml:id=\"s1\">\n"
+    "      <entities>\n"
+    "	<entity xml:id=\"e1\">\n"
+    "	  <wref id=\"w1\"/>\n"
+    "	  <wref id=\"w2\"/>\n"
+    "	</entity>\n"
+    "      </entities>\n"
+    "      <w xml:id=\"w1\">\n"
+    "	<t>Woord1</t>\n"
+    "      </w>\n"
+    "      <w xml:id=\"w2\">\n"
+    "	<t>Woord2</t>\n"
+    "      </w>\n"
+    "    </s>\n"
+    "  </text>\n"
+    "</FoLiA>\n";
+
+  assertThrow( d.readFromString( xml ), XmlError );
 }
 
 void edit_test001a( ){
