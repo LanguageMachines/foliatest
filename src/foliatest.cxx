@@ -2203,7 +2203,7 @@ void sanity_test110(){
 }
 
 void sanity_test120( ){
-  startTestSerie( " Word References - Forward and backward " );
+  startTestSerie( " Word References - Forward Must fail " );
   Document d;
   string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
     "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"doc\" version=\"1.5\">\n"
@@ -2215,17 +2215,80 @@ void sanity_test120( ){
     "  <text xml:id=\"text\">\n"
     "    <s xml:id=\"s1\">\n"
     "      <entities>\n"
-    "	<entity xml:id=\"e1\">\n"
-    "	  <wref id=\"w1\"/>\n"
-    "	  <wref id=\"w2\"/>\n"
-    "	</entity>\n"
+    "	     <entity xml:id=\"e1\">\n"
+    "	       <wref id=\"w1\"/>\n"
+    "	       <wref id=\"w2\"/>\n"
+    "	     </entity>\n"
     "      </entities>\n"
     "      <w xml:id=\"w1\">\n"
-    "	<t>Woord1</t>\n"
+    " 	     <t>Woord1</t>\n"
     "      </w>\n"
     "      <w xml:id=\"w2\">\n"
-    "	<t>Woord2</t>\n"
+    "	     <t>Woord2</t>\n"
     "      </w>\n"
+    "    </s>\n"
+    "  </text>\n"
+    "</FoLiA>\n";
+  assertThrow( d.readFromString( xml ), XmlError );
+}
+
+void sanity_test121( ){
+  startTestSerie( " Word References - backward with wrong t " );
+  Document d;
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"doc\" version=\"1.5\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <entity-annotation/>\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"text\">\n"
+    "    <s xml:id=\"s1\">\n"
+    "      <w xml:id=\"w1\">\n"
+    " 	     <t>Woord1</t>\n"
+    "      </w>\n"
+    "      <w xml:id=\"w2\">\n"
+    "	     <t>Woord2</t>\n"
+    "      </w>\n"
+    "      <entities>\n"
+    "	     <entity xml:id=\"e1\">\n"
+    "	       <wref id=\"w1\" t=\"Woord1\"/>\n"
+    "	       <wref id=\"w2\" t=\"FOUT\"/>\n"
+    "	     </entity>\n"
+    "      </entities>\n"
+    "    </s>\n"
+    "  </text>\n"
+    "</FoLiA>\n";
+
+  assertThrow( d.readFromString( xml ), XmlError );
+}
+
+void sanity_test122( ){
+  startTestSerie( " Word References - refering a non-word " );
+  Document d;
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"doc\" version=\"1.5\">\n"
+    "  <metadata type=\"native\">\n"
+    "    <annotations>\n"
+    "      <entity-annotation/>\n"
+    "      <lemma-annotation set=\"lem\"/>\n"
+    "    </annotations>\n"
+    "  </metadata>\n"
+    "  <text xml:id=\"text\">\n"
+    "    <s xml:id=\"s1\">\n"
+    "      <w xml:id=\"w1\">\n"
+    "	     <t>Woord1</t>\n"
+    " 	     <lemma id=\"l1\" class=\"woord\"/>\n"
+    "      </w>\n"
+    "      <w xml:id=\"w2\">\n"
+    "	     <t>Woord2</t>\n"
+    "      </w>\n"
+    "      <entities>\n"
+    "	     <entity xml:id=\"e1\">\n"
+    "	       <wref id=\"l1\" t=\"woord\"/>\n"
+    "	       <wref id=\"w2\" t=\"Woord1\"/>\n"
+    "	     </entity>\n"
+    "      </entities>\n"
     "    </s>\n"
     "  </text>\n"
     "</FoLiA>\n";
@@ -4759,6 +4822,8 @@ int main(){
   sanity_test109();
   sanity_test110();
   sanity_test120();
+  sanity_test121();
+  sanity_test122();
   edit_test001a();
   edit_test001b();
   edit_test002();
