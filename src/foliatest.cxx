@@ -3018,7 +3018,7 @@ void edit_test018c(){
   // check it's REAL text, including spaced
   assertEqual( w->text("original"), " œuvre  " );
   // check the normalized value
-  assertEqual( normalize(w->text("original")), "œuvre" );
+  assertEqual( normalize_spaces(w->text("original")), "œuvre" );
   // We may NOT changed te text
   assertThrow( w->settext("oeuvre","original"), InconsistentText );
   // But we MAY change the formatting
@@ -4044,7 +4044,7 @@ void text_test15(){
 }
 
 void text_test16(){
-  startTestSerie( "Validation - coment in text content sanity check" );
+  startTestSerie( "Validation - comment in text content sanity check" );
   string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
 "  <metadata type=\"native\">"
@@ -4060,6 +4060,25 @@ void text_test16(){
   UnicodeString txt;
   assertNoThrow( txt = doc["test.t"]->text() );
   assertEqual( txt, "This is the real text.");
+}
+
+void text_test17(){
+  startTestSerie( "Validation - mixed NFC and NFD encodinf" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
+"  <text xml:id=\"t1\">"
+"   <s xml:id=\"s1\">"
+"    <t>ἀντιϰειμένου</t>"
+"      <w xml:id=\"w1\">"
+"        <t>ἀντιϰειμένου</t>"
+"      </w>"
+"    </s>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertNoThrow( doc.readFromString( xml ) );
+  assertEqual( doc.sentences(0)->text(), "ἀντιϰειμένου");
+  assertEqual( doc.words(0)->text(), "ἀντιϰειμένου");
 }
 
 void create_test001( ){
@@ -4877,6 +4896,7 @@ int main(){
   text_test14();
   text_test15();
   text_test16();
+  text_test17();
   create_test001();
   create_test002();
   create_test003();
