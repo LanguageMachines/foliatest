@@ -19,53 +19,55 @@ language: cpp
 matrix:
   include:
     - os: linux
-      compiler: gcc
-      addons:
-#        apt:
-#          sources: ['ubuntu-toolchain-r-test']
-#          packages: ['g++-4.9']
-#      env: COMPILER=g++-4.9
-      env: COMPILER=g++
-
-#    - os: linux
-#      compiler: gcc
-#      addons:
-#        apt:
-#          sources: ['ubuntu-toolchain-r-test']
-#          packages: ['g++-5']
-#      env: COMPILER=g++-5
+      compiler: g++
 
     - os: linux
-      compiler: clang
-      addons:
-        apt:
-          packages:
-            - libiomp-dev
+      compiler: clang++
       env:
-        - COMPILER=clang++
-        - CXXFLAGS="-fopenmp=libiomp5"
+        - OPENMPFLAG=--disable-openmp
+
+    - os: osx
+      compiler: clang
 
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive libicu-dev libxml2-dev libtar-dev libbz2-dev zlib1g-dev xmldiff libboost-dev libboost-regex-dev
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        sudo apt-get update;
+        sudo apt-get install pkg-config autoconf-archive libicu-dev libxml2-dev libtar-dev libbz2-dev zlib1g-dev xmldiff libboost-dev libboost-regex-dev;
+      fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        brew update;
+        brew install pkg-config;
+        brew install autoconf-archive;
+        brew outdated || brew upgrade icu4c;
+        brew outdated || brew upgrade libxml2;
+        brew outdated || brew install bzip2;
+        brew outdated || brew install zlib;
+        brew install libtar;
+        brew outdated boost || brew upgrade boost;
+        brew install llvm;
+        export PATH="/usr/local/opt/llvm/bin:$PATH";
+        export LDFLAGS="-L/usr/local/opt/llvm/lib";
+        export CXXFLAGS="-I/usr/local/opt/llvm/include";
+      fi
+
     - git clone https://github.com/LanguageMachines/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
-    - ./configure
-    - make CXX=$COMPILER
-    - sudo make CXX=$COMPILER install
+    - ./configure $OPENMPFLAG
+    - make
+    - sudo make install
     - cd ..
     - git clone https://github.com/LanguageMachines/libfolia
     - cd libfolia
     - bash bootstrap.sh
-    - ./configure
-    - make CXX=$COMPILER
-    - sudo make CXX=$COMPILER install
+    - ./configure $OPENMPFLAG
+    - make
+    - sudo make install
     - cd ..
 install:
     - bash bootstrap.sh
-    - ./configure
-    - make CXX=$COMPILER
-    - sudo make CXX=$COMPILER install
+    - ./configure $OPENMPFLAG
+    - make
+    - sudo make install
 script:
-    - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make CXX=$COMPILER check
+    - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
