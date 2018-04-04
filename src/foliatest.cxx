@@ -175,7 +175,7 @@ void test9() {
   startTestSerie( " Test extracting text from a document" );
   Document doc;
   assertNoThrow( doc.readFromFile( "tests/text.xml" ) );
-  UnicodeString us;
+  icu::UnicodeString us;
   assertNoThrow( us = doc.text() );
   assertEqual( us, "chapter 1\n\nsentence 1" );
 }
@@ -1085,7 +1085,7 @@ void sanity_test039(){
 void sanity_test040(){
   startTestSerie( "Sanity Check - Iteration over spans" );
   FoliaElement *sentence = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
-  UnicodeString res;
+  icu::UnicodeString res;
   for ( const auto& lay : sentence->select<EntitiesLayer>() ){
     for ( const auto& ent : lay->select<Entity>() ){
       for ( const auto& word : ent->wrefs() ){
@@ -1098,7 +1098,7 @@ void sanity_test040(){
 
 void sanity_test041a(){
   startTestSerie( "Sanity check - Find spans given words (no set)" );
-  UnicodeString res;
+  icu::UnicodeString res;
   FoliaElement *word = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.4"];
   vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<EntitiesLayer>() );
@@ -1112,7 +1112,7 @@ void sanity_test041a(){
 
 void sanity_test041b(){
   startTestSerie( "Sanity check - Find spans given words (specific set)" );
-  UnicodeString res;
+  icu::UnicodeString res;
   FoliaElement *word = sanityDoc["example.table.1.w.3"];
   vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<EntitiesLayer>("http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml") );
@@ -1126,7 +1126,7 @@ void sanity_test041b(){
 
 void sanity_test041c(){
   startTestSerie( "Sanity check - Find spans given words (specific set, Direct Entities)" );
-  UnicodeString res;
+  icu::UnicodeString res;
   FoliaElement *word = sanityDoc["example.table.1.w.3"];
   vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<Entity>("http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml") );
@@ -4057,7 +4057,7 @@ void text_test16(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.readFromString( xml ) );
-  UnicodeString txt;
+  icu::UnicodeString txt;
   assertNoThrow( txt = doc["test.t"]->text() );
   assertEqual( txt, "This is the real text.");
 }
