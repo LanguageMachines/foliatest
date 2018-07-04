@@ -4711,6 +4711,28 @@ void query_test011(){
   assertEqual( matches.size(), 0 );
 }
 
+void build_test001(){
+  startTestSerie( " build a document using FoliaBuilder " );
+  ofstream os( "/tmp/build.xml" );
+  Builder b( os, "build1" );
+  KWargs args;
+  args["id"] = "div1";
+  Division *d = new Division( args, b.doc() );
+  b.add( d );
+  b.flush();
+  args["id"] = "div2";
+  d = new Division( args );
+  b.add( d );
+  b.flush();
+  args["id"] = "div3";
+  d = new Division( args );
+  b.add( d );
+  b.finish();
+  int stat = system( "./tests/foliadiff.sh /tmp/build.xml tests/build.xml" );
+  assertMessage( "/tmp/build.xml tests/build.xml differ!",
+   		 (stat == 0) );
+}
+
 int main(){
   test0();
   test1();
@@ -4922,5 +4944,6 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
+  build_test001();
   summarize_tests(0);
 }
