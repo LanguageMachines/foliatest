@@ -3086,7 +3086,7 @@ void text_test04(){
 
 
 void text_test05(){
-  startTestSerie( " Valid Text (Inytermittent Redundancy) " );
+  startTestSerie( " Valid Text (Intermittent Redundancy) " );
   string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
 "  <metadata type=\"native\">"
@@ -4519,6 +4519,7 @@ void correction_test006(){
 
   assertEqual( s->xmlstring(),
 	       "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.s.1\"><w xml:id=\"WR-P-E-J-0000000001.s.1.w.1\"><t>De</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.2\"><t>site</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.3\"><t>staat</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.4\"><t>on</t></w><w xml:id=\"WR-P-E-J-0000000001.s.1.w.5\"><t>line</t></w><correction><current><w xml:id=\"WR-P-E-J-0000000001.s.1.w.6\"><t>.</t></w></current><suggestion auth=\"no\" merge=\"WR-P-E-J-0000000001.s.2\"/></correction></s>" );
+  delete corDoc;
 }
 
 void correction_test007(){
