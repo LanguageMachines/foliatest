@@ -40,6 +40,7 @@
 #include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
+#include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
 
 #include <ticcutils/UnitTest.h>
@@ -4746,6 +4747,20 @@ void build_test001(){
    		 (stat == 0) );
 }
 
+void read_test001(){
+  startTestSerie( " read through a document using FoliaReader " );
+  Reader *r = 0;
+  assertNoThrow( r = new Reader( "tests/example.xml", "BLA" ) );
+  xmlNode *res = 0;
+  while ( (res = r->get_node( "s" )) ){
+    cerr << "found sentence:" << res << endl;
+    list<xmlNode*> tv = TiCC::FindNodes( res, "./*:t" );
+    for ( const auto& t : tv ){
+      cerr << "\t'" << (char *)xmlNodeGetContent(t) << "'" << endl;
+    }
+  }
+}
+
 int main(){
   test0();
   test1();
@@ -4958,5 +4973,6 @@ int main(){
   query_test010b();
   query_test011();
   build_test001();
+  read_test001();
   summarize_tests(0);
 }
