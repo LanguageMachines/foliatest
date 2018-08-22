@@ -4769,7 +4769,7 @@ void processor_test001(){
 				      "/tmp/processor.xml") );
   if ( doc ){
     xmlNode *res = 0;
-    while ( (res = proc.get_node( "s" ) ) ){
+    while ( (res = proc.get_node( "q" ) ) ){
       cerr << "found sentence:" << endl;
       cerr << "next geeft: " << proc.next() << endl;
     }
@@ -4782,7 +4782,8 @@ void processor_test001(){
 }
 
 int main(){
-  goto label;
+  processor_test001();
+  exit(1);
   test0();
   test1();
   test1a();
@@ -4994,8 +4995,6 @@ int main(){
   query_test010b();
   query_test011();
   build_test001();
-  //  read_test001();
- label:
-  processor_test001();
+  //read_test001();
   summarize_tests(0);
 }
