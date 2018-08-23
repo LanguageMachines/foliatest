@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" version="1.4" generator="manual">
+  <metadata type="native">
+    <annotations>
+      <division-annotation set="divs" />
+    </annotations>
+    <meta id="title">Stemma</meta>
+    <meta id="language">nl</meta>
+    <meta id="genre">artikel</meta>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <div xml:id="WR-P-E-J-0000000001.div0.1" class="chapter">
+      <head xml:id="WR-P-E-J-0000000001.head.1">
+        <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1">
+            <t>Stemma</t>
+          </w>
+          <ref xml:id="WR-P-E-J-0000000001.ref.1" id="footnote.1" type="note"/>
+        </s>
+      </head>
+      <p xml:id="WR-P-E-J-0000000001.p.1">
+        <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
+            <t>Stemma</t>
+            <comment annotator="proycon">This is a comment</comment>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.2">
+            <t>is</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.3">
+            <t>een</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4">
+            <t>ander</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5">
+            <t>woord</t>
+	    <ph>wort</ph>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.6">
+            <t>voor</t>
+            <desc>Dit woordje is een voorzetsel, het is maar dat je het weet...</desc>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.7" space="no">
+            <t>stamboom</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.8">
+            <t>.</t>
+          </w>
+        </s>
+        <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1">
+            <t>In</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.2">
+            <t>de</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3">
+            <t>historische</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4">
+            <t>wetenschap</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5">
+            <t>wordt</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6">
+            <t>zo'n</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7">
+            <t>stamboom</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.8">
+            <t>,</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.9">
+            <t>onder</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.10">
+            <t>de</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.11">
+            <t>naam</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.12">
+            <t>stemma</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.13">
+            <t>codicum</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.14">
+            <t>(</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.15">
+            <t>handschriftelijke</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.16">
+            <t>genealogie</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.17">
+            <t>)</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.18">
+            <t>,</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.19">
+            <t>gebruikt</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.20">
+            <t>om</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.21">
+            <t>de</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.22">
+            <t>verwantschap</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.23">
+            <t>tussen</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.24">
+            <t>handschriften</t>
+	  </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.25">
+            <t>weer</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.26">
+            <t>te</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.27">
+            <t>geven</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.28">
+            <t>.</t>
+          </w>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>

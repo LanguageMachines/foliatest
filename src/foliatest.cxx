@@ -4762,27 +4762,50 @@ void read_test001(){
 }
 
 void processor_test001(){
-  startTestSerie( " read through a document using FoliaReader " );
+  startTestSerie( " copy a a document using Folia Processor " );
   Processor proc;
   Document *doc = 0;
   assertNoThrow( doc = proc.init_doc( "tests/example.xml",
-				      "/tmp/processor.xml") );
+				      "/tmp/example-p1.xml") );
   if ( doc ){
-    xmlNode *res = 0;
-    while ( (res = proc.get_node( "q" ) ) ){
-      cerr << "found sentence:" << endl;
-      cerr << "next geeft: " << proc.next() << endl;
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
     }
-    //    doc->save( "/tmp/processor.xml" );
     proc.finish();
-    // int stat = system( "./tests/foliadiff.sh /tmp/processor.xml tests/example.xml" );
-    // assertMessage( "/tmp/processord.xml tests/example.xml differ!",
-    // 		   (stat == 0) );
+    int stat = system( "./tests/foliadiff.sh /tmp/example-p1.xml tests/example.xml" );
+    assertMessage( "/tmp/example-p1.xml tests/example.xml differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test002(){
+  startTestSerie( " read through a document adding some words using FoliaReader " );
+  Processor proc;
+  Document *doc = 0;
+  assertNoThrow( doc = proc.init_doc( "tests/zin.xml",
+				      "/tmp/zin.xml") );
+  if ( doc ){
+    FoliaElement *res = 0;
+    vector<string> words({"aap","noot","mies"});
+    int i = 0;
+    while ( (res = proc.get_node( "s" ) ) ){
+      Word *w = 0;
+      assertNoThrow( w = res->addWord() );
+      w->settext(words[i++]);
+      proc.next();
+    }
+    proc.finish();
+    int stat = system( "./tests/foliadiff.sh /tmp/zin.xml tests/zin.ok" );
+    assertMessage( "/tmp/zin.xml tests/zin.ok differ!",
+     		   (stat == 0) );
   }
 }
 
 int main(){
   processor_test001();
+  processor_test002();
   exit(1);
   test0();
   test1();
