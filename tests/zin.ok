@@ -4,6 +4,7 @@
   <metadata type="native">
     <annotations>
       <division-annotation set="divs"/>
+      <pos-annotation annotator="foliatest" annotatortype="auto" set="MY_TEST"/>
     </annotations>
     <meta id="genre">artikel</meta>
     <meta id="language">nl</meta>
@@ -19,6 +20,7 @@
           <ref xml:id="WR-P-E-J-0000000001.ref.1" id="footnote.1" type="note"/>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.2">
             <t>aap</t>
+            <pos class="N"/>
           </w>
         </s>
       </head>
@@ -53,6 +55,7 @@
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.9">
             <t>noot</t>
+            <pos class="N"/>
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
@@ -142,6 +145,7 @@
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.29">
             <t>mies</t>
+            <pos class="N"/>
           </w>
         </s>
       </p>

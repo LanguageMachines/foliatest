@@ -4764,10 +4764,9 @@ void read_test001(){
 void processor_test001(){
   startTestSerie( " copy a a document using Folia Processor " );
   Processor proc;
-  Document *doc = 0;
-  assertNoThrow( doc = proc.init_doc( "tests/example.xml",
-				      "/tmp/example-p1.xml") );
-  if ( doc ){
+  assertNoThrow( proc.init_doc( "tests/example.xml",
+				"/tmp/example-p1.xml") );
+  if ( proc.ok() ){
     FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
@@ -4781,12 +4780,13 @@ void processor_test001(){
 }
 
 void processor_test002(){
-  startTestSerie( " read through a document adding some words using FoliaReader " );
+  startTestSerie( " read a document and adding word and annotations using Foliaprocessor " );
   Processor proc;
-  Document *doc = 0;
-  assertNoThrow( doc = proc.init_doc( "tests/zin.xml",
-				      "/tmp/zin.xml") );
-  if ( doc ){
+  assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin.xml") );
+  if ( proc.ok() ){
+    proc.declare( AnnotationType::POS,
+		  "MY_TEST",
+		  "annotator='foliatest', annotatortype='auto'" );
     FoliaElement *res = 0;
     vector<string> words({"aap","noot","mies"});
     int i = 0;
@@ -4794,6 +4794,10 @@ void processor_test002(){
       Word *w = 0;
       assertNoThrow( w = res->addWord() );
       w->settext(words[i++]);
+      KWargs args;
+      args["set"] = "MY_TEST";
+      args["class"] = "N";
+      w->addPosAnnotation(args);
       proc.next();
     }
     proc.finish();
