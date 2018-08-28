@@ -4823,12 +4823,48 @@ void processor_test003(){
      		   (stat == 0) );
   }
 }
+void processor_test004(){
+  startTestSerie( " read a document searching for several nodes " );
+  Processor proc;
+  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin2.xml") );
+  if ( proc.ok() ){
+    proc.declare( AnnotationType::POS,
+		  "MY_TEST",
+		  "annotator='foliatest', annotatortype='auto'" );
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "s|p" ) ) ){
+      string tag = res->xmltag();
+      cerr << "     FOUND " << tag << endl;
+      if ( tag == "p" ){
+	vector<Sentence*> sv = res->select<Sentence>();
+	for ( const auto& s : sv ){
+	  Word *w = 0;
+	  KWargs args;
+	  args["text"] = "found: " + tag + "|s";
+	  assertNoThrow( w = s->addWord( args ) );
+	}
+      }
+      else {
+	Word *w = 0;
+	assertNoThrow( w = res->addWord() );
+	w->settext( "found:" + tag );
+      }
+      proc.next();
+    }
+    proc.finish();
+    int stat = system( "./tests/foliadiff.sh /tmp/zin2.xml tests/zin2.ok" );
+    assertMessage( "/tmp/zin2.xml tests/zin2.ok differ!",
+     		   (stat == 0) );
+  }
+}
 
 int main(){
   processor_test001();
   processor_test002();
   processor_test003();
-  //  exit(1);
+  processor_test004();
+  exit(1);
   test0();
   test1();
   test1a();
