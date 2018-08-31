@@ -4761,7 +4761,7 @@ void read_test001(){
   }
 }
 
-void processor_test001(){
+void processor_test001a(){
   startTestSerie( " copy a a document using Folia Processor " );
   Processor proc;
   assertNoThrow( proc.init_doc( "tests/example.xml",
@@ -4779,7 +4779,25 @@ void processor_test001(){
   }
 }
 
-void processor_test002(){
+void processor_test001b(){
+  startTestSerie( " copy a a document with namespaces using Folia Processor" );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/folia.nsexample", "/tmp/nsexample" ) );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
+    }
+    assertNoThrow( proc.finish() );
+    int stat = system( "./tests/foliadiff.sh /tmp/nsexample tests/folia.nsexample" );
+    assertMessage( "/tmp/nsexample tests/folia.nsexample differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test002a(){
   startTestSerie( " copy a a document using Folia Processor (alternative)" );
   Processor proc;
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
@@ -4789,9 +4807,27 @@ void processor_test002(){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
     }
-    proc.save( "/tmp/example-p2.xml");
+    assertNoThrow( proc.save( "/tmp/example-p2.xml") );
     int stat = system( "./tests/foliadiff.sh /tmp/example-p2.xml tests/example.xml" );
     assertMessage( "/tmp/example-p2.xml tests/example.xml differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test002b(){
+  startTestSerie( " copy a a document with namespace using Folia Processor (alternative)" );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/folia.nsexample" ) );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
+    }
+    assertNoThrow( proc.save( "/tmp/nsexample2.xml") );
+    int stat = system( "./tests/foliadiff.sh /tmp/nsexample2.xml tests/folia.nsexample" );
+    assertMessage( "/tmp/nsexample2.xml tests/folia.nsexample differ!",
      		   (stat == 0) );
   }
 }
@@ -4826,7 +4862,7 @@ void processor_test003(){
 void processor_test004(){
   startTestSerie( " read a document searching for several nodes " );
   Processor proc;
-  proc.set_debug(true);
+  //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin2.xml") );
   if ( proc.ok() ){
     proc.declare( AnnotationType::POS,
@@ -4860,8 +4896,10 @@ void processor_test004(){
 }
 
 int main(){
-  processor_test001();
-  processor_test002();
+  processor_test001a();
+  processor_test001b();
+  processor_test002a();
+  processor_test002b();
   processor_test003();
   processor_test004();
   exit(1);
