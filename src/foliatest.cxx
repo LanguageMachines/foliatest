@@ -4859,6 +4859,7 @@ void processor_test003(){
      		   (stat == 0) );
   }
 }
+
 void processor_test004(){
   startTestSerie( " read a document searching for several nodes " );
   Processor proc;
@@ -4895,6 +4896,21 @@ void processor_test004(){
   }
 }
 
+void processor_test005(){
+  startTestSerie( " enumerate a document on xml_element nodes " );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/example.xml" ) );
+  if ( proc.ok() ){
+    my_rec *result = proc.create_simple_tree();
+    ofstream os( "/tmp/enum.tree" );
+    print( os, result );
+    int stat = system( "diff /tmp/enum.tree tests/enum.tree.ok" );
+    assertMessage( "/tmp/enum.tree tests/enum.tree.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
 int main(){
   processor_test001a();
   processor_test001b();
@@ -4902,6 +4918,7 @@ int main(){
   processor_test002b();
   processor_test003();
   processor_test004();
+  processor_test005();
   exit(1);
   test0();
   test1();
