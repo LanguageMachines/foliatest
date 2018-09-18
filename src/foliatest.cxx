@@ -4945,6 +4945,26 @@ void processor_test006b(){
   }
 }
 
+void processor_test007(){
+  startTestSerie( " process a document searching for text nodes " );
+  Processor proc;
+  // proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin3.xml") );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.next_text_parent( "" ) ) ){
+      string tag = res->xmltag();
+      cerr << "     FOUND " << tag << endl;
+      proc.next();
+    }
+    proc.finish();
+    int stat = system( "./tests/foliadiff.sh /tmp/zin3.xml tests/zin3.ok" );
+    assertMessage( "/tmp/zin3.xml tests/zin3.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
+
 int main(){
   processor_test001a();
   processor_test001b();
@@ -4955,6 +4975,7 @@ int main(){
   processor_test005();
   processor_test006a();
   processor_test006b();
+  processor_test007();
   exit(1);
   test0();
   test1();
