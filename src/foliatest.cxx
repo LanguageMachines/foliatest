@@ -4911,6 +4911,40 @@ void processor_test005(){
   }
 }
 
+void processor_test006a(){
+  startTestSerie( " enumerate a document on text node parents" );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/example.xml" ) );
+  if ( proc.ok() ){
+    set<int> result = proc.enumerate_text_parents();
+    ofstream os( "/tmp/textparents.lst" );
+    for ( const auto& n : result ){
+      os << n << endl;
+    }
+    int stat = system( "diff /tmp/textparents.lst tests/textparents.lst.ok" );
+    assertMessage( "/tmp/textparents.lst tests/textparents.lst.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test006b(){
+  startTestSerie( " enumerate a document on text node parents with textclass" );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/example.xml" ) );
+  if ( proc.ok() ){
+    set<int> result = proc.enumerate_text_parents("original");
+    ofstream os( "/tmp/textparents-o.lst" );
+    for ( const auto& n : result ){
+      os << n << endl;
+    }
+    int stat = system( "diff /tmp/textparents-o.lst tests/textparents-o.lst.ok" );
+    assertMessage( "/tmp/textparents-o.lst tests/textparents-o.lst.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
 int main(){
   processor_test001a();
   processor_test001b();
@@ -4919,6 +4953,8 @@ int main(){
   processor_test003();
   processor_test004();
   processor_test005();
+  processor_test006a();
+  processor_test006b();
   exit(1);
   test0();
   test1();
