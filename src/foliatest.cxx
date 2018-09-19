@@ -4917,10 +4917,10 @@ void processor_test006a(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
-    set<int> result = proc.enumerate_text_parents();
+    map<int,int> result = proc.enumerate_text_parents();
     ofstream os( "/tmp/textparents.lst" );
     for ( const auto& n : result ){
-      os << n << endl;
+      os << n.first << endl;
     }
     int stat = system( "diff /tmp/textparents.lst tests/textparents.lst.ok" );
     assertMessage( "/tmp/textparents.lst tests/textparents.lst.ok differ!",
@@ -4934,10 +4934,10 @@ void processor_test006b(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
-    set<int> result = proc.enumerate_text_parents("original");
+    map<int,int> result = proc.enumerate_text_parents("original");
     ofstream os( "/tmp/textparents-o.lst" );
     for ( const auto& n : result ){
-      os << n << endl;
+      os << n.first << endl;
     }
     int stat = system( "diff /tmp/textparents-o.lst tests/textparents-o.lst.ok" );
     assertMessage( "/tmp/textparents-o.lst tests/textparents-o.lst.ok differ!",
@@ -4951,10 +4951,16 @@ void processor_test007(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin3.xml") );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
-    while ( (res = proc.next_text_parent( "" ) ) ){
-      string tag = res->xmltag();
-      cerr << "     FOUND " << res << endl;
+    proc.declare( AnnotationType::POS,
+		  "MY_TEST",
+		  "annotator='foliatest', annotatortype='auto'" );
+    FoliaElement *w = 0;
+    while ( (w = proc.next_text_parent( "" ) ) ){
+      // we knwo we get only <w> nodes...
+      KWargs args;
+      args["set"] = "MY_TEST";
+      args["class"] = "N";
+      w->addPosAnnotation(args);
       proc.next();
     }
     proc.finish();
