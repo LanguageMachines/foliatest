@@ -4948,13 +4948,13 @@ void processor_test006b(){
 void processor_test007(){
   startTestSerie( " process a document searching for text nodes " );
   Processor proc;
-  // proc.set_debug(true);
+  //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin3.xml") );
   if ( proc.ok() ){
     FoliaElement *res = 0;
     while ( (res = proc.next_text_parent( "" ) ) ){
       string tag = res->xmltag();
-      cerr << "     FOUND " << tag << endl;
+      cerr << "     FOUND " << res << endl;
       proc.next();
     }
     proc.finish();
