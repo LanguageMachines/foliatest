@@ -4902,7 +4902,7 @@ void processor_test005(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
-    my_rec *result = proc.create_simple_tree();
+    my_rec *result = proc.create_simple_tree("tests/example.xml");
     ofstream os( "/tmp/enum.tree" );
     print( os, result );
     int stat = system( "diff /tmp/enum.tree tests/enum.tree.ok" );
@@ -4913,7 +4913,7 @@ void processor_test005(){
 
 void processor_test006a(){
   startTestSerie( " enumerate a document on text node parents" );
-  Processor proc;
+  TextProcessor proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -4930,7 +4930,7 @@ void processor_test006a(){
 
 void processor_test006b(){
   startTestSerie( " enumerate a document on text node parents with textclass" );
-  Processor proc;
+  TextProcessor proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -4947,21 +4947,22 @@ void processor_test006b(){
 
 void processor_test007(){
   startTestSerie( " process a document searching for text nodes " );
-  Processor proc;
-  //  proc.set_debug(true);
+  TextProcessor proc;
+  //proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin3.xml") );
   if ( proc.ok() ){
+    proc.setup();
     proc.declare( AnnotationType::POS,
 		  "MY_TEST",
 		  "annotator='foliatest', annotatortype='auto'" );
     FoliaElement *w = 0;
-    while ( (w = proc.next_text_parent( "" ) ) ){
-      // we knwo we get only <w> nodes...
+    char character = 'A';
+    while ( (w = proc.next_text_parent() ) ){
+      // we know we get only <w> nodes for zin.xml....
       KWargs args;
       args["set"] = "MY_TEST";
-      args["class"] = "N";
+      args["class"] = string(1,character++);
       w->addPosAnnotation(args);
-      proc.next();
     }
     proc.finish();
     int stat = system( "./tests/foliadiff.sh /tmp/zin3.xml tests/zin3.ok" );
