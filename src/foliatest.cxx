@@ -4902,9 +4902,10 @@ void processor_test005(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
-    my_rec *result = proc.create_simple_tree("tests/example.xml");
+    xml_tree *result = proc.create_simple_tree("tests/example.xml");
     ofstream os( "/tmp/enum.tree" );
     print( os, result );
+    delete result;
     int stat = system( "diff /tmp/enum.tree tests/enum.tree.ok" );
     assertMessage( "/tmp/enum.tree tests/enum.tree.ok differ!",
      		   (stat == 0) );
