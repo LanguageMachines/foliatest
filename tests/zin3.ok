@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="1.4">
+  <metadata type="native">
+    <annotations>
+      <division-annotation set="divs"/>
+      <pos-annotation annotator="foliatest" annotatortype="auto" set="MY_TEST"/>
+    </annotations>
+    <meta id="genre">artikel</meta>
+    <meta id="language">nl</meta>
+    <meta id="title">Stemma</meta>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <div xml:id="WR-P-E-J-0000000001.div0.1" class="chapter">
+      <head xml:id="WR-P-E-J-0000000001.head.1">
+        <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1">
+            <t>Stemma</t>
+            <pos class="A"/>
+          </w>
+          <ref xml:id="WR-P-E-J-0000000001.ref.1" id="footnote.1" type="note"/>
+        </s>
+      </head>
+      <p xml:id="WR-P-E-J-0000000001.p.1">
+        <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
+            <t>Stemma</t>
+            <comment annotator="proycon">This is a comment</comment>
+            <pos class="B"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.2">
+            <t>is</t>
+            <pos class="C"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.3">
+            <t>een</t>
+            <pos class="D"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4">
+            <t>ander</t>
+            <pos class="E"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5">
+            <t>woord</t>
+            <ph>wort</ph>
+            <pos class="F"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.6">
+            <t>voor</t>
+            <desc>Dit woordje is een voorzetsel, het is maar dat je het weet...</desc>
+            <pos class="G"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.7" space="no">
+            <t>stamboom</t>
+            <pos class="H"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.8">
+            <t>.</t>
+            <pos class="I"/>
+          </w>
+        </s>
+        <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1">
+            <t>In</t>
+            <pos class="J"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.2">
+            <t>de</t>
+            <pos class="K"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3">
+            <t>historische</t>
+            <pos class="L"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4">
+            <t>wetenschap</t>
+            <pos class="M"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5">
+            <t>wordt</t>
+            <pos class="N"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6">
+            <t>zo'n</t>
+            <pos class="O"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7">
+            <t>stamboom</t>
+            <pos class="P"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.8">
+            <t>,</t>
+            <pos class="Q"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.9">
+            <t>onder</t>
+            <pos class="R"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.10">
+            <t>de</t>
+            <pos class="S"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.11">
+            <t>naam</t>
+            <pos class="T"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.12">
+            <t>stemma</t>
+            <pos class="U"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.13">
+            <t>codicum</t>
+            <pos class="V"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.14">
+            <t>(</t>
+            <pos class="W"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.15">
+            <t>handschriftelijke</t>
+            <pos class="X"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.16">
+            <t>genealogie</t>
+            <pos class="Y"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.17">
+            <t>)</t>
+            <pos class="Z"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.18">
+            <t>,</t>
+            <pos class="["/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.19">
+            <t>gebruikt</t>
+            <pos class="\"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.20">
+            <t>om</t>
+            <pos class="]"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.21">
+            <t>de</t>
+            <pos class="^"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.22">
+            <t>verwantschap</t>
+            <pos class="_"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.23">
+            <t>tussen</t>
+            <pos class="`"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.24">
+            <t>handschriften</t>
+            <pos class="a"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.25">
+            <t>weer</t>
+            <pos class="b"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.26">
+            <t>te</t>
+            <pos class="c"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.27">
+            <t>geven</t>
+            <pos class="d"/>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.28">
+            <t>.</t>
+            <pos class="e"/>
+          </w>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>
+
+
