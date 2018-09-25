@@ -42,9 +42,9 @@
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
+#include "ticcutils/UnitTest.h"
 
-#include <ticcutils/UnitTest.h>
-
+#include "config.h"
 using namespace std;
 using namespace folia;
 
@@ -4713,6 +4713,8 @@ void query_test011(){
   assertEqual( matches.size(), 0 );
 }
 
+#if FOLIA_INT_VERSION >= 120
+
 void build_test001(){
   startTestSerie( " build a document using FoliaBuilder " );
   ofstream os( "/tmp/build.xml" );
@@ -4745,20 +4747,6 @@ void build_test001(){
   int stat = system( "./tests/foliadiff.sh /tmp/build.xml tests/build.xml" );
   assertMessage( "/tmp/build.xml tests/build.xml differ!",
    		 (stat == 0) );
-}
-
-void read_test001(){
-  startTestSerie( " read through a document using FoliaReader " );
-  Reader *r = 0;
-  assertNoThrow( r = new Reader( "tests/example.xml" ) );
-  xmlNode *res = 0;
-  while ( (res = r->get_node( "s" )) ){
-    cerr << "found sentence:" << res << endl;
-    list<xmlNode*> tv = TiCC::FindNodes( res, "./*:t" );
-    for ( const auto& t : tv ){
-      cerr << "\t'" << (char *)xmlNodeGetContent(t) << "'" << endl;
-    }
-  }
 }
 
 void processor_test001a(){
@@ -4972,19 +4960,9 @@ void processor_test007(){
   }
 }
 
+#endif // FOLIA_INT_VERSION >= 120
 
 int main(){
-  processor_test001a();
-  processor_test001b();
-  processor_test002a();
-  processor_test002b();
-  processor_test003();
-  processor_test004();
-  processor_test005();
-  processor_test006a();
-  processor_test006b();
-  processor_test007();
-  exit(1);
   test0();
   test1();
   test1a();
@@ -5195,7 +5173,18 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
+#if FOLIA_INT_VERSION >= 120
   build_test001();
-  //read_test001();
+  processor_test001a();
+  processor_test001b();
+  processor_test002a();
+  processor_test002b();
+  processor_test003();
+  processor_test004();
+  processor_test005();
+  processor_test006a();
+  processor_test006b();
+  processor_test007();
+#endif
   summarize_tests(0);
 }
