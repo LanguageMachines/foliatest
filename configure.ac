@@ -66,6 +66,11 @@ PKG_CHECK_MODULES([folia],[folia >= 1.12])
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
+FOLVER=`pkg-config --modversion folia`
+FOLINT="${FOLVER//.}"
+AC_DEFINE_UNQUOTED( [FOLIA_INT_VERSION],
+	   	    [${FOLINT}],
+		    [The integer representation of the folialib version])
 AC_OUTPUT([
   Makefile
   src/Makefile
