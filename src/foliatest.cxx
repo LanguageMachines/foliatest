@@ -2944,7 +2944,7 @@ void edit_test016(){
 
 void edit_test017a(){
   startTestSerie( " Altering word text (pre v1.5)" );
-  Document editDoc( "file='tests/example.xml'" );
+  Document editDoc( "file='tests/examplev1.4.xml'" );
   // Important note: directly altering text is usually bad practise, you'll want to use proper corrections instead.
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.9"];
   assertTrue( word->text() == "terweil" );
@@ -2977,8 +2977,8 @@ void edit_test018a(){
 }
 
 void edit_test018b(){
-  startTestSerie( " Altering sentence text (untokenized by definition)" );
-  Document editDoc( "file='tests/example.xml'" );
+  startTestSerie( " Altering sentence text (pre v1.5) (untokenized by definition)" );
+  Document editDoc( "file='tests/examplev1.4.xml'" );
   FoliaElement *s = editDoc["WR-P-E-J-0000000001.p.1.s.8"];
   // 1 get text() dynamic from children
   assertEqual( s->text(), "Een volle lijn duidt op een verwantschap , terweil een stippelijn op een onzekere verwantschap duidt ." );
