@@ -4727,7 +4727,7 @@ void query_test011(){
 #if FOLIA_INT_VERSION >= 120
 
 void build_test001(){
-  startTestSerie( " build a document using FoliaBuilder " );
+  startTestSerie( " build a text document using FoliaBuilder " );
   ofstream os( "/tmp/build.xml" );
   Builder b( os, "build1" );
   KWargs args;
@@ -4760,8 +4760,42 @@ void build_test001(){
    		 (stat == 0) );
 }
 
+void build_test002(){
+  startTestSerie( " build a speech document using FoliaBuilder " );
+  ofstream os( "/tmp/speechbuild.xml" );
+  Builder b( os, "build1", Builder::SPEECH );
+  KWargs args;
+  args["id"] = "div1";
+  Division *d = new Division( args, b.doc() );
+  args["id"] = "p1";
+  Paragraph *p = new Paragraph( args );
+  d->append(p);
+  p->settext( "paragraaf 1" );
+  b.add( d );
+  b.flush();
+  args["id"] = "div2";
+  d = new Division( args );
+  args["id"] = "p2";
+  p = new Paragraph( args );
+  p->settext( "paragraaf 2" );
+  d->append(p);
+  b.add( d );
+  b.flush();
+  args["id"] = "div3";
+  d = new Division( args );
+  args["id"] = "p3";
+  p = new Paragraph( args );
+  p->settext( "paragraaf 3" );
+  d->append(p);
+  b.add( d );
+  b.finish();
+  int stat = system( "./tests/foliadiff.sh /tmp/speechbuild.xml tests/speechbuild.xml" );
+  assertMessage( "/tmp/speechbuild.xml tests/speechbuild.xml differ!",
+   		 (stat == 0) );
+}
+
 void processor_test001a(){
-  startTestSerie( " copy a a document using Folia Processor " );
+  startTestSerie( " copy a document using Folia Processor " );
   Processor proc;
   assertNoThrow( proc.init_doc( "tests/example.xml",
 				"/tmp/example-p1.xml") );
@@ -4779,7 +4813,7 @@ void processor_test001a(){
 }
 
 void processor_test001b(){
-  startTestSerie( " copy a a document with namespaces using Folia Processor" );
+  startTestSerie( " copy a document with namespaces using Folia Processor" );
   Processor proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample", "/tmp/nsexample" ) );
@@ -4797,7 +4831,7 @@ void processor_test001b(){
 }
 
 void processor_test002a(){
-  startTestSerie( " copy a a document using Folia Processor (alternative)" );
+  startTestSerie( " copy a document using Folia Processor (alternative)" );
   Processor proc;
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -4814,7 +4848,7 @@ void processor_test002a(){
 }
 
 void processor_test002b(){
-  startTestSerie( " copy a a document with namespace using Folia Processor (alternative)" );
+  startTestSerie( " copy a document with namespace using Folia Processor (alternative)" );
   Processor proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample" ) );
@@ -4827,6 +4861,24 @@ void processor_test002b(){
     assertNoThrow( proc.save( "/tmp/nsexample2.xml") );
     int stat = system( "./tests/foliadiff.sh /tmp/nsexample2.xml tests/folia.nsexample" );
     assertMessage( "/tmp/nsexample2.xml tests/folia.nsexample differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test002c(){
+  startTestSerie( " copy a speech document using Folia Processor" );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/speechexample.xml" ) );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
+    }
+    assertNoThrow( proc.save( "/tmp/speechexample2.xml") );
+    int stat = system( "./tests/foliadiff.sh /tmp/speechexample2.xml tests/speechexample.xml" );
+    assertMessage( "/tmp/speechexample2.xml tests/speechexample.xml differ!",
      		   (stat == 0) );
   }
 }
@@ -5186,10 +5238,12 @@ int main(){
   query_test011();
 #if FOLIA_INT_VERSION >= 120
   build_test001();
+  build_test002();
   processor_test001a();
   processor_test001b();
   processor_test002a();
   processor_test002b();
+  processor_test002c();
   processor_test003();
   processor_test004();
   processor_test005();
