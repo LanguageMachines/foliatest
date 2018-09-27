@@ -3997,7 +3997,12 @@ void text_test13f(){
   KWargs args;
   args["id"] = doc.id() + ".text.1";
   Text *text = new Text(args,&doc);
+#if FOLIA_INT_VERSION < 120
   doc.append( text );
+#else
+  doc.setRoot( text );
+#endif
+
   args["id"] = doc.id() + ".s.1";
   Sentence *s = new Sentence( args, &doc );
   s->settext( "De site staat online . " ); //Spaces here!
