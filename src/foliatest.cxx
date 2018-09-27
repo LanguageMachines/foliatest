@@ -112,6 +112,17 @@ void test1b() {
    		 (stat == 0) );
 }
 
+void test1c() {
+  startTestSerie( " Test lezen van een FoLiA speech file " );
+  Document d;
+  assertNoThrow( d.readFromFile( "tests/speechexample.xml" ) );
+  assertNoThrow( d.save( "/tmp/speechexample.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/speechexample.xml tests/speechexample.xml" );
+  assertMessage( "/tmp/speechexample.xml tests/speechexample.xml differ!",
+   		 (stat == 0) );
+}
+
+
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
   string s;
@@ -4860,7 +4871,6 @@ void processor_test004(){
     FoliaElement *res = 0;
     while ( (res = proc.get_node( "s|p" ) ) ){
       string tag = res->xmltag();
-      cerr << "     FOUND " << tag << endl;
       if ( tag == "p" ){
 	vector<Sentence*> sv = res->select<Sentence>();
 	for ( const auto& s : sv ){
@@ -4967,6 +4977,7 @@ int main(){
   test1();
   test1a();
   test1b();
+  test1c();
   test2();
   test3();
   test4();
