@@ -5027,6 +5027,28 @@ void processor_test007(){
   }
 }
 
+void processor_test008(){
+  startTestSerie( " process a document searching for text nodes " );
+  TextProcessor proc;
+  //proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/proctest.xml" ) );
+  ofstream os( "/tmp/proctest.out" );
+  if ( proc.ok() ){
+    proc.setup("",true);
+    FoliaElement *e = 0;
+    while ( (e = proc.next_text_parent() ) ){
+      os << e->id() << " : " << e->str() << endl;
+      vector<Word*> wv = e->select<Word>();
+      for ( const auto& w : wv ){
+	os << "\t" << w->id() << " : " << w->str() << endl;
+      }
+    }
+    int stat = system( "diff /tmp/proctest.out tests/proctest.ok" );
+    assertMessage( "/tmp/proctest.out tests/proctest.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
 #endif // FOLIA_INT_VERSION >= 120
 
 int main(){
@@ -5255,6 +5277,7 @@ int main(){
   processor_test006a();
   processor_test006b();
   processor_test007();
+  processor_test008();
 #endif
   summarize_tests(0);
 }
