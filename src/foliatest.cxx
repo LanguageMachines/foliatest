@@ -5001,6 +5001,23 @@ void processor_test006b(){
   }
 }
 
+void processor_test006c(){
+  startTestSerie( " enumerate a document with layers on text node parents" );
+  TextProcessor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
+  if ( proc.ok() ){
+    map<int,int> result = proc.enumerate_text_parents("");
+    ofstream os( "/tmp/textparents-1.lst" );
+    for ( const auto& n : result ){
+      os << n.first << endl;
+    }
+    int stat = system( "diff /tmp/textparents-1.lst tests/textparents-1.lst.ok" );
+    assertMessage( "/tmp/textparents-1.lst tests/textparents-1.lst.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
 void processor_test007(){
   startTestSerie( " process a document searching for text nodes " );
   TextProcessor proc;
@@ -5027,7 +5044,7 @@ void processor_test007(){
   }
 }
 
-void processor_test008(){
+void processor_test008a(){
   startTestSerie( " process a document searching for text nodes " );
   TextProcessor proc;
   //proc.set_debug(true);
@@ -5045,6 +5062,28 @@ void processor_test008(){
     }
     int stat = system( "diff /tmp/proctest.out tests/proctest.ok" );
     assertMessage( "/tmp/proctest.out tests/proctest.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test008b(){
+  startTestSerie( " process a document with layers searching for text nodes " );
+  TextProcessor proc;
+  //proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
+  ofstream os( "/tmp/proctest-2.out" );
+  if ( proc.ok() ){
+    proc.setup("",true);
+    FoliaElement *e = 0;
+    while ( (e = proc.next_text_parent() ) ){
+      os << e->id() << " : " << e->str() << endl;
+      vector<Word*> wv = e->select<Word>();
+      for ( const auto& w : wv ){
+	os << "\t" << w->id() << " : " << w->str() << endl;
+      }
+    }
+    int stat = system( "diff /tmp/proctest-2.out tests/proctest-2.ok" );
+    assertMessage( "/tmp/proctest-2.out tests/proctest-2.ok differ!",
      		   (stat == 0) );
   }
 }
@@ -5276,8 +5315,10 @@ int main(){
   processor_test005();
   processor_test006a();
   processor_test006b();
+  processor_test006c();
   processor_test007();
-  processor_test008();
+  processor_test008a();
+  processor_test008b();
 #endif
   summarize_tests(0);
 }
