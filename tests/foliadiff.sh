@@ -26,8 +26,8 @@ fi
 
 t1=/tmp/${1##*/}.s1
 t2=/tmp/${2##*/}.s2
-$exe --strip "$1" > $t1
-$exe --strip "$2" > $t2
+$exe --strip --KANON "$1" -o $t1
+$exe --strip --KANON "$2" -o $t2
 diff $t1 $t2
 if [ $? -ne 0 ]
 then
