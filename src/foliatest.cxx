@@ -5018,10 +5018,27 @@ void processor_test006c(){
   }
 }
 
+void processor_test006d(){
+  startTestSerie( " enumerate a complex document on text node parents" );
+  TextProcessor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/folia-head.xml" ) );
+  if ( proc.ok() ){
+    map<int,int> result = proc.enumerate_text_parents("");
+    ofstream os( "/tmp/textparents-2.lst" );
+    for ( const auto& n : result ){
+      os << n.first << endl;
+    }
+    int stat = system( "diff /tmp/textparents-2.lst tests/textparents-2.lst.ok" );
+    assertMessage( "/tmp/textparents-2.lst tests/textparents-2.lst.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
 void processor_test007(){
   startTestSerie( " process a document searching for text nodes " );
   TextProcessor proc;
-  //proc.set_debug(true);
+  //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin3.xml") );
   if ( proc.ok() ){
     proc.setup();
@@ -5031,7 +5048,7 @@ void processor_test007(){
     FoliaElement *w = 0;
     char character = 'A';
     while ( (w = proc.next_text_parent() ) ){
-      // we know we get only <w> nodes for zin.xml....
+      // we know we should get only <w> nodes for zin.xml....
       KWargs args;
       args["set"] = "MY_TEST";
       args["class"] = string(1,character++);
@@ -5316,6 +5333,7 @@ int main(){
   processor_test006a();
   processor_test006b();
   processor_test006c();
+  processor_test006d();
   processor_test007();
   processor_test008a();
   processor_test008b();
