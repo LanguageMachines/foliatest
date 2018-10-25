@@ -5130,7 +5130,7 @@ void processor_test008c(){
 void processor_test008d(){
   startTestSerie( " process a document searching for text nodes, flushing in between " );
   TextProcessor proc( "tests/folia-head.xml", "/tmp/proctest-8d.xml");
-  proc.set_debug(true);
+  // proc.set_debug(true);
   ofstream os( "/tmp/proctest-8d.out" );
   if ( proc.ok() ){
     proc.setup("",true);
