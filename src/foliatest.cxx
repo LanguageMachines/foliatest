@@ -5137,6 +5137,7 @@ void processor_test008d(){
     FoliaElement *e = 0;
     while ( (e = proc.next_text_parent() ) ){
       os << e->id() << " : " << e->str() << endl;
+      //      proc.flush(e);
     }
     proc.finish();
     int stat = system( "diff /tmp/proctest-8d.out tests/proctest-8d.ok" );
