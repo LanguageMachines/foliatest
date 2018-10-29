@@ -4835,6 +4835,33 @@ void processor_test001b(){
   }
 }
 
+void processor_test001c(){
+  startTestSerie( " process an invalid document using Folia Processor" );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertThrow( proc.init_doc( "tests/wrongname.xml" ), XmlError );
+}
+
+void loop( Processor& proc ){
+  FoliaElement *res;
+  while ( ( res = proc.get_node( "pqrs" ) ) ){
+    // search a non-existing node. will barf on the unknown tag
+    proc.next();
+  }
+}
+
+void processor_test001d(){
+  startTestSerie( " process an invalid document using Folia Processor" );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/unknowntag.xml" ) );
+  if ( proc.ok() ){
+    // init should work!
+    // reading on should fail at a certain point
+    assertThrow( loop( proc ), XmlError );
+  }
+}
+
 void processor_test002a(){
   startTestSerie( " copy a document using Folia Processor (alternative)" );
   Processor proc;
@@ -5368,6 +5395,8 @@ int main(){
   build_test002();
   processor_test001a();
   processor_test001b();
+  processor_test001c();
+  processor_test001d();
   processor_test002a();
   processor_test002b();
   processor_test002c();

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA  xml:id="alew001besl01_01" xmlns="http://ilk.uvt.nl/folia" generator="libfolia-v0.11">
+  <metadata type="native">
+    <annotations>
+      <event-annotation set="whatever"/>
+    </annotations>
+  </metadata>
+  <text xml:id="text">
+    <div xml:id="div">
+      <evnt xml:id="event">
+	<head xml:id="head">
+	  <t> Jan zing het hoogste lied.</t>
+	</head>
+      </evnt>
+    </div>
+  </text>
+</FoLiA>
