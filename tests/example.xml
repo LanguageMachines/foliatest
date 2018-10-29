@@ -1437,6 +1437,7 @@
 	<fd:sub att="1">
 	  test
 	</fd:sub>
+	<!-- Some comment! -->
 	<fd:sub att="2">
 	  meer
 	</fd:sub>
