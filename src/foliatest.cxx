@@ -122,6 +122,24 @@ void test1c() {
    		 (stat == 0) );
 }
 
+void test1d() {
+  startTestSerie( " Test lezen van een FoLiA invalid file " );
+  Document d;
+  assertThrow( d.readFromFile( "tests/unknowntag.xml" ), XmlError );
+}
+
+void test1e() {
+  startTestSerie( " Test lezen en schrijven van een lastige FoLiA file " );
+  Document d1;
+  assertNoThrow( d1.readFromFile( "tests/scary.xml" ) );
+  assertNoThrow( d1.save( "/tmp/scary.xml" ) );
+  Document d2;
+  assertNoThrow( d2.readFromFile( "/tmp/scary.xml" ) );
+  assertNoThrow( d2.save( "/tmp/scary2.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/scary.xml /tmp/scary2.xml" );
+  assertMessage( "/tmp/scary.xml /tmp/scary2.xml differ!",
+   		 (stat == 0) );
+}
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -5184,6 +5202,8 @@ int main(){
   test1a();
   test1b();
   test1c();
+  test1d();
+  test1e();
   test2();
   test3();
   test4();

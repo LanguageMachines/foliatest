@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" generator="libfolia-v0.14" version="0.12.0">
+  <metadata type="native">
+    <annotations>
+      <pos-annotation set="pos"/>
+      <syntax-annotation set="syn"/>
+    </annotations>
+  </metadata>
+  <text xml:id="test.text">
+    <s xml:id="s.1">
+      <w xml:id="s.1.w.1">
+	<t>Is@</t>
+	<pos class="BEP" />
+      </w>
+      <syntax>
+	<su xml:id="s.1.su.1" class="IP-MAT">
+          <su xml:id="s.1.su.2" class="NP-SBJ">
+            <w xml:id="s.1.su.w.1">
+              <t>*exp*</t>
+              <pos class="EX" />
+            </w>
+          </su>
+	</su>
+      </syntax>
+    </s>
+  </text>
+</FoLiA>
