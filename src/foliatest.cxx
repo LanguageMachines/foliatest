@@ -128,22 +128,20 @@ void test1d() {
   assertThrow( d.readFromFile( "tests/unknowntag.xml" ), XmlError );
 }
 
+#if FOLIA_INT_VERSION >= 120
 void test1e() {
   startTestSerie( " Test lezen en schrijven van een lastige FoLiA file " );
   Document d1;
   assertNoThrow( d1.readFromFile( "tests/scary.xml" ) );
   assertNoThrow( d1.save( "/tmp/scary.xml" ) );
   Document d2;
-#if FOLIA_INT_VERSION >= 120
   assertNoThrow( d2.readFromFile( "/tmp/scary.xml" ) );
   assertNoThrow( d2.save( "/tmp/scary2.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/scary.xml /tmp/scary2.xml" );
   assertMessage( "/tmp/scary.xml /tmp/scary2.xml differ!",
    		 (stat == 0) );
-#else
-  assertThrow( d2.readFromFile( "/tmp/scary.xml" ), XmlError );
-#endif
 }
+#endif
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -5206,7 +5204,9 @@ int main(){
   test1b();
   test1c();
   test1d();
+#if FOLIA_INT_VERSION >= 120
   test1e();
+#endif
   test2();
   test3();
   test4();
