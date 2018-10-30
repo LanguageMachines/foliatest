@@ -134,6 +134,9 @@ void test1e() {
   Document d1;
   assertNoThrow( d1.readFromFile( "tests/scary.xml" ) );
   assertNoThrow( d1.save( "/tmp/scary.xml" ) );
+  vector<Sentence*> sv;
+  assertNoThrow( sv = d1.sentences() );
+  assertEq( sv[0].text(), "Is@" );
   Document d2;
   assertNoThrow( d2.readFromFile( "/tmp/scary.xml" ) );
   assertNoThrow( d2.save( "/tmp/scary2.xml" ) );
