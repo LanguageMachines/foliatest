@@ -134,11 +134,15 @@ void test1e() {
   assertNoThrow( d1.readFromFile( "tests/scary.xml" ) );
   assertNoThrow( d1.save( "/tmp/scary.xml" ) );
   Document d2;
+#if FOLIA_INT_VERSION >= 120
   assertNoThrow( d2.readFromFile( "/tmp/scary.xml" ) );
   assertNoThrow( d2.save( "/tmp/scary2.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/scary.xml /tmp/scary2.xml" );
   assertMessage( "/tmp/scary.xml /tmp/scary2.xml differ!",
    		 (stat == 0) );
+#else
+  assertThrow( d2.readFromFile( "/tmp/scary.xml" ), XmlError );
+#endif
 }
 
 void test2() {
@@ -5173,8 +5177,8 @@ void processor_test008c(){
 }
 
 void processor_test008d(){
-  startTestSerie( " process a document searching for text nodes, flushing in between " );
-  TextProcessor proc( "tests/folia-head.xml", "/tmp/proctest-8d.xml");
+  startTestSerie( " process a strange document searching for text nodes " );
+  TextProcessor proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
   // proc.set_debug(true);
   ofstream os( "/tmp/proctest-8d.out" );
   if ( proc.ok() ){
@@ -5182,7 +5186,6 @@ void processor_test008d(){
     FoliaElement *e = 0;
     while ( (e = proc.next_text_parent() ) ){
       os << e->id() << " : " << e->str() << endl;
-      //      proc.flush(e);
     }
     proc.finish();
     int stat = system( "diff /tmp/proctest-8d.out tests/proctest-8d.ok" );
