@@ -5211,6 +5211,27 @@ void processor_test008d(){
   }
 }
 
+void processor_test008e(){
+  startTestSerie( " process a document with entities, searching for text nodes " );
+  TextProcessor proc( "tests/entities.xml" );
+  // proc.set_debug(true);
+  ofstream os( "/tmp/entities.out" );
+  if ( proc.ok() ){
+    proc.setup("",true);
+    FoliaElement *e = 0;
+    while ( (e = proc.next_text_parent() ) ){
+      os << e->id() << " : " << e->str() << endl;
+    }
+    int stat = system( "diff /tmp/entities.out tests/entities.ok" );
+    assertMessage( "/tmp/entites.out tests/entities.ok differ!",
+     		   (stat == 0) );
+    proc.save( "/tmp/entities-p.xml" );
+    stat = system( "./tests/foliadiff.sh /tmp/entities-p.xml tests/entities.xml" );
+    assertMessage( "/tmp/entities-p.xml tests/entities.xml differ!",
+     		   (stat == 0) );
+  }
+}
+
 #endif // FOLIA_INT_VERSION >= 120
 
 int main(){
@@ -5454,6 +5475,7 @@ int main(){
   processor_test008b();
   processor_test008c();
   processor_test008d();
+  processor_test008e();
 #endif
   summarize_tests(0);
 }
