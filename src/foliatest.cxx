@@ -151,7 +151,7 @@ void test1f() {
   Document d1;
   assertNoThrow( d1.readFromFile( "tests/entities.xml" ) );
   Sentence *s = d1.sentences()[0];
-  assertEqual( s->text(), "Dit is als het ware één test." );
+  assertEqual( s->text(), "Dit <is> als het ware één test met ß." );
   assertNoThrow( d1.save( "/tmp/entities.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/entities.xml tests/entities.xml" );
   assertMessage( "/tmp/entities.xml tests/entities.xml differ!",
