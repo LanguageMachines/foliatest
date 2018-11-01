@@ -145,6 +145,19 @@ void test1e() {
    		 (stat == 0) );
 }
 #endif
+#if FOLIA_INT_VERSION >= 114
+void test1f() {
+  startTestSerie( " Test lezen en schrijven van een FoLiA file met entities" );
+  Document d1;
+  assertNoThrow( d1.readFromFile( "tests/entities.xml" ) );
+  Sentence *s = d1.sentences()[0];
+  assertEqual( s->text(), "Dit is als het ware één test." );
+  assertNoThrow( d1.save( "/tmp/entities.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/entities.xml tests/entities.xml" );
+  assertMessage( "/tmp/entities.xml tests/entities.xml differ!",
+   		 (stat == 0) );
+}
+#endif
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -5209,6 +5222,9 @@ int main(){
   test1d();
 #if FOLIA_INT_VERSION >= 120
   test1e();
+#endif
+#if FOLIA_INT_VERSION >= 114
+  test1f();
 #endif
   test2();
   test3();
