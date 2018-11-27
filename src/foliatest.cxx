@@ -4118,7 +4118,7 @@ void text_test16(){
 }
 
 void text_test17(){
-  startTestSerie( "Validation - mixed NFC and NFD encodinf" );
+  startTestSerie( "Validation - mixed NFC and NFD encoding" );
   string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
 "  <text xml:id=\"t1\">"
@@ -4134,6 +4134,27 @@ void text_test17(){
   assertNoThrow( doc.readFromString( xml ) );
   assertEqual( doc.sentences(0)->text(), "ἀντιϰειμένου");
   assertEqual( doc.words(0)->text(), "ἀντιϰειμένου");
+}
+
+void text_test18(){
+  startTestSerie( "Validation - paragraph with parts" );
+  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
+"  <text xml:id=\"t1\">"
+"    <p xml:id=\"p1\">"
+"      <t>Een test</t>"
+"      <part xml:id=\"part1\">"
+"        <t>Een</t>"
+"      </part>"
+"      <part xml:id=\"part2\">"
+"        <t> test</t>"
+"      </part>"
+"    </p>"
+"  </text>"
+"</FoLiA>";
+  Document doc;
+  assertNoThrow( doc.readFromString( xml ) );
+  //  assertEqual( doc.paragraphs(0)->text(), "Een test");
 }
 
 void create_test001( ){
@@ -5430,6 +5451,7 @@ int main(){
   text_test15();
   text_test16();
   text_test17();
+  //  text_test18();
   create_test001();
   create_test002();
   create_test003();
