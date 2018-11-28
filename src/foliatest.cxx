@@ -129,7 +129,7 @@ void test1d() {
   assertThrow( d.readFromFile( "tests/unknowntag.xml" ), XmlError );
 }
 
-#if FOLIA_INT_VERSION >= 120
+#if FOLIA_INT_VERSION >= 115
 void test1e() {
   startTestSerie( " Test lezen en schrijven van een lastige FoLiA file " );
   Document d1;
@@ -4034,7 +4034,7 @@ void text_test13f(){
   KWargs args;
   args["id"] = doc.id() + ".text.1";
   Text *text = new Text(args,&doc);
-#if FOLIA_INT_VERSION < 120
+#if FOLIA_INT_VERSION < 115
   doc.append( text );
 #else
   doc.setRoot( text );
@@ -4787,7 +4787,7 @@ void query_test011(){
   assertEqual( matches.size(), 0 );
 }
 
-#if FOLIA_INT_VERSION >= 120
+#if FOLIA_INT_VERSION >= 115
 
 void build_test001(){
   startTestSerie( " build a text document using FoliaBuilder " );
@@ -5254,7 +5254,7 @@ void processor_test008e(){
   }
 }
 
-#endif // FOLIA_INT_VERSION >= 120
+#endif // FOLIA_INT_VERSION >= 115
 
 int main(){
   test0();
@@ -5263,7 +5263,7 @@ int main(){
   test1b();
   test1c();
   test1d();
-#if FOLIA_INT_VERSION >= 120
+#if FOLIA_INT_VERSION >= 115
   test1e();
 #endif
 #if FOLIA_INT_VERSION >= 114
@@ -5476,7 +5476,7 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
-#if FOLIA_INT_VERSION >= 120
+#if FOLIA_INT_VERSION >= 115
   build_test001();
   build_test002();
   processor_test001a();
