@@ -4030,7 +4030,7 @@ void text_test13e(){
 
 void text_test13f(){
   startTestSerie( "Validation - Text Validation with redundancy on construction" );
-  Document doc( "id='example'" );
+  Document doc( "id='example', version='1.5'" );
   KWargs args;
   args["id"] = doc.id() + ".text.1";
   Text *text = new Text(args,&doc);
@@ -4268,7 +4268,7 @@ void create_test003( ){
 
 void create_test004( ){
   startTestSerie( " Creating a document from scratch. appending text" );
-  Document d( "id='example'" );
+  Document d( "id='example', version='1.5'" );
   FoliaElement *text = 0;
   KWargs args;
   args["id"] =  "t.1";
@@ -4295,7 +4295,7 @@ void create_test004( ){
 
 void create_test005( ){
   startTestSerie( " Creating a document from scratch. appending Words After Sentence" );
-  Document d( "id='example'" );
+  Document d( "id='example', version='1.5.0'" );
   FoliaElement *text = 0;
   KWargs args;
   args["id"] =  "t.1";
