@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" version="1.4" generator="manual">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="manual">
   <metadata type="native">
     <annotations>
       <token-annotation annotator="ilktok" annotatortype="auto" />
@@ -529,7 +529,7 @@
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.4">
-          <t>De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
+          <t>De hoofdletter A wordt gebruikt voor het originele handschrift..</t>
           <t class="original">De hoofdletter A wordt gebruikt voor het originele handschrift.</t>
           <t class="translate">Uppercase A is used for the original.</t>
           <part xml:id="WR-P-E-J-0000000001.p.1.s.4.part.1">

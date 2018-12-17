@@ -4268,7 +4268,7 @@ void create_test003( ){
 
 void create_test004( ){
   startTestSerie( " Creating a document from scratch. appending text" );
-  Document d( "id='example', version='1.5'" );
+  Document d( "id='example'" );
   FoliaElement *text = 0;
   KWargs args;
   args["id"] =  "t.1";
@@ -4295,7 +4295,7 @@ void create_test004( ){
 
 void create_test005( ){
   startTestSerie( " Creating a document from scratch. appending Words After Sentence" );
-  Document d( "id='example', version='1.5.0'" );
+  Document d( "id='example'" );
   FoliaElement *text = 0;
   KWargs args;
   args["id"] =  "t.1";
