@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="1.4">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="1.4">
   <metadata type="native">
     <annotations>
       <division-annotation set="divs"/>
+      <style-annotation set="style"/>
       <pos-annotation annotator="foliatest" annotatortype="auto" set="MY_TEST"/>
     </annotations>
     <meta id="genre">artikel</meta>
@@ -24,7 +25,9 @@
       <p xml:id="WR-P-E-J-0000000001.p.1">
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
-            <t>Stemma</t>
+            <t>
+              <t-style class="bold">Stemma</t-style>
+            </t>
             <comment annotator="proycon">This is a comment</comment>
             <pos class="B"/>
           </w>

@@ -4,6 +4,7 @@
   <metadata type="native">
     <annotations>
       <division-annotation set="divs" />
+      <style-annotation set="style" />
     </annotations>
     <meta id="title">Stemma</meta>
     <meta id="language">nl</meta>
@@ -22,7 +23,7 @@
       <p xml:id="WR-P-E-J-0000000001.p.1">
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1">
-            <t>Stemma</t>
+            <t><t-style class="bold">Stemma</t-style></t>
             <comment annotator="proycon">This is a comment</comment>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.2">
