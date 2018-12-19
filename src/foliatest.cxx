@@ -4860,6 +4860,7 @@ void build_test002(){
 void processor_test001a(){
   startTestSerie( " copy a document using Folia Processor " );
   Processor proc;
+  // proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml",
 				"/tmp/example-p1.xml") );
   if ( proc.ok() ){
@@ -5254,6 +5255,25 @@ void processor_test008e(){
   }
 }
 
+void processor_test009(){
+  startTestSerie( " process a difficult document with t-style " );
+  TextProcessor proc( "tests/procbug.xml" );
+  //  proc.set_debug(true);
+  ofstream os( "/tmp/procbug.out" );
+  if ( proc.ok() ){
+    proc.setup("",true);
+    FoliaElement *e = 0;
+    assertNoThrow( e = proc.next_text_parent() );
+    while ( e ) {
+      os << e->id() << " : " << e->str() << endl;
+      assertNoThrow( e = proc.next_text_parent() );
+    }
+    int stat = system( "diff /tmp/procbug.out tests/procbug.ok" );
+    assertMessage( "/tmp/procbug.out tests/procbug.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
@@ -5499,6 +5519,7 @@ int main(){
   processor_test008c();
   processor_test008d();
   processor_test008e();
+  processor_test009();
 #endif
   summarize_tests(0);
 }
