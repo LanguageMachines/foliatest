@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" generator="libfolia-v1.6.1" version="0.8.0">
+  <metadata type="native">
+    <annotations>
+      <style-annotation set="TEST"/>
+    </annotations>
+  </metadata>
+  <text xml:id="txt.1">
+    <p xml:id="txt.1.p.1">
+      <t><t-style class="italic">Al</t-style>
+	<t-style class="italic">hoopt</t-style>
+      </t>
+      <s xml:id="txt.1.p.1.s.1">
+        <t>Al.</t>
+      </s>
+    </p>
+  </text>
+</FoLiA>
