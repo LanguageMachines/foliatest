@@ -5255,7 +5255,7 @@ void processor_test008e(){
   }
 }
 
-void processor_test009(){
+void processor_test009a(){
   startTestSerie( " process a difficult document with t-style " );
   TextProcessor proc( "tests/procbug.xml" );
   //  proc.set_debug(true);
@@ -5270,6 +5270,25 @@ void processor_test009(){
     }
     int stat = system( "diff /tmp/procbug.out tests/procbug.ok" );
     assertMessage( "/tmp/procbug.out tests/procbug.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test009b(){
+  startTestSerie( " process a difficult document for text " );
+  TextProcessor proc( "tests/textbug1.xml" );
+  //  proc.set_debug(true);
+  ofstream os( "/tmp/textbug1.out" );
+  if ( proc.ok() ){
+    proc.setup("",true);
+    FoliaElement *e = 0;
+    assertNoThrow( e = proc.next_text_parent() );
+    while ( e ) {
+      os << e->id() << " : " << e->str() << endl;
+      assertNoThrow( e = proc.next_text_parent() );
+    }
+    int stat = system( "diff /tmp/textbug1.out tests/textbug1.ok" );
+    assertMessage( "/tmp/textbug1.out tests/textbug1.ok differ!",
      		   (stat == 0) );
   }
 }
@@ -5519,7 +5538,8 @@ int main(){
   processor_test008c();
   processor_test008d();
   processor_test008e();
-  processor_test009();
+  processor_test009a();
+  processor_test009b();
 #endif
   summarize_tests(0);
 }

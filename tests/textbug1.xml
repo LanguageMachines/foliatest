@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" version="1.5.1" xml:id="bug" generator="hand">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-01T17:33:05" set="tokconfig-nld"/>
+    </annotations>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="text">
+    <div xml:id="bug.text.div.1">
+      <p xml:id="bug.text.div.1.p.1">
+        <s xml:id="bug.text.div.1.p.1.s.1">
+          <w class="WORD" xml:id="bug.text.div.1.p.1.s.1.w.1">
+            <t>Aap</t>
+          </w>
+        </s>
+      </p>
+    </div>
+    <div xml:id="bug.text.div.2">
+      <head xml:id="bug.text.div.2.head.1">
+        <s xml:id="bug.text.div.2.head.1.s.1">
+          <w class="WORD" xml:id="bug.text.div.2.head.1.s.1.w.1">
+            <t>Noot</t>
+          </w>
+        </s>
+      </head>
+    </div>
+  </text>
+</FoLiA>
