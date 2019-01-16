@@ -5150,7 +5150,7 @@ void processor_test007(){
 void processor_test008a(){
   startTestSerie( " process a document searching for text nodes " );
   TextProcessor proc;
-  //proc.set_debug(true);
+  //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/proctest.xml" ) );
   ofstream os( "/tmp/proctest.out" );
   if ( proc.ok() ){
@@ -5172,7 +5172,7 @@ void processor_test008a(){
 void processor_test008b(){
   startTestSerie( " process a document with layers searching for text nodes " );
   TextProcessor proc;
-  //proc.set_debug(true);
+  //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
   ofstream os( "/tmp/proctest-2.out" );
   if ( proc.ok() ){
@@ -5296,6 +5296,8 @@ void processor_test009b(){
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
+  //  processor_test008b();
+  //  exit(9);
   test0();
   test1();
   test1a();
