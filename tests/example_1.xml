@@ -121,7 +121,14 @@
             <t>tussen</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.24">
-            <t>handschriften</t>
+	    <correction>
+	      <original>
+		<t>handcriften</t>
+	      </original>
+	      <new>
+		<t>handschriften</t>
+	      </new>
+	    </correction>
 	  </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.25">
             <t>weer</t>

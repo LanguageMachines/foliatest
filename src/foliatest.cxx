@@ -5093,7 +5093,8 @@ void processor_test006c(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
   if ( proc.ok() ){
-    map<int,int> result = proc.enumerate_text_parents("");
+    proc.setup();
+    map<int,int> result = proc.enumerate_text_parents(""); // silly, redoing enumerate
     ofstream os( "/tmp/textparents-1.lst" );
     for ( const auto& n : result ){
       os << n.first << endl;
@@ -5101,6 +5102,15 @@ void processor_test006c(){
     int stat = system( "diff /tmp/textparents-1.lst tests/textparents-1.lst.ok" );
     assertMessage( "/tmp/textparents-1.lst tests/textparents-1.lst.ok differ!",
      		   (stat == 0) );
+    ofstream os2( "/tmp/textparents-1-tag.lst" );
+    FoliaElement *e=0;
+    while ( (e = proc.next_text_parent() ) ){
+      os2 << e->xmltag() << " : " << e->str() << endl;
+    }
+    stat = system( "diff /tmp/textparents-1-tag.lst tests/textparents-1-tag.lst.ok" );
+    assertMessage( "/tmp/textparents-1-tag.lst tests/textparents-1-tag.lst.ok differ!",
+     		   (stat == 0) );
+
   }
 }
 
@@ -5296,8 +5306,8 @@ void processor_test009b(){
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
-  //  processor_test008b();
-  //  exit(9);
+  //processor_test006c();
+  //exit(9);
   test0();
   test1();
   test1a();
