@@ -27,7 +27,9 @@
 	  <wref id="id.p.1.s.1.w.1"/>
 	</entity>
 	<entity>
-	  <wref id="id.p.1.s.1.w.2"/>
+	  <w xml:id="id.p.1.s.1.w.2a">
+	    <t>lang</t>
+	  </w>
 	</entity>
 	<entity>
 	  <wref id="id.p.1.s.1.w.3"/>
