@@ -2250,7 +2250,7 @@ void sanity_test110(){
   assertEqual( sm->datatype(), "ForeignMetaData" );
   vector<FoliaElement*> fv = sm->get_foreigners();
   string cont = fv[0]->xmlstring();
-  assertEqual( cont, "<foreign-data xmlns=\"http://ilk.uvt.nl/folia\" id=\"ergens\">\n"
+  assertEqual( cont, "<foreign-data xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"ergens\">\n"
 "        <fd:node xmlns:fd=\"foreigns\">\n"
 "	  <fd:sub att=\"1\">test</fd:sub>\n"
 "	</fd:node>\n"
