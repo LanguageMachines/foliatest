@@ -2346,6 +2346,12 @@ void sanity_test122( ){
   assertThrow( d.readFromString( xml ), XmlError );
 }
 
+void sanity_test123( ){
+  startTestSerie( " Layers - using Word not Reference " );
+  Document d;
+  assertThrow( d.readFromFile( "tests/example_2.xml" ), XmlError );
+}
+
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
@@ -5448,6 +5454,7 @@ int main(){
   sanity_test120();
   sanity_test121();
   sanity_test122();
+  sanity_test123();
   edit_test001a();
   edit_test001b();
   edit_test002();

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="id" version="1.4" generator="manual">
+  <metadata type="native">
+    <annotations>
+      <entity-annotation set="ents" />
+    </annotations>
+  </metadata>
+  <text xml:id="id.text">
+    <p xml:id="id.p.1">
+      <s xml:id="id.p.1.s.1">
+        <w xml:id="id.p.1.s.1.w.1">
+          <t>Een</t>
+        </w>
+        <w xml:id="id.p.1.s.1.w.2">
+          <t>kort</t>
+        </w>
+        <w xml:id="id.p.1.s.1.w.3">
+          <t>zinnetje</t>
+        </w>
+        <w xml:id="id.p.1.s.1.w.4">
+          <t>.</t>
+        </w>
+      </s>
+      <entities set="ents">
+	<entity>
+	  <wref id="id.p.1.s.1.w.1"/>
+	</entity>
+	<entity>
+	  <wref id="id.p.1.s.1.w.2"/>
+	</entity>
+	<entity>
+	  <wref id="id.p.1.s.1.w.3"/>
+	</entity>
+      </entities>
+    </p>
+  </text>
+</FoLiA>
