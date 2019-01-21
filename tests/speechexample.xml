@@ -19,7 +19,7 @@
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <w xml:id="entry.1.term.1.w.1" begintime="00:00:00.000" endtime="00:00:01.300" speaker="proycon" src="stemma.wav">
             <t>Stemma</t>
-            <ph>stɛːma</ph>
+            <ph set="phonemes">stɛːma</ph>
             <pos class="N(eigen,ev,basis,zijd,stan)" set="tags"/>
             <lemma class="stemma"/>
             <sense class="some.fictitious.stemma.id"/>

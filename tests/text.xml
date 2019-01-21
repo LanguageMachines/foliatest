@@ -8,7 +8,7 @@
       <head xml:id="chapter-2.head">
         <t>chapter 1</t>
       </head>
-      <s id="s1">
+      <s xml:id="s1">
         <t>sentence 1</t>
       </s>
     </div>

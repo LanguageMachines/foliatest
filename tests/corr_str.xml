@@ -12,18 +12,18 @@
       <p xml:id="p.1">
         <t>40ste vergadering</t>
         <lang class="dut"/>
-	<str id="p1.1"><t>40ste</t></str>
-	<str id="p1.2"><t>vergadering</t></str>
+	<str xml:id="p1.1"><t>40ste</t></str>
+	<str xml:id="p1.2"><t>vergadering</t></str>
       </p>
       <p xml:id="p.2">
         <t>2003-2004</t>
         <lang class="fre"/>
-	<str id="p2.1"><t>2003-2004</t></str>
+	<str xml:id="p2.1"><t>2003-2004</t></str>
       </p>
       <p xml:id="p.3">
         <t>40</t>
         <lang class="UNKNOWN"/>
-	<str id="p3.1"><t>40</t></str>
+	<str xml:id="p3.1"><t>40</t></str>
       </p>
     </div>
     <div xml:id="div.2">

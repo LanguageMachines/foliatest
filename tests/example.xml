@@ -45,7 +45,7 @@
     <meta id="genre">artikel</meta>
     <submetadata xml:id="external.metadata" type="outside" src="blaat"/>
     <submetadata xml:id="foreign.metadata" type="strange">
-      <foreign-data id="ergens">
+      <foreign-data xml:id="ergens">
         <fd:node xmlns:fd="foreigns">
 	  <fd:sub att="1">test</fd:sub>
 	</fd:node>
