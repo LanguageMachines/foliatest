@@ -129,7 +129,13 @@ void test1d() {
   assertThrow( d.readFromFile( "tests/unknowntag.xml" ), XmlError );
 }
 
-#if FOLIA_INT_VERSION >= 115
+#if FOLIA_INT_VERSION >= 116
+void test1e() {
+  startTestSerie( " Test lezen en schrijven van een lastige FoLiA file " );
+  Document d1;
+  assertThrow( d1.readFromFile( "tests/scary.xml" ), XmlError );
+}
+#elif FOLIA_INT_VERSION >= 115
 void test1e() {
   startTestSerie( " Test lezen en schrijven van een lastige FoLiA file " );
   Document d1;
@@ -5229,6 +5235,22 @@ void processor_test008c(){
   }
 }
 
+#if FOLIA_INT_VERSION >= 116
+void test_proc( TextProcessor& proc ){
+  FoliaElement *e = 0;
+  while ( (e = proc.next_text_parent() ) ){
+  }
+}
+
+void processor_test008d(){
+  startTestSerie( " process a strange document searching for text nodes " );
+  TextProcessor proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
+  if ( proc.ok() ){
+    proc.setup("",true);
+    assertThrow( test_proc( proc ), XmlError );
+  }
+}
+#else
 void processor_test008d(){
   startTestSerie( " process a strange document searching for text nodes " );
   TextProcessor proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
@@ -5249,6 +5271,7 @@ void processor_test008d(){
      		   (stat == 0) );
   }
 }
+#endif
 
 void processor_test008e(){
   startTestSerie( " process a document with entities, searching for text nodes " );
