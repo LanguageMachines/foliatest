@@ -362,7 +362,7 @@ void sanity_test008b(){
   FoliaElement *d = 0;
   assertNoThrow( d = sanityDoc["WR-P-E-J-0000000001.div0.1"] );
   FoliaElement *e = 0;
-  assertNoThrow( e = new Head( getArgs("id='whatever'"), &sanityDoc ) );
+  assertNoThrow( e = new Head( getArgs("_id='whatever'"), &sanityDoc ) );
   assertThrow( d->append(e), DuplicateAnnotationError );
 }
 
@@ -2773,7 +2773,7 @@ void edit_test009a( ){
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   KWargs kw;
   kw["text"] = "stippellijn";
-  kw["id"] = "WR-P-E-J-0000000001.p.1.s.8.w.11";
+  kw["_id"] = "WR-P-E-J-0000000001.p.1.s.8.w.11";
   assertThrow( w->sentence()->addWord( kw ),
 	       DuplicateIDError );
 }
@@ -4042,9 +4042,9 @@ void text_test13e(){
 
 void text_test13f(){
   startTestSerie( "Validation - Text Validation with redundancy on construction" );
-  Document doc( "id='example', version='1.5'" );
+  Document doc( "_id='example', version='1.5'" );
   KWargs args;
-  args["id"] = doc.id() + ".text.1";
+  args["_id"] = doc.id() + ".text.1";
   Text *text = new Text(args,&doc);
 #if FOLIA_INT_VERSION < 115
   doc.append( text );
@@ -4052,27 +4052,27 @@ void text_test13f(){
   doc.setRoot( text );
 #endif
 
-  args["id"] = doc.id() + ".s.1";
+  args["_id"] = doc.id() + ".s.1";
   Sentence *s = new Sentence( args, &doc );
   s->settext( "De site staat online . " ); //Spaces here!
   text->append( s );
-  args["id"] = doc.id() + ".s.1.w.1";
+  args["_id"] = doc.id() + ".s.1.w.1";
   args["text"] =  "De";
   Word *w = new Word( args, &doc );
   s->append( w );
-  args["id"] = doc.id() + ".s.1.w.2";
+  args["_id"] = doc.id() + ".s.1.w.2";
   args["text"] =  "site";
   w = new Word( args, &doc );
   s->append( w );
-  args["id"] = doc.id() + ".s.1.w.3";
+  args["_id"] = doc.id() + ".s.1.w.3";
   args["text"] =  "staat";
   w = new Word( args, &doc );
   s->append( w );
-  args["id"] = doc.id() + ".s.1.w.4";
+  args["_id"] = doc.id() + ".s.1.w.4";
   args["text"] =  "online";
   w = new Word( args, &doc );
   s->append( w );
-  args["id"] = doc.id() + ".s.1.w.5";
+  args["_id"] = doc.id() + ".s.1.w.5";
   args["text"] =  "."; // No spaces here!
   w = new Word( args, &doc );
   s->append( w );
@@ -4171,14 +4171,14 @@ void text_test18(){
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
-  Document d( "id='example'" );
+  Document d( "_id='example'" );
   assertNoThrow( d.declare( AnnotationType::TOKEN,
 			    "adhocset",
 			    "annotator='proycon'" ) );
   assertEqual( d.defaultset(AnnotationType::TOKEN), "adhocset" );
   assertEqual( d.defaultannotator(AnnotationType::TOKEN), "proycon" );
   FoliaElement *text = 0;
-  KWargs kw = getArgs( "id='" + d.id() + ".text.1'" );
+  KWargs kw = getArgs( "_id='" + d.id() + ".text.1'" );
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
@@ -4200,7 +4200,7 @@ void create_test001( ){
 
 void create_test002( ){
   startTestSerie( " Creating a document from scratch. " );
-  Document d( "id='example'" );
+  Document d( "_id='example'" );
   assertNoThrow( d.declare( AnnotationType::POS,
 				      "adhocset",
 				      "annotator='proycon'" ) );
@@ -4212,7 +4212,7 @@ void create_test002( ){
   assertEqual( d.defaultannotator(AnnotationType::POS, "myset"), "sloot" );
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
-  KWargs kw = getArgs( "id='" + id + "'" );
+  KWargs kw = getArgs( "_id='" + id + "'" );
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
@@ -4243,7 +4243,7 @@ void create_test002( ){
 
 void create_test003( ){
   startTestSerie( " Creating a document with gap annotations from scratch. " );
-  Document d( "id='example'" );
+  Document d( "_id='example'" );
   assertNoThrow( d.declare( AnnotationType::GAP,
 				      "gap-set",
 				      "annotator='sloot'" ) );
@@ -4256,7 +4256,7 @@ void create_test003( ){
   assertEqual( d.defaultannotator(AnnotationType::GAP, "extended-gap-set"), "sloot" );
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
-  KWargs kw = getArgs( "id='" + id + "'" );
+  KWargs kw = getArgs( "_id='" + id + "'" );
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   kw["set"] = "gap-set";
@@ -4280,16 +4280,16 @@ void create_test003( ){
 
 void create_test004( ){
   startTestSerie( " Creating a document from scratch. appending text" );
-  Document d( "id='example'" );
+  Document d( "_id='example'" );
   FoliaElement *text = 0;
   KWargs args;
-  args["id"] =  "t.1";
+  args["_id"] =  "t.1";
   assertNoThrow( text = d.addText( args ) );
-  args["id"] = "p.1";
+  args["_id"] = "p.1";
   FoliaElement *p = 0;
   assertNoThrow( p = new Paragraph( args ) );
   text->append( p );
-  args["id"] = "s.1";
+  args["_id"] = "s.1";
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( args ) );
   p->append( s );
@@ -4307,16 +4307,16 @@ void create_test004( ){
 
 void create_test005( ){
   startTestSerie( " Creating a document from scratch. appending Words After Sentence" );
-  Document d( "id='example'" );
+  Document d( "_id='example'" );
   FoliaElement *text = 0;
   KWargs args;
-  args["id"] =  "t.1";
+  args["_id"] =  "t.1";
   assertNoThrow( text = d.addText( args ) );
-  args["id"] = "p.1";
+  args["_id"] = "p.1";
   FoliaElement *p = 0;
   assertNoThrow( p = new Paragraph( args ) );
   text->append( p );
-  args["id"] = "s.1";
+  args["_id"] = "s.1";
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( args ) );
   p->append( s );
@@ -4342,27 +4342,27 @@ void create_test005( ){
 
 void correction_test001a( ){
   startTestSerie( " Split correction " );
-  Document corDoc( "id='example'" );
+  Document corDoc( "_id='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				 "adhocset",
 				 "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("_id='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'") ) );
-  s->append( new Word( getArgs("text='De', id='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("_id='" + corDoc.id() + ".s.1'") ) );
+  s->append( new Word( getArgs("text='De', _id='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='site', id='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs("text='site', _id='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='staat', id='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs("text='staat', _id='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='online', id='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs("text='online', _id='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='.', id='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs("text='.', _id='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
   FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4");
-  w->split( new Word( getArgs("id='" + corDoc.id() + ".s.1.w.4a', text='on'" ),
+  w->split( new Word( getArgs("_id='" + corDoc.id() + ".s.1.w.4a', text='on'" ),
 		      &corDoc ),
-   	    new Word( getArgs("id='" + corDoc.id() + ".s.1.w.4b', text='line'" ),
+   	    new Word( getArgs("_id='" + corDoc.id() + ".s.1.w.4b', text='line'" ),
 		      &corDoc ));
   //  assertNoThrow( corDoc.save( "/tmp/foliasplit1a.xml" ) );
   s = corDoc.index("example.s.1");
@@ -4375,22 +4375,22 @@ void correction_test001a( ){
 
 void correction_test001b( ){
   startTestSerie( " Split suggestion " );
-  Document corDoc( "id='example'" );
+  Document corDoc( "_id='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				 "adhocset",
 				 "annotator='proycon'" ) );
-  Text *text = new Text( getArgs( "id='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs( "_id='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"  ) ) );
-  s->append( new Word( getArgs( "text='De', id='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("_id='" + corDoc.id() + ".s.1'"  ) ) );
+  s->append( new Word( getArgs( "text='De', _id='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='site', id='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs( "text='site', _id='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs("text='staat', id='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs("text='staat', _id='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='online', id='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs( "text='online', _id='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='.', id='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs( "text='.', _id='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
   FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4");
   Word *w1 = new Word( getArgs("generate_id='" + s->id() + "',text='on'"),
@@ -4408,30 +4408,30 @@ void correction_test001b( ){
 
 void correction_test002(){
   startTestSerie( " Merge corrections " );
-  Document corDoc( "id='example'" );
+  Document corDoc( "_id='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("_id='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs( "text='De', id='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("_id='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='De', _id='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='site', id='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs( "text='site', _id='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='staat', id='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs( "text='staat', _id='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='on', id='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs( "text='on', _id='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='line', id='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs( "text='line', _id='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='.', id='" + corDoc.id() + ".s.1.w.6'" ),
+  s->append( new Word( getArgs( "text='.', _id='" + corDoc.id() + ".s.1.w.6'" ),
 		       &corDoc ) );
 
   vector<FoliaElement *> ow;
   ow.push_back( corDoc.index(corDoc.id() + ".s.1.w.4") );
   ow.push_back( corDoc.index(corDoc.id() + ".s.1.w.5") );
-  s->mergewords( new Word( getArgs("id='" + corDoc.id() + ".s.1.w.4-5', text='online'"),
+  s->mergewords( new Word( getArgs("_id='" + corDoc.id() + ".s.1.w.4-5', text='online'"),
 			   &corDoc ),
 		 ow );
   //  assertNoThrow( corDoc.save( "/tmp/foliamerge002.xml" ) );
@@ -4446,24 +4446,24 @@ void correction_test002(){
 
 void correction_test003(){
   startTestSerie( " Delete corrections " );
-  Document corDoc( "id='example'" );
+  Document corDoc( "_id='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("_id='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs( "text='Ik', id='" + corDoc.id() + ".s.1.w.1'"),
+  FoliaElement *s = text->append( new Sentence( getArgs("_id='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='Ik', _id='" + corDoc.id() + ".s.1.w.1'"),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='zie', id='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs( "text='zie', _id='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='een', id='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs( "text='een', _id='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='groot', id='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs("text='groot', _id='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='huis', id='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs("text='huis', _id='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='.', id='" + corDoc.id() + ".s.1.w.6'" ),
+  s->append( new Word( getArgs("text='.', _id='" + corDoc.id() + ".s.1.w.6'" ),
 		       &corDoc ));
 
   s->deleteword( corDoc.index( corDoc.id() + ".s.1.w.4" ) );
@@ -4474,25 +4474,25 @@ void correction_test003(){
 
 void correction_test004(){
   startTestSerie( " Insert corrections " );
-  Document corDoc( "id='example'" );
+  Document corDoc( "_id='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs("id='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("_id='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs("id='" + corDoc.id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs("text='Ik', id='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("_id='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs("text='Ik', _id='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='zie', id='" + corDoc.id() + ".s.1.w.2'"),
+  s->append( new Word( getArgs("text='zie', _id='" + corDoc.id() + ".s.1.w.2'"),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='een', id='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs( "text='een', _id='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='huis', id='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs("text='huis', _id='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='.', id='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs("text='.', _id='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
 
-  Word *w = new Word( getArgs( "id='" + corDoc.id() + ".s.1.w.3b', text='groot'"), &corDoc );
+  Word *w = new Word( getArgs( "_id='" + corDoc.id() + ".s.1.w.3b', text='groot'"), &corDoc );
   FoliaElement *w2 = 0;
   assertNoThrow( w2 = corDoc.index( corDoc.id() + ".s.1.w.3" ) );
   assertNoThrow( s->insertword( w, w2 ) );
@@ -4535,56 +4535,56 @@ void correction_test006(){
   Document *corDoc = new Document();
   corDoc->readFromFile( "tests/example.xml" );
   KWargs args;
-  args["id"] = corDoc->id() + ".s.1";
+  args["_id"] = corDoc->id() + ".s.1";
   Sentence *sent = new Sentence( args );
   FoliaElement *text = 0;
   assertNoThrow( text = (*corDoc)[0] );
   assertNoThrow( text->append( sent ) );
-  args["id"] = corDoc->id() + ".s.1.w.1";
+  args["_id"] = corDoc->id() + ".s.1.w.1";
   args["text"] = "De";
   Word *wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.1.w.2";
+  args["_id"] = corDoc->id() + ".s.1.w.2";
   args["text"] = "site";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.1.w.3";
+  args["_id"] = corDoc->id() + ".s.1.w.3";
   args["text"] = "staat";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.1.w.4";
+  args["_id"] = corDoc->id() + ".s.1.w.4";
   args["text"] = "on";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.1.w.5";
+  args["_id"] = corDoc->id() + ".s.1.w.5";
   args["text"] = "line";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.1.w.6";
+  args["_id"] = corDoc->id() + ".s.1.w.6";
   args["text"] = ".";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
   args.clear();
-  args["id"] = corDoc->id() + ".s.2";
+  args["_id"] = corDoc->id() + ".s.2";
   sent = new Sentence( args);
   text->append( sent );
-  args["id"] = corDoc->id() + ".s.2.w.1";
+  args["_id"] = corDoc->id() + ".s.2.w.1";
   args["text"] = "sinds";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.2.w.2";
+  args["_id"] = corDoc->id() + ".s.2.w.2";
   args["text"] = "vorige";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.2.w.3";
+  args["_id"] = corDoc->id() + ".s.2.w.3";
   args["text"] = "week";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.2.w.4";
+  args["_id"] = corDoc->id() + ".s.2.w.4";
   args["text"] = "zondag";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args["id"] = corDoc->id() + ".s.2.w.5";
+  args["_id"] = corDoc->id() + ".s.2.w.5";
   args["text"] = ".";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
@@ -4690,10 +4690,10 @@ void query_test005(){
 
 void query_test006(){
   startTestSerie( " Find words with overlap " );
-  Document doc( "id='test'" );
-  Text *text = new Text( getArgs("id='test.text'") );
+  Document doc( "_id='test'" );
+  Text *text = new Text( getArgs("_id='test.text'") );
   doc.addText( text );
-  FoliaElement *s = new Sentence( getArgs( "id='" + doc.id() + ".s.1'") );
+  FoliaElement *s = new Sentence( getArgs( "_id='" + doc.id() + ".s.1'") );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='a'" );
@@ -4775,10 +4775,10 @@ void query_test010a(){
 
 void query_test010b(){
   startTestSerie( " Find words with wildcard and overlap " );
-  Document doc( "id='test'" );
-  Text *text = new Text( getArgs("id='test.text'") );
+  Document doc( "_id='test'" );
+  Text *text = new Text( getArgs("_id='test.text'") );
   doc.addText( text );
-  FoliaElement *s = new Sentence( getArgs("id='" + doc.id() + ".s.1'") );
+  FoliaElement *s = new Sentence( getArgs("_id='" + doc.id() + ".s.1'") );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='b'" );
@@ -4806,25 +4806,25 @@ void build_test001(){
   ofstream os( "/tmp/build.xml" );
   Builder b( os, "build1" );
   KWargs args;
-  args["id"] = "div1";
+  args["_id"] = "div1";
   Division *d = new Division( args, b.doc() );
-  args["id"] = "p1";
+  args["_id"] = "p1";
   Paragraph *p = new Paragraph( args );
   d->append(p);
   p->settext( "paragraaf 1" );
   b.add( d );
   b.flush();
-  args["id"] = "div2";
+  args["_id"] = "div2";
   d = new Division( args );
-  args["id"] = "p2";
+  args["_id"] = "p2";
   p = new Paragraph( args );
   p->settext( "paragraaf 2" );
   d->append(p);
   b.add( d );
   b.flush();
-  args["id"] = "div3";
+  args["_id"] = "div3";
   d = new Division( args );
-  args["id"] = "p3";
+  args["_id"] = "p3";
   p = new Paragraph( args );
   p->settext( "paragraaf 3" );
   d->append(p);
@@ -4840,25 +4840,25 @@ void build_test002(){
   ofstream os( "/tmp/speechbuild.xml" );
   Builder b( os, "build1", Builder::SPEECH );
   KWargs args;
-  args["id"] = "div1";
+  args["_id"] = "div1";
   Division *d = new Division( args, b.doc() );
-  args["id"] = "p1";
+  args["_id"] = "p1";
   Paragraph *p = new Paragraph( args );
   d->append(p);
   p->settext( "paragraaf 1" );
   b.add( d );
   b.flush();
-  args["id"] = "div2";
+  args["_id"] = "div2";
   d = new Division( args );
-  args["id"] = "p2";
+  args["_id"] = "p2";
   p = new Paragraph( args );
   p->settext( "paragraaf 2" );
   d->append(p);
   b.add( d );
   b.flush();
-  args["id"] = "div3";
+  args["_id"] = "div3";
   d = new Division( args );
-  args["id"] = "p3";
+  args["_id"] = "p3";
   p = new Paragraph( args );
   p->settext( "paragraaf 3" );
   d->append(p);
