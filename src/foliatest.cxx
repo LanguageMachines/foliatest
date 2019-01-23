@@ -81,12 +81,15 @@ void test0() {
   assertTrue( bla["cls"] == "ok" );
 #if FOLIA_INT_VERSION < 116
   assertNoThrow( bla = getArgs( "class='ok\\a', bli='bla'" ) );
+  assertTrue( bla["class"] == "ok\\a" );
 #else
   assertNoThrow( bla.init( "class='ok\\a', bli='bla'" ) );
   assertEqual( bla.is_present( "class" ), true );
   assertEqual( bla.is_present( "klas" ), false );
+  assertEqual( bla.extract("class"), "ok\\a" );
+  assertEqual( bla.extract("class"), "" );
+  assertEqual( bla.extract("klas"), "" );
 #endif
-  assertTrue( bla["class"] == "ok\\a" );
   assertTrue( bla["bli"] == "bla" );
   assertNoThrow( bla = getArgs( "cls='ok\\\\', bli='bla'" ) );
   assertTrue( bla["cls"] == "ok\\" );
