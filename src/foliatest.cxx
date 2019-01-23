@@ -61,7 +61,11 @@ using TiCC::operator<<;
 void test0() {
   startTestSerie( " Test lezen van KWargs " );
   KWargs bla;
+#if FOLIA_INT_VERSION < 116
   assertNoThrow( bla = getArgs( "dit='goed', dat =' ra ar' " ) );
+#else
+  assertNoThrow( bla.init( "dit='goed', dat =' ra ar' " ) );
+#endif
   assertTrue( bla["dit"] == "goed" );
   assertTrue( bla["dat"] == " ra ar" );
   assertEqual ( bla["dat"] , string(" ra ar") );
@@ -75,7 +79,13 @@ void test0() {
   assertTrue( bla["cls"] == "o\"k" );
   assertNoThrow( bla = getArgs( "cls='o""k'" ) );
   assertTrue( bla["cls"] == "ok" );
+#if FOLIA_INT_VERSION < 116
   assertNoThrow( bla = getArgs( "class='ok\\a', bli='bla'" ) );
+#else
+  assertNoThrow( bla.init( "class='ok\\a', bli='bla'" ) );
+  assertEqual( bla.is_present( "class" ), true );
+  assertEqual( bla.is_present( "klas" ), false );
+#endif
   assertTrue( bla["class"] == "ok\\a" );
   assertTrue( bla["bli"] == "bla" );
   assertNoThrow( bla = getArgs( "cls='ok\\\\', bli='bla'" ) );
