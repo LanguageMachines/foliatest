@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-vandam-1-1_cf39ba16-2cff-404f-8a50-b30e39edc7f6" generator="libfolia-v1.11" version="1.5">
+  <metadata type="native">
+    <annotations>
+      <style-annotation annotatortype="auto" set="http://rdf.ivdnt.org/nederlab/folia/sets/style"/>
+      <correction-annotation annotatortype="auto" set="http://rdf.ivdnt.org/nederlab/folia/sets/correction"/>
+      <linebreak-annotation annotatortype="auto" set="http://rdf.ivdnt.org/nederlab/folia/sets/linebreak"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-24T15:42:26" set="tokconfig-nld"/>
+    </annotations>
+  </metadata>
+  <text xml:id="bug">
+    <div xml:id="bug.text.1.div">
+      <p xml:id="bug.text.1.div.p">
+        <t>lande <t-style class="superscript">2)</t-style>  <t-correction class="correction" original="mercke-|lijck">merckelijck</t-correction> <br/> in prijs</t>
+        <s xml:id="bug.text.1.div.p.s">
+          <w xml:id="bug.text.1.div.p.s.w.4" class="WORD" set="tokconfig-nld">
+            <t>lande</t>
+          </w>
+          <w xml:id="bug.text.1.div.p.s.w.5" class="NUMBER" set="tokconfig-nld" space="no">
+            <t>2</t>
+          </w>
+          <w xml:id="bug.text.1.div.p.s.w.6" class="PUNCTUATION" set="tokconfig-nld">
+            <t>)</t>
+          </w>
+          <w xml:id="bug.text.1.div.p.s.w.7" class="WORD" set="tokconfig-nld">
+            <t>merckelijck</t>
+          </w>
+          <w xml:id="bug.text.1.div.p.s.w.8" class="WORD" set="tokconfig-nld">
+            <t>in</t>
+          </w>
+          <w xml:id="bug.text.1.div.p.s.w.9" class="WORD" set="tokconfig-nld">
+            <t>prijs</t>
+          </w>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>

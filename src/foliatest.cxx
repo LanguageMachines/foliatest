@@ -4961,6 +4961,26 @@ void processor_test001d(){
   }
 }
 
+void processor_test001e(){
+  startTestSerie( " copy a difficult document using Folia Processor " );
+  Processor proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/bug-1.xml",
+				"/tmp/bug-1.xml") );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
+    }
+    proc.finish();
+    int stat = system( "./tests/foliadiff.sh /tmp/bug-1.xml tests/bug-1.xml" );
+    assertMessage( "/tmp/bug-1.xml tests/bug-1.xml differ!",
+     		   (stat == 0) );
+  }
+}
+
+
 void processor_test002a(){
   startTestSerie( " copy a document using Folia Processor (alternative)" );
   Processor proc;
@@ -5592,6 +5612,7 @@ int main(){
   processor_test001b();
   processor_test001c();
   processor_test001d();
+  processor_test001e();
   processor_test002a();
   processor_test002b();
   processor_test002c();
