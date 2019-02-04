@@ -4976,7 +4976,7 @@ void processor_test001e(){
     proc.finish();
     int stat = system( "./tests/foliadiff.sh /tmp/bug-1.xml tests/bug-1.xml" );
     assertMessage( "/tmp/bug-1.xml tests/bug-1.xml differ!",
-     		   (stat == 0) );
+		   (stat == 0) );
   }
 }
 
@@ -5380,6 +5380,26 @@ void processor_test009b(){
   }
 }
 
+void processor_test009c(){
+  startTestSerie( " process a difficult document for text " );
+  TextProcessor proc;
+  //    proc.set_debug(true);
+  assertNoThrow( proc.init_doc( "tests/bug-2.xml" ) );
+  ofstream os( "/tmp/textbug2.out" );
+  if ( proc.ok() ){
+    proc.setup("",true);
+    FoliaElement *e = 0;
+    assertNoThrow( e = proc.next_text_parent() );
+    while ( e ) {
+      os << e->id() << " : " << e->str() << endl;
+      assertNoThrow( e = proc.next_text_parent() );
+    }
+    int stat = system( "diff /tmp/textbug2.out tests/textbug2.ok" );
+    assertMessage( "/tmp/textbug2.out tests/testbug2.ok differ!",
+		   (stat == 0) );
+  }
+}
+
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
@@ -5636,6 +5656,7 @@ int main(){
 #if FOLIA_INT_VERSION > 115
   processor_test009a();
   processor_test009b();
+  processor_test009c();
 #endif
 #endif
   summarize_tests(0);
