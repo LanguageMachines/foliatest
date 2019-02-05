@@ -13,7 +13,7 @@
           <t>Inleiding</t>
           <w xml:id="bug.text.div.1.head.1.s.1.w.1" class="WORD">
             <t>Inleiding</t>
-            <pos class="N(soort,ev,basis,zijd,stan)" confidence="0.992385" head="N">
+            <pos class="N(soort,ev,basis,zijd,stan)" confidence="0.992385" head="N" actor="ko">
             </pos>
           </w>
         </s>

@@ -5383,7 +5383,7 @@ void processor_test009b(){
 void processor_test009c(){
   startTestSerie( " process a difficult document for text " );
   TextProcessor proc;
-  //    proc.set_debug(true);
+  //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/bug-2.xml" ) );
   ofstream os( "/tmp/textbug2.out" );
   if ( proc.ok() ){
