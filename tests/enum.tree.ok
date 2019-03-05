@@ -1067,7 +1067,8 @@
       1068   content
       1069  foreign-data
       1071    sub
-      1072    sub
-      1074   node
-      1075    sub
+      1072    #comment
+      1073    sub
+      1075   node
       1076    sub
+      1077    sub
