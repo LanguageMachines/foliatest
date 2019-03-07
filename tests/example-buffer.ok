@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="example" generator="libfolia-v1.16" version="0.8">
+  <metadata src="test.cmdi.xml" type="cmdi">
+    <annotations>
+      <pos-annotation set="test"/>
+    </annotations>
+  </metadata>
+  <text xml:id="test.text">
+    <div xml:id="div">
+      <head xml:id="head">
+        <s xml:id="head.1.s.1">
+          <w xml:id="head.1.s.1.w.1">
+            <t>blah</t>
+            <pos class="NN(blah)" head="NN"/>
+          </w>
+        </s>
+      </head>
+      <p xml:id="p.1">
+        <s xml:id="p.1.s.1">
+          <w xml:id="p.1.s.1.w.1">
+            <t>blah</t>
+            <pos class="BB(blah)">
+              <feat class="BB" subset="head"/>
+            </pos>
+          </w>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>
