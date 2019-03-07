@@ -5400,6 +5400,69 @@ void processor_test009c(){
   }
 }
 
+void processor_test010(){
+  startTestSerie( " copy a document using Folia Processor on string buffer" );
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"  <metadata src=\"test.cmdi.xml\" type=\"cmdi\">\n"
+"    <annotations>\n"
+"      <pos-annotation set=\"test\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"test.text\">\n"
+"    <div xml:id=\"div\">\n"
+"     <head xml:id=\"head\">\n"
+"       <s xml:id=\"head.1.s.1\">\n"
+"            <w xml:id=\"head.1.s.1.w.1\">\n"
+"                <t>blah</t>\n"
+"                <pos class=\"NN(blah)\" head=\"NN\" />\n"
+"            </w>\n"
+"        </s>\n"
+"    </head>\n"
+"    <p xml:id=\"p.1\">\n"
+"        <s xml:id=\"p.1.s.1\">\n"
+"            <w xml:id=\"p.1.s.1.w.1\">\n"
+"                <t>blah</t>\n"
+"                <pos class=\"BB(blah)\">\n"
+"                    <feat subset=\"head\" class=\"BB\" />\n"
+"                </pos>\n"
+"            </w>\n"
+"        </s>\n"
+"    </p>\n"
+"   </div>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+
+  Processor proc;
+  // proc.set_debug(true);
+  assertNoThrow( proc.init_doc( xml ) );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
+    }
+    assertNoThrow( proc.save( "/tmp/example-buffer.xml") );
+    int stat = system( "./tests/foliadiff.sh /tmp/example-buffer.xml tests/example-buffer.ok" );
+    assertMessage( "/tmp/example-buffer.xml tests/example-buffer.ok differ!",
+     		   (stat == 0) );
+  }
+}
+
+void processor_test011() {
+  startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
+  Processor proc( "/tmp/example.xml.bz2" ); // created by earlier test
+  while ( proc.get_node( "pqrs" ) ){
+    // search a non-existing node. makes get_node collect the whole document
+    proc.next();
+  }
+  proc.save( "/tmp/example-1.xml.bz2" );
+  int stat = system( "./tests/foliadiff.sh /tmp/example-1.xml.bz2 /tmp/example.xml.bz2" );
+  assertMessage( "/tmp/example-1.xml.bz2 tests/example.xml.bz2 differ!",
+   		 (stat == 0) );
+}
+
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
@@ -5657,6 +5720,8 @@ int main(){
   processor_test009a();
   processor_test009b();
   processor_test009c();
+  processor_test010();
+  processor_test011();
 #endif
 #endif
   summarize_tests(0);
