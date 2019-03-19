@@ -565,9 +565,15 @@ void sanity_test015( ){
   int cnt = check( sanityDoc.doc(), "",  os, fails );
   cerr << "         - checked " << cnt << " parents" << endl;
   assertEqual( fails, 0 );
+#if FOLIA_INT_VERSION > 116
   int stat = system( "diff -b /tmp/foliaparent.txt tests/foliaparent.ok" );
   assertMessage( "/tmp/foliaparent.txt tests/foliaparent.ok differ!",
 		 stat == 0 );
+#else
+  int stat = system( "diff -b /tmp/foliaparent.txt tests/foliaparent-old.ok" );
+  assertMessage( "/tmp/foliaparent.txt tests/foliaparent-old.ok differ!",
+		 stat == 0 );
+#endif
 
 }
 
