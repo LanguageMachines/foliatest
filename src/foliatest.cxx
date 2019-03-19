@@ -56,7 +56,14 @@ using TiCC::operator<<;
 #else
 #define XML_ID "xml:id"
 #endif
-
+#if FOLIA_INT_VERSION > 116
+#define AlignReference LinkReference
+#define Alignment Relation
+#define ComplexAlignment SpanRelation
+#define ComplexAlignmentLayer SpanRelationLayer
+#define AbstractTokenAnnotation AbstractInlineAnnotation
+#define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
+#endif
 
 void test0() {
   startTestSerie( " Test lezen van KWargs " );
@@ -1350,7 +1357,6 @@ void sanity_test050(){
   Statement *statement = statements->annotation<Statement>();
   assertEqual( statement->cls() , "promise" );
   assertEqual( statement->annotation<Source>()->text(), "Hij");
-  assertEqual( statement->annotation<Relation>()->text(), "had beloofd");
   assertEqual( statement->annotation<Headspan>()->text(), "hij zou winnen");
 }
 
@@ -2898,7 +2904,11 @@ void edit_test012(){
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
   assertEqual( a->resolve()[1], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.2"] );
   string res = w->xmlstring();
+#if FOLIA_INT_VERSION > 116
+  assertEqual( res, "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"ze\"/><relation class=\"coreference\"><xref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" t=\"appel\" type=\"w\"/><xref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"w\"/></relation></w>" );
+#else
   assertEqual( res, "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"ze\"/><alignment class=\"coreference\"><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" t=\"appel\" type=\"w\"/><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"w\"/></alignment></w>" );
+#endif
 }
 
 void edit_test013(){
