@@ -3221,7 +3221,7 @@ void text_test05(){
 }
 
 void text_test06(){
-  startTestSerie( " Vallid Text (Multiple classes) " );
+  startTestSerie( " Valid Text (Multiple classes) " );
   string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
 "  <metadata type=\"native\">"
@@ -3237,9 +3237,8 @@ void text_test06(){
 "        <t>Is het creëren van een volwaardig literrair oeuvre voorbehouden aan schrijvers"
 "	als Couperus, 	Haasse, of"
 "	Grunberg?</t>"
-"        <t class=\"missingword\">Is het creëren van een volwaardig oeuvre voorbehouden aan schrijvers"
-"	als Couperus, 	Haasse, of"
-"	Grunberg?</t>"
+"        <t class=\"missingword\">Is het creëren van een vol<t-hbr/>waardig oeuvre voorbehouden aan schrijvers"
+"	als Couperus, 	Haasse, of<br/>Grunberg?</t>"
 "      </s>"
 "    </p>"
 "  </text>"
