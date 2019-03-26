@@ -77,7 +77,7 @@ install:
     - make
     - sudo make install
 script:
-    - FOLIAPATH=../foliapy/folia-repo LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
+    - FOLIAPATH=foliapy/folia-repo LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
 
 after_failure:
   - cat src/test-suite.log
