@@ -38,11 +38,11 @@
 #include <stdexcept>
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
+#include "ticcutils/UnitTest.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
-#include "ticcutils/UnitTest.h"
 
 #include "config.h"
 using namespace std;
