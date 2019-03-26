@@ -56,13 +56,113 @@ using TiCC::operator<<;
 #else
 #define XML_ID "xml:id"
 #endif
-#if FOLIA_INT_VERSION > 116
+
+#if FOLIA_INT_VERSION >= 120
 #define AlignReference LinkReference
 #define Alignment Relation
 #define ComplexAlignment SpanRelation
 #define ComplexAlignmentLayer SpanRelationLayer
 #define AbstractTokenAnnotation AbstractInlineAnnotation
 #define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
+#endif
+
+#if FOLIA_INT_VERSION >= 120
+string fol_path;
+void setup(){
+  const char *env = getenv("FOLIAPATH");
+  if ( env == NULL ){
+    cerr << "FOLIAPATH not set" << endl;
+    exit(EXIT_FAILURE);
+  };
+  fol_path = env;
+  fol_path += "/";
+}
+
+void test_E001_Tokens_Structure(){
+  Document doc( "file='" + fol_path + "examples/tokens-structure.2.0.0.folia.xml'" );
+  vector<Word*> words = doc.words();
+  vector<Sentence*> sentences = doc.sentences();
+  vector<Paragraph*> paragraphs = doc.paragraphs();
+  {
+    startTestSerie( " Simple Token - Word count " );
+    assertEqual( words.size(), 8 );
+  }
+  {
+    startTestSerie( " Simple Token - Word ID's " );
+    vector<string> ids;
+    for( auto const& w : words ){
+      ids.push_back( w->id() );
+    }
+    static vector<string> cmp( {"example.p.1.s.1.w.1", "example.p.1.s.1.w.2",
+	  "example.p.1.s.1.w.3", "example.p.1.s.2.w.1", "example.p.1.s.2.w.2",
+	  "example.p.1.s.2.w.3", "example.p.1.s.2.w.4", "example.p.1.s.2.w.5"});
+    assertEqual( ids, cmp );
+  }
+  {
+    startTestSerie( " Simple Token - Structure Count " );
+    assertEqual( sentences.size(), 2 );
+    assertEqual( paragraphs.size(), 1 );
+  }
+  {
+    startTestSerie( " Simple Token - Structure ID's " );
+    vector<string> ids;
+    for( auto const& s : sentences ){
+      ids.push_back( s->id() );
+    }
+    static vector<string> cmp_s( {"example.p.1.s.1", "example.p.1.s.2"} );
+    assertEqual( ids, cmp_s );
+    ids.clear();
+    for( auto const& p : paragraphs ){
+      ids.push_back( p->id() );
+    }
+    static vector<string> cmp_p( {"example.p.1"} );
+    assertEqual( ids, cmp_p );
+  }
+  {
+    startTestSerie("Simple Token & Structure Test - First word");
+    FoliaElement *w = words[0];
+    assertTrue( w->isinstance( Word_t ) );
+    assertEqual( w->id(), "example.p.1.s.1.w.1" );
+    assertEqual( w->text(), "Hello" );
+    assertEqual( str(w), "Hello" );
+  }
+  {
+    startTestSerie("Simple Token & Structure Test - last word");
+    FoliaElement *w = doc.rwords(0);
+    assertTrue( w->isinstance<Word>() );
+    assertEqual( w->id(), "example.p.1.s.2.w.5" );
+    assertEqual( w->text(), "." );
+    assertEqual( str(w), "." );
+  }
+  {
+    startTestSerie( "Simple Token & Structure Test - Sentence" );
+    //grab second sentence
+    FoliaElement *s = doc.sentences(1);
+    assertTrue( isinstance( s, Sentence_t) );
+    assertEqual( s->id(), "example.p.1.s.2" );
+    assertFalse( s->hastext() ); //no explicit text
+    assertEqual( str(s), "This is an example." );
+  }
+  {
+    startTestSerie( "Simple Token & Structure Test - Index" );
+    // rab something using the index
+    FoliaElement *w = doc["example.p.1.s.1.w.1"];
+    assertTrue( isinstance( w, Word_t ) );
+    assertEqual( doc["example.p.1.s.1.w.1"],
+		 doc.index("example.p.1.s.1.w.1") );
+    assertEqual( w->id(), "example.p.1.s.1.w.1" );
+    assertEqual( w->text(), "Hello" )
+  }
+  {
+    startTestSerie( "Simple Token & Structure Test - Declarations" );
+    assertTrue( doc.declared(AnnotationType::TOKEN) );
+    assertTrue( doc.declared(Word_t) ); // same as above, resolves automatically
+    assertTrue( doc.declared(AnnotationType::TEXT) );
+    assertTrue( doc.declared(TextContent_t) ); //same as above, resolves automatically
+    assertTrue( doc.declared(Sentence_t) );
+    assertTrue( doc.declared(Paragraph_t) );
+  }
+}
 #endif
 
 void test0() {
@@ -5481,6 +5581,9 @@ void processor_test011() {
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
+#if FOLIA_INT_VERSION >= 120
+  setup();
+#endif
   //processor_test006c();
   //exit(9);
   test0();
@@ -5738,6 +5841,9 @@ int main(){
   processor_test010();
   processor_test011();
 #endif
+#endif
+#if FOLIA_INT_VERSION >= 120
+  test_E001_Tokens_Structure();
 #endif
   summarize_tests(0);
 }
