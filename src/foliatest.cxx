@@ -105,18 +105,16 @@ void Test_E001_Tokens_Structure(){
   }
   {
     startTestSerie( " Simple Token - Structure ID's " );
-    vector<string> ids;
-    for( auto const& s : sentences ){
-      ids.push_back( s->id() );
-    }
     static vector<string> cmp_s( {"example.p.1.s.1", "example.p.1.s.2"} );
-    assertEqual( ids, cmp_s );
-    ids.clear();
-    for( auto const& p : paragraphs ){
-      ids.push_back( p->id() );
+    int i = 0;
+    for( auto const& s : sentences ){
+      assertEqual( s->id(), cmp_s[i++] );
     }
     static vector<string> cmp_p( {"example.p.1"} );
-    assertEqual( ids, cmp_p );
+    i = 0;
+    for( auto const& p : paragraphs ){
+      assertEqual( p->id(), cmp_p[i++] );
+    }
   }
   {
     startTestSerie("Simple Token & Structure Test - First word");
