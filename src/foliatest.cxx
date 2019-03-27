@@ -39,14 +39,11 @@
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
-namespace TiCC {
-  template< typename T >
-  inline std::ostream& operator<< ( std::ostream& , const std::vector<T>& );
-}
-#include "ticcutils/UnitTest.h"
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
+#include "libfolia/folia_properties.h"
+#include "ticcutils/UnitTest.h"
 
 #include "config.h"
 using namespace std;
@@ -82,7 +79,7 @@ void setup(){
   fol_path += "/";
 }
 
-void test_E001_Tokens_Structure(){
+void Test_E001_Tokens_Structure(){
   Document doc( "file='" + fol_path + "examples/tokens-structure.2.0.0.folia.xml'" );
   vector<Word*> words = doc.words();
   vector<Sentence*> sentences = doc.sentences();
@@ -93,14 +90,13 @@ void test_E001_Tokens_Structure(){
   }
   {
     startTestSerie( " Simple Token - Word ID's " );
-    vector<string> ids;
-    for( auto const& w : words ){
-      ids.push_back( w->id() );
-    }
     static vector<string> cmp( {"example.p.1.s.1.w.1", "example.p.1.s.1.w.2",
 	  "example.p.1.s.1.w.3", "example.p.1.s.2.w.1", "example.p.1.s.2.w.2",
 	  "example.p.1.s.2.w.3", "example.p.1.s.2.w.4", "example.p.1.s.2.w.5"});
-    assertEqual( ids, cmp );
+    int i = 0;
+    for( auto const& w : words ){
+      assertEqual( w->id(), cmp[i++] );
+    }
   }
   {
     startTestSerie( " Simple Token - Structure Count " );
@@ -167,6 +163,44 @@ void test_E001_Tokens_Structure(){
     assertTrue( doc.declared(Paragraph_t) );
   }
 }
+
+void Test_Exxx_Hidden_Tokens(){ // xxx -> replace with a number at some point when there are more new tests
+  //    """Hidden token tests"""
+
+  {
+    Document doc( "file='" + fol_path + "examples/syntactic-movement.2.0.0.folia.xml'" );
+
+    {
+      startTestSerie( "Simple Token & Structure - Word count (does not include hidden words)" );
+      vector<Word*> wv = doc.words();
+      assertEqual( wv.size(), 7 );
+      FoliaElement *sentence = doc["example.s.1"];
+      assertEqual( sentence->words().size(), 7 );
+      wv = sentence->select<Word>( default_ignore_structure );
+      assertEqual( wv.size(), 7 );
+    }
+
+    {
+      startTestSerie( "Text serialisation on sentence (no hidden words)" );
+      FoliaElement *sentence = doc["example.s.1"];
+      assertEqual( sentence->text() , "Isn't a whole lot left." );
+    }
+
+    {
+      startTestSerie( "Text serialisation on syntactic unit (no hidden words)" );
+      FoliaElement *su = doc["example.s.1.su.1"];
+      assertEqual( su->text() , "Isn't a whole lot left." );
+    }
+  }
+}
+
+void Test_Exxx_Invalid_Wref(){ // xxx -> replace with a number at some point
+  startTestSerie( "Invalid Wref test" );
+  Document *doc = 0;
+  assertThrow( doc = new Document( "file='" + fol_path + "examples/erroneous/invalid-wref.2.0.0.folia.xml'" ), XmlError );
+  assertTrue( doc == 0 );
+}
+
 #endif
 
 void test0() {
@@ -1252,6 +1286,8 @@ void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
   PosAnnotation *p =0;
   assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
+  assertTrue( p == 0 );
+
 }
 
 void sanity_test038b(){
@@ -5847,7 +5883,9 @@ int main(){
 #endif
 #endif
 #if FOLIA_INT_VERSION >= 120
-  test_E001_Tokens_Structure();
+  Test_E001_Tokens_Structure();
+  Test_Exxx_Hidden_Tokens();
+  Test_Exxx_Invalid_Wref();
 #endif
   summarize_tests(0);
 }
