@@ -80,7 +80,7 @@ void setup(){
 }
 
 void Test_E001_Tokens_Structure(){
-  Document doc( "file='" + fol_path + "examples/tokens-structure.2.0.0.folia.xml'" );
+  Document doc( fol_path + "examples/tokens-structure.2.0.0.folia.xml" );
   vector<Word*> words = doc.words();
   vector<Sentence*> sentences = doc.sentences();
   vector<Paragraph*> paragraphs = doc.paragraphs();
@@ -168,7 +168,7 @@ void Test_Exxx_Hidden_Tokens(){ // xxx -> replace with a number at some point wh
   //    """Hidden token tests"""
 
   {
-    Document doc( "file='" + fol_path + "examples/syntactic-movement.2.0.0.folia.xml'" );
+    Document doc( fol_path + "examples/syntactic-movement.2.0.0.folia.xml" );
 
     {
       startTestSerie( "Simple Token & Structure - Word count (does not include hidden words)" );
