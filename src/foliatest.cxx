@@ -242,6 +242,16 @@ void Test_Provenance(){
       assertEqual( processors[1]->name, "proycon");
       assertEqual( processors[1]->type, "manual" );
     }
+    {
+      startTestSerie( "Provenance - Annotation sanity check" );
+      auto word = doc["untitled.p.1.s.1.w.1"];
+      string pid = word->annotation<PosAnnotation>()->processor();
+      assertEqual( pid, "p1.1" );
+      auto proc = doc.get_processor( pid );
+      assertEqual( proc->id, "p1.1" );
+      assertEqual( proc->name, "mbpos" );
+      assertEqual( proc->type, "auto" );
+    }
   }
 }
 
