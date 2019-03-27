@@ -239,8 +239,8 @@ void Test_Provenance(){
       assertEqual( processors[0]->id, "p1.1" );
       assertEqual( processors[0]->name, "mbpos" );
       assertEqual( processors[0]->type, "auto" );
-      //      assertEqual(processors[1]->name, "proycon");
-      //      assertEqual(processors[1]->type, folia.ProcessorType.MANUAL);
+      assertEqual( processors[1]->name, "proycon");
+      assertEqual( processors[1]->type, "manual" );
     }
   }
 }
