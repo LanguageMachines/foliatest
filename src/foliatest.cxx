@@ -69,6 +69,8 @@ using TiCC::operator<<;
 
 #if FOLIA_INT_VERSION >= 120
 string fol_path;
+string legacy_file;
+Document LEGACYEXAMPLE;
 void setup(){
   const char *env = getenv("FOLIAPATH");
   if ( env == NULL ){
@@ -77,6 +79,8 @@ void setup(){
   };
   fol_path = env;
   fol_path += "/";
+  legacy_file = fol_path + "examples/full-legacy.1.5.folia.xml";
+  LEGACYEXAMPLE.readFromFile( legacy_file );
 }
 
 void Test_E001_Tokens_Structure(){
@@ -197,6 +201,48 @@ void Test_Exxx_Invalid_Wref(){ // xxx -> replace with a number at some point
   Document *doc = 0;
   assertThrow( doc = new Document( "file='" + fol_path + "examples/erroneous/invalid-wref.2.0.0.folia.xml'" ), XmlError );
   assertTrue( doc == 0 );
+}
+
+void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
+  startTestSerie( "Serialization of older FoLiA versions" );
+  assertNoThrow( LEGACYEXAMPLE.save( "/tmp/example.xml" ) );
+  string cmd = "./tests/foliadiff.sh /tmp/example.xml " + legacy_file;
+  int stat = system( cmd.c_str() );
+  assertMessage( "/tmp/example.xml " + legacy_file + " differ!",
+   		 (stat == 0) );
+}
+
+void Test_Provenance(){
+  {
+    Document doc( fol_path + "examples/provenance.2.0.0.folia.xml" );
+    {
+      startTestSerie( "Provenance - Parse and sanity check" );
+      Provenance provenance = *(doc.provenance());
+      assertEqual(provenance["p0"]->name, "ucto" );
+      assertEqual(provenance["p0.1"]->name, "libfolia");
+      assertEqual(provenance["p1"]->name, "frog");
+      assertEqual(provenance["p1"]->type, "auto" );
+      assertEqual(provenance["p1"]->version, "0.16");
+      assertEqual(provenance["p1.0"]->name, "libfolia");
+      assertEqual(provenance["p1.0"]->type, "generator");
+      assertEqual(provenance["p1.0"]->name, "libfolia");
+      assertEqual(provenance["p2.1"]->name, "proycon");
+      assertEqual(provenance["p2.1"]->type, "manual");
+      auto annotators = doc.getannotators( AnnotationType::POS,
+					   "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
+      assertEqual(len(annotators), 3 );
+      // basically the same thing as above, but resolved to Processor instances:
+      auto processors = doc.getprocessors( AnnotationType::POS,
+					   "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
+      assertEqual( len(processors), 3 );
+      // let's see if we got the right ones:
+      assertEqual( processors[0]->id, "p1.1" );
+      assertEqual( processors[0]->name, "mbpos" );
+      assertEqual( processors[0]->type, "auto" );
+      //      assertEqual(processors[1]->name, "proycon");
+      //      assertEqual(processors[1]->type, folia.ProcessorType.MANUAL);
+    }
+  }
 }
 
 #endif
@@ -5884,6 +5930,8 @@ int main(){
   Test_E001_Tokens_Structure();
   Test_Exxx_Hidden_Tokens();
   Test_Exxx_Invalid_Wref();
+  Test_Exxx_KeepVersion();
+  Test_Provenance();
 #endif
   summarize_tests(0);
 }
