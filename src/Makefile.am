@@ -1,5 +1,5 @@
 AM_CPPFLAGS = -I@top_srcdir@/include
-AM_CXXFLAGS = -std=c++11 -W -Wall -pedantic
+AM_CXXFLAGS = -std=c++11 -g -W -Wall -pedantic
 
 bin_PROGRAMS = foliatest
 

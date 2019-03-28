@@ -217,17 +217,17 @@ void Test_Provenance(){
     Document doc( fol_path + "examples/provenance.2.0.0.folia.xml" );
     {
       startTestSerie( "Provenance - Parse and sanity check" );
-      Provenance provenance = *(doc.provenance());
-      assertEqual(provenance["p0"]->name, "ucto" );
-      assertEqual(provenance["p0.1"]->name, "libfolia");
-      assertEqual(provenance["p1"]->name, "frog");
-      assertEqual(provenance["p1"]->type, "auto" );
-      assertEqual(provenance["p1"]->version, "0.16");
-      assertEqual(provenance["p1.0"]->name, "libfolia");
-      assertEqual(provenance["p1.0"]->type, "generator");
-      assertEqual(provenance["p1.0"]->name, "libfolia");
-      assertEqual(provenance["p2.1"]->name, "proycon");
-      assertEqual(provenance["p2.1"]->type, "manual");
+      Provenance *provenance = doc.provenance();
+      assertEqual((*provenance)["p0"]->name(), "ucto" );
+      assertEqual((*provenance)["p0.1"]->name(), "libfolia");
+      assertEqual((*provenance)["p1"]->name(), "frog");
+      assertEqual((*provenance)["p1"]->type(), "auto" );
+      assertEqual(provenance->index("p1")->version(), "0.16");
+      assertEqual((*provenance)["p1.0"]->name(), "libfolia");
+      assertEqual((*provenance)["p1.0"]->type(), "generator");
+      assertEqual((*provenance)["p1.0"]->name(), "libfolia");
+      assertEqual((*provenance)["p2.1"]->name(), "proycon");
+      assertEqual((*provenance)["p2.1"]->type(), "manual");
       auto annotators = doc.getannotators( AnnotationType::POS,
 					   "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
       assertEqual(len(annotators), 3 );
@@ -236,11 +236,11 @@ void Test_Provenance(){
 					   "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
       assertEqual( len(processors), 3 );
       // let's see if we got the right ones:
-      assertEqual( processors[0]->id, "p1.1" );
-      assertEqual( processors[0]->name, "mbpos" );
-      assertEqual( processors[0]->type, "auto" );
-      assertEqual( processors[1]->name, "proycon");
-      assertEqual( processors[1]->type, "manual" );
+      assertEqual( processors[0]->id(), "p1.1" );
+      assertEqual( processors[0]->name(), "mbpos" );
+      assertEqual( processors[0]->type(), "auto" );
+      assertEqual( processors[1]->name(), "proycon");
+      assertEqual( processors[1]->type(), "manual" );
     }
     {
       startTestSerie( "Provenance - Annotation sanity check" );
@@ -248,9 +248,43 @@ void Test_Provenance(){
       string pid = word->annotation<PosAnnotation>()->processor();
       assertEqual( pid, "p1.1" );
       auto proc = doc.get_processor( pid );
-      assertEqual( proc->id, "p1.1" );
-      assertEqual( proc->name, "mbpos" );
-      assertEqual( proc->type, "auto" );
+      assertEqual( proc->id(), "p1.1" );
+      assertEqual( proc->name(), "mbpos" );
+      assertEqual( proc->type(), "auto" );
+      // The old annotator attribute can also still be used and refers to the
+      // processor name (for backward API compatibility)
+      assertEqual( proc->annotator(), "mbpos" );
+      // The old annotatortype attribute can also still be used and refers
+      // to the processor type:
+      assertEqual( proc->annotatortype(), "auto" );
+      word = doc["untitled.p.1.s.1.w.2"];
+      pid = word->annotation<PosAnnotation>()->processor();
+      assertEqual( pid, "p2.1" );
+      proc = doc.get_processor( pid );
+      assertEqual( proc->id(), "p2.1" );
+      assertEqual( proc->name(), "proycon" );
+      assertEqual( proc->type(), "manual" );
+    }
+    {
+      startTestSerie("Provenance - Checking default/implicit processor/annotator" );
+      auto word = doc["untitled.p.1.s.1.w.2"];
+      string pid = word->annotation<LemmaAnnotation>()->processor();
+      auto proc = doc.get_processor( pid );
+      assertEqual( proc->id(), "p1.2" );
+      assertEqual( proc->name(), "mblem" );
+      assertEqual( proc->type(), "auto" );
+      // The old annotator attribute can also still be used and refers to
+      // the processor name
+      assertEqual( proc->annotator(), "mblem");
+    }
+    {
+      startTestSerie("Provenance - Create a document with a processor" );
+      Document *test = new Document("xml:id='test'");
+      KWargs args;
+      args["name"] = "TestSuite";
+      args["xml:id"] = "p0";
+      test->add_processor( args );
+      assertEqual( test->provenance()->index("p0")->name(), "TestSuite");
     }
   }
 }
