@@ -212,6 +212,11 @@ void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
    		 (stat == 0) );
 }
 
+bool xmlcheck( const string& xml1, const string& xml2 ){
+  throw runtime_error( "xmlcheck() not implemented yet" );
+  return true;
+}
+
 void Test_Provenance(){
   {
     Document doc( fol_path + "examples/provenance.2.0.0.folia.xml" );
@@ -285,6 +290,18 @@ void Test_Provenance(){
       args["xml:id"] = "p0";
       test->add_processor( args );
       assertEqual( test->provenance()->index("p0")->name(), "TestSuite");
+      string xmlref =
+	"<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"test\" version=\"2.0.0\" generator=\"foliapy-v2.0.0\">\n"
+	"  <metadata type=\"native\">\n"
+	"    <annotations>\n"
+	"      <text-annotation set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl\"/>\n"
+	"    </annotations>\n"
+	"    <provenance>\n"
+	"      <processor xml:id=\"p0\" name=\"TestSuite\" type=\"auto\"/>\n"
+	"    </provenance>\n"
+	"  </metadata>\n"
+	"</FoLiA>\n";
+      assertTrue( xmlcheck(doc.xmlstring(),xmlref ) );
     }
   }
 }
