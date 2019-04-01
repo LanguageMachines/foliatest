@@ -442,6 +442,90 @@ void Test_Provenance(){
 			 + "examples/tests/provenance-flat-explicit.2.0.0.folia.xml" ) );
   }
 
+  {
+    startTestSerie( "Provenance - Create a document with flat processors - Implicit multiple processor assignment" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    // we declare some extra processors (even though we don't really use them),
+    // but this means the annotations will need to serialise an explicit
+    // processor= attribute
+    args["name"] = "SomeOtherTokeniser";
+    args["id"] = "p0.3";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
+    args.clear();
+    args["name"] = "OtherSentenceSplitter";
+    args["id"] = "p0.4";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = test->append( new Text(args) );
+    args.clear();
+    args["processor"] = "p0.2";
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    args.clear();
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = 0;
+    assertThrow( w = new Word( args, test ), NoDefaultError );
+    assertTrue( w == 0 );
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with a nested processors (implicit)" );
+    Document doc( "xml:id='test'" );
+    KWargs args;
+    args["name"] = "TestSuite";
+    args["id"] = "p0";
+    args["generator"] = "YES";
+    processor *main = doc.add_processor( args );
+    args.clear();
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    doc.add_processor( args, main );
+    doc.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    doc.add_processor( args, main );
+    doc.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = doc.append( new Text(args) );
+    args.clear();
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, &doc ) );
+    args.clear();
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = sentence->append( new Word( args, &doc ) );
+    args["text"] = "world";
+
+    sentence->append( new Word( args, &doc ) );
+    const processor *p = doc.get_processor(w->processor());
+    assertEqual( p, doc.provenance()->index("p0.1") );
+    doc.save( "/tmp/provenance-nested-implicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff( "/tmp/provenance-nested-implicit.2.0.0.folia.xml",
+			 fol_path
+			 + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml" ) );
+  }
 }
 
 #endif
