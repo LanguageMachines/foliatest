@@ -5994,7 +5994,7 @@ int main(){
 #endif
 #if FOLIA_INT_VERSION >= 120
   if ( !setup() ){
-    assertMessage( "POLIAPATH no1 set?", false );
+    assertMessage( "POLIAPATH not set?", false );
   }
   else {
     Test_E001_Tokens_Structure();
