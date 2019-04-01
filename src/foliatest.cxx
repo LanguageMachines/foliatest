@@ -73,7 +73,7 @@ string fol_path;
 string legacy_file;
 Document LEGACYEXAMPLE;
 bool setup(){
-  string default_path = "../FoLiApy/folia-repos";
+  string default_path = "../FoLiApy/folia-repo";
   const char *env = getenv("FOLIAPATH");
   if ( env == NULL ){
     if ( TiCC::isDir( default_path + "/examples" ) ){
@@ -220,9 +220,11 @@ void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
    		 (stat == 0) );
 }
 
-bool xmlcheck( const string& xml1, const string& xml2 ){
-  throw runtime_error( "xmlcheck() not implemented yet" );
-  return true;
+bool xmldiff( const Document& d1, const Document& d2 ){
+  d1.save( "/tmp/d1.xml" );
+  d2.save( "/tmp/d2.xml" );
+  int stat = system( "./tests/foliadiff.sh /tmp/d1.xml /tmp/d2.xml" );
+  return stat == 0;
 }
 
 void Test_Provenance(){
@@ -296,6 +298,7 @@ void Test_Provenance(){
       KWargs args;
       args["name"] = "TestSuite";
       args["xml:id"] = "p0";
+      args["generator"] = "YES";
       test->add_processor( args );
       assertEqual( test->provenance()->index("p0")->name(), "TestSuite");
       string xmlref =
@@ -309,8 +312,44 @@ void Test_Provenance(){
 	"    </provenance>\n"
 	"  </metadata>\n"
 	"</FoLiA>\n";
-      assertTrue( xmlcheck(doc.xmlstring(),xmlref ) );
+      Document ref("string='" + xmlref + "'" );
+      assertTrue( xmldiff(*test, ref ) );
     }
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with flat processors - Explicit processor assignment" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = test->append( new Text(args) );
+    args.clear();
+    args["processor"] = "p0.2";
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    args.clear();
+    args["processor"] = "p0.1";
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = sentence->append( new Word( args, test ) );
+    args["text"] = "world";
+    sentence->append( new Word( args, test ) );
+    const processor *p = test->get_processor(w->processor());
+    assertEqual( p, test->provenance()->index("p0.1") );
+    Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff(*test, xmlref ) );
   }
 }
 
@@ -5994,7 +6033,7 @@ int main(){
 #endif
 #if FOLIA_INT_VERSION >= 120
   if ( !setup() ){
-    assertMessage( "POLIAPATH not set?", false );
+    assertMessage( "FOLIAPATH not set?", false );
   }
   else {
     Test_E001_Tokens_Structure();
