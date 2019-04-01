@@ -351,6 +351,39 @@ void Test_Provenance(){
     Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
     assertTrue( xmldiff(*test, xmlref ) );
   }
+
+  {
+    startTestSerie( "Provenance - Create a document with flat processors - Implicit processor assignment" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = test->append( new Text(args) );
+    args.clear();
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    args.clear();
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = sentence->append( new Word( args, test ) );
+    args["text"] = "world";
+    sentence->append( new Word( args, test ) );
+    const processor *p = test->get_processor(w->processor());
+    assertEqual( p, test->provenance()->index("p0.1") );
+    Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff(*test, xmlref ) );
+  }
 }
 
 #endif
