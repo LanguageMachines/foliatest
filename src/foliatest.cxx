@@ -227,6 +227,12 @@ bool xmldiff( const Document& d1, const Document& d2 ){
   return stat == 0;
 }
 
+bool xmldiff( const string& f1, const string& f2 ){
+  string cmd = "./tests/foliadiff.sh " + f1 + " " + f2;
+  int stat = system( cmd.c_str() );
+  return stat == 0;
+}
+
 void Test_Provenance(){
   {
     Document doc( fol_path + "examples/provenance.2.0.0.folia.xml" );
@@ -430,8 +436,10 @@ void Test_Provenance(){
     sentence->append( new Word( args, test ) );
     const processor *p = test->get_processor(w->processor());
     assertEqual( p, test->provenance()->index("p0.1") );
-    Document xmlref( fol_path + "examples/tests/provenance-flat-explicit.2.0.0.folia.xml" );
-    assertTrue( xmldiff(*test, xmlref ) );
+    test->save( "/tmp/provenance-flat-explicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff( "/tmp/provenance-flat-explicit.2.0.0.folia.xml",
+			 fol_path
+			 + "examples/tests/provenance-flat-explicit.2.0.0.folia.xml" ) );
   }
 
 }
