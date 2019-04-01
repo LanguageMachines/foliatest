@@ -43,6 +43,7 @@
 #include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
 #include "libfolia/folia_properties.h"
+#include "ticcutils/FileUtils.h"
 #include "ticcutils/UnitTest.h"
 
 #include "config.h"
@@ -71,16 +72,23 @@ using TiCC::operator<<;
 string fol_path;
 string legacy_file;
 Document LEGACYEXAMPLE;
-void setup(){
+bool setup(){
+  string default_path = "../FoLiApy/folia-repos";
   const char *env = getenv("FOLIAPATH");
   if ( env == NULL ){
-    cerr << "FOLIAPATH not set" << endl;
-    exit(EXIT_FAILURE);
+    if ( TiCC::isDir( default_path + "/examples" ) ){
+      env = default_path.c_str();
+    }
+    else {
+      cerr << "FOLIAPATH not set or guessed" << endl;
+      return false;
+    }
   };
   fol_path = env;
   fol_path += "/";
   legacy_file = fol_path + "examples/full-legacy.1.5.folia.xml";
   LEGACYEXAMPLE.readFromFile( legacy_file );
+  return true;
 }
 
 void Test_E001_Tokens_Structure(){
@@ -5726,9 +5734,6 @@ void processor_test011() {
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
-#if FOLIA_INT_VERSION >= 120
-  setup();
-#endif
   //processor_test006c();
   //exit(9);
   test0();
@@ -5988,11 +5993,16 @@ int main(){
 #endif
 #endif
 #if FOLIA_INT_VERSION >= 120
-  Test_E001_Tokens_Structure();
-  Test_Exxx_Hidden_Tokens();
-  Test_Exxx_Invalid_Wref();
-  Test_Exxx_KeepVersion();
-  Test_Provenance();
+  if ( !setup() ){
+    assertMessage( "POLIAPATH no1 set?", false );
+  }
+  else {
+    Test_E001_Tokens_Structure();
+    Test_Exxx_Hidden_Tokens();
+    Test_Exxx_Invalid_Wref();
+    Test_Exxx_KeepVersion();
+    Test_Provenance();
+  }
 #endif
   summarize_tests(0);
 }
