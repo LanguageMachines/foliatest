@@ -39,6 +39,7 @@ before_install:
         brew update;
         brew install pkg-config;
         brew install autoconf-archive;
+        brew xmldiff || brew upgrade xmldiff;
         brew outdated || brew upgrade icu4c;
         brew outdated || brew upgrade libxml2;
         brew outdated || brew install bzip2;
