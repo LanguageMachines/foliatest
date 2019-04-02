@@ -5462,6 +5462,28 @@ void processor_test001e(){
   }
 }
 
+#if FOLIA_INT_VERSION >= 120
+void processor_test001f(){
+  startTestSerie( " copy a FoLiA 2.0 document using Folia Processor " );
+  string infile = fol_path
+    + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml";
+  Processor proc;
+  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( infile, "/tmp/proc_test001f.xml" ) );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
+    }
+    proc.finish();
+    string command = "./tests/foliadiff.sh /tmp/proc_test001f.xml " + infile;
+    int stat = system( command.c_str() );
+    assertMessage( "/tmp/proc_test001f.xml " + infile + " differ!",
+     		   (stat == 0) );
+  }
+}
+#endif
 
 void processor_test002a(){
   startTestSerie( " copy a document using Folia Processor (alternative)" );
@@ -5950,6 +5972,9 @@ void processor_test011() {
 int main(){
   //processor_test006c();
   //exit(9);
+#if FOLIA_INT_VERSION >= 120
+  bool is_setup = setup();
+#endif
   test0();
   test1();
   test1a();
@@ -6178,6 +6203,9 @@ int main(){
   processor_test001c();
   processor_test001d();
   processor_test001e();
+#if FOLIA_INT_VERSION >= 120
+  processor_test001f();
+#endif
   processor_test002a();
   processor_test002b();
   processor_test002c();
@@ -6207,7 +6235,7 @@ int main(){
 #endif
 #endif
 #if FOLIA_INT_VERSION >= 120
-  if ( !setup() ){
+  if ( !is_setup ){
     assertMessage( "FOLIAPATH not set?", false );
   }
   else {
