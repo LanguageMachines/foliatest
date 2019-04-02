@@ -221,14 +221,20 @@ void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
 }
 
 bool xmldiff( const Document& d1, const Document& d2 ){
-  d1.save( "/tmp/d1.xml" );
-  d2.save( "/tmp/d2.xml" );
-  int stat = system( "./tests/foliadiff.sh /tmp/d1.xml /tmp/d2.xml" );
+  bool old_d1 = d1.set_strip(true);
+  d1.save( "/tmp/d1.xml", true );
+  d1.set_strip( old_d1 );
+  bool old_d2 = d2.set_strip(true);
+  d2.save( "/tmp/d2.xml", true );
+  d2.set_strip( old_d2 );
+  //  int stat = system( "./tests/foliadiff.sh /tmp/d1.xml /tmp/d2.xml" );
+  int stat = system( "xmldiff /tmp/d1.xml /tmp/d2.xml" );
   return stat == 0;
 }
 
 bool xmldiff( const string& f1, const string& f2 ){
   string cmd = "./tests/foliadiff.sh " + f1 + " " + f2;
+  //  string cmd = "xmldiff " + f1 + " " + f2;
   int stat = system( cmd.c_str() );
   return stat == 0;
 }
@@ -3377,11 +3383,7 @@ void edit_test012(){
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
   assertEqual( a->resolve()[1], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.2"] );
   string res = w->xmlstring();
-#if FOLIA_INT_VERSION > 116
-  assertEqual( res, "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"ze\"/><relation class=\"coreference\"><xref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" t=\"appel\" type=\"w\"/><xref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"w\"/></relation></w>" );
-#else
   assertEqual( res, "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"ze\"/><alignment class=\"coreference\"><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" t=\"appel\" type=\"w\"/><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"w\"/></alignment></w>" );
-#endif
 }
 
 void edit_test013(){
@@ -5468,7 +5470,7 @@ void processor_test001f(){
   string infile = fol_path
     + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml";
   Processor proc;
-  proc.set_debug(true);
+  //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( infile, "/tmp/proc_test001f.xml" ) );
   if ( proc.ok() ){
     FoliaElement *res = 0;
