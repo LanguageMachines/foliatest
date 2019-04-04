@@ -239,6 +239,20 @@ bool xmldiff( const string& f1, const string& f2 ){
   return stat == 0;
 }
 
+template <typename T>
+T *append( KWargs& args, FoliaElement* p ){
+  T *nt = new T(args,p->doc());
+  p->append( nt );
+  return nt;
+}
+
+template <typename T>
+T *append( KWargs& args, Document* d ){
+  T *nt = new T(args,d);
+  d->append( nt );
+  return nt;
+}
+
 void Test_Provenance(){
   {
     Document doc( fol_path + "examples/provenance.2.0.0.folia.xml" );
@@ -248,13 +262,13 @@ void Test_Provenance(){
       assertEqual((*provenance)["p0"]->name(), "ucto" );
       assertEqual((*provenance)["p0.1"]->name(), "libfolia");
       assertEqual((*provenance)["p1"]->name(), "frog");
-      assertEqual((*provenance)["p1"]->type(), "auto" );
+      assertEqual((*provenance)["p1"]->type(), AUTO );
       assertEqual(provenance->index("p1")->version(), "0.16");
       assertEqual((*provenance)["p1.0"]->name(), "libfolia");
-      assertEqual((*provenance)["p1.0"]->type(), "generator");
+      assertEqual((*provenance)["p1.0"]->type(), GENERATOR );
       assertEqual((*provenance)["p1.0"]->name(), "libfolia");
       assertEqual((*provenance)["p2.1"]->name(), "proycon");
-      assertEqual((*provenance)["p2.1"]->type(), "manual");
+      assertEqual((*provenance)["p2.1"]->type(), MANUAL );
       auto annotators = doc.getannotators( AnnotationType::POS,
 					   "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
       assertEqual(len(annotators), 3 );
@@ -265,9 +279,9 @@ void Test_Provenance(){
       // let's see if we got the right ones:
       assertEqual( processors[0]->id(), "p1.1" );
       assertEqual( processors[0]->name(), "mbpos" );
-      assertEqual( processors[0]->type(), "auto" );
+      assertEqual( processors[0]->type(), AUTO );
       assertEqual( processors[1]->name(), "proycon");
-      assertEqual( processors[1]->type(), "manual" );
+      assertEqual( processors[1]->type(), MANUAL );
     }
     {
       startTestSerie( "Provenance - Annotation sanity check" );
@@ -277,20 +291,20 @@ void Test_Provenance(){
       auto proc = doc.get_processor( pid );
       assertEqual( proc->id(), "p1.1" );
       assertEqual( proc->name(), "mbpos" );
-      assertEqual( proc->type(), "auto" );
+      assertEqual( proc->type(), AUTO );
       // The old annotator attribute can also still be used and refers to the
       // processor name (for backward API compatibility)
       assertEqual( proc->annotator(), "mbpos" );
       // The old annotatortype attribute can also still be used and refers
       // to the processor type:
-      assertEqual( proc->annotatortype(), "auto" );
+      assertEqual( proc->annotatortype(), AUTO );
       word = doc["untitled.p.1.s.1.w.2"];
       pid = word->annotation<PosAnnotation>()->processor();
       assertEqual( pid, "p2.1" );
       proc = doc.get_processor( pid );
       assertEqual( proc->id(), "p2.1" );
       assertEqual( proc->name(), "proycon" );
-      assertEqual( proc->type(), "manual" );
+      assertEqual( proc->type(), MANUAL );
     }
     {
       startTestSerie("Provenance - Checking default/implicit processor/annotator" );
@@ -299,7 +313,7 @@ void Test_Provenance(){
       auto proc = doc.get_processor( pid );
       assertEqual( proc->id(), "p1.2" );
       assertEqual( proc->name(), "mblem" );
-      assertEqual( proc->type(), "auto" );
+      assertEqual( proc->type(), AUTO );
       // The old annotator attribute can also still be used and refers to
       // the processor name
       assertEqual( proc->annotator(), "mblem");
@@ -346,7 +360,7 @@ void Test_Provenance(){
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
     args["xml:id"] = "test.text.1";
-    FoliaElement *body = test->append( new Text(args) );
+    FoliaElement *body = append<Text>( args, test );
     args.clear();
     args["processor"] = "p0.2";
     args["generate_id"] = body->id();
@@ -2298,13 +2312,13 @@ void sanity_test102k(){
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *text = doc["example.text.1"];
-  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "auto" );
+  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == AUTO );
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap-set",
 					"annotatortype='manual'" ) );
-  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "" );
+  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == UNDEFINED );
   KWargs args = getArgs( "set='gap-set', class='Y', annotatortype='unknown'" );
   FoliaElement *g = 0;
   assertThrow( g = new Gap( args, &doc ), ValueError );
@@ -4561,7 +4575,7 @@ void text_test13f(){
 #if FOLIA_INT_VERSION < 115
   doc.append( text );
 #else
-  doc.setRoot( text );
+  doc.addText( text );
 #endif
 
   args[XML_ID] = doc.id() + ".s.1";
