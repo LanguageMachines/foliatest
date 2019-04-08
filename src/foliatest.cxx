@@ -2312,13 +2312,21 @@ void sanity_test102k(){
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *text = doc["example.text.1"];
+#if FOLIA_INT_VERSION < 120
+  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "auto" );
+#else
   assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == AUTO );
+#endif
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap-set",
 					"annotatortype='manual'" ) );
+#if FOLIA_INT_VERSION < 120
+  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "" );
+#else
   assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == UNDEFINED );
+#endif
   KWargs args = getArgs( "set='gap-set', class='Y', annotatortype='unknown'" );
   FoliaElement *g = 0;
   assertThrow( g = new Gap( args, &doc ), ValueError );
@@ -3720,7 +3728,11 @@ void text_test06(){
 "        <t>Is het creëren van een volwaardig literrair oeuvre voorbehouden aan schrijvers"
 "	als Couperus, 	Haasse, of"
 "	Grunberg?</t>"
+#if FOLIA_INT_VERSION < 120
+"        <t class=\"missingword\">Is het creëren van een volwaardig oeuvre voorbehouden aan schrijvers"
+#else
 "        <t class=\"missingword\">Is het creëren van een vol<t-hbr/>waardig oeuvre voorbehouden aan schrijvers"
+#endif
 "	als Couperus, 	Haasse, of<br/>Grunberg?</t>"
 "      </s>"
 "    </p>"
