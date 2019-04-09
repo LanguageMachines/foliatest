@@ -220,37 +220,10 @@ void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
    		 (stat == 0) );
 }
 
-bool xmldiff( const Document& d1, const Document& d2 ){
-  bool old_d1 = d1.set_strip(true);
-  d1.save( "/tmp/d1.xml", true );
-  d1.set_strip( old_d1 );
-  bool old_d2 = d2.set_strip(true);
-  d2.save( "/tmp/d2.xml", true );
-  d2.set_strip( old_d2 );
-  //  int stat = system( "./tests/foliadiff.sh /tmp/d1.xml /tmp/d2.xml" );
-  int stat = system( "xmldiff /tmp/d1.xml /tmp/d2.xml" );
-  return stat == 0;
-}
-
 bool xmldiff( const string& f1, const string& f2 ){
   string cmd = "./tests/foliadiff.sh " + f1 + " " + f2;
-  //  string cmd = "xmldiff " + f1 + " " + f2;
   int stat = system( cmd.c_str() );
   return stat == 0;
-}
-
-template <typename T>
-T *append( KWargs& args, FoliaElement* p ){
-  T *nt = new T(args,p->doc());
-  p->append( nt );
-  return nt;
-}
-
-template <typename T>
-T *append( KWargs& args, Document* d ){
-  T *nt = new T(args,d);
-  d->append( nt );
-  return nt;
 }
 
 void Test_Provenance(){
@@ -327,6 +300,7 @@ void Test_Provenance(){
       args["generator"] = "YES";
       test->add_processor( args );
       assertEqual( test->provenance()->index("p0")->name(), "TestSuite");
+      test->save( "/tmp/test-1.xml" );
       string xmlref =
 	"<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"test\" version=\"2.0.0\" generator=\"foliapy-v2.0.0\">\n"
 	"  <metadata type=\"native\">\n"
@@ -339,7 +313,8 @@ void Test_Provenance(){
 	"  </metadata>\n"
 	"</FoLiA>\n";
       Document ref("string='" + xmlref + "'" );
-      assertTrue( xmldiff(*test, ref ) );
+      ref.save( "/tmp/ref-1.xml" );
+      assertTrue( xmldiff( "/tmp/test-1.xml", "/tmp/ref-1.xml" ) );
     }
   }
 
@@ -360,22 +335,25 @@ void Test_Provenance(){
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
     args["xml:id"] = "test.text.1";
-    FoliaElement *body = append<Text>( args, test );
+    Text *body = test->create_root<Text>( args );
     args.clear();
     args["processor"] = "p0.2";
     args["generate_id"] = body->id();
-    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    Sentence *sentence = body->create<Sentence>( args );
     args.clear();
     args["processor"] = "p0.1";
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
-    FoliaElement *w = sentence->append( new Word( args, test ) );
+    Word *w = sentence->create<Word>( args );
     args["text"] = "world";
-    sentence->append( new Word( args, test ) );
+    sentence->create<Word>( args );
     const processor *p = test->get_processor(w->processor());
     assertEqual( p, test->provenance()->index("p0.1") );
+    test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml" );
     Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
-    assertTrue( xmldiff(*test, xmlref ) );
+    assertTrue( xmldiff( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml",
+			 fol_path
+			 + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" ) );
   }
 
   {
@@ -407,8 +385,11 @@ void Test_Provenance(){
     sentence->append( new Word( args, test ) );
     const processor *p = test->get_processor(w->processor());
     assertEqual( p, test->provenance()->index("p0.1") );
+    test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-2.xml" );
     Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
-    assertTrue( xmldiff(*test, xmlref ) );
+    assertTrue( xmldiff( "/tmp/provenance-flat-implicit.2.0.0.folia-2.xml",
+			 fol_path
+			 + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" ) );
   }
 
   {
@@ -507,7 +488,7 @@ void Test_Provenance(){
   }
 
   {
-    startTestSerie( "Provenance - Create a document with a nested processors (implicit)" );
+    startTestSerie( "Provenance - Create a document with nested processors (implicit)" );
     Document doc( "xml:id='test'" );
     KWargs args;
     args["name"] = "TestSuite";
