@@ -56,6 +56,12 @@ using TiCC::operator<<;
 #else
 #define XML_ID "xml:id"
 #endif
+
+#if FOLIA_INT_VERSION > 115
+#define Processor Engine
+#define TextProcessor TextEngine
+#endif
+
 #if FOLIA_INT_VERSION > 116
 #define AlignReference LinkReference
 #define Alignment Relation
@@ -1148,6 +1154,7 @@ void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
   PosAnnotation *p =0;
   assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
+  AssertEqual( p, 0 );
 }
 
 void sanity_test038b(){
