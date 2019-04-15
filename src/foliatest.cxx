@@ -67,8 +67,10 @@ using TiCC::operator<<;
 #define AbstractTokenAnnotation AbstractInlineAnnotation
 #define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
 #else
+#if FOLIA_INT_VERSION < 116
 #define Engine Processor
 #define TextEngine TextProcessor
+#endif
 #endif
 
 #if FOLIA_INT_VERSION >= 120
