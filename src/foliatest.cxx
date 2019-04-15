@@ -1154,7 +1154,7 @@ void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
   PosAnnotation *p =0;
   assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
-  AssertEqual( p, 0 );
+  assertTrue( p == 0 );
 }
 
 void sanity_test038b(){
@@ -1832,13 +1832,21 @@ void sanity_test102k(){
   Document doc;
   assertNoThrow( doc.readFromString(xml) );
   FoliaElement *text = doc["example.text.1"];
+#if FOLIA_INT_VERSION < 120
   assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "auto" );
+#else
+  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == AUTO );
+#endif
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap-set",
 					"annotatortype='manual'" ) );
+#if FOLIA_INT_VERSION < 120
   assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "" );
+#else
+  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == UNDEFINED );
+#endif
   KWargs args = getArgs( "set='gap-set', class='Y', annotatortype='unknown'" );
   FoliaElement *g = 0;
   assertThrow( g = new Gap( args, &doc ), ValueError );
@@ -4097,11 +4105,7 @@ void text_test13f(){
   KWargs args;
   args[XML_ID] = doc.id() + ".text.1";
   Text *text = new Text(args,&doc);
-#if FOLIA_INT_VERSION < 115
   doc.append( text );
-#else
-  doc.setRoot( text );
-#endif
 
   args[XML_ID] = doc.id() + ".s.1";
   Sentence *s = new Sentence( args, &doc );
