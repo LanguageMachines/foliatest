@@ -66,6 +66,9 @@ using TiCC::operator<<;
 #define ComplexAlignmentLayer SpanRelationLayer
 #define AbstractTokenAnnotation AbstractInlineAnnotation
 #define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
+#else
+#define Engine Processor
+#define TextEngine TextProcessor
 #endif
 
 #if FOLIA_INT_VERSION >= 120
