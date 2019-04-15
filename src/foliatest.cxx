@@ -5389,8 +5389,8 @@ void build_test002(){
 }
 
 void processor_test001a(){
-  startTestSerie( " copy a document using Folia Processor " );
-  Processor proc;
+  startTestSerie( " copy a document using Folia Engine " );
+  Engine proc;
   // proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml",
 				"/tmp/example-p1.xml") );
@@ -5408,8 +5408,8 @@ void processor_test001a(){
 }
 
 void processor_test001b(){
-  startTestSerie( " copy a document with namespaces using Folia Processor" );
-  Processor proc;
+  startTestSerie( " copy a document with namespaces using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample", "/tmp/nsexample" ) );
   if ( proc.ok() ){
@@ -5426,13 +5426,13 @@ void processor_test001b(){
 }
 
 void processor_test001c(){
-  startTestSerie( " process an invalid document using Folia Processor" );
-  Processor proc;
+  startTestSerie( " process an invalid document using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertThrow( proc.init_doc( "tests/wrongname.xml" ), XmlError );
 }
 
-void loop( Processor& proc ){
+void loop( Engine& proc ){
   FoliaElement *res;
   while ( ( res = proc.get_node( "pqrs" ) ) ){
     // search a non-existing node. will barf on the unknown tag
@@ -5441,8 +5441,8 @@ void loop( Processor& proc ){
 }
 
 void processor_test001d(){
-  startTestSerie( " process an invalid document using Folia Processor" );
-  Processor proc;
+  startTestSerie( " process an invalid document using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/unknowntag.xml" ) );
   if ( proc.ok() ){
@@ -5453,8 +5453,8 @@ void processor_test001d(){
 }
 
 void processor_test001e(){
-  startTestSerie( " copy a difficult document using Folia Processor " );
-  Processor proc;
+  startTestSerie( " copy a difficult document using Folia Engine " );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/bug-1.xml",
 				"/tmp/bug-1.xml") );
@@ -5473,10 +5473,10 @@ void processor_test001e(){
 
 #if FOLIA_INT_VERSION >= 120
 void processor_test001f(){
-  startTestSerie( " copy a FoLiA 2.0 document using Folia Processor " );
+  startTestSerie( " copy a FoLiA 2.0 document using Folia Engine " );
   string infile = fol_path
     + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml";
-  Processor proc;
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( infile, "/tmp/proc_test001f.xml" ) );
   if ( proc.ok() ){
@@ -5495,8 +5495,8 @@ void processor_test001f(){
 #endif
 
 void processor_test002a(){
-  startTestSerie( " copy a document using Folia Processor (alternative)" );
-  Processor proc;
+  startTestSerie( " copy a document using Folia Engine (alternative)" );
+  Engine proc;
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
     FoliaElement *res = 0;
@@ -5512,8 +5512,8 @@ void processor_test002a(){
 }
 
 void processor_test002b(){
-  startTestSerie( " copy a document with namespace using Folia Processor (alternative)" );
-  Processor proc;
+  startTestSerie( " copy a document with namespace using Folia Engine (alternative)" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample" ) );
   if ( proc.ok() ){
@@ -5530,8 +5530,8 @@ void processor_test002b(){
 }
 
 void processor_test002c(){
-  startTestSerie( " copy a speech document using Folia Processor" );
-  Processor proc;
+  startTestSerie( " copy a speech document using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/speechexample.xml" ) );
   if ( proc.ok() ){
@@ -5549,7 +5549,7 @@ void processor_test002c(){
 
 void processor_test003(){
   startTestSerie( " read a document and adding word and annotations using Foliaprocessor " );
-  Processor proc;
+  Engine proc;
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin.xml") );
   if ( proc.ok() ){
     proc.declare( AnnotationType::POS,
@@ -5577,7 +5577,7 @@ void processor_test003(){
 
 void processor_test004(){
   startTestSerie( " read a document searching for several nodes " );
-  Processor proc;
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin2.xml") );
   if ( proc.ok() ){
@@ -5612,7 +5612,7 @@ void processor_test004(){
 
 void processor_test005(){
   startTestSerie( " enumerate a document on xml_element nodes " );
-  Processor proc;
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -5628,7 +5628,7 @@ void processor_test005(){
 
 void processor_test006a(){
   startTestSerie( " enumerate a document on text node parents" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -5645,7 +5645,7 @@ void processor_test006a(){
 
 void processor_test006b(){
   startTestSerie( " enumerate a document on text node parents with textclass" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -5662,7 +5662,7 @@ void processor_test006b(){
 
 void processor_test006c(){
   startTestSerie( " enumerate a document with layers on text node parents" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
   if ( proc.ok() ){
@@ -5689,7 +5689,7 @@ void processor_test006c(){
 
 void processor_test006d(){
   startTestSerie( " enumerate a complex document on text node parents" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia-head.xml" ) );
   if ( proc.ok() ){
@@ -5706,7 +5706,7 @@ void processor_test006d(){
 
 void processor_test007(){
   startTestSerie( " process a document searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin3.xml") );
   if ( proc.ok() ){
@@ -5732,7 +5732,7 @@ void processor_test007(){
 
 void processor_test008a(){
   startTestSerie( " process a document searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/proctest.xml" ) );
   ofstream os( "/tmp/proctest.out" );
@@ -5754,7 +5754,7 @@ void processor_test008a(){
 
 void processor_test008b(){
   startTestSerie( " process a document with layers searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
   ofstream os( "/tmp/proctest-2.out" );
@@ -5776,7 +5776,7 @@ void processor_test008b(){
 
 void processor_test008c(){
   startTestSerie( " process a complex document searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia-head.xml" ) );
   ofstream os( "/tmp/proctest-3.out" );
@@ -5797,7 +5797,7 @@ void processor_test008c(){
 }
 
 #if FOLIA_INT_VERSION >= 116
-void test_proc( TextProcessor& proc ){
+void test_proc( TextEngine& proc ){
   FoliaElement *e = 0;
   while ( (e = proc.next_text_parent() ) ){
   }
@@ -5805,7 +5805,7 @@ void test_proc( TextProcessor& proc ){
 
 void processor_test008d(){
   startTestSerie( " process a strange document searching for text nodes " );
-  TextProcessor proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
+  TextEngine proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
   if ( proc.ok() ){
     proc.setup("",true);
     assertThrow( test_proc( proc ), XmlError );
@@ -5814,7 +5814,7 @@ void processor_test008d(){
 #else
 void processor_test008d(){
   startTestSerie( " process a strange document searching for text nodes " );
-  TextProcessor proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
+  TextEngine proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
   // proc.set_debug(true);
   ofstream os( "/tmp/proctest-8d.out" );
   if ( proc.ok() ){
@@ -5836,7 +5836,7 @@ void processor_test008d(){
 
 void processor_test008e(){
   startTestSerie( " process a document with entities, searching for text nodes " );
-  TextProcessor proc( "tests/entities.xml" );
+  TextEngine proc( "tests/entities.xml" );
   // proc.set_debug(true);
   ofstream os( "/tmp/entities.out" );
   if ( proc.ok() ){
@@ -5857,7 +5857,7 @@ void processor_test008e(){
 
 void processor_test009a(){
   startTestSerie( " process a difficult document with t-style " );
-  TextProcessor proc( "tests/procbug.xml" );
+  TextEngine proc( "tests/procbug.xml" );
   //  proc.set_debug(true);
   ofstream os( "/tmp/procbug.out" );
   if ( proc.ok() ){
@@ -5876,7 +5876,7 @@ void processor_test009a(){
 
 void processor_test009b(){
   startTestSerie( " process a difficult document for text " );
-  TextProcessor proc( "tests/textbug1.xml" );
+  TextEngine proc( "tests/textbug1.xml" );
   //  proc.set_debug(true);
   ofstream os( "/tmp/textbug1.out" );
   if ( proc.ok() ){
@@ -5895,7 +5895,7 @@ void processor_test009b(){
 
 void processor_test009c(){
   startTestSerie( " process a difficult document for text " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/bug-2.xml" ) );
   ofstream os( "/tmp/textbug2.out" );
@@ -5914,7 +5914,7 @@ void processor_test009c(){
 }
 
 void processor_test010(){
-  startTestSerie( " copy a document using Folia Processor on string buffer" );
+  startTestSerie( " copy a document using Folia Engine on string buffer" );
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
 " xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
@@ -5947,7 +5947,7 @@ void processor_test010(){
 "  </text>\n"
 "</FoLiA>\n" ;
 
-  Processor proc;
+  Engine proc;
   // proc.set_debug(true);
   assertNoThrow( proc.init_doc( xml ) );
   if ( proc.ok() ){
@@ -5965,7 +5965,7 @@ void processor_test010(){
 
 void processor_test011() {
   startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
-  Processor proc( "/tmp/example.xml.bz2" ); // created by earlier test
+  Engine proc( "/tmp/example.xml.bz2" ); // created by earlier test
   while ( proc.get_node( "pqrs" ) ){
     // search a non-existing node. makes get_node collect the whole document
     proc.next();
