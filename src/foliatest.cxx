@@ -206,6 +206,13 @@ void Test_Exxx_Hidden_Tokens(){ // xxx -> replace with a number at some point wh
       FoliaElement *su = doc["example.s.1.su.1"];
       assertEqual( su->text() , "Isn't a whole lot left." );
     }
+
+    {
+      startTestSerie( "Text serialisation on the hidden word itself" );
+      FoliaElement *hw = doc["example.s.1.w.0"];
+      assertEqual( hw->internal_text(TEXT_FLAGS::HIDDEN) , "*exp*" );
+    }
+
   }
 }
 
@@ -5984,11 +5991,11 @@ void processor_test011() {
 #endif // FOLIA_INT_VERSION >= 115
 
 int main(){
-  //processor_test006c();
-  //exit(9);
 #if FOLIA_INT_VERSION >= 120
   bool is_setup = setup();
 #endif
+  //  Test_Exxx_Hidden_Tokens();
+  //  processor_test006c();
   test0();
   test1();
   test1a();
