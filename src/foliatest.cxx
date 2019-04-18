@@ -213,6 +213,26 @@ void Test_Exxx_Hidden_Tokens(){ // xxx -> replace with a number at some point wh
       assertEqual( hw->text(TEXT_FLAGS::HIDDEN) , "*exp*" );
     }
 
+    {
+      startTestSerie( "Check whether hidden word is part of the wrefs of Synatactic Unit" );
+      static vector<string> wref_ids( {"example.s.1.w.0", "example.s.1.w.1",
+	    "example.s.1.w.2", "example.s.1.w.3", "example.s.1.w.4",
+	    "example.s.1.w.5", "example.s.1.w.6", "example.s.1.w.7"});
+      FoliaElement *su = doc["example.s.1.su.1"];
+      vector<FoliaElement*> wrefs = su->wrefs();
+      int i = 0;
+      for( auto const& w : wrefs ){
+	assertEqual( w->id(), wref_ids[i++] );
+      }
+    }
+
+    {
+      startTestSerie( "Text serialisation on syntactic unit (with hidden word)" );
+      FoliaElement *su = doc["example.s.1.su.1"];
+      assertEqual( su->text(TEXT_FLAGS::HIDDEN) , "*exp* Isn't a whole lot left." );
+    }
+
+
   }
 }
 
