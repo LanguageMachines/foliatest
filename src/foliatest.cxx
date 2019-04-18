@@ -5075,13 +5075,11 @@ void correction_test005(){
   assertEqual( w->text(), "stippellijn" );
   assertEqual( len(w->annotations<Correction>()), 1 );
   assertEqual( w->annotation<Correction>()->suggestions(0)->text(), "stippellijn" );
-  assertEqual( w->annotation<Correction>()->suggestions(0)->annotator(), "testscript" );
-  assertEqual( w->annotation<Correction>()->suggestions(0)->annotatortype(), AUTO );
   assertEqual( w->annotation<Correction>()->getNew()->text(), "stippellijn" );
   assertEqual( w->annotation<Correction>()->annotator(), "John Doe" );
   assertEqual( w->annotation<Correction>()->annotatortype(), MANUAL );
 
-  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion annotator=\"testscript\" annotatortype=\"auto\" auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
+  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
   delete corDoc;
 }
 
