@@ -232,7 +232,13 @@ void Test_Exxx_Hidden_Tokens(){ // xxx -> replace with a number at some point wh
       assertEqual( su->text(TEXT_FLAGS::HIDDEN) , "*exp* Isn't a whole lot left." );
     }
 
-
+    {
+      startTestSerie( "Test XML serialisation of wrefs in syntactic unit (with hidden words" );
+      FoliaElement *su = doc["example.s.1.su.1"];
+      string value = su->xmlstring();
+      string cmp = "<su xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1.su.1\" class=\"IP-MAT\"><su xml:id=\"example.s.1.su.2\" class=\"NP-SBJ\"><wref id=\"example.s.1.w.0\"/></su><su xml:id=\"example.s.1.su.3\" class=\"VP\"><su xml:id=\"example.s.1.su.4\" class=\"BEP\"><wref id=\"example.s.1.w.1\" t=\"Is\"/></su><su xml:id=\"example.s.1.su.5\" class=\"NEG\"><wref id=\"example.s.1.w.2\" t=\"n't\"/></su><su xml:id=\"example.s.1.su.6\" class=\"VP\"><su xml:id=\"example.s.1.su.7\" class=\"NP-LGS\"><wref id=\"example.s.1.w.3\" t=\"a\"/><su xml:id=\"example.s.1.su.8\" class=\"ADJP\"><wref id=\"example.s.1.w.4\" t=\"whole\"/></su><wref id=\"example.s.1.w.5\" t=\"lot\"/></su><wref id=\"example.s.1.w.6\" t=\"left\"/></su></su><su class=\"PUNC\"><wref id=\"example.s.1.w.7\" t=\".\"/></su></su>";
+      assertEqual( value, cmp );
+    }
   }
 }
 
