@@ -8,7 +8,7 @@
     </annotations>
   </metadata>
   <text xml:id="selectie.text">
-    <div xml:id="glossary" set="structure">
+    <div xml:id="glossary" set="structure" class="glossary">
       <head xml:id="glossary.head">
         <t>Woordenboek-voorbeeld</t>
       </head>

@@ -2927,8 +2927,24 @@ void sanity_test130( ){
   assertEqual( dv.size(), 2 );
   dv = root->select<Division>("role");
   assertEqual( dv.size(), 3 );
+  int cnt1 = 0;
+  int cnt2 = 0;
+  for ( auto const& it : dv ){
+    if ( it->cls() == "speaker" ) ++cnt1;
+    if ( it->cls() == "crowd" ) ++cnt2;
+  }
+  assertEqual( cnt1, 2 );
+  assertEqual( cnt2, 1 );
   dv = root->select<Division>("structure");
   assertEqual( dv.size(), 2 );
+  cnt1 = 0;
+  cnt2 = 0;
+  for ( auto const& it : dv ){
+    if ( it->cls() == "chapter" ) ++cnt1;
+    if ( it->cls() == "glossary" ) ++cnt2;
+  }
+  assertEqual( cnt1, 1 );
+  assertEqual( cnt2, 1 );
   dv = root->select<Division>("chapter");
   assertEqual( dv.size(), 0 );
   dv = root->select<Division>("speaker");
