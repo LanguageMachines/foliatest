@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="selectie" version="1.6" generator="manual">
+  <metadata type="native">
+    <annotations>
+      <division-annotation set="structure" />
+      <division-annotation set="role" />
+    </annotations>
+  </metadata>
+  <text xml:id="selectie.text">
+    <div xml:id="glossary" set="structure">
+      <head xml:id="glossary.head">
+        <t>Woordenboek-voorbeeld</t>
+      </head>
+    </div>
+    <div xml:id="selectie.div" class="chapter" set="structure">
+      <head xml:id="selectie.div.head">
+	<t>Tekst van een zin.</t>
+      </head>
+      <div xml:id="role.div.1" class="speaker" set="role">
+	<s xml:id="role.div.1.s.1">
+	  <t>Bla Bla</t>
+	</s>
+      </div>
+      <div xml:id="role.div.2" class="crowd" set="role">
+	<s xml:id="role.div.2.s.1">
+	  <t>BLA BLA</t>
+	</s>
+      </div>
+      <div xml:id="role.div.3" class="speaker" set="role">
+	<s xml:id="role.div.3.s.1">
+	  <t>No way!</t>
+	</s>
+      </div>
+    </div>
+  </text>
+</FoLiA>

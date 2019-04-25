@@ -2916,6 +2916,27 @@ void sanity_test123( ){
 }
 #endif
 
+void sanity_test130( ){
+  startTestSerie( " selection " );
+  Document d( "tests/selection_test.xml" );
+  auto root = d.doc();
+  root=root->index(0); // Text
+  vector<Division*> dv = root->select<Division>();
+  assertEqual( dv.size(), 5 );
+  dv = root->select<Division>(false);
+  assertEqual( dv.size(), 2 );
+  dv = root->select<Division>("role");
+  assertEqual( dv.size(), 3 );
+  dv = root->select<Division>("structure");
+  assertEqual( dv.size(), 2 );
+  dv = root->select<Division>("chapter");
+  assertEqual( dv.size(), 0 );
+  dv = root->select<Division>("speaker");
+  assertEqual( dv.size(), 0 );
+  dv = root->select<Division>("crowd");
+  assertEqual( dv.size(), 0 );
+}
+
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
@@ -6166,6 +6187,7 @@ int main(){
   sanity_test121();
   sanity_test122();
   sanity_test123();
+  sanity_test130();
   edit_test001a();
   edit_test001b();
   edit_test002();
