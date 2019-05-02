@@ -335,7 +335,6 @@ void Test_Provenance(){
       KWargs args;
       args["name"] = "TestSuite";
       args["xml:id"] = "p0";
-      args["generator"] = "YES";
       test->add_processor( args );
       assertEqual( test->provenance()->index("p0")->name(), "TestSuite");
       test->save( "/tmp/test-1.xml" );
@@ -363,12 +362,14 @@ void Test_Provenance(){
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
+    args["generator"] = "Doesn't matter what we say here";
     test->add_processor( args );
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
@@ -401,12 +402,14 @@ void Test_Provenance(){
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
+    args["generator"] = ""; // may be empty too
     test->add_processor( args );
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
@@ -437,12 +440,14 @@ void Test_Provenance(){
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     // we declare some extra processors (even though we don't really use them),
@@ -457,6 +462,7 @@ void Test_Provenance(){
     args["name"] = "OtherSentenceSplitter";
     args["id"] = "p0.4";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
     args.clear();
@@ -488,12 +494,14 @@ void Test_Provenance(){
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     // we declare some extra processors (even though we don't really use them),
@@ -502,12 +510,14 @@ void Test_Provenance(){
     args["name"] = "SomeOtherTokeniser";
     args["id"] = "p0.3";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
     args.clear();
     args["name"] = "OtherSentenceSplitter";
     args["id"] = "p0.4";
     args["version"] = "1";
+    args["generator"] = "YES";
     test->add_processor( args );
     test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
     args.clear();
@@ -531,18 +541,19 @@ void Test_Provenance(){
     KWargs args;
     args["name"] = "TestSuite";
     args["id"] = "p0";
-    args["generator"] = "YES";
     processor *main = doc.add_processor( args );
     args.clear();
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
+    args["generator"] = "YES";
     doc.add_processor( args, main );
     doc.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
+    args["generator"] = "YES";
     doc.add_processor( args, main );
     doc.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
