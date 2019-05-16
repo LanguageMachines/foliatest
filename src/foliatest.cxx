@@ -341,9 +341,7 @@ void Test_Provenance(){
       string xmlref =
 	"<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"test\" version=\"2.0.0\" generator=\"foliapy-v2.0.0\">\n"
 	"  <metadata type=\"native\">\n"
-	"    <annotations>\n"
-	"      <text-annotation set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl\"/>\n"
-	"    </annotations>\n"
+	"    <annotations/>\n"
 	"    <provenance>\n"
 	"      <processor xml:id=\"p0\" name=\"TestSuite\" type=\"auto\"/>\n"
 	"    </provenance>\n"
@@ -4690,7 +4688,7 @@ void text_test13f(){
   assertEqual( doc.getmode(), "mode=strip,checktext," );
   assertEqual( doc.xmlstring(),
 	       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-"<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"\" version=\"\"><metadata type=\"native\"><annotations/></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
+	       "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"\" version=\"\"><metadata type=\"native\"><annotations><text-annotation set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl\"/></annotations></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
 }
 
 void text_test14(){
@@ -6070,6 +6068,8 @@ int main(){
 #if FOLIA_INT_VERSION >= 120
   bool is_setup = setup();
 #endif
+  //  processor_test001f();
+  //  exit(5);
   //  Test_Exxx_Hidden_Tokens();
   //  sanity_test006c();
   //  exit(6);
