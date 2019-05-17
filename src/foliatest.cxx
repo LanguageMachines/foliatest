@@ -904,9 +904,9 @@ void sanity_test008a(){
 void sanity_test008b(){
   startTestSerie(" occurrences  " );
   FoliaElement *d = 0;
-  assertNoThrow( d = sanityDoc["WR-P-E-J-0000000001.div0.1"] );
+  assertNoThrow( d = sanityDoc["sandbox.figure.1"] );
   FoliaElement *e = 0;
-  assertNoThrow( e = new Head( getArgs(XML_ID"='whatever'"), &sanityDoc ) );
+  assertNoThrow( e = new Caption( getArgs(XML_ID"='whatever'"), &sanityDoc ) );
   assertThrow( d->append(e), DuplicateAnnotationError );
 }
 
