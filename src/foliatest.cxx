@@ -42,6 +42,8 @@
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
+#include "libfolia/folia_properties.h"
+#include "ticcutils/FileUtils.h"
 #include "ticcutils/UnitTest.h"
 
 #include "config.h"
@@ -51,34 +53,519 @@ using namespace folia;
 
 using TiCC::operator<<;
 
-#if FOLIA_INT_VERSION < 116
-#define XML_ID "id"
-#else
-#define XML_ID "xml:id"
-#endif
-
-#if FOLIA_INT_VERSION > 115
-#define Processor Engine
-#define TextProcessor TextEngine
-#endif
-
-#if FOLIA_INT_VERSION > 116
 #define AlignReference LinkReference
 #define Alignment Relation
 #define ComplexAlignment SpanRelation
 #define ComplexAlignmentLayer SpanRelationLayer
 #define AbstractTokenAnnotation AbstractInlineAnnotation
 #define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
-#endif
+
+string fol_path;
+string legacy_file;
+Document LEGACYEXAMPLE;
+bool setup(){
+  string default_path = "../FoLiApy/folia-repo";
+  const char *env = getenv("FOLIAPATH");
+  if ( env == NULL ){
+    if ( TiCC::isDir( default_path + "/examples" ) ){
+      env = default_path.c_str();
+    }
+    else {
+      cerr << "FOLIAPATH not set or guessed" << endl;
+      return false;
+    }
+  };
+  fol_path = env;
+  fol_path += "/";
+  legacy_file = fol_path + "examples/full-legacy.1.5.folia.xml";
+  LEGACYEXAMPLE.read_from_file( legacy_file );
+  return true;
+}
+
+void Test_E001_Tokens_Structure(){
+  Document doc( fol_path + "examples/tokens-structure.2.0.0.folia.xml" );
+  vector<Word*> words = doc.words();
+  vector<Sentence*> sentences = doc.sentences();
+  vector<Paragraph*> paragraphs = doc.paragraphs();
+  {
+    startTestSerie( " Simple Token - Word count " );
+    assertEqual( words.size(), 8 );
+  }
+  {
+    startTestSerie( " Simple Token - Word ID's " );
+    static vector<string> cmp( {"example.p.1.s.1.w.1", "example.p.1.s.1.w.2",
+	  "example.p.1.s.1.w.3", "example.p.1.s.2.w.1", "example.p.1.s.2.w.2",
+	  "example.p.1.s.2.w.3", "example.p.1.s.2.w.4", "example.p.1.s.2.w.5"});
+    int i = 0;
+    for( auto const& w : words ){
+      assertEqual( w->id(), cmp[i++] );
+    }
+  }
+  {
+    startTestSerie( " Simple Token - Structure Count " );
+    assertEqual( sentences.size(), 2 );
+    assertEqual( paragraphs.size(), 1 );
+  }
+  {
+    startTestSerie( " Simple Token - Structure ID's " );
+    static vector<string> cmp_s( {"example.p.1.s.1", "example.p.1.s.2"} );
+    int i = 0;
+    for( auto const& s : sentences ){
+      assertEqual( s->id(), cmp_s[i++] );
+    }
+    static vector<string> cmp_p( {"example.p.1"} );
+    i = 0;
+    for( auto const& p : paragraphs ){
+      assertEqual( p->id(), cmp_p[i++] );
+    }
+  }
+  {
+    startTestSerie("Simple Token & Structure Test - First word");
+    FoliaElement *w = words[0];
+    assertTrue( w->isinstance( Word_t ) );
+    assertEqual( w->id(), "example.p.1.s.1.w.1" );
+    assertEqual( w->text(), "Hello" );
+    assertEqual( str(w), "Hello" );
+  }
+  {
+    startTestSerie("Simple Token & Structure Test - last word");
+    FoliaElement *w = doc.rwords(0);
+    assertTrue( w->isinstance<Word>() );
+    assertEqual( w->id(), "example.p.1.s.2.w.5" );
+    assertEqual( w->text(), "." );
+    assertEqual( str(w), "." );
+  }
+  {
+    startTestSerie( "Simple Token & Structure Test - Sentence" );
+    //grab second sentence
+    FoliaElement *s = doc.sentences(1);
+    assertTrue( isinstance( s, Sentence_t) );
+    assertEqual( s->id(), "example.p.1.s.2" );
+    assertFalse( s->hastext() ); //no explicit text
+    assertEqual( str(s), "This is an example." );
+  }
+  {
+    startTestSerie( "Simple Token & Structure Test - Index" );
+    // rab something using the index
+    FoliaElement *w = doc["example.p.1.s.1.w.1"];
+    assertTrue( isinstance( w, Word_t ) );
+    assertEqual( doc["example.p.1.s.1.w.1"],
+		 doc.index("example.p.1.s.1.w.1") );
+    assertEqual( w->id(), "example.p.1.s.1.w.1" );
+    assertEqual( w->text(), "Hello" )
+  }
+  {
+    startTestSerie( "Simple Token & Structure Test - Declarations" );
+    assertTrue( doc.declared(AnnotationType::TOKEN) );
+    assertTrue( doc.declared(Word_t) ); // same as above, resolves automatically
+    assertTrue( doc.declared(AnnotationType::TEXT) );
+    assertTrue( doc.declared(TextContent_t) ); //same as above, resolves automatically
+    assertTrue( doc.declared(Sentence_t) );
+    assertTrue( doc.declared(Paragraph_t) );
+  }
+}
+
+void Test_Exxx_Hidden_Tokens(){ // xxx -> replace with a number at some point when there are more new tests
+  //    """Hidden token tests"""
+
+  {
+    Document doc( fol_path + "examples/syntactic-movement.2.0.0.folia.xml" );
+
+    {
+      startTestSerie( "Simple Token & Structure - Word count (does not include hidden words)" );
+      vector<Word*> wv = doc.words();
+      assertEqual( wv.size(), 7 );
+      FoliaElement *sentence = doc["example.s.1"];
+      assertEqual( sentence->words().size(), 7 );
+      wv = sentence->select<Word>( default_ignore_structure );
+      assertEqual( wv.size(), 7 );
+    }
+
+    {
+      startTestSerie( "Text serialisation on sentence (no hidden words)" );
+      FoliaElement *sentence = doc["example.s.1"];
+      assertEqual( sentence->text() , "Isn't a whole lot left." );
+    }
+
+    {
+      startTestSerie( "Text serialisation on syntactic unit (no hidden words)" );
+      FoliaElement *su = doc["example.s.1.su.1"];
+      assertEqual( su->text() , "Isn't a whole lot left." );
+    }
+
+    {
+      startTestSerie( "Text serialisation on the hidden word itself" );
+      FoliaElement *hw = doc["example.s.1.w.0"];
+      assertEqual( hw->text(TEXT_FLAGS::HIDDEN) , "*exp*" );
+    }
+
+    {
+      startTestSerie( "Check whether hidden word is part of the wrefs of Synatactic Unit" );
+      static vector<string> wref_ids( {"example.s.1.w.0", "example.s.1.w.1",
+	    "example.s.1.w.2", "example.s.1.w.3", "example.s.1.w.4",
+	    "example.s.1.w.5", "example.s.1.w.6", "example.s.1.w.7"});
+      FoliaElement *su = doc["example.s.1.su.1"];
+      vector<FoliaElement*> wrefs = su->wrefs();
+      int i = 0;
+      for( auto const& w : wrefs ){
+	assertEqual( w->id(), wref_ids[i++] );
+      }
+    }
+
+    {
+      startTestSerie( "Text serialisation on syntactic unit (with hidden word)" );
+      FoliaElement *su = doc["example.s.1.su.1"];
+      assertEqual( su->text(TEXT_FLAGS::HIDDEN) , "*exp* Isn't a whole lot left." );
+    }
+
+    {
+      startTestSerie( "Test XML serialisation of wrefs in syntactic unit (with hidden words" );
+      FoliaElement *su = doc["example.s.1.su.1"];
+      string value = su->xmlstring();
+      string cmp = "<su xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1.su.1\" class=\"IP-MAT\"><su xml:id=\"example.s.1.su.2\" class=\"NP-SBJ\"><wref id=\"example.s.1.w.0\"/></su><su xml:id=\"example.s.1.su.3\" class=\"VP\"><su xml:id=\"example.s.1.su.4\" class=\"BEP\"><wref id=\"example.s.1.w.1\" t=\"Is\"/></su><su xml:id=\"example.s.1.su.5\" class=\"NEG\"><wref id=\"example.s.1.w.2\" t=\"n't\"/></su><su xml:id=\"example.s.1.su.6\" class=\"VP\"><su xml:id=\"example.s.1.su.7\" class=\"NP-LGS\"><wref id=\"example.s.1.w.3\" t=\"a\"/><su xml:id=\"example.s.1.su.8\" class=\"ADJP\"><wref id=\"example.s.1.w.4\" t=\"whole\"/></su><wref id=\"example.s.1.w.5\" t=\"lot\"/></su><wref id=\"example.s.1.w.6\" t=\"left\"/></su></su><su class=\"PUNC\"><wref id=\"example.s.1.w.7\" t=\".\"/></su></su>";
+      assertEqual( value, cmp );
+    }
+  }
+}
+
+void Test_Exxx_Invalid_Wref(){ // xxx -> replace with a number at some point
+  startTestSerie( "Invalid Wref test" );
+  Document *doc = 0;
+  assertThrow( doc = new Document( "file='" + fol_path + "examples/erroneous/invalid-wref.2.0.0.folia.xml'" ), XmlError );
+  assertTrue( doc == 0 );
+}
+
+void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
+  startTestSerie( "Serialization of older FoLiA versions" );
+  assertNoThrow( LEGACYEXAMPLE.save( "/tmp/example.xml" ) );
+  string cmd = "./tests/foliadiff.sh /tmp/example.xml " + legacy_file;
+  int stat = system( cmd.c_str() );
+  assertMessage( "/tmp/example.xml " + legacy_file + " differ!",
+   		 (stat == 0) );
+}
+
+bool xmldiff( const string& f1, const string& f2 ){
+  string cmd = "./tests/foliadiff.sh " + f1 + " " + f2;
+  int stat = system( cmd.c_str() );
+  return stat == 0;
+}
+
+void Test_Provenance(){
+  {
+    Document doc( fol_path + "examples/provenance.2.0.0.folia.xml" );
+    {
+      startTestSerie( "Provenance - Parse and sanity check" );
+      Provenance *provenance = doc.provenance();
+      assertEqual((*provenance)["p0"]->name(), "ucto" );
+      assertEqual((*provenance)["p0.1"]->name(), "libfolia");
+      assertEqual((*provenance)["p1"]->name(), "frog");
+      assertEqual((*provenance)["p1"]->type(), AUTO );
+      assertEqual(provenance->index("p1")->version(), "0.16");
+      assertEqual((*provenance)["p1.0"]->name(), "libfolia");
+      assertEqual((*provenance)["p1.0"]->type(), GENERATOR );
+      assertEqual((*provenance)["p1.0"]->name(), "libfolia");
+      assertEqual((*provenance)["p2.1"]->name(), "proycon");
+      assertEqual((*provenance)["p2.1"]->type(), MANUAL );
+      auto annotators = doc.get_annotators( AnnotationType::POS,
+					    "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
+      assertEqual(len(annotators), 3 );
+      // basically the same thing as above, but resolved to Processor instances:
+      auto processors = doc.get_processors( AnnotationType::POS,
+					    "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
+      assertEqual( len(processors), 3 );
+      // let's see if we got the right ones:
+      assertEqual( processors[0]->id(), "p1.1" );
+      assertEqual( processors[0]->name(), "mbpos" );
+      assertEqual( processors[0]->type(), AUTO );
+      assertEqual( processors[1]->name(), "proycon");
+      assertEqual( processors[1]->type(), MANUAL );
+    }
+    {
+      startTestSerie( "Provenance - Annotation sanity check" );
+      auto word = doc["untitled.p.1.s.1.w.1"];
+      string pid = word->annotation<PosAnnotation>()->processor();
+      assertEqual( pid, "p1.1" );
+      auto proc = doc.get_processor( pid );
+      assertEqual( proc->id(), "p1.1" );
+      assertEqual( proc->name(), "mbpos" );
+      assertEqual( proc->type(), AUTO );
+      // The old annotator attribute can also still be used and refers to the
+      // processor name (for backward API compatibility)
+      assertEqual( proc->annotator(), "mbpos" );
+      // The old annotatortype attribute can also still be used and refers
+      // to the processor type:
+      assertEqual( proc->annotatortype(), AUTO );
+      word = doc["untitled.p.1.s.1.w.2"];
+      pid = word->annotation<PosAnnotation>()->processor();
+      assertEqual( pid, "p2.1" );
+      proc = doc.get_processor( pid );
+      assertEqual( proc->id(), "p2.1" );
+      assertEqual( proc->name(), "proycon" );
+      assertEqual( proc->type(), MANUAL );
+    }
+    {
+      startTestSerie("Provenance - Checking default/implicit processor/annotator" );
+      auto word = doc["untitled.p.1.s.1.w.2"];
+      string pid = word->annotation<LemmaAnnotation>()->processor();
+      auto proc = doc.get_processor( pid );
+      assertEqual( proc->id(), "p1.2" );
+      assertEqual( proc->name(), "mblem" );
+      assertEqual( proc->type(), AUTO );
+      // The old annotator attribute can also still be used and refers to
+      // the processor name
+      assertEqual( proc->annotator(), "mblem");
+    }
+    {
+      startTestSerie("Provenance - Create a document with a processor" );
+      Document *test = new Document("xml:id='test'");
+      KWargs args;
+      args["name"] = "TestSuite";
+      args["xml:id"] = "p0";
+      test->add_processor( args );
+      assertEqual( test->provenance()->index("p0")->name(), "TestSuite");
+      test->save( "/tmp/test-1.xml" );
+      string xmlref =
+	"<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"test\" version=\"2.0.0\" generator=\"foliapy-v2.0.0\">\n"
+	"  <metadata type=\"native\">\n"
+	"    <annotations/>\n"
+	"    <provenance>\n"
+	"      <processor xml:id=\"p0\" name=\"TestSuite\" type=\"auto\"/>\n"
+	"    </provenance>\n"
+	"  </metadata>\n"
+	"</FoLiA>\n";
+      Document ref("string='" + xmlref + "'" );
+      ref.save( "/tmp/ref-1.xml" );
+      assertTrue( xmldiff( "/tmp/test-1.xml", "/tmp/ref-1.xml" ) );
+    }
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with flat processors - Explicit processor assignment" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    args["generator"] = "Doesn't matter what we say here";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    Text *body = test->create_root<Text>( args );
+    args.clear();
+    args["processor"] = "p0.2";
+    args["generate_id"] = body->id();
+    Sentence *sentence = body->create<Sentence>( args );
+    args.clear();
+    args["processor"] = "p0.1";
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    Word *w = sentence->create<Word>( args );
+    args["text"] = "world";
+    sentence->create<Word>( args );
+    const processor *p = test->get_processor(w->processor());
+    assertEqual( p, test->provenance()->index("p0.1") );
+    test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml" );
+    Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml",
+			 fol_path
+			 + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" ) );
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with flat processors - Implicit processor assignment" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    args["generator"] = ""; // may be empty too
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = test->append( new Text(args) );
+    args.clear();
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    args.clear();
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = sentence->append( new Word( args, test ) );
+    args["text"] = "world";
+    sentence->append( new Word( args, test ) );
+    const processor *p = test->get_processor(w->processor());
+    assertEqual( p, test->provenance()->index("p0.1") );
+    test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-2.xml" );
+    Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff( "/tmp/provenance-flat-implicit.2.0.0.folia-2.xml",
+			 fol_path
+			 + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" ) );
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with flat processors - Explicit multiple processor assignment" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    // we declare some extra processors (even though we don't really use them),
+    // but this means the annotations will need to serialise an explicit
+    // processor= attribute
+    args["name"] = "SomeOtherTokeniser";
+    args["id"] = "p0.3";
+    args["version"] = "1";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
+    args.clear();
+    args["name"] = "OtherSentenceSplitter";
+    args["id"] = "p0.4";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = test->append( new Text(args) );
+    args.clear();
+    args["processor"] = "p0.2";
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    args.clear();
+    args["processor"] = "p0.1";
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = sentence->append( new Word( args, test ) );
+    args["text"] = "world";
+    sentence->append( new Word( args, test ) );
+    const processor *p = test->get_processor(w->processor());
+    assertEqual( p, test->provenance()->index("p0.1") );
+    test->save( "/tmp/provenance-flat-explicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff( "/tmp/provenance-flat-explicit.2.0.0.folia.xml",
+			 fol_path
+			 + "examples/tests/provenance-flat-explicit.2.0.0.folia.xml" ) );
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with flat processors - Implicit multiple processor assignment" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    // we declare some extra processors (even though we don't really use them),
+    // but this means the annotations will need to serialise an explicit
+    // processor= attribute
+    args["name"] = "SomeOtherTokeniser";
+    args["id"] = "p0.3";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
+    args.clear();
+    args["name"] = "OtherSentenceSplitter";
+    args["id"] = "p0.4";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = test->append( new Text(args) );
+    args.clear();
+    args["processor"] = "p0.2";
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    args.clear();
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = 0;
+    assertThrow( w = new Word( args, test ), NoDefaultError );
+    assertTrue( w == 0 );
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with nested processors (implicit)" );
+    Document doc( "xml:id='test'" );
+    KWargs args;
+    args["name"] = "TestSuite";
+    args["id"] = "p0";
+    processor *main = doc.add_processor( args );
+    args.clear();
+    args["name"] = "SomeTokeniser";
+    args["id"] = "p0.1";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    doc.add_processor( args, main );
+    doc.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["id"] = "p0.2";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    doc.add_processor( args, main );
+    doc.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    args.clear();
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = doc.append( new Text(args) );
+    args.clear();
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, &doc ) );
+    args.clear();
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = sentence->append( new Word( args, &doc ) );
+    args["text"] = "world";
+
+    sentence->append( new Word( args, &doc ) );
+    const processor *p = doc.get_processor(w->processor());
+    assertEqual( p, doc.provenance()->index("p0.1") );
+    doc.save( "/tmp/provenance-nested-implicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff( "/tmp/provenance-nested-implicit.2.0.0.folia.xml",
+			 fol_path
+			 + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml" ) );
+  }
+}
 
 void test0() {
   startTestSerie( " Test lezen van KWargs " );
   KWargs bla;
-#if FOLIA_INT_VERSION < 116
-  assertNoThrow( bla = getArgs( "dit='goed', dat =' ra ar' " ) );
-#else
   assertNoThrow( bla.init( "dit='goed', dat =' ra ar' " ) );
-#endif
   assertTrue( bla["dit"] == "goed" );
   assertTrue( bla["dat"] == " ra ar" );
   assertEqual ( bla["dat"] , string(" ra ar") );
@@ -92,17 +579,12 @@ void test0() {
   assertTrue( bla["cls"] == "o\"k" );
   assertNoThrow( bla = getArgs( "cls='o""k'" ) );
   assertTrue( bla["cls"] == "ok" );
-#if FOLIA_INT_VERSION < 116
-  assertNoThrow( bla = getArgs( "class='ok\\a', bli='bla'" ) );
-  assertTrue( bla["class"] == "ok\\a" );
-#else
   assertNoThrow( bla.init( "class='ok\\a', bli='bla'" ) );
   assertEqual( bla.is_present( "class" ), true );
   assertEqual( bla.is_present( "klas" ), false );
   assertEqual( bla.extract("class"), "ok\\a" );
   assertEqual( bla.extract("class"), "" );
   assertEqual( bla.extract("klas"), "" );
-#endif
   assertTrue( bla["bli"] == "bla" );
   assertNoThrow( bla = getArgs( "cls='ok\\\\', bli='bla'" ) );
   assertTrue( bla["cls"] == "ok\\" );
@@ -113,7 +595,7 @@ void test0() {
 void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/example.xml" ) );
+  assertNoThrow( d.read_from_file( "tests/example.xml" ) );
   assertNoThrow( d.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
   assertMessage( "/tmp/example.xml tests/example.xml differ!",
@@ -123,10 +605,10 @@ void test1() {
 void test1a() {
   startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
   Document d1;
-  assertNoThrow( d1.readFromFile( "tests/example.xml" ) );
+  assertNoThrow( d1.read_from_file( "tests/example.xml" ) );
   assertNoThrow( d1.save( "/tmp/example.xml.bz2" ) );
   Document d2;
-  assertNoThrow( d2.readFromFile( "/tmp/example.xml.bz2" ) );
+  assertNoThrow( d2.read_from_file( "/tmp/example.xml.bz2" ) );
   assertNoThrow( d2.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
   assertMessage( "/tmp/example.xml tests/example.xml differ!",
@@ -136,10 +618,10 @@ void test1a() {
 void test1b() {
   startTestSerie( " Test lezen en schrijven van een GZ FoLiA file " );
   Document d1;
-  assertNoThrow( d1.readFromFile( "tests/example.xml" ) );
+  assertNoThrow( d1.read_from_file( "tests/example.xml" ) );
   assertNoThrow( d1.save( "/tmp/example.xml.gz" ) );
   Document d2;
-  assertNoThrow( d2.readFromFile( "/tmp/example.xml.gz" ) );
+  assertNoThrow( d2.read_from_file( "/tmp/example.xml.gz" ) );
   assertNoThrow( d2.save( "/tmp/folia.gz.example" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/folia.gz.example tests/example.xml" );
   assertMessage( "/tmp/folia.gz.example tests/example.xml differ!",
@@ -149,7 +631,7 @@ void test1b() {
 void test1c() {
   startTestSerie( " Test lezen van een FoLiA speech file " );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/speechexample.xml" ) );
+  assertNoThrow( d.read_from_file( "tests/speechexample.xml" ) );
   assertNoThrow( d.save( "/tmp/speechexample.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/speechexample.xml tests/speechexample.xml" );
   assertMessage( "/tmp/speechexample.xml tests/speechexample.xml differ!",
@@ -159,37 +641,19 @@ void test1c() {
 void test1d() {
   startTestSerie( " Test lezen van een FoLiA invalid file " );
   Document d;
-  assertThrow( d.readFromFile( "tests/unknowntag.xml" ), XmlError );
+  assertThrow( d.read_from_file( "tests/unknowntag.xml" ), XmlError );
 }
 
-#if FOLIA_INT_VERSION >= 116
 void test1e() {
-  startTestSerie( " Test lezen en schrijven van een lastige FoLiA file " );
+  startTestSerie( " Test lezen van een invalid FoLiA file " );
   Document d1;
-  assertThrow( d1.readFromFile( "tests/scary.xml" ), XmlError );
+  assertThrow( d1.read_from_file( "tests/scary.xml" ), XmlError );
 }
-#elif FOLIA_INT_VERSION >= 115
-void test1e() {
-  startTestSerie( " Test lezen en schrijven van een lastige FoLiA file " );
-  Document d1;
-  assertNoThrow( d1.readFromFile( "tests/scary.xml" ) );
-  assertNoThrow( d1.save( "/tmp/scary.xml" ) );
-  vector<Sentence*> sv;
-  assertNoThrow( sv = d1.sentences() );
-  assertEqual( sv[0]->text(), "Is@" );
-  Document d2;
-  assertNoThrow( d2.readFromFile( "/tmp/scary.xml" ) );
-  assertNoThrow( d2.save( "/tmp/scary2.xml" ) );
-  int stat = system( "./tests/foliadiff.sh /tmp/scary.xml /tmp/scary2.xml" );
-  assertMessage( "/tmp/scary.xml /tmp/scary2.xml differ!",
-   		 (stat == 0) );
-}
-#endif
-#if FOLIA_INT_VERSION >= 114
+
 void test1f() {
   startTestSerie( " Test lezen en schrijven van een FoLiA file met entities" );
   Document d1;
-  assertNoThrow( d1.readFromFile( "tests/entities.xml" ) );
+  assertNoThrow( d1.read_from_file( "tests/entities.xml" ) );
   Sentence *s = d1.sentences()[0];
   assertEqual( s->text(), "Dit <is> als het ware één test met ß." );
   assertNoThrow( d1.save( "/tmp/entities.xml" ) );
@@ -197,7 +661,6 @@ void test1f() {
   assertMessage( "/tmp/entities.xml tests/entities.xml differ!",
    		 (stat == 0) );
 }
-#endif
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -208,19 +671,19 @@ void test2() {
     s += line + "\n";
   };
   Document d;
-  assertNoThrow( d.readFromString( s ) );
+  assertNoThrow( d.read_from_string( s ) );
 }
 
 void test3() {
   startTestSerie( " Test lezen van een DCOI file " );
   Document d;
-  assertThrow( d.readFromFile( "tests/dcoi.example" ), XmlError );
+  assertThrow( d.read_from_file( "tests/dcoi.example" ), XmlError );
 }
 
 void test4() {
   startTestSerie( " Test uitvoer van een FoLiA file naar string" );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/example.xml" ) );
+  assertNoThrow( d.read_from_file( "tests/example.xml" ) );
   string out;
   assertNoThrow( out = d.toXml() );
 }
@@ -228,7 +691,7 @@ void test4() {
 void test5() {
   startTestSerie( " Test lezen van een FoLiA file met namespaces" );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/folia.nsexample" ) );
+  assertNoThrow( d.read_from_file( "tests/folia.nsexample" ) );
   assertNoThrow( d.save( "/tmp/test5.out", "fl", false ) );
   int stat = system( "./tests/foliadiff.sh /tmp/test5.out tests/folia.nsexample" );
   assertMessage( "/tmp/test5.out tests/folia.nsexample differ!",
@@ -238,31 +701,31 @@ void test5() {
 void test6() {
   startTestSerie( " Test lezen van een FoLiA file external nodes" );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/include1.xml" ) );
+  assertNoThrow( d.read_from_file( "tests/include1.xml" ) );
   assertNoThrow( d.save( "/tmp/include.out" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/include.out tests/include.ok" );
   assertMessage( "/tmp/include.out tests/include.ok differ!",
    		 (stat == 0) );
   Document d2;
-  assertThrow( d2.readFromFile( "tests/include2.xml" ), XmlError );
+  assertThrow( d2.read_from_file( "tests/include2.xml" ), XmlError );
 }
 
 void test7() {
   startTestSerie( " Test inlezen van een FoLiA file zonder namespace declaratie" );
   Document d;
-  assertThrow( d.readFromFile( "tests/noname.xml" ), XmlError );
+  assertThrow( d.read_from_file( "tests/noname.xml" ), XmlError );
 }
 
 void test8() {
   startTestSerie( " Test inlezen van een FoLiA file met foute namespace declaratie" );
   Document d;
-  assertThrow( d.readFromFile( "tests/wrongname.xml" ), XmlError );
+  assertThrow( d.read_from_file( "tests/wrongname.xml" ), XmlError );
 }
 
 void test9() {
   startTestSerie( " Test extracting text from a document" );
   Document doc;
-  assertNoThrow( doc.readFromFile( "tests/text.xml" ) );
+  assertNoThrow( doc.read_from_file( "tests/text.xml" ) );
   UnicodeString us;
   assertNoThrow( us = doc.text() );
   assertEqual( us, "chapter 1\n\nsentence 1" );
@@ -349,7 +812,7 @@ void sanity_test006b(){
   assertTrue( isinstance( s, Sentence_t ) );
   assertFalse( s->hastext() );
   assertEqual( s->text(), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring." );
-  assertEqual( s->text("current",true), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring ." );
+  assertEqual( s->text(TEXT_FLAGS::RETAIN), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring ." );
   // not detokenised
   assertEqual( s->toktext(), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring ." );
   // just an alias for the above
@@ -359,9 +822,9 @@ void sanity_test006c(){
   startTestSerie( " Sanity check - Sentence text both tokenized and not " );
   // grab fourth sentence
   Sentence *s = sanityDoc.sentences(4);
-  assertTrue( s->hastext() );
+  //  assertTrue( s->hastext() );
   // The sentence has text of it's own
-  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
+  //  assertEqual( s->text(), "De hoofdletter A wordt gebruikt voor het originele handschrift." );
   // The sentence has <w> children with tokenization too
   assertEqual( s->toktext("current"), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
   assertEqual( s->toktext(), "De hoofdletter A wordt gebruikt voor het originele handschrift ." );
@@ -393,9 +856,9 @@ void sanity_test008a(){
 void sanity_test008b(){
   startTestSerie(" occurrences  " );
   FoliaElement *d = 0;
-  assertNoThrow( d = sanityDoc["WR-P-E-J-0000000001.div0.1"] );
+  assertNoThrow( d = sanityDoc["sandbox.figure.1"] );
   FoliaElement *e = 0;
-  assertNoThrow( e = new Head( getArgs(XML_ID"='whatever'"), &sanityDoc ) );
+  assertNoThrow( e = new Caption( getArgs("xml:id='whatever'"), &sanityDoc ) );
   assertThrow( d->append(e), DuplicateAnnotationError );
 }
 
@@ -417,7 +880,7 @@ void sanity_test008c(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   FoliaElement *t = 0;
   // creating an empty text is forbidden
   assertThrow( t = new TextContent( getArgs("value=''"), &doc ), ArgsError );
@@ -571,16 +1034,9 @@ void sanity_test015( ){
   int cnt = check( sanityDoc.doc(), "",  os, fails );
   cerr << "         - checked " << cnt << " parents" << endl;
   assertEqual( fails, 0 );
-#if FOLIA_INT_VERSION > 116
   int stat = system( "diff -b /tmp/foliaparent.txt tests/foliaparent.ok" );
   assertMessage( "/tmp/foliaparent.txt tests/foliaparent.ok differ!",
 		 stat == 0 );
-#else
-  int stat = system( "diff -b /tmp/foliaparent.txt tests/foliaparent-old.ok" );
-  assertMessage( "/tmp/foliaparent.txt tests/foliaparent-old.ok differ!",
-		 stat == 0 );
-#endif
-
 }
 
 
@@ -953,8 +1409,8 @@ void sanity_test030( ){
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
   assertTrue( w->text() == "hoofdletter" );
   const TextContent* t = 0;
-  assertNoThrow( t = w->textcontent() );
-  assertNoThrow( t = t->textcontent() ); // should deliver itself!
+  assertNoThrow( t = w->text_content() );
+  assertNoThrow( t = t->text_content() ); // should deliver itself!
   assertTrue( t->text() == "hoofdletter" );
   assertTrue( t->offset() == 3 );
 
@@ -967,7 +1423,7 @@ void sanity_test030( ){
 void sanity_test030b( ){
   startTestSerie( " Sanity check - Text Content (2) " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  const TextContent *t = head->textcontent();
+  const TextContent *t = head->text_content();
   assertTrue( len(t) == 3 );
   assertEqual( t->text(), "De \nFoLiA developers zijn:" );
   assertEqual( t->index(0)->text(), "De ");
@@ -1067,7 +1523,7 @@ void sanity_test037a( ){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertTrue( doc["head.1.s.1.w.1"]->pos() == "NN(blah)" );
   assertTrue( doc["head.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "BB(blah)" );
@@ -1103,7 +1559,7 @@ void sanity_test037b( ){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
   PosAnnotation* p = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
   vector<string> v = p->feats("x");
@@ -1140,7 +1596,7 @@ void sanity_test037c( ){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "NN(a,b,c)" );
   PosAnnotation* pos = doc["p.1.s.1.w.1"]->annotation<PosAnnotation>();
   vector<string> v = pos->feats("author");
@@ -1248,7 +1704,7 @@ void sanity_test042(){
 void sanity_test043(){
   startTestSerie( " Sanity check - String " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  assertTrue( head->hasannotation<String>() > 0 );
+  assertTrue( head->has_annotation<String>() > 0 );
   vector<String*> v = head->select<String>();
   String* st = v[0];
   assertEqual( st->text(), "FoLiA developers" );
@@ -1261,7 +1717,7 @@ void sanity_test043(){
 void sanity_test044a(){
   startTestSerie( " Sanity check - Text Markup " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  const TextContent *t = head->textcontent();
+  const TextContent *t = head->text_content();
   assertEqual( len(head->select<TextMarkupString>()), size_t(1) );
   assertEqual( len(t->select<TextMarkupString>()), size_t(1) );
   vector<TextMarkupString*> v = t->select<TextMarkupString>();
@@ -1271,7 +1727,7 @@ void sanity_test044a(){
   const FoliaElement *r1 =  st->resolveid();
   FoliaElement *r2 = sanityDoc["sandbox.3.str"];
   assertEqual( r1, r2 ); // testing resolving references
-  t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->textcontent();
+  t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->text_content();
   assertTrue( t->index(t->size()-1)->isinstance( Linebreak_t) );  // did we get the linebreak properly?
   // testing nesting
   assertEqual( len(st), size_t(2) );
@@ -1383,12 +1839,12 @@ void sanity_test100a( ){
   startTestSerie(" Checking saved file against document " );
   {
     Document d;
-    assertNoThrow( d.readFromFile( "/tmp/savetest.xml" ) );
+    assertNoThrow( d.read_from_file( "/tmp/savetest.xml" ) );
     assertTrue( d == sanityDoc );
   }
   {
     Document d;
-    assertNoThrow( d.readFromFile( "/tmp/savetest.canonical.xml" ) );
+    assertNoThrow( d.read_from_file( "/tmp/savetest.canonical.xml" ) );
     assertTrue( d == sanityDoc );
   }
 }
@@ -1414,8 +1870,8 @@ void sanity_test101( ){
 void sanity_test101a(){
   startTestSerie(" Metadata external reference (CMDI) " );
   Document doc( "file='tests/folia.cmdi.xml'" );
-  assertEqual( doc.metadatatype(), "cmdi" );
-  assertEqual( doc.metadatafile(), "test.cmdi.xml" );
+  assertEqual( doc.metadata_type(), "cmdi" );
+  assertEqual( doc.metadata_file(), "test.cmdi.xml" );
   assertNoThrow( doc.save( "/tmp/folia.cmdi.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/folia.cmdi.xml tests/folia.cmdi.xml" );
   assertMessage( "/tmp/folia.cmdi.xml tests/folia.cmdi.xml differ!",
@@ -1426,8 +1882,8 @@ void sanity_test101a(){
 void sanity_test101b(){
   startTestSerie(" Metadata external reference (IMDI) " );
   Document doc( "file='tests/folia.imdi.xml'" );
-  assertEqual( doc.metadatatype(), "imdi" );
-  assertEqual( doc.metadatafile(), "" );
+  assertEqual( doc.metadata_type(), "imdi" );
+  assertEqual( doc.metadata_file(), "" );
   assertNoThrow( doc.save( "/tmp/folia.imdi.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/folia.imdi.xml tests/folia.imdi.xml" );
   assertMessage( "/tmp/folia.imdi.xml tests/folia.imdi.xml differ!",
@@ -1438,7 +1894,7 @@ void sanity_test101b(){
 void sanity_test101c(){
   startTestSerie(" Metadata (native) " );
   Document doc( "file='tests/example.xml'" );
-  assertTrue( doc.metadatatype() == "native" );
+  assertTrue( doc.metadata_type() == "native" );
   assertNoThrow( doc.set_metadata( "name", "Mijn document" ) );
   assertEqual( doc.get_metadata( "genre" ), "artikel" );
 }
@@ -1446,7 +1902,7 @@ void sanity_test101c(){
 void sanity_test101d(){
   startTestSerie(" Metadata (foreign) " );
   Document doc( "file='tests/folia.foreign.xml'" );
-  assertTrue( doc.metadatatype() == "pm" );
+  assertTrue( doc.metadata_type() == "pm" );
   assertNoThrow( doc.save( "/tmp/saveforeign.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/saveforeign.xml tests/folia.foreign.xml" );
   assertMessage( "/tmp/saveforeign.xml tests/folia.foreign.xml differ!",
@@ -1456,7 +1912,7 @@ void sanity_test101d(){
 void sanity_test101e(){
   startTestSerie(" Metadata (foreign with namespace) " );
   Document doc( "file='tests/folia.foreign2.xml'" );
-  assertTrue( doc.metadatatype() == "pm" );
+  assertTrue( doc.metadata_type() == "pm" );
   assertNoThrow( doc.save( "/tmp/saveforeign2.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/saveforeign2.xml tests/folia.foreign2.xml" );
   assertMessage( "/tmp/saveforeign2.xml tests/folia.foreign2.xml differ!",
@@ -1517,7 +1973,7 @@ void sanity_test102a(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertTrue( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
   assertThrow( doc.declare( AnnotationType::TOKEN,
 			    "some-set",
@@ -1541,7 +1997,7 @@ void sanity_test102b(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.readFromString(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), XmlError );
 
 }
 
@@ -1563,7 +2019,7 @@ void sanity_test102c(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertTrue( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
   assertTrue( doc["example.text.1"]->select<Gap>()[1]->sett() == "extended-gap-set" );
 
@@ -1587,7 +2043,7 @@ void sanity_test102d1(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.readFromString(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), XmlError );
 
 }
 
@@ -1609,7 +2065,7 @@ void sanity_test102d2(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.readFromString(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), XmlError );
 
 }
 
@@ -1630,10 +2086,10 @@ void sanity_test102d3(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
-  assertTrue( doc.defaultset(AnnotationType::GAP) == "gap-set" );
-  assertTrue( doc.defaultannotator(AnnotationType::GAP) == "sloot" );
-  assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap-set") == "sloot" );
+  assertNoThrow( doc.read_from_string(xml) );
+  assertTrue( doc.default_set(AnnotationType::GAP) == "gap-set" );
+  assertTrue( doc.default_annotator(AnnotationType::GAP) == "sloot" );
+  assertTrue( doc.default_annotator(AnnotationType::GAP,"gap-set") == "sloot" );
 
 }
 
@@ -1652,7 +2108,7 @@ void sanity_test102e(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.readFromString(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), XmlError );
 
 }
 
@@ -1673,7 +2129,7 @@ void sanity_test102f(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
 }
 
 void sanity_test102g(){
@@ -1697,7 +2153,7 @@ void sanity_test102g(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
   assertTrue( v[0]->description() == "test1" );
   assertTrue( v[0]->sett() == "undefined" );
@@ -1723,7 +2179,7 @@ void sanity_test102h(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap-set",
 					"annotator='proycon'" ) );
@@ -1749,13 +2205,13 @@ void sanity_test102i(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
-  assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap1-set") == "sloot" );
+  assertNoThrow( doc.read_from_string(xml) );
+  assertTrue( doc.default_annotator(AnnotationType::GAP,"gap1-set") == "sloot" );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap1-set",
 					"annotator='proycon'" ) );
-  assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap1-set") == "" );
-  assertTrue( doc.defaultannotator(AnnotationType::GAP,"gap2-set") == "sloot" );
+  assertTrue( doc.default_annotator(AnnotationType::GAP,"gap1-set") == "" );
+  assertTrue( doc.default_annotator(AnnotationType::GAP,"gap2-set") == "sloot" );
   FoliaElement *text = doc["example.text.1"];
   KWargs args = getArgs( "set='gap1-set', class='Y', annotator='proycon'" );
   FoliaElement *g = 0;
@@ -1795,7 +2251,7 @@ void sanity_test102j(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   FoliaElement *text = doc["example.text.1"];
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"other-set",
@@ -1830,23 +2286,15 @@ void sanity_test102k(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   FoliaElement *text = doc["example.text.1"];
-#if FOLIA_INT_VERSION < 120
-  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "auto" );
-#else
-  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == AUTO );
-#endif
+  assertTrue( doc.default_annotatortype(AnnotationType::GAP) == AUTO );
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap-set",
 					"annotatortype='manual'" ) );
-#if FOLIA_INT_VERSION < 120
-  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == "" );
-#else
-  assertTrue( doc.defaultannotatortype(AnnotationType::GAP) == UNDEFINED );
-#endif
+  assertTrue( doc.default_annotatortype(AnnotationType::GAP) == UNDEFINED );
   KWargs args = getArgs( "set='gap-set', class='Y', annotatortype='unknown'" );
   FoliaElement *g = 0;
   assertThrow( g = new Gap( args, &doc ), ValueError );
@@ -1880,9 +2328,9 @@ void sanity_test102l(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   FoliaElement *text = doc["example.text.1"];
-  assertTrue( doc.defaultdatetime(AnnotationType::GAP,"gap-set") == "2012-06-18T17:49:00" );
+  assertTrue( doc.default_datetime(AnnotationType::GAP,"gap-set") == "2012-06-18T17:49:00" );
   vector<Gap*> v = text->select<Gap>();
   assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" datetime=\"2012-06-18T17:50:00\"/>" );
@@ -1906,7 +2354,7 @@ void sanity_test102m(){
     "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 			      "gap-set2",
 			      "annotatortype='manual'" ) );
@@ -1935,7 +2383,7 @@ void sanity_test102n(){
     "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 			      "nog zon ingewikkelde en veels te lange declaratie",
 			      "annotatortype='manual', alias='gap-set2'" ) );
@@ -1972,7 +2420,7 @@ void sanity_test102n(){
 void sanity_test102o(){
   startTestSerie(" Declarations - using same sets and aliases for different types." );
   Document doc;
-  assertNoThrow( doc.readFromFile("tests/aliases.xml") );
+  assertNoThrow( doc.read_from_file("tests/aliases.xml") );
   assertNoThrow( doc.save( "/tmp/aliases.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/aliases.xml tests/aliases.xml" );
   assertMessage( "/tmp/aliases.xml tests/aliases.xml differ!",
@@ -2002,7 +2450,7 @@ void sanity_test103( ){
     "  </text>\n"
     "</FoLiA>\n" ;
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertTrue( len(doc.words()) == 1 ); // first word is in alien namespace
   // not read
   FoliaElement *w = doc["example.text.1.s.1.alienword"];
@@ -2036,7 +2484,7 @@ void sanity_test104a( ){
     "  </speech>\n"
     "</FoLiA>\n";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   //  assertNoThrow( doc.save( "/tmp/test104a.xml" ) );
   //  assertTrue( isinstance(doc.doc(0), Speech_t) );
   assertTrue( isinstance(doc["example.speech.utt.1"], Utterance_t) );
@@ -2072,7 +2520,7 @@ void sanity_test104b( ){
     "</FoLiA>\n";
 
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertNoThrow( doc.save( "/tmp/test104b.xml" ) );
   //assertTrue( isinstance(doc.doc(), folia.Speech) );
   assertTrue( isinstance(doc["example.speech.utt.1"], Utterance_t) );
@@ -2118,7 +2566,7 @@ void sanity_test105(){
     "  </text>\n"
     "</FoLiA>\n";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   //        self.assertTrue(doc.xml() is not None) #serialisation check
   vector<Paragraph*> pargs;
   assertNoThrow( pargs = doc.paragraphs() );
@@ -2219,7 +2667,7 @@ void sanity_test106( ){
     "  </text>\n"
     " </FoLiA>\n";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
   assertTrue( len(doc.sentences()) == 1 ); // one sentence at top level
   vector<Sentence*> s = doc.sentenceParts();
   assertTrue( s.size() == 3 );
@@ -2234,7 +2682,7 @@ void sanity_test106( ){
 void sanity_test107( ){
   startTestSerie("107 Some quoting");
   Document doc;
-  assertNoThrow( doc.readFromFile("tests/fg.xml") );
+  assertNoThrow( doc.read_from_file("tests/fg.xml") );
   vector<Sentence *> s = doc.sentenceParts();
   assertTrue( s.size() == 24 );
   vector<Word*> wv = s[18]->wordParts();
@@ -2250,7 +2698,7 @@ void sanity_test108( ){
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "</FoLiA>\n" ;
-  assertThrow( doc.readFromString(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), XmlError );
   assertThrow( new Sentence( getArgs("id='dit mag ook niet'"), &doc ),
 	       XmlError );
   assertThrow( new Sentence( getArgs("id='1.ook.niet'"), &doc ), XmlError );
@@ -2270,30 +2718,30 @@ void sanity_test109( ){
 void sanity_test110(){
   startTestSerie( " Submetadata " );
   Document doc( "file='tests/example.xml'" );
-  auto sm = doc["sandbox.3"]->getmetadata();
+  auto sm = doc["sandbox.3"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   KWargs att = sm->get_avs();
   assertEqual( att["author"], "proycon" );
-  sm = doc["example.table.1.w.1"]->getmetadata();
+  sm = doc["example.table.1.w.1"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   att = sm->get_avs();
   assertEqual( att["author"], "proycon" );
-  string val = doc["example.table.1.w.1"]->getmetadata("author");
+  string val = doc["example.table.1.w.1"]->get_metadata("author");
   assertEqual( val, "proycon" );
-  sm = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata();
+  sm = doc["WR-P-E-J-0000000001.div0.1"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   att = sm->get_avs();
   assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
-  sm = doc["WR-P-E-J-0000000001.p.1.s.1.w.1"]->getmetadata();
+  sm = doc["WR-P-E-J-0000000001.p.1.s.1.w.1"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   att = sm->get_avs();
   assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
-  val = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata("originalsource");
+  val = doc["WR-P-E-J-0000000001.div0.1"]->get_metadata("originalsource");
   assertEqual( val, "https://nl.wikipedia.org/wiki/Stemma" );
-  sm = doc["span.correction"]->getmetadata();
+  sm = doc["span.correction"]->get_metadata();
   assertEqual( sm->datatype(), "ExternalMetaData" );
   assertEqual( sm->src(), "blaat" );
-  sm = doc["bibhead"]->getmetadata();
+  sm = doc["bibhead"]->get_metadata();
   assertEqual( sm->datatype(), "ForeignMetaData" );
   vector<FoliaElement*> fv = sm->get_foreigners();
   string cont = fv[0]->xmlstring();
@@ -2331,7 +2779,7 @@ void sanity_test120( ){
     "    </s>\n"
     "  </text>\n"
     "</FoLiA>\n";
-  assertThrow( d.readFromString( xml ), XmlError );
+  assertThrow( d.read_from_string( xml ), XmlError );
 }
 
 void sanity_test121( ){
@@ -2362,8 +2810,8 @@ void sanity_test121( ){
     "  </text>\n"
     "</FoLiA>\n";
 
-  //  assertThrow( d.readFromString( xml ), XmlError );
-  assertNoThrow( d.readFromString( xml ) );
+  //  assertThrow( d.read_from_string( xml ), XmlError );
+  assertNoThrow( d.read_from_string( xml ) );
 }
 
 void sanity_test122( ){
@@ -2396,22 +2844,51 @@ void sanity_test122( ){
     "  </text>\n"
     "</FoLiA>\n";
 
-  assertThrow( d.readFromString( xml ), XmlError );
+  assertThrow( d.read_from_string( xml ), XmlError );
 }
 
-#if FOLIA_INT_VERSION < 116
 void sanity_test123( ){
   startTestSerie( " Layers - using Word not Reference " );
   Document d;
-  assertNoThrow( d.readFromFile( "tests/example_2.xml") );
+  assertThrow( d.read_from_file( "tests/example_2.xml" ), XmlError );
 }
-#else
-void sanity_test123( ){
-  startTestSerie( " Layers - using Word not Reference " );
-  Document d;
-  assertThrow( d.readFromFile( "tests/example_2.xml" ), XmlError );
+
+void sanity_test130( ){
+  startTestSerie( " selection " );
+  Document d( "tests/selection_test.xml" );
+  auto root = d.doc();
+  root=root->index(0); // Text
+  vector<Division*> dv = root->select<Division>();
+  assertEqual( dv.size(), 5 );
+  dv = root->select<Division>(false);
+  assertEqual( dv.size(), 2 );
+  dv = root->select<Division>("role");
+  assertEqual( dv.size(), 3 );
+  int cnt1 = 0;
+  int cnt2 = 0;
+  for ( auto const& it : dv ){
+    if ( it->cls() == "speaker" ) ++cnt1;
+    if ( it->cls() == "crowd" ) ++cnt2;
+  }
+  assertEqual( cnt1, 2 );
+  assertEqual( cnt2, 1 );
+  dv = root->select<Division>("structure");
+  assertEqual( dv.size(), 2 );
+  cnt1 = 0;
+  cnt2 = 0;
+  for ( auto const& it : dv ){
+    if ( it->cls() == "chapter" ) ++cnt1;
+    if ( it->cls() == "glossary" ) ++cnt2;
+  }
+  assertEqual( cnt1, 1 );
+  assertEqual( cnt2, 1 );
+  dv = root->select<Division>("chapter");
+  assertEqual( dv.size(), 0 );
+  dv = root->select<Division>("speaker");
+  assertEqual( dv.size(), 0 );
+  dv = root->select<Division>("crowd");
+  assertEqual( dv.size(), 0 );
 }
-#endif
 
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
@@ -2693,7 +3170,7 @@ void edit_test005a( ){
   args["set"]="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn";
   assertNoThrow( w->addPosAnnotation( args ) );
   vector<Alternative*> alt = w->alternatives(); // all alternatives
-  string sett = doc.defaultset(AnnotationType::POS);
+  string sett = doc.default_set(AnnotationType::POS);
   vector<Alternative*> alt2 = w->alternatives(sett);
   assertTrue( alt.size() == 1 );
   assertTrue( alt2.size() == 1 );
@@ -2828,7 +3305,7 @@ void edit_test009a( ){
   assertNoThrow( w = editDoc["WR-P-E-J-0000000001.p.1.s.8.w.11"] );
   KWargs kw;
   kw["text"] = "stippellijn";
-  kw[XML_ID] = "WR-P-E-J-0000000001.p.1.s.8.w.11";
+  kw["xml:id"] = "WR-P-E-J-0000000001.p.1.s.8.w.11";
   assertThrow( w->sentence()->addWord( kw ),
 	       DuplicateIDError );
 }
@@ -2925,11 +3402,7 @@ void edit_test012(){
   assertEqual( a->resolve()[0], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"] );
   assertEqual( a->resolve()[1], editDoc["WR-P-E-J-0000000001.p.1.s.6.w.2"] );
   string res = w->xmlstring();
-#if FOLIA_INT_VERSION > 116
-  assertEqual( res, "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"ze\"/><relation class=\"coreference\"><xref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" t=\"appel\" type=\"w\"/><xref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"w\"/></relation></w>" );
-#else
   assertEqual( res, "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.8\"><t>ze</t><pos class=\"VNW(pers,pron,stan,red,3,mv)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"ze\"/><alignment class=\"coreference\"><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.1\" t=\"appel\" type=\"w\"/><aref id=\"WR-P-E-J-0000000001.p.1.s.6.w.2\" type=\"w\"/></alignment></w>" );
-#endif
 }
 
 void edit_test013(){
@@ -3176,7 +3649,7 @@ void text_test03(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertThrow( doc.readFromString(xml), InconsistentText );
+  assertThrow( doc.read_from_string(xml), InconsistentText );
 }
 
 
@@ -3201,7 +3674,7 @@ void text_test04(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertThrow( doc.readFromString(xml), InconsistentText );
+  assertThrow( doc.read_from_string(xml), InconsistentText );
 }
 
 
@@ -3232,11 +3705,11 @@ void text_test05(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertThrow( doc.readFromString(xml), InconsistentText );
+  assertThrow( doc.read_from_string(xml), InconsistentText );
 }
 
 void text_test06(){
-  startTestSerie( " Vallid Text (Multiple classes) " );
+  startTestSerie( " Valid Text (Multiple classes) " );
   string xml= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\">"
 "  <metadata type=\"native\">"
@@ -3252,15 +3725,14 @@ void text_test06(){
 "        <t>Is het creëren van een volwaardig literrair oeuvre voorbehouden aan schrijvers"
 "	als Couperus, 	Haasse, of"
 "	Grunberg?</t>"
-"        <t class=\"missingword\">Is het creëren van een volwaardig oeuvre voorbehouden aan schrijvers"
-"	als Couperus, 	Haasse, of"
-"	Grunberg?</t>"
+"        <t class=\"missingword\">Is het creëren van een vol<t-hbr/>waardig oeuvre voorbehouden aan schrijvers"
+"	als Couperus, 	Haasse, of<br/>Grunberg?</t>"
 "      </s>"
 "    </p>"
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertThrow( doc.readFromString(xml), InconsistentText );
+  assertThrow( doc.read_from_string(xml), InconsistentText );
 }
 
 void text_test07(){
@@ -3308,7 +3780,7 @@ void text_test07(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
 }
 
 void text_test08(){
@@ -3388,7 +3860,7 @@ void text_test08(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
 }
 
 void text_test09(){
@@ -3468,7 +3940,7 @@ void text_test09(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertThrow( doc.readFromString(xml), UnresolvableTextContent );
+  assertThrow( doc.read_from_string(xml), UnresolvableTextContent );
 }
 
 void text_test10(){
@@ -3548,8 +4020,8 @@ void text_test10(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
-  assertEqual( doc["example.p.1.s.1.w.19"]->textcontent()->getreference(),
+  assertNoThrow( doc.read_from_string(xml) );
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1"] ); // testing resolving explicit reference
 }
 
@@ -3629,8 +4101,8 @@ void text_test11(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
-  assertEqual( doc["example.p.1.s.1.w.19"]->textcontent()->getreference(),
+  assertNoThrow( doc.read_from_string(xml) );
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
 }
 
@@ -3657,8 +4129,8 @@ void text_test12(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
-  assertEqual( doc["example.string"]->textcontent()->getreference(),
+  assertNoThrow( doc.read_from_string(xml) );
+  assertEqual( doc["example.string"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
 }
 
@@ -3724,7 +4196,7 @@ void text_test13a(){
 "  </text>"
  "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString(xml) );
+  assertNoThrow( doc.read_from_string(xml) );
 }
 
 void text_test13b(){
@@ -3801,7 +4273,7 @@ void text_test13b(){
 "  </text>"
   "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
 }
 
 void text_test13c(){
@@ -3889,7 +4361,7 @@ void text_test13c(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
 }
 
 void text_test13d(){
@@ -3977,7 +4449,7 @@ void text_test13d(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
 }
 
 void text_test13e(){
@@ -4096,38 +4568,38 @@ void text_test13e(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
 }
 
 void text_test13f(){
   startTestSerie( "Validation - Text Validation with redundancy on construction" );
-  Document doc( XML_ID"='example', version='1.5'" );
+  Document doc( "xml:id""='example', version='1.5'" );
   KWargs args;
-  args[XML_ID] = doc.id() + ".text.1";
+  args["xml:id"] = doc.id() + ".text.1";
   Text *text = new Text(args,&doc);
-  doc.append( text );
+  doc.addText( text );
 
-  args[XML_ID] = doc.id() + ".s.1";
+  args["xml:id"] = doc.id() + ".s.1";
   Sentence *s = new Sentence( args, &doc );
   s->settext( "De site staat online . " ); //Spaces here!
   text->append( s );
-  args[XML_ID] = doc.id() + ".s.1.w.1";
+  args["xml:id"] = doc.id() + ".s.1.w.1";
   args["text"] =  "De";
   Word *w = new Word( args, &doc );
   s->append( w );
-  args[XML_ID] = doc.id() + ".s.1.w.2";
+  args["xml:id"] = doc.id() + ".s.1.w.2";
   args["text"] =  "site";
   w = new Word( args, &doc );
   s->append( w );
-  args[XML_ID] = doc.id() + ".s.1.w.3";
+  args["xml:id"] = doc.id() + ".s.1.w.3";
   args["text"] =  "staat";
   w = new Word( args, &doc );
   s->append( w );
-  args[XML_ID] = doc.id() + ".s.1.w.4";
+  args["xml:id"] = doc.id() + ".s.1.w.4";
   args["text"] =  "online";
   w = new Word( args, &doc );
   s->append( w );
-  args[XML_ID] = doc.id() + ".s.1.w.5";
+  args["xml:id"] = doc.id() + ".s.1.w.5";
   args["text"] =  "."; // No spaces here!
   w = new Word( args, &doc );
   s->append( w );
@@ -4136,13 +4608,13 @@ void text_test13f(){
   assertEqual( doc.getmode(), "mode=strip,checktext," );
   assertEqual( doc.xmlstring(),
 	       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-"<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"\" version=\"\"><metadata type=\"native\"><annotations/></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
+	       "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"\" version=\"\"><metadata type=\"native\"><annotations><text-annotation set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl\"/></annotations></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
 }
 
 void text_test14(){
   startTestSerie( "Validation - Text Validation with sentence text delimiter inheritance" );
   Document doc;
-  assertNoThrow( doc.readFromFile( "tests/textproblem.xml" ) );
+  assertNoThrow( doc.read_from_file( "tests/textproblem.xml" ) );
 }
 
 void text_test15(){
@@ -4161,7 +4633,7 @@ void text_test15(){
 "    </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
   assertEqual( doc["test.s"]->text(), "Dit\n         is een rare test.\n         ");
 }
 
@@ -4178,7 +4650,7 @@ void text_test16(){
 "    </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
   UnicodeString txt;
   assertNoThrow( txt = doc["test.t"]->text() );
   assertEqual( txt, "This is the real text.");
@@ -4198,7 +4670,7 @@ void text_test17(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
   assertEqual( doc.sentences(0)->text(), "ἀντιϰειμένου");
   assertEqual( doc.words(0)->text(), "ἀντιϰειμένου");
 }
@@ -4220,20 +4692,20 @@ void text_test18(){
 "  </text>"
 "</FoLiA>";
   Document doc;
-  assertNoThrow( doc.readFromString( xml ) );
+  assertNoThrow( doc.read_from_string( xml ) );
   //  assertEqual( doc.paragraphs(0)->text(), "Een test");
 }
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
-  Document d( XML_ID"='example'" );
+  Document d( "xml:id""='example'" );
   assertNoThrow( d.declare( AnnotationType::TOKEN,
 			    "adhocset",
 			    "annotator='proycon'" ) );
-  assertEqual( d.defaultset(AnnotationType::TOKEN), "adhocset" );
-  assertEqual( d.defaultannotator(AnnotationType::TOKEN), "proycon" );
+  assertEqual( d.default_set(AnnotationType::TOKEN), "adhocset" );
+  assertEqual( d.default_annotator(AnnotationType::TOKEN), "proycon" );
   FoliaElement *text = 0;
-  KWargs kw = getArgs( XML_ID"='" + d.id() + ".text.1'" );
+  KWargs kw = getArgs( "xml:id""='" + d.id() + ".text.1'" );
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
@@ -4255,19 +4727,19 @@ void create_test001( ){
 
 void create_test002( ){
   startTestSerie( " Creating a document from scratch. " );
-  Document d( XML_ID"='example'" );
+  Document d( "xml:id""='example'" );
   assertNoThrow( d.declare( AnnotationType::POS,
 				      "adhocset",
 				      "annotator='proycon'" ) );
   assertNoThrow( d.declare( AnnotationType::POS,
 				      "myset",
 				      "annotator='sloot'" ) );
-  assertEqual( d.defaultset(AnnotationType::POS), "" );
-  assertEqual( d.defaultannotator(AnnotationType::POS), "" );
-  assertEqual( d.defaultannotator(AnnotationType::POS, "myset"), "sloot" );
+  assertEqual( d.default_set(AnnotationType::POS), "" );
+  assertEqual( d.default_annotator(AnnotationType::POS), "" );
+  assertEqual( d.default_annotator(AnnotationType::POS, "myset"), "sloot" );
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
-  KWargs kw = getArgs( XML_ID"='" + id + "'" );
+  KWargs kw = getArgs( "xml:id""='" + id + "'" );
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   FoliaElement *s = 0;
@@ -4298,20 +4770,20 @@ void create_test002( ){
 
 void create_test003( ){
   startTestSerie( " Creating a document with gap annotations from scratch. " );
-  Document d( XML_ID"='example'" );
+  Document d( "xml:id""='example'" );
   assertNoThrow( d.declare( AnnotationType::GAP,
 				      "gap-set",
 				      "annotator='sloot'" ) );
   assertNoThrow( d.declare( AnnotationType::GAP,
 				      "extended-gap-set",
 				      "annotator='sloot'" ) );
-  assertEqual( d.defaultset(AnnotationType::GAP), "" );
-  assertEqual( d.defaultannotator(AnnotationType::GAP), "" );
-  assertEqual( d.defaultannotator(AnnotationType::GAP, "gap-set"), "sloot" );
-  assertEqual( d.defaultannotator(AnnotationType::GAP, "extended-gap-set"), "sloot" );
+  assertEqual( d.default_set(AnnotationType::GAP), "" );
+  assertEqual( d.default_annotator(AnnotationType::GAP), "" );
+  assertEqual( d.default_annotator(AnnotationType::GAP, "gap-set"), "sloot" );
+  assertEqual( d.default_annotator(AnnotationType::GAP, "extended-gap-set"), "sloot" );
   string id = d.id() + ".text.1";
   FoliaElement *text = 0;
-  KWargs kw = getArgs( XML_ID"='" + id + "'" );
+  KWargs kw = getArgs( "xml:id""='" + id + "'" );
   assertNoThrow( text = d.addText( kw ) );
   kw.clear();
   kw["set"] = "gap-set";
@@ -4335,16 +4807,16 @@ void create_test003( ){
 
 void create_test004( ){
   startTestSerie( " Creating a document from scratch. appending text" );
-  Document d( XML_ID"='example'" );
+  Document d( "xml:id""='example'" );
   FoliaElement *text = 0;
   KWargs args;
-  args[XML_ID] =  "t.1";
+  args["xml:id"] =  "t.1";
   assertNoThrow( text = d.addText( args ) );
-  args[XML_ID] = "p.1";
+  args["xml:id"] = "p.1";
   FoliaElement *p = 0;
   assertNoThrow( p = new Paragraph( args ) );
   text->append( p );
-  args[XML_ID] = "s.1";
+  args["xml:id"] = "s.1";
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( args ) );
   p->append( s );
@@ -4362,16 +4834,16 @@ void create_test004( ){
 
 void create_test005( ){
   startTestSerie( " Creating a document from scratch. appending Words After Sentence" );
-  Document d( XML_ID"='example'" );
+  Document d( "xml:id""='example'" );
   FoliaElement *text = 0;
   KWargs args;
-  args[XML_ID] =  "t.1";
+  args["xml:id"] =  "t.1";
   assertNoThrow( text = d.addText( args ) );
-  args[XML_ID] = "p.1";
+  args["xml:id"] = "p.1";
   FoliaElement *p = 0;
   assertNoThrow( p = new Paragraph( args ) );
   text->append( p );
-  args[XML_ID] = "s.1";
+  args["xml:id"] = "s.1";
   FoliaElement *s = 0;
   assertNoThrow( s = new Sentence( args ) );
   p->append( s );
@@ -4397,27 +4869,27 @@ void create_test005( ){
 
 void correction_test001a( ){
   startTestSerie( " Split correction " );
-  Document corDoc( XML_ID"='example'" );
+  Document corDoc( "xml:id""='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				 "adhocset",
 				 "annotator='proycon'" ) );
-  Text *text = new Text( getArgs(XML_ID"='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("xml:id""='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs(XML_ID"='" + corDoc.id() + ".s.1'") ) );
-  s->append( new Word( getArgs("text='De', " XML_ID"='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("xml:id""='" + corDoc.id() + ".s.1'") ) );
+  s->append( new Word( getArgs("text='De', " "xml:id""='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='site', " XML_ID"='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs("text='site', " "xml:id""='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='staat', " XML_ID"='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs("text='staat', " "xml:id""='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='online', " XML_ID"='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs("text='online', " "xml:id""='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='.', " XML_ID"='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs("text='.', " "xml:id""='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
   FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4");
-  w->split( new Word( getArgs(XML_ID"='" + corDoc.id() + ".s.1.w.4a', text='on'" ),
+  w->split( new Word( getArgs("xml:id""='" + corDoc.id() + ".s.1.w.4a', text='on'" ),
 		      &corDoc ),
-   	    new Word( getArgs(XML_ID"='" + corDoc.id() + ".s.1.w.4b', text='line'" ),
+   	    new Word( getArgs("xml:id""='" + corDoc.id() + ".s.1.w.4b', text='line'" ),
 		      &corDoc ));
   //  assertNoThrow( corDoc.save( "/tmp/foliasplit1a.xml" ) );
   s = corDoc.index("example.s.1");
@@ -4430,22 +4902,22 @@ void correction_test001a( ){
 
 void correction_test001b( ){
   startTestSerie( " Split suggestion " );
-  Document corDoc( XML_ID"='example'" );
+  Document corDoc( "xml:id""='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				 "adhocset",
 				 "annotator='proycon'" ) );
-  Text *text = new Text( getArgs( XML_ID"='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs( "xml:id""='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs(XML_ID"='" + corDoc.id() + ".s.1'"  ) ) );
-  s->append( new Word( getArgs( "text='De', " XML_ID"='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("xml:id""='" + corDoc.id() + ".s.1'"  ) ) );
+  s->append( new Word( getArgs( "text='De', " "xml:id""='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='site', " XML_ID"='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs( "text='site', " "xml:id""='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs("text='staat', " XML_ID"='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs("text='staat', " "xml:id""='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='online', " XML_ID"='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs( "text='online', " "xml:id""='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='.', " XML_ID"='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs( "text='.', " "xml:id""='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
   FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4");
   Word *w1 = new Word( getArgs("generate_id='" + s->id() + "',text='on'"),
@@ -4463,30 +4935,30 @@ void correction_test001b( ){
 
 void correction_test002(){
   startTestSerie( " Merge corrections " );
-  Document corDoc( XML_ID"='example'" );
+  Document corDoc( "xml:id""='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs(XML_ID"='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("xml:id""='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs(XML_ID"='" + corDoc.id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs( "text='De', " XML_ID"='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("xml:id""='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='De', " "xml:id""='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='site', " XML_ID"='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs( "text='site', " "xml:id""='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='staat', " XML_ID"='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs( "text='staat', " "xml:id""='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='on', " XML_ID"='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs( "text='on', " "xml:id""='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='line', " XML_ID"='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs( "text='line', " "xml:id""='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='.', " XML_ID"='" + corDoc.id() + ".s.1.w.6'" ),
+  s->append( new Word( getArgs( "text='.', " "xml:id""='" + corDoc.id() + ".s.1.w.6'" ),
 		       &corDoc ) );
 
   vector<FoliaElement *> ow;
   ow.push_back( corDoc.index(corDoc.id() + ".s.1.w.4") );
   ow.push_back( corDoc.index(corDoc.id() + ".s.1.w.5") );
-  s->mergewords( new Word( getArgs(XML_ID"='" + corDoc.id() + ".s.1.w.4-5', text='online'"),
+  s->mergewords( new Word( getArgs("xml:id""='" + corDoc.id() + ".s.1.w.4-5', text='online'"),
 			   &corDoc ),
 		 ow );
   //  assertNoThrow( corDoc.save( "/tmp/foliamerge002.xml" ) );
@@ -4501,24 +4973,24 @@ void correction_test002(){
 
 void correction_test003(){
   startTestSerie( " Delete corrections " );
-  Document corDoc( XML_ID"='example'" );
+  Document corDoc( "xml:id""='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs(XML_ID"='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("xml:id""='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs(XML_ID"='" + corDoc.id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs( "text='Ik', " XML_ID"='" + corDoc.id() + ".s.1.w.1'"),
+  FoliaElement *s = text->append( new Sentence( getArgs("xml:id""='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs( "text='Ik', " "xml:id""='" + corDoc.id() + ".s.1.w.1'"),
 		       &corDoc ) );
-  s->append( new Word( getArgs( "text='zie', " XML_ID"='" + corDoc.id() + ".s.1.w.2'" ),
+  s->append( new Word( getArgs( "text='zie', " "xml:id""='" + corDoc.id() + ".s.1.w.2'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='een', " XML_ID"='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs( "text='een', " "xml:id""='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='groot', " XML_ID"='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs("text='groot', " "xml:id""='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='huis', " XML_ID"='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs("text='huis', " "xml:id""='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='.', " XML_ID"='" + corDoc.id() + ".s.1.w.6'" ),
+  s->append( new Word( getArgs("text='.', " "xml:id""='" + corDoc.id() + ".s.1.w.6'" ),
 		       &corDoc ));
 
   s->deleteword( corDoc.index( corDoc.id() + ".s.1.w.4" ) );
@@ -4529,25 +5001,25 @@ void correction_test003(){
 
 void correction_test004(){
   startTestSerie( " Insert corrections " );
-  Document corDoc( XML_ID"='example'" );
+  Document corDoc( "xml:id""='example'" );
   assertNoThrow( corDoc.declare( AnnotationType::TOKEN,
 				  "adhocset",
 				  "annotator='proycon'" ) );
-  Text *text = new Text( getArgs(XML_ID"='" + corDoc.id() + ".text.1'") );
+  Text *text = new Text( getArgs("xml:id""='" + corDoc.id() + ".text.1'") );
   assertNoThrow( corDoc.addText( text ) );
-  FoliaElement *s = text->append( new Sentence( getArgs(XML_ID"='" + corDoc.id() + ".s.1'"	) ) );
-  s->append( new Word( getArgs("text='Ik', " XML_ID"='" + corDoc.id() + ".s.1.w.1'" ),
+  FoliaElement *s = text->append( new Sentence( getArgs("xml:id""='" + corDoc.id() + ".s.1'"	) ) );
+  s->append( new Word( getArgs("text='Ik', " "xml:id""='" + corDoc.id() + ".s.1.w.1'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='zie', " XML_ID"='" + corDoc.id() + ".s.1.w.2'"),
+  s->append( new Word( getArgs("text='zie', " "xml:id""='" + corDoc.id() + ".s.1.w.2'"),
 		       &corDoc ));
-  s->append( new Word( getArgs( "text='een', " XML_ID"='" + corDoc.id() + ".s.1.w.3'" ),
+  s->append( new Word( getArgs( "text='een', " "xml:id""='" + corDoc.id() + ".s.1.w.3'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='huis', " XML_ID"='" + corDoc.id() + ".s.1.w.4'" ),
+  s->append( new Word( getArgs("text='huis', " "xml:id""='" + corDoc.id() + ".s.1.w.4'" ),
 		       &corDoc ));
-  s->append( new Word( getArgs("text='.', " XML_ID"='" + corDoc.id() + ".s.1.w.5'" ),
+  s->append( new Word( getArgs("text='.', " "xml:id""='" + corDoc.id() + ".s.1.w.5'" ),
 		       &corDoc ));
 
-  Word *w = new Word( getArgs( XML_ID"='" + corDoc.id() + ".s.1.w.3b', text='groot'"), &corDoc );
+  Word *w = new Word( getArgs( "xml:id""='" + corDoc.id() + ".s.1.w.3b', text='groot'"), &corDoc );
   FoliaElement *w2 = 0;
   assertNoThrow( w2 = corDoc.index( corDoc.id() + ".s.1.w.3" ) );
   assertNoThrow( s->insertword( w, w2 ) );
@@ -4561,7 +5033,7 @@ void correction_test004(){
 void correction_test005(){
   startTestSerie( " Re-using a correction with only suggestions " );
   Document *corDoc = new Document();
-  corDoc->readFromFile( "tests/example.xml" );
+  corDoc->read_from_file( "tests/example.xml" );
   FoliaElement *w = corDoc->index("WR-P-E-J-0000000001.p.1.s.8.w.11"); // stippelijn
   assertNoThrow( w->correct("suggestion='stippellijn', set='corrections', class='spelling',annotator='testscript', annotatortype='auto'" ) );
   //  assertNoThrow( corDoc->save( "/tmp/foliainsert005-1.xml" ) );
@@ -4575,71 +5047,69 @@ void correction_test005(){
   assertEqual( w->text(), "stippellijn" );
   assertEqual( len(w->annotations<Correction>()), 1 );
   assertEqual( w->annotation<Correction>()->suggestions(0)->text(), "stippellijn" );
-  assertEqual( w->annotation<Correction>()->suggestions(0)->annotator(), "testscript" );
-  assertEqual( w->annotation<Correction>()->suggestions(0)->annotatortype(), AUTO );
   assertEqual( w->annotation<Correction>()->getNew()->text(), "stippellijn" );
   assertEqual( w->annotation<Correction>()->annotator(), "John Doe" );
   assertEqual( w->annotation<Correction>()->annotatortype(), MANUAL );
 
-  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion annotator=\"testscript\" annotatortype=\"auto\" auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
+  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
   delete corDoc;
 }
 
 void correction_test006(){
   startTestSerie( "Correction - Suggestion for deletion with parent merge suggestion" );
   Document *corDoc = new Document();
-  corDoc->readFromFile( "tests/example.xml" );
+  corDoc->read_from_file( "tests/example.xml" );
   KWargs args;
-  args[XML_ID] = corDoc->id() + ".s.1";
+  args["xml:id"] = corDoc->id() + ".s.1";
   Sentence *sent = new Sentence( args );
   FoliaElement *text = 0;
   assertNoThrow( text = (*corDoc)[0] );
   assertNoThrow( text->append( sent ) );
-  args[XML_ID] = corDoc->id() + ".s.1.w.1";
+  args["xml:id"] = corDoc->id() + ".s.1.w.1";
   args["text"] = "De";
   Word *wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.1.w.2";
+  args["xml:id"] = corDoc->id() + ".s.1.w.2";
   args["text"] = "site";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.1.w.3";
+  args["xml:id"] = corDoc->id() + ".s.1.w.3";
   args["text"] = "staat";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.1.w.4";
+  args["xml:id"] = corDoc->id() + ".s.1.w.4";
   args["text"] = "on";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.1.w.5";
+  args["xml:id"] = corDoc->id() + ".s.1.w.5";
   args["text"] = "line";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.1.w.6";
+  args["xml:id"] = corDoc->id() + ".s.1.w.6";
   args["text"] = ".";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
   args.clear();
-  args[XML_ID] = corDoc->id() + ".s.2";
+  args["xml:id"] = corDoc->id() + ".s.2";
   sent = new Sentence( args);
   text->append( sent );
-  args[XML_ID] = corDoc->id() + ".s.2.w.1";
+  args["xml:id"] = corDoc->id() + ".s.2.w.1";
   args["text"] = "sinds";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.2.w.2";
+  args["xml:id"] = corDoc->id() + ".s.2.w.2";
   args["text"] = "vorige";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.2.w.3";
+  args["xml:id"] = corDoc->id() + ".s.2.w.3";
   args["text"] = "week";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.2.w.4";
+  args["xml:id"] = corDoc->id() + ".s.2.w.4";
   args["text"] = "zondag";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
-  args[XML_ID] = corDoc->id() + ".s.2.w.5";
+  args["xml:id"] = corDoc->id() + ".s.2.w.5";
   args["text"] = ".";
   wrd = new Word( args );
   assertNoThrow( sent->append( wrd ) );
@@ -4667,7 +5137,7 @@ void correction_test006(){
 void correction_test007(){
   startTestSerie( " corrections on elements without an ID " );
   Document corDoc;
-  corDoc.readFromFile( "tests/corr_str.xml" );
+  corDoc.read_from_file( "tests/corr_str.xml" );
   assertNoThrow( corDoc.declare( AnnotationType::CORRECTION,
 				 "corrections" ) );
   FoliaElement *p = corDoc.index("p.4");
@@ -4745,10 +5215,10 @@ void query_test005(){
 
 void query_test006(){
   startTestSerie( " Find words with overlap " );
-  Document doc( XML_ID"='test'" );
-  Text *text = new Text( getArgs(XML_ID"='test.text'") );
+  Document doc( "xml:id""='test'" );
+  Text *text = new Text( getArgs("xml:id""='test.text'") );
   doc.addText( text );
-  FoliaElement *s = new Sentence( getArgs( XML_ID"='" + doc.id() + ".s.1'") );
+  FoliaElement *s = new Sentence( getArgs( "xml:id""='" + doc.id() + ".s.1'") );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='a'" );
@@ -4830,10 +5300,10 @@ void query_test010a(){
 
 void query_test010b(){
   startTestSerie( " Find words with wildcard and overlap " );
-  Document doc( XML_ID"='test'" );
-  Text *text = new Text( getArgs(XML_ID"='test.text'") );
+  Document doc( "xml:id""='test'" );
+  Text *text = new Text( getArgs("xml:id""='test.text'") );
   doc.addText( text );
-  FoliaElement *s = new Sentence( getArgs(XML_ID"='" + doc.id() + ".s.1'") );
+  FoliaElement *s = new Sentence( getArgs("xml:id""='" + doc.id() + ".s.1'") );
   text->append( s );
   s->addWord( "text='a'" );
   s->addWord( "text='b'" );
@@ -4854,32 +5324,30 @@ void query_test011(){
   assertEqual( matches.size(), 0 );
 }
 
-#if FOLIA_INT_VERSION >= 115
-
 void build_test001(){
   startTestSerie( " build a text document using FoliaBuilder " );
   ofstream os( "/tmp/build.xml" );
   Builder b( os, "build1" );
   KWargs args;
-  args[XML_ID] = "div1";
+  args["xml:id"] = "div1";
   Division *d = new Division( args, b.doc() );
-  args[XML_ID] = "p1";
+  args["xml:id"] = "p1";
   Paragraph *p = new Paragraph( args );
   d->append(p);
   p->settext( "paragraaf 1" );
   b.add( d );
   b.flush();
-  args[XML_ID] = "div2";
+  args["xml:id"] = "div2";
   d = new Division( args );
-  args[XML_ID] = "p2";
+  args["xml:id"] = "p2";
   p = new Paragraph( args );
   p->settext( "paragraaf 2" );
   d->append(p);
   b.add( d );
   b.flush();
-  args[XML_ID] = "div3";
+  args["xml:id"] = "div3";
   d = new Division( args );
-  args[XML_ID] = "p3";
+  args["xml:id"] = "p3";
   p = new Paragraph( args );
   p->settext( "paragraaf 3" );
   d->append(p);
@@ -4895,25 +5363,25 @@ void build_test002(){
   ofstream os( "/tmp/speechbuild.xml" );
   Builder b( os, "build1", Builder::SPEECH );
   KWargs args;
-  args[XML_ID] = "div1";
+  args["xml:id"] = "div1";
   Division *d = new Division( args, b.doc() );
-  args[XML_ID] = "p1";
+  args["xml:id"] = "p1";
   Paragraph *p = new Paragraph( args );
   d->append(p);
   p->settext( "paragraaf 1" );
   b.add( d );
   b.flush();
-  args[XML_ID] = "div2";
+  args["xml:id"] = "div2";
   d = new Division( args );
-  args[XML_ID] = "p2";
+  args["xml:id"] = "p2";
   p = new Paragraph( args );
   p->settext( "paragraaf 2" );
   d->append(p);
   b.add( d );
   b.flush();
-  args[XML_ID] = "div3";
+  args["xml:id"] = "div3";
   d = new Division( args );
-  args[XML_ID] = "p3";
+  args["xml:id"] = "p3";
   p = new Paragraph( args );
   p->settext( "paragraaf 3" );
   d->append(p);
@@ -4925,8 +5393,8 @@ void build_test002(){
 }
 
 void processor_test001a(){
-  startTestSerie( " copy a document using Folia Processor " );
-  Processor proc;
+  startTestSerie( " copy a document using Folia Engine " );
+  Engine proc;
   // proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml",
 				"/tmp/example-p1.xml") );
@@ -4944,8 +5412,8 @@ void processor_test001a(){
 }
 
 void processor_test001b(){
-  startTestSerie( " copy a document with namespaces using Folia Processor" );
-  Processor proc;
+  startTestSerie( " copy a document with namespaces using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample", "/tmp/nsexample" ) );
   if ( proc.ok() ){
@@ -4962,13 +5430,13 @@ void processor_test001b(){
 }
 
 void processor_test001c(){
-  startTestSerie( " process an invalid document using Folia Processor" );
-  Processor proc;
+  startTestSerie( " process an invalid document using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertThrow( proc.init_doc( "tests/wrongname.xml" ), XmlError );
 }
 
-void loop( Processor& proc ){
+void loop( Engine& proc ){
   FoliaElement *res;
   while ( ( res = proc.get_node( "pqrs" ) ) ){
     // search a non-existing node. will barf on the unknown tag
@@ -4977,8 +5445,8 @@ void loop( Processor& proc ){
 }
 
 void processor_test001d(){
-  startTestSerie( " process an invalid document using Folia Processor" );
-  Processor proc;
+  startTestSerie( " process an invalid document using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/unknowntag.xml" ) );
   if ( proc.ok() ){
@@ -4989,8 +5457,8 @@ void processor_test001d(){
 }
 
 void processor_test001e(){
-  startTestSerie( " copy a difficult document using Folia Processor " );
-  Processor proc;
+  startTestSerie( " copy a difficult document using Folia Engine " );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/bug-1.xml",
 				"/tmp/bug-1.xml") );
@@ -5007,10 +5475,30 @@ void processor_test001e(){
   }
 }
 
+void processor_test001f(){
+  startTestSerie( " copy a FoLiA 2.0 document using Folia Engine " );
+  string infile = fol_path
+    + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml";
+  Engine proc;
+  //  proc.set_debug(true);
+  assertNoThrow( proc.init_doc( infile, "/tmp/proc_test001f.xml" ) );
+  if ( proc.ok() ){
+    FoliaElement *res = 0;
+    while ( (res = proc.get_node( "pqrs" ) ) ){
+      // search a non-existing node. makes get_node collect the whole document
+      proc.next();
+    }
+    proc.finish();
+    string command = "./tests/foliadiff.sh /tmp/proc_test001f.xml " + infile;
+    int stat = system( command.c_str() );
+    assertMessage( "/tmp/proc_test001f.xml " + infile + " differ!",
+     		   (stat == 0) );
+  }
+}
 
 void processor_test002a(){
-  startTestSerie( " copy a document using Folia Processor (alternative)" );
-  Processor proc;
+  startTestSerie( " copy a document using Folia Engine (alternative)" );
+  Engine proc;
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
     FoliaElement *res = 0;
@@ -5026,8 +5514,8 @@ void processor_test002a(){
 }
 
 void processor_test002b(){
-  startTestSerie( " copy a document with namespace using Folia Processor (alternative)" );
-  Processor proc;
+  startTestSerie( " copy a document with namespace using Folia Engine (alternative)" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample" ) );
   if ( proc.ok() ){
@@ -5044,8 +5532,8 @@ void processor_test002b(){
 }
 
 void processor_test002c(){
-  startTestSerie( " copy a speech document using Folia Processor" );
-  Processor proc;
+  startTestSerie( " copy a speech document using Folia Engine" );
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/speechexample.xml" ) );
   if ( proc.ok() ){
@@ -5063,7 +5551,7 @@ void processor_test002c(){
 
 void processor_test003(){
   startTestSerie( " read a document and adding word and annotations using Foliaprocessor " );
-  Processor proc;
+  Engine proc;
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin.xml") );
   if ( proc.ok() ){
     proc.declare( AnnotationType::POS,
@@ -5091,7 +5579,7 @@ void processor_test003(){
 
 void processor_test004(){
   startTestSerie( " read a document searching for several nodes " );
-  Processor proc;
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin2.xml") );
   if ( proc.ok() ){
@@ -5126,7 +5614,7 @@ void processor_test004(){
 
 void processor_test005(){
   startTestSerie( " enumerate a document on xml_element nodes " );
-  Processor proc;
+  Engine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -5142,7 +5630,7 @@ void processor_test005(){
 
 void processor_test006a(){
   startTestSerie( " enumerate a document on text node parents" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -5159,7 +5647,7 @@ void processor_test006a(){
 
 void processor_test006b(){
   startTestSerie( " enumerate a document on text node parents with textclass" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
@@ -5176,7 +5664,7 @@ void processor_test006b(){
 
 void processor_test006c(){
   startTestSerie( " enumerate a document with layers on text node parents" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
   if ( proc.ok() ){
@@ -5203,7 +5691,7 @@ void processor_test006c(){
 
 void processor_test006d(){
   startTestSerie( " enumerate a complex document on text node parents" );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia-head.xml" ) );
   if ( proc.ok() ){
@@ -5220,7 +5708,7 @@ void processor_test006d(){
 
 void processor_test007(){
   startTestSerie( " process a document searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin3.xml") );
   if ( proc.ok() ){
@@ -5246,7 +5734,7 @@ void processor_test007(){
 
 void processor_test008a(){
   startTestSerie( " process a document searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/proctest.xml" ) );
   ofstream os( "/tmp/proctest.out" );
@@ -5268,7 +5756,7 @@ void processor_test008a(){
 
 void processor_test008b(){
   startTestSerie( " process a document with layers searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/example_1.xml" ) );
   ofstream os( "/tmp/proctest-2.out" );
@@ -5290,7 +5778,7 @@ void processor_test008b(){
 
 void processor_test008c(){
   startTestSerie( " process a complex document searching for text nodes " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia-head.xml" ) );
   ofstream os( "/tmp/proctest-3.out" );
@@ -5310,8 +5798,7 @@ void processor_test008c(){
   }
 }
 
-#if FOLIA_INT_VERSION >= 116
-void test_proc( TextProcessor& proc ){
+void test_proc( TextEngine& proc ){
   FoliaElement *e = 0;
   while ( (e = proc.next_text_parent() ) ){
   }
@@ -5319,38 +5806,16 @@ void test_proc( TextProcessor& proc ){
 
 void processor_test008d(){
   startTestSerie( " process a strange document searching for text nodes " );
-  TextProcessor proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
+  TextEngine proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
   if ( proc.ok() ){
     proc.setup("",true);
     assertThrow( test_proc( proc ), XmlError );
   }
 }
-#else
-void processor_test008d(){
-  startTestSerie( " process a strange document searching for text nodes " );
-  TextProcessor proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
-  // proc.set_debug(true);
-  ofstream os( "/tmp/proctest-8d.out" );
-  if ( proc.ok() ){
-    proc.setup("",true);
-    FoliaElement *e = 0;
-    while ( (e = proc.next_text_parent() ) ){
-      os << e->id() << " : " << e->str() << endl;
-    }
-    proc.finish();
-    int stat = system( "diff /tmp/proctest-8d.out tests/proctest-8d.ok" );
-    assertMessage( "/tmp/proctest-8d.out tests/proctest-8d.ok differ!",
-     		   (stat == 0) );
-    stat = system( "./tests/foliadiff.sh /tmp/proctest-8d.xml tests/proctest-8d.xml.ok" );
-    assertMessage( "/tmp/proctest-8d.xml tests/proctest-8d.xml.ok differ!",
-     		   (stat == 0) );
-  }
-}
-#endif
 
 void processor_test008e(){
   startTestSerie( " process a document with entities, searching for text nodes " );
-  TextProcessor proc( "tests/entities.xml" );
+  TextEngine proc( "tests/entities.xml" );
   // proc.set_debug(true);
   ofstream os( "/tmp/entities.out" );
   if ( proc.ok() ){
@@ -5371,7 +5836,7 @@ void processor_test008e(){
 
 void processor_test009a(){
   startTestSerie( " process a difficult document with t-style " );
-  TextProcessor proc( "tests/procbug.xml" );
+  TextEngine proc( "tests/procbug.xml" );
   //  proc.set_debug(true);
   ofstream os( "/tmp/procbug.out" );
   if ( proc.ok() ){
@@ -5390,7 +5855,7 @@ void processor_test009a(){
 
 void processor_test009b(){
   startTestSerie( " process a difficult document for text " );
-  TextProcessor proc( "tests/textbug1.xml" );
+  TextEngine proc( "tests/textbug1.xml" );
   //  proc.set_debug(true);
   ofstream os( "/tmp/textbug1.out" );
   if ( proc.ok() ){
@@ -5409,7 +5874,7 @@ void processor_test009b(){
 
 void processor_test009c(){
   startTestSerie( " process a difficult document for text " );
-  TextProcessor proc;
+  TextEngine proc;
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/bug-2.xml" ) );
   ofstream os( "/tmp/textbug2.out" );
@@ -5428,7 +5893,7 @@ void processor_test009c(){
 }
 
 void processor_test010(){
-  startTestSerie( " copy a document using Folia Processor on string buffer" );
+  startTestSerie( " copy a document using Folia Engine on string buffer" );
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
 " xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
@@ -5461,7 +5926,7 @@ void processor_test010(){
 "  </text>\n"
 "</FoLiA>\n" ;
 
-  Processor proc;
+  Engine proc;
   // proc.set_debug(true);
   assertNoThrow( proc.init_doc( xml ) );
   if ( proc.ok() ){
@@ -5479,7 +5944,7 @@ void processor_test010(){
 
 void processor_test011() {
   startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
-  Processor proc( "/tmp/example.xml.bz2" ); // created by earlier test
+  Engine proc( "/tmp/example.xml.bz2" ); // created by earlier test
   while ( proc.get_node( "pqrs" ) ){
     // search a non-existing node. makes get_node collect the whole document
     proc.next();
@@ -5490,23 +5955,21 @@ void processor_test011() {
    		 (stat == 0) );
 }
 
-#endif // FOLIA_INT_VERSION >= 115
-
 int main(){
-  //processor_test006c();
-  //exit(9);
+  bool is_setup = setup();
+  //  processor_test001f();
+  //  exit(5);
+  //  Test_Exxx_Hidden_Tokens();
+  //  sanity_test006c();
+  //  exit(6);
   test0();
   test1();
   test1a();
   test1b();
   test1c();
   test1d();
-#if FOLIA_INT_VERSION >= 115
   test1e();
-#endif
-#if FOLIA_INT_VERSION >= 114
   test1f();
-#endif
   test2();
   test3();
   test4();
@@ -5636,6 +6099,7 @@ int main(){
   sanity_test121();
   sanity_test122();
   sanity_test123();
+  sanity_test130();
   edit_test001a();
   edit_test001b();
   edit_test002();
@@ -5715,7 +6179,6 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
-#if FOLIA_INT_VERSION >= 115
   build_test001();
   build_test002();
   processor_test001a();
@@ -5723,19 +6186,16 @@ int main(){
   processor_test001c();
   processor_test001d();
   processor_test001e();
+  processor_test001f();
   processor_test002a();
   processor_test002b();
   processor_test002c();
   processor_test003();
   processor_test004();
-#if FOLIA_INT_VERSION > 115
   processor_test005();
   processor_test006a();
-#endif
   processor_test006b();
-#if FOLIA_INT_VERSION > 115
   processor_test006c();
-#endif
   processor_test006d();
   processor_test007();
   processor_test008a();
@@ -5743,13 +6203,20 @@ int main(){
   processor_test008c();
   processor_test008d();
   processor_test008e();
-#if FOLIA_INT_VERSION > 115
   processor_test009a();
   processor_test009b();
   processor_test009c();
   processor_test010();
   processor_test011();
-#endif
-#endif
+  if ( !is_setup ){
+    assertMessage( "FOLIAPATH not set?", false );
+  }
+  else {
+    Test_E001_Tokens_Structure();
+    Test_Exxx_Hidden_Tokens();
+    Test_Exxx_Invalid_Wref();
+    Test_Exxx_KeepVersion();
+    Test_Provenance();
+  }
   summarize_tests(0);
 }
