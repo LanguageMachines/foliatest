@@ -1418,8 +1418,8 @@ void sanity_test030( ){
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.4.w.2"];
   assertTrue( w->text() == "hoofdletter" );
   const TextContent* t = 0;
-  assertNoThrow( t = w->textcontent() );
-  assertNoThrow( t = t->textcontent() ); // should deliver itself!
+  assertNoThrow( t = w->text_content() );
+  assertNoThrow( t = t->text_content() ); // should deliver itself!
   assertTrue( t->text() == "hoofdletter" );
   assertTrue( t->offset() == 3 );
 
@@ -1432,7 +1432,7 @@ void sanity_test030( ){
 void sanity_test030b( ){
   startTestSerie( " Sanity check - Text Content (2) " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  const TextContent *t = head->textcontent();
+  const TextContent *t = head->text_content();
   assertTrue( len(t) == 3 );
   assertEqual( t->text(), "De \nFoLiA developers zijn:" );
   assertEqual( t->index(0)->text(), "De ");
@@ -1714,7 +1714,7 @@ void sanity_test042(){
 void sanity_test043(){
   startTestSerie( " Sanity check - String " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  assertTrue( head->hasannotation<String>() > 0 );
+  assertTrue( head->has_annotation<String>() > 0 );
   vector<String*> v = head->select<String>();
   String* st = v[0];
   assertEqual( st->text(), "FoLiA developers" );
@@ -1727,7 +1727,7 @@ void sanity_test043(){
 void sanity_test044a(){
   startTestSerie( " Sanity check - Text Markup " );
   FoliaElement *head = sanityDoc["sandbox.3.head"];
-  const TextContent *t = head->textcontent();
+  const TextContent *t = head->text_content();
   assertEqual( len(head->select<TextMarkupString>()), size_t(1) );
   assertEqual( len(t->select<TextMarkupString>()), size_t(1) );
   vector<TextMarkupString*> v = t->select<TextMarkupString>();
@@ -1737,7 +1737,7 @@ void sanity_test044a(){
   const FoliaElement *r1 =  st->resolveid();
   FoliaElement *r2 = sanityDoc["sandbox.3.str"];
   assertEqual( r1, r2 ); // testing resolving references
-  t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->textcontent();
+  t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->text_content();
   assertTrue( t->index(t->size()-1)->isinstance( Linebreak_t) );  // did we get the linebreak properly?
   // testing nesting
   assertEqual( len(st), size_t(2) );
@@ -2728,30 +2728,30 @@ void sanity_test109( ){
 void sanity_test110(){
   startTestSerie( " Submetadata " );
   Document doc( "file='tests/example.xml'" );
-  auto sm = doc["sandbox.3"]->getmetadata();
+  auto sm = doc["sandbox.3"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   KWargs att = sm->get_avs();
   assertEqual( att["author"], "proycon" );
-  sm = doc["example.table.1.w.1"]->getmetadata();
+  sm = doc["example.table.1.w.1"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   att = sm->get_avs();
   assertEqual( att["author"], "proycon" );
-  string val = doc["example.table.1.w.1"]->getmetadata("author");
+  string val = doc["example.table.1.w.1"]->get_metadata("author");
   assertEqual( val, "proycon" );
-  sm = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata();
+  sm = doc["WR-P-E-J-0000000001.div0.1"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   att = sm->get_avs();
   assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
-  sm = doc["WR-P-E-J-0000000001.p.1.s.1.w.1"]->getmetadata();
+  sm = doc["WR-P-E-J-0000000001.p.1.s.1.w.1"]->get_metadata();
   assertEqual( sm->datatype(), "NativeMetaData" );
   att = sm->get_avs();
   assertEqual( att["originalsource"], "https://nl.wikipedia.org/wiki/Stemma" );
-  val = doc["WR-P-E-J-0000000001.div0.1"]->getmetadata("originalsource");
+  val = doc["WR-P-E-J-0000000001.div0.1"]->get_metadata("originalsource");
   assertEqual( val, "https://nl.wikipedia.org/wiki/Stemma" );
-  sm = doc["span.correction"]->getmetadata();
+  sm = doc["span.correction"]->get_metadata();
   assertEqual( sm->datatype(), "ExternalMetaData" );
   assertEqual( sm->src(), "blaat" );
-  sm = doc["bibhead"]->getmetadata();
+  sm = doc["bibhead"]->get_metadata();
   assertEqual( sm->datatype(), "ForeignMetaData" );
   vector<FoliaElement*> fv = sm->get_foreigners();
   string cont = fv[0]->xmlstring();
@@ -4031,7 +4031,7 @@ void text_test10(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
-  assertEqual( doc["example.p.1.s.1.w.19"]->textcontent()->getreference(),
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1"] ); // testing resolving explicit reference
 }
 
@@ -4112,7 +4112,7 @@ void text_test11(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
-  assertEqual( doc["example.p.1.s.1.w.19"]->textcontent()->getreference(),
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
 }
 
@@ -4140,7 +4140,7 @@ void text_test12(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
-  assertEqual( doc["example.string"]->textcontent()->getreference(),
+  assertEqual( doc["example.string"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
 }
 
