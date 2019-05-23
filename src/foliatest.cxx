@@ -3165,29 +3165,29 @@ void edit_test005a( ){
   startTestSerie( " Adding an alternative token annotation " );
   Document doc( "file='tests/example.xml'" );
   FoliaElement *w = doc["WR-P-E-J-0000000001.p.1.s.2.w.11"];
+  string pos_set = "https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn";
   KWargs args;
-  args["class"]="V";
-  args["set"]="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn";
+  args["class"] = "V";
+  args["set"] = pos_set;
   assertNoThrow( w->addPosAnnotation( args ) );
   vector<Alternative*> alt = w->alternatives(); // all alternatives
-  string sett = doc.default_set(AnnotationType::POS);
-  vector<Alternative*> alt2 = w->alternatives(sett);
+  vector<Alternative*> alt2 = w->alternatives(pos_set);
   assertTrue( alt.size() == 1 );
   assertTrue( alt2.size() == 1 );
   assertTrue( alt[0] == alt2[0] );
   FoliaElement *p = 0;
-  assertTrue( p = w->annotation<PosAnnotation>( sett ) );
+  assertTrue( p = w->annotation<PosAnnotation>( pos_set ) );
   assertTrue( p->isinstance<PosAnnotation>() );
 
   std::vector<Alternative *> alt3;
-  assertNoThrow( alt3 = w->alternatives(PosAnnotation_t, sett) );
-  assertTrue( alt3.size() == 1 );
-  assertTrue( alt[0] == alt3[0] );
+  assertNoThrow( alt3 = w->alternatives(PosAnnotation_t, pos_set) );
+  assertEqual( alt3.size(), 1 );
+  assertEqual( alt[0] , alt3[0] );
 
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11\"><t>naam</t><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"naam\"/><alt xml:id=\"WR-P-E-J-0000000001.p.1.s.2.w.11.alt-pos.1\" auth=\"no\"><pos class=\"V\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/></alt></w>" );
 
   std::vector<PosAnnotation*> pv;
-  PosAnnotation *pos1 = w->getPosAnnotations( sett, pv );
+  PosAnnotation *pos1 = w->getPosAnnotations( pos_set, pv );
   assertTrue( pos1 != 0 );
   assertEqual( pv.size(), 1 );
   assertEqual( pos1->xmlstring(), "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/>" );
