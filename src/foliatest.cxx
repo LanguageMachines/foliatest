@@ -541,6 +541,7 @@ void Test_Provenance(){
     doc.add_processor( args, main );
     doc.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
+    doc.declare( AnnotationType::TEXT, DEFAULT_TEXT_SET, "processor='p0'" );
     args["xml:id"] = "test.text.1";
     FoliaElement *body = doc.append( new Text(args) );
     args.clear();
