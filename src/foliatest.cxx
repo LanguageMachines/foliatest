@@ -344,34 +344,36 @@ void Test_Provenance(){
     Document *test = new Document("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
-    args["id"] = "p0.1";
+    args["id"] = "generate()";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    processor *proc1 = test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc",
+		   "processor='" + proc1->id() + "'" );
     args.clear();
     args["name"] = "SentenceSplitter";
-    args["id"] = "p0.2";
+    args["id"] = "generate()";
     args["version"] = "1";
     args["generator"] = "Doesn't matter what we say here";
-    test->add_processor( args );
-    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    processor *proc2 = test->add_processor( args );
+    test->declare( AnnotationType::SENTENCE, "adhoc",
+		   "processor='" + proc2->id() + "'" );
     args.clear();
     args["xml:id"] = "test.text.1";
     Text *body = test->create_root<Text>( args );
     args.clear();
-    args["processor"] = "p0.2";
+    args["processor"] = proc2->id();
     args["generate_id"] = body->id();
     Sentence *sentence = body->create<Sentence>( args );
     args.clear();
-    args["processor"] = "p0.1";
+    args["processor"] = proc1->id();
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
     Word *w = sentence->create<Word>( args );
     args["text"] = "world";
     sentence->create<Word>( args );
     const processor *p = test->get_processor(w->processor());
-    assertEqual( p, test->provenance()->index("p0.1") );
+    assertEqual( p, test->provenance()->index(proc1->id()) );
     test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml" );
     Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
     assertTrue( xmldiff( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml",
