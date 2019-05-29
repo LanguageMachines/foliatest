@@ -344,7 +344,7 @@ void Test_Provenance(){
     Document *test = new Document("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
-    args["id"] = "generate()";
+    args["id"] = "generate(p0)";
     args["version"] = "1";
     args["generator"] = "YES";
     processor *proc1 = test->add_processor( args );
@@ -352,7 +352,7 @@ void Test_Provenance(){
 		   "processor='" + proc1->id() + "'" );
     args.clear();
     args["name"] = "SentenceSplitter";
-    args["id"] = "generate()";
+    args["id"] = "generate(p0)";
     args["version"] = "1";
     args["generator"] = "Doesn't matter what we say here";
     processor *proc2 = test->add_processor( args );
