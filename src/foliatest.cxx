@@ -350,6 +350,9 @@ void Test_Provenance(){
       args.clear();
       args["name"] = "TestSuite"; // duplicate names is OK!
       args["xml:id"] = "p1";
+      test->add_processor( args );
+      vector<processor *> pv = test->get_processors_by_name( "TestSuite" );
+      assertEqual( pv.size(), 2 );
       args.clear();
       args["name"] = "TestSuite";
       args["xml:id"] = "p0";      // duplicate ID' not!
@@ -632,6 +635,36 @@ void Test_Provenance(){
 			 fol_path
 			 + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml" ) );
   }
+
+  {
+    startTestSerie( "Provenance - Extend the provenance of an existing document" );
+    Document doc( fol_path + "examples/provenance.2.0.0.folia.xml" );
+    KWargs args;
+    args["name"] = "TestSuite";
+    args["id"] = "p0";
+    assertThrow( doc.add_processor( args ), DuplicateIDError );
+    args.clear();
+    args["name"] = "SomeTokeniser";
+    args["generateid"] = "next()";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    assertThrow( doc.add_processor( args ), invalid_argument );
+    args.clear();
+    auto mbv = doc.get_processors_by_name("mbpos");
+    assertEqual( mbv.size(), 1 );
+    auto frogs = doc.get_processors_by_name("frog");
+    assertEqual( frogs.size(), 1 );
+    args["name"] = "mbpos";
+    args["generateid"] = "auto()";
+    args["version"] = "1";
+    processor *sub = 0;
+    assertNoThrow( sub = doc.add_processor( args, frogs[0] ) );
+    assertTrue( sub != NULL );
+    mbv = doc.get_processors_by_name("mbpos");
+    assertEqual( mbv.size(), 2 );
+    doc.save( "/tmp/jeetje.xml" );
+  }
+
 }
 
 void test0() {
