@@ -315,6 +315,7 @@ void Test_Provenance(){
       // the processor name
       assertEqual( proc->annotator(), "mblem");
     }
+
     {
       startTestSerie("Provenance - Create a document with a processor" );
       Document *test = new Document("xml:id='test'");
@@ -337,14 +338,32 @@ void Test_Provenance(){
       ref.save( "/tmp/ref-1.xml" );
       assertTrue( xmldiff( "/tmp/test-1.xml", "/tmp/ref-1.xml" ) );
     }
+
+
+    {
+      startTestSerie("Provenance - provenance: Duplicate named and ID's" );
+      Document *test = new Document("xml:id='test'");
+      KWargs args;
+      args["name"] = "TestSuite";
+      args["xml:id"] = "p0";
+      test->add_processor( args );
+      args.clear();
+      args["name"] = "TestSuite"; // duplicate names is OK!
+      args["xml:id"] = "p1";
+      args.clear();
+      args["name"] = "TestSuite";
+      args["xml:id"] = "p0";      // duplicate ID' not!
+      assertThrow( test->add_processor( args ), DuplicateIDError );
+    }
   }
+
 
   {
     startTestSerie( "Provenance - Create a document with flat processors - Explicit processor assignment" );
     Document *test = new Document("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
-    args["id"] = "generate(p0)";
+    args["generateid"] = "p0";
     args["version"] = "1";
     args["generator"] = "YES";
     processor *proc1 = test->add_processor( args );
@@ -352,7 +371,7 @@ void Test_Provenance(){
 		   "processor='" + proc1->id() + "'" );
     args.clear();
     args["name"] = "SentenceSplitter";
-    args["id"] = "generate(p0)";
+    args["generateid"] = "p0";
     args["version"] = "1";
     args["generator"] = "Doesn't matter what we say here";
     processor *proc2 = test->add_processor( args );
@@ -544,6 +563,56 @@ void Test_Provenance(){
     doc.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
     doc.declare( AnnotationType::TEXT, DEFAULT_TEXT_SET, "processor='p0'" );
+    args["xml:id"] = "test.text.1";
+    FoliaElement *body = doc.append( new Text(args) );
+    args.clear();
+    args["generate_id"] = body->id();
+    FoliaElement *sentence = body->append( new Sentence( args, &doc ) );
+    args.clear();
+    args["text"] = "hello";
+    args["generate_id"] = sentence->id();
+    FoliaElement *w = sentence->append( new Word( args, &doc ) );
+    args["text"] = "world";
+
+    sentence->append( new Word( args, &doc ) );
+    const processor *p = doc.get_processor(w->processor());
+    assertEqual( p, doc.provenance()->index("p0.1") );
+    doc.save( "/tmp/provenance-nested-implicit.2.0.0.folia.xml" );
+    assertTrue( xmldiff( "/tmp/provenance-nested-implicit.2.0.0.folia.xml",
+			 fol_path
+			 + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml" ) );
+  }
+
+  {
+    startTestSerie( "Provenance - Create a document with automatic id assignment" );
+    Document doc( "xml:id='test'" );
+    //    doc.setdebug(8);
+    KWargs args;
+    args["name"] = "TestSuite";
+    args["id"] = "p0";
+    processor *main = doc.add_processor( args );
+    args.clear();
+    args["name"] = "SomeTokeniser";
+    args["generateid"] = "next()";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    processor *sub = doc.add_processor( args, main );
+    args.clear();
+    args["processor"] = sub->id();
+    doc.declare( AnnotationType::TOKEN, "adhoc", args );
+    args.clear();
+    args["name"] = "SentenceSplitter";
+    args["generateid"] = "next()";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    sub = doc.add_processor( args, main );
+    args.clear();
+    args["processor"] = sub->id();
+    doc.declare( AnnotationType::SENTENCE, "adhoc", args );
+    args.clear();
+    args["processor"] = main->id();
+    doc.declare( AnnotationType::TEXT, DEFAULT_TEXT_SET, args );
+    args.clear();
     args["xml:id"] = "test.text.1";
     FoliaElement *body = doc.append( new Text(args) );
     args.clear();
