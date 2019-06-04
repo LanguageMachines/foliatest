@@ -644,11 +644,11 @@ void Test_Provenance(){
     args["id"] = "p0";
     assertThrow( doc.add_processor( args ), DuplicateIDError );
     args.clear();
-    args["name"] = "SomeTokeniser";
+    args["name"] = "TestSuite";
     args["generateid"] = "next()";
     args["version"] = "1";
     args["generator"] = "YES";
-    assertThrow( doc.add_processor( args ), invalid_argument );
+    assertNoThrow( doc.add_processor( args ) );
     args.clear();
     auto mbv = doc.get_processors_by_name("mbpos");
     assertEqual( mbv.size(), 1 );
