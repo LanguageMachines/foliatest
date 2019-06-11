@@ -366,7 +366,7 @@ void Test_Provenance(){
     Document *test = new Document("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
-    args["generateid"] = "p0";
+    args["generate_id"] = "p0";
     args["version"] = "1";
     args["generator"] = "YES";
     processor *proc1 = test->add_processor( args );
@@ -374,7 +374,7 @@ void Test_Provenance(){
 		   "processor='" + proc1->id() + "'" );
     args.clear();
     args["name"] = "SentenceSplitter";
-    args["generateid"] = "p0";
+    args["generate_id"] = "p0";
     args["version"] = "1";
     args["generator"] = "Doesn't matter what we say here";
     processor *proc2 = test->add_processor( args );
@@ -596,7 +596,7 @@ void Test_Provenance(){
     processor *main = doc.add_processor( args );
     args.clear();
     args["name"] = "SomeTokeniser";
-    args["generateid"] = "next()";
+    args["generate_id"] = "next()";
     args["version"] = "1";
     args["generator"] = "YES";
     processor *sub = doc.add_processor( args, main );
@@ -605,7 +605,7 @@ void Test_Provenance(){
     doc.declare( AnnotationType::TOKEN, "adhoc", args );
     args.clear();
     args["name"] = "SentenceSplitter";
-    args["generateid"] = "next()";
+    args["generate_id"] = "next()";
     args["version"] = "1";
     args["generator"] = "YES";
     sub = doc.add_processor( args, main );
@@ -645,7 +645,11 @@ void Test_Provenance(){
     assertThrow( doc.add_processor( args ), DuplicateIDError );
     args.clear();
     args["name"] = "TestSuite";
-    args["generateid"] = "next()";
+    args["generate_id"] = "000";
+    assertThrow( doc.add_processor( args ), XmlError );
+    args.clear();
+    args["name"] = "TestSuite";
+    args["generate_id"] = "next()";
     args["version"] = "1";
     args["generator"] = "YES";
     assertNoThrow( doc.add_processor( args ) );
@@ -655,7 +659,7 @@ void Test_Provenance(){
     auto frogs = doc.get_processors_by_name("frog");
     assertEqual( frogs.size(), 1 );
     args["name"] = "mbpos";
-    args["generateid"] = "auto()";
+    args["generate_id"] = "auto()";
     args["version"] = "1";
     processor *sub = 0;
     assertNoThrow( sub = doc.add_processor( args, frogs[0] ) );
