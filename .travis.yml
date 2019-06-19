@@ -6,8 +6,7 @@ group: edge
 # whitelist
 branches:
   only:
-#    - master
-    - macbug
+    - master
 
 notifications:
   irc:

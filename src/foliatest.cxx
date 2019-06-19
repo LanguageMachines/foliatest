@@ -254,7 +254,7 @@ void Test_Provenance(){
   {
     startTestSerie( "Provenance - Create a document with flat processors - Explicit processor assignment" );
     Document *test = new Document("xml:id='test'");
-    test->setdebug(true);
+    //    test->setdebug(true);
     KWargs args;
     args["name"] = "SomeTokeniser";
     args["generate_id"] = "p0";
