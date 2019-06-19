@@ -69,7 +69,7 @@ before_install:
   - cd ..
   - git clone https://github.com/LanguageMachines/libfolia
   - cd libfolia
-  - if [ "$TRAVIS_BRANCH" == "folia2.0" ]; then git checkout folia2.0; fi
+  - if [ "$TRAVIS_BRANCH" == "macbug" ]; then git checkout macbug; fi
   - bash bootstrap.sh
   - ./configure $OPENMPFLAG
   - make
