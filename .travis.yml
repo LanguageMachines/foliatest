@@ -6,7 +6,8 @@ group: edge
 # whitelist
 branches:
   only:
-    - master
+#    - master
+    - macbug
 
 notifications:
   irc:
@@ -20,14 +21,14 @@ notifications:
 language: cpp
 matrix:
   include:
-    - os: linux
-      compiler: g++
-
-    - os: linux
-      compiler: clang++
-      env:
-        - OPENMPFLAG=--disable-openmp
-
+#    - os: linux
+#      compiler: g++
+#
+#    - os: linux
+#      compiler: clang++
+#      env:
+#        - OPENMPFLAG=--disable-openmp
+#
     - os: osx
       compiler: clang
 
