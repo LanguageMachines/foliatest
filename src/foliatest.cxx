@@ -5945,8 +5945,9 @@ void processor_test008e(){
 
 void processor_test009a(){
   startTestSerie( " process a difficult document with t-style " );
-  TextEngine proc( "tests/procbug.xml" );
+  TextEngine proc;
   //  proc.set_debug(true);
+  proc.init_doc( "tests/procbug.xml" );
   ofstream os( "/tmp/procbug.out" );
   if ( proc.ok() ){
     proc.setup("",true);
