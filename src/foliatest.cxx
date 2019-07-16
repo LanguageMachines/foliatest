@@ -244,6 +244,52 @@ void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
    		 (stat == 0) );
 }
 
+void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
+  Document doc( fol_path + "examples/tests/set_and_setless.2.0.0.folia.xml" );
+  {
+    startTestSerie( "Testing sanity with set-holding and setless annotation types similtaneously (setless)" );
+    auto c1 = doc["example.p.1.s.1.chunk.1"];
+    assertEqual( c1->sett(), "" );
+  }
+  {
+    startTestSerie( "Testing sanity with set-holding and setless annotation types similtaneously (set-holding)" );
+    auto c1 = doc["example.p.1.s.1.chunkset.1"];
+    assertEqual( c1->sett(), "chunkset" );
+  }
+  {
+    Document doc( fol_path + "examples/tests/set_holding.2.0.0.folia.xml" );
+    startTestSerie( "Testing sanity with adding setless to setholding chunks" );
+    assertEqual( doc.default_set(AnnotationType::CHUNKING), "chunkset" );
+    KWargs args;
+    args["name"] = "my_proc";
+    args["xml:id"] = "my_chunker";
+    doc.add_processor( args );
+    args.clear();
+    args["processor"] = "my_chunker";
+    doc.declare( AnnotationType::CHUNKING, "", args );
+    // now there are 2 chunkers active, so NO default set anymore
+    assertEqual( doc.default_set(AnnotationType::CHUNKING), "" );
+    auto s = doc["example.p.1.s.1"];
+    args.clear();
+    ChunkingLayer *c = 0;
+    assertNoThrow( c = new ChunkingLayer( args, &doc ) );
+    s->append( c );
+    Chunk *ch = 0;
+    args["class"] = "NP";
+    args["processor"] = "my_chunker";
+    assertNoThrow( ch = new Chunk( args, &doc ) );
+    c->append( ch );
+    ch->append( doc["example.p.1.s.1.w.1"] );
+    ch->append( doc["example.p.1.s.1.w.2"] );
+    ch->append( doc["example.p.1.s.1.w.3"] );
+    assertNoThrow( doc.save( "/tmp/set_test.xml" ) );
+    string cmd = "./tests/foliadiff.sh /tmp/set_test.xml tests/set_test.ok";
+    int stat = system( cmd.c_str() );
+    assertMessage( "/tmp/set_test.xml tests/set_test.ok differ!",
+		   (stat == 0) );
+  }
+}
+
 bool xmldiff( const string& f1, const string& f2 ){
   string cmd = "./tests/foliadiff.sh " + f1 + " " + f2;
   int stat = system( cmd.c_str() );
@@ -6067,7 +6113,9 @@ void processor_test011() {
 
 int main(){
   bool is_setup = setup();
-  //  processor_test001f();
+  //  Test_Exxx_SetAndSetLess();
+  //  exit(777);
+    //  processor_test001f();
   //  exit(5);
   //  Test_Exxx_Hidden_Tokens();
   //  sanity_test006c();
@@ -6326,6 +6374,7 @@ int main(){
     Test_Exxx_Hidden_Tokens();
     Test_Exxx_Invalid_Wref();
     Test_Exxx_KeepVersion();
+    Test_Exxx_SetAndSetLess();
     Test_Provenance();
   }
   summarize_tests(0);
