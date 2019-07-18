@@ -256,12 +256,13 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     auto c1 = doc["example.p.1.s.1.chunkset.1"];
     assertEqual( c1->sett(), "chunkset" );
   }
-  //#define NOT_YET
+#define NOT_YET
 #ifdef NOT_YET
   {
     Document doc( fol_path + "examples/tests/set_holding.2.0.0.folia.xml" );
     startTestSerie( "Testing sanity with adding setless to setholding chunks" );
     assertEqual( doc.default_set(AnnotationType::CHUNKING), "chunkset" );
+    assertEqual( doc.default_processor(AnnotationType::CHUNKING), "p1" );
     KWargs args;
     args["name"] = "my_proc";
     args["xml:id"] = "my_chunker";
@@ -271,6 +272,8 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     doc.declare( AnnotationType::CHUNKING, "", args );
     // now there are 2 chunkers active, so NO default set anymore
     assertEqual( doc.default_set(AnnotationType::CHUNKING), "" );
+    // now there are 2 chunkers active, and NO default processor too
+    assertEqual( doc.default_processor(AnnotationType::CHUNKING), "" );
     auto s = doc["example.p.1.s.1"];
     args.clear();
     ChunkingLayer *c = 0;
