@@ -256,7 +256,7 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     auto c1 = doc["example.p.1.s.1.chunkset.1"];
     assertEqual( c1->sett(), "chunkset" );
   }
-#define NOT_YET
+  //#define NOT_YET
 #ifdef NOT_YET
   {
     Document doc( fol_path + "examples/tests/set_holding.2.0.0.folia.xml" );
