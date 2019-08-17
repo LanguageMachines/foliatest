@@ -21,13 +21,23 @@ language: cpp
 matrix:
   include:
     - os: linux
+      cache: ccache
       compiler: g++
+      env:
+        - SCAN=echo
 
     - os: linux
+      cache: ccache
       compiler: clang++
+      env:
+        - SCAN=scan-build
+        - OPENMPFLAG=--disable-openmp
 
     - os: osx
+      cache: ccache
       compiler: clang
+      env:
+        - SCAN=echo
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -73,7 +83,8 @@ before_install:
 install:
   - bash bootstrap.sh
   - ./configure $OPENMPFLAG
-  - make
+  - cppcheck --enable=all --quiet --error-exitcode=0 .
+  - $SCAN --status-bugs make
   - sudo make install
 script:
   - FOLIAPATH=foliapy/folia-repo
