@@ -260,8 +260,6 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     auto c1 = doc["example.p.1.s.1.chunkset.1"];
     assertEqual( c1->sett(), "chunkset" );
   }
-  //#define NOT_YET
-#ifdef NOT_YET
   {
     Document doc( fol_path + "examples/tests/set_holding.2.0.0.folia.xml" );
     startTestSerie( "Testing sanity with adding setless to setholding chunks" );
@@ -297,7 +295,6 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     assertMessage( "/tmp/set_test.xml tests/set_test.ok differ!",
 		   (stat == 0) );
   }
-#endif
 }
 
 bool xmldiff( const string& f1, const string& f2 ){
