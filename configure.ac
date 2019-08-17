@@ -22,6 +22,9 @@ if $cxx_flags_were_set; then
   CXXFLAGS=$CXXFLAGS
 fi
 
+# check OpenMP support
+AC_OPENMP
+
 # use libtool
 AC_PROG_LIBTOOL
 LT_INIT
