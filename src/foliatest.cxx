@@ -233,6 +233,10 @@ void Test_Exxx_Invalid_Wref(){ // xxx -> replace with a number at some point
   Document *doc = 0;
   assertThrow( doc = new Document( "file='" + fol_path + "examples/erroneous/invalid-wref.2.0.0.folia.xml'" ), XmlError );
   assertTrue( doc == 0 );
+  if ( doc ){
+    // useless code to keep scan-build happy
+    delete doc;
+  }
 }
 
 void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
@@ -3349,12 +3353,12 @@ void edit_test005a( ){
 
   std::vector<PosAnnotation*> pv;
   PosAnnotation *pos1 = w->getPosAnnotations( pos_set, pv );
-  assertTrue( pos1 != 0 );
+  assertMessage( "No pos annotation found!", (pos1 != 0) );
   assertEqual( pv.size(), 1 );
-  assertEqual( pos1->xmlstring(), "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/>" );
-  assertEqual( pv[0]->xmlstring(), "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"V\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/>" );
-
-
+  if ( pos1 != 0 ){
+    assertEqual( pos1->xmlstring(), "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/>" );
+    assertEqual( pv[0]->xmlstring(), "<pos xmlns=\"http://ilk.uvt.nl/folia\" class=\"V\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/>" );
+  }
 }
 
 void edit_test005b( ){
@@ -3439,11 +3443,12 @@ void edit_test007( ){
     = new PosAnnotation( args, &doc );
   args = getArgs( "set='corrections', class='spelling', annotator='testscript', annotatortype='auto'" );
   assertNoThrow( w->correct( oldpos, newpos, args ) );
-  FoliaElement *c = 0;
-  assertTrue( (c = w->annotation<Correction>()) != 0 );
-  assertTrue( c->getOriginal()->index(0) == oldpos );
-  assertTrue( (*c->getNew())[0] == newpos );
-
+  FoliaElement *c = w->annotation<Correction>();
+  assertMessage( "No correction found!", (c != 0) );
+  if ( c ){
+    assertEqual( c->getOriginal()->index(0) , oldpos );
+    assertEqual( (*c->getNew())[0],  newpos );
+  }
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"testscript\" annotatortype=\"auto\" class=\"spelling\"><new><pos class=\"N(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/></new><original auth=\"no\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/></original></correction><lemma class=\"stippelijn\"/></w>" );
 }
 
