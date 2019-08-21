@@ -1100,8 +1100,13 @@ void sanity_test011( ){
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( len( w->select<SenseAnnotation>() ) == 0 );
   assertTrue( w->select<SenseAnnotation>().size() == 0 );
+#if FOLIA_INT_VERSION < 23
   assertThrow( w->annotation<SenseAnnotation>(),
-			NoSuchAnnotation );
+	       NoSuchAnnotation );
+#else
+  auto a = w->annotation<SenseAnnotation>();
+  assertTrue( a == 0 );
+#endif
 
 }
 
@@ -1770,8 +1775,12 @@ void sanity_test037c( ){
 
 void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
+#if FOLIA_INT_VERSION < 23
   PosAnnotation *p =0;
   assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
+#else
+  PosAnnotation *p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>();
+#endif
   assertTrue( p == 0 );
 }
 
@@ -3683,7 +3692,12 @@ void edit_test015(){
   Document editDoc( "file='tests/example.xml'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
   word->remove( word->annotation<PosAnnotation>() );
+#if FOLIA_INT_VERSION < 23
   assertThrow( word->annotations<PosAnnotation>(), NoSuchAnnotation );
+#else
+  vector<PosAnnotation*> v = word->annotations<PosAnnotation>();
+  assertEqual( v.size(), 0 );
+#endif
   assertTrue( word->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.3.w.14\"><t>plaats</t><lemma class=\"plaats\"/></w>" );
 }
 
