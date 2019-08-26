@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="build1" generator="libfolia-v1.20" version="1.5.1">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="build1" generator="libfolia-v2.3" version="2.2.1">
   <metadata type="native">
-    <annotations/>
+    <annotations>
+      <division-annotation/>
+      <paragraph-annotation/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+    </annotations>
   </metadata>
   <speech xml:id="build1.speech">
     <div xmlns="http://ilk.uvt.nl/folia" xml:id="div1">
@@ -19,5 +23,6 @@
         <t>paragraaf 3</t>
       </p>
     </div>
-  </speech>
+  </speech>>
 </FoLiA>
+

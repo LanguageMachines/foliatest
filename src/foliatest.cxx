@@ -2870,6 +2870,11 @@ void sanity_test108( ){
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "</FoLiA>\n" ;
   assertThrow( doc.read_from_string(xml), XmlError );
+  xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld_1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
+"</FoLiA>\n" ;
+  assertNoThrow( doc.read_from_string(xml) );
   assertThrow( new Sentence( getArgs("id='dit mag ook niet'"), &doc ),
 	       XmlError );
   assertThrow( new Sentence( getArgs("id='1.ook.niet'"), &doc ), XmlError );
@@ -4782,7 +4787,7 @@ void text_test13f(){
   s->append( w );
 
   doc.setmode("strip");
-  assertEqual( doc.getmode(), "mode=strip,checktext," );
+  assertEqual( doc.getmode(), "mode=strip,checktext,autodeclare," );
   assertEqual( doc.xmlstring(),
 	       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 	       "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"\" version=\"\"><metadata type=\"native\"><annotations><text-annotation set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl\"/></annotations></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
