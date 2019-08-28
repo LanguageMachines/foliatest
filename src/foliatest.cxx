@@ -3246,7 +3246,7 @@ void edit_test003b( ){
   // add a pos annotation (in a different set than the one declared,
   // to generate a conflict)
   KWargs args = getArgs( "set='adhopcos', class='NOUN', annotator='testscript', annotatortype='auto'" );
-  assertThrow( w->addAnnotation<PosAnnotation>( args ), ValueError );
+  assertThrow( w->addAnnotation<PosAnnotation>( args ), DeclarationError );
 }
 
 void edit_test004a( ){
