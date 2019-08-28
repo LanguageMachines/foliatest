@@ -36,21 +36,21 @@ then
 fi
 
 function compare {
-    lcnt=0;
-    vcnt=0;
-
+    lcnt=0
+    vcnt=0
+    opts=$2
     for f in $1
     do
 	echo -n "checking $f"
 	f_base=${f##*/}
-	$folialint -a --nooutput $f &> $f_base.l.err
+	$folialint $opts --nooutput $f &> $f_base.l.err
 	l_stat=$?
 	if [ $l_stat -ne 0 ]
 	then
 #	    echo "folialint: trouble with: " $f
 	    lcnt=$((lcnt+1))
 	fi
-	foliavalidator -a -W $f &> $f_base.v.err
+	foliavalidator $opts -W $f &> $f_base.v.err
 	v_stat=$?
 	if [ $v_stat -ne 0 ]
 	then
@@ -92,7 +92,14 @@ FILES=../../FoLiApy/folia-repo/examples/erroneous/*.xml
 compare "${FILES[@]}"
 
 #
-# now a check were folialint and foliavalidator should find problems
+# now a check were folialint and foliavalidator should fix the problems
+#
+FILES=../../FoLiApy/folia-repo/examples/erroneous/*.xml
+
+compare "${FILES[@]}" -a
+
+#
+# now a check were folialint and foliavalidator should be fine
 #
 FILES=../../FoLiApy/folia-repo/examples/tests/*.xml
 
