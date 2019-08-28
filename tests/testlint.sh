@@ -2,8 +2,8 @@
 RED="\033[1;31m"
 BLUE="\033[1;34m"
 NORMAL="\033[0m"
-OK="-e \033[1;32m OK  \033[0m"
-AGREE="-e \033[1;34m  AGREE  \033[0m"
+OK="-e \033[1;32m Both OK  \033[0m"
+AGREE="-e \033[1;34m  Both REJECT  \033[0m"
 DISAGREE="-e \033[1;33m  DISAGREE  \033[0m"
 
 if [ "$folialint" = "" ]
