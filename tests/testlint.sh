@@ -42,38 +42,35 @@ function compare {
     for f in $1
     do
 	echo -n "checking $f"
-	$folialint --nooutput $f &> $f.l.err
+	f_base=${f##*/}
+	$folialint -a --nooutput $f &> $f_base.l.err
 	l_stat=$?
 	if [ $l_stat -ne 0 ]
 	then
 #	    echo "folialint: trouble with: " $f
 	    lcnt=$((lcnt+1))
-	else
-	    rm $f.l.err
 	fi
-	foliavalidator -W $f &> $f.v.err
+	foliavalidator -a -W $f &> $f_base.v.err
 	v_stat=$?
 	if [ $v_stat -ne 0 ]
 	then
 #	    echo "foliavalidator: trouble with: " $f
 	    vcnt=$((vcnt+1))
-	else
-	    rm $f.v.err
 	fi
 	if [ $l_stat == 0 -a $v_stat == 0 ]
 	then
+	    rm $f_base.l.err
+	    rm $f_base.v.err
 	    echo $OK
 	else
 	    if [ $l_stat != $v_stat ]
 	    then
 		echo $DISAGREE
-		if [ $l_stat != 0 ]
-		then
-		    echo "see $f.l.r"
-		else
-		    echo "see $f.v.r"
-		fi
+		echo "see $f_base.l.err"
+		echo "see $f_base.v.err"
 	    else
+		rm $f_base.l.err
+		rm $f_base.v.err
 		echo $AGREE
 	    fi
 	fi
