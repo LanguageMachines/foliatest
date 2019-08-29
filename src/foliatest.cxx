@@ -264,7 +264,11 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     Document doc( fol_path + "examples/tests/set_holding.2.0.0.folia.xml" );
     startTestSerie( "Testing sanity with adding setless to setholding chunks" );
     assertEqual( doc.default_set(AnnotationType::CHUNKING), "chunkset" );
+#if FOLIA_INT_VERSION < 23
+    // got it wrong
+#else
     assertEqual( doc.default_processor(AnnotationType::CHUNKING), "p1" );
+#endif
     KWargs args;
     args["name"] = "my_proc";
     args["xml:id"] = "my_chunker";
@@ -273,14 +277,25 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     args["processor"] = "my_chunker";
     doc.declare( AnnotationType::CHUNKING, "", args );
     // now there are 2 chunkers active, so NO default set anymore
+#if FOLIA_INT_VERSION < 23
+    // got it wrong
+#else
     assertEqual( doc.default_set(AnnotationType::CHUNKING), "" );
+#endif
     // now there are 2 chunkers active, and NO default processor too
+#if FOLIA_INT_VERSION < 23
+    // got it wrong
+#else
     assertEqual( doc.default_processor(AnnotationType::CHUNKING), "" );
+#endif
     auto s = doc["example.p.1.s.1"];
     args.clear();
     ChunkingLayer *c = 0;
     assertNoThrow( c = new ChunkingLayer( args, &doc ) );
     s->append( c );
+#if FOLIA_INT_VERSION < 23
+    // got it wrong
+#else
     Chunk *ch = 0;
     args["class"] = "NP";
     args["processor"] = "my_chunker";
@@ -294,6 +309,7 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     int stat = system( cmd.c_str() );
     assertMessage( "/tmp/set_test.xml tests/set_test.ok differ!",
 		   (stat == 0) );
+#endif
   }
 }
 
@@ -5543,9 +5559,15 @@ void build_test001(){
   d->append(p);
   b.add( d );
   b.finish();
+#if FOLIA_INT_VERSION < 23
+  int stat = system( "./tests/foliadiff.sh /tmp/build.xml tests/build.old.xml" );
+  assertMessage( "/tmp/build.xml tests/build.old.xml differ!",
+   		 (stat == 0) );
+#else
   int stat = system( "./tests/foliadiff.sh /tmp/build.xml tests/build.xml" );
   assertMessage( "/tmp/build.xml tests/build.xml differ!",
    		 (stat == 0) );
+#endif
 }
 
 void build_test002(){
@@ -5577,9 +5599,15 @@ void build_test002(){
   d->append(p);
   b.add( d );
   b.finish();
+#if FOLIA_INT_VERSION < 23
+  int stat = system( "./tests/foliadiff.sh /tmp/speechbuild.xml tests/speechbuild.old.xml" );
+  assertMessage( "/tmp/speechbuild.xml tests/speechbuild.old.xml differ!",
+   		 (stat == 0) );
+#else
   int stat = system( "./tests/foliadiff.sh /tmp/speechbuild.xml tests/speechbuild.xml" );
   assertMessage( "/tmp/speechbuild.xml tests/speechbuild.xml differ!",
    		 (stat == 0) );
+#endif
 }
 
 void processor_test001a(){
