@@ -1,3 +1,9 @@
+foliatest 0.7 2019-08-29
+[Ko van der Sloot]
+* updated some test to also work with libfolia 2.3
+* added a script to compare folialint and foliavalidator on all
+  examples in FoLiApy/folia-repo
+
 foliatest 0.6 2019-06-19
 [Ko van der Sloot]
 Small update. Added/adapted some tests regarding provenance
