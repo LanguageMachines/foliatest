@@ -6375,7 +6375,7 @@ int main(){
   text_test15();
   text_test16();
   text_test17();
-  //  text_test18();
+  text_test18();
   create_test001();
   create_test002();
   create_test003();
