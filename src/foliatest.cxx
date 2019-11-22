@@ -4899,7 +4899,7 @@ void text_test18(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string( xml ) );
-  //  assertEqual( doc.paragraphs(0)->text(), "Een test");
+  assertEqual( doc.paragraphs(0)->text(), "Een test");
 }
 
 void create_test001( ){
