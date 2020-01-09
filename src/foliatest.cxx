@@ -5341,6 +5341,30 @@ void correction_test006(){
 }
 
 void correction_test007(){
+  startTestSerie( " Correction - correct a correction" );
+  Document cor_doc( "tests/example.xml" );
+  FoliaElement *w = cor_doc["WR-P-E-J-0000000001.p.1.s.6.w.31.c.1"]; // a corrected word
+  cerr << "W=" << w << " (" << w->text() << ")" << endl;
+  // and try to correct it again
+  KWargs args;
+  args["xml:id"] = w->generateId("wijzig");
+  Word *nw = new Word( args, &cor_doc);
+  nw->settext( "ronde" );
+  vector<FoliaElement*> nv;
+  nv.push_back( nw );
+  vector<FoliaElement*> ov;
+  ov.push_back( w->getNew() );
+  vector<FoliaElement*> cv;
+  vector<FoliaElement*> sv;
+  args = getArgs( "set='corrections',annotator='testscript', annotatortype='MANUAL'" );
+  FoliaElement *cor = w->correct( ov, cv, nv, sv, args );
+  cerr << "NEW W=" << cor << " (" << w->text() << ")" << endl;
+  assertEqual( cor->text(), "ronde" );
+  assertEqual( cor->xmlstring(),
+	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.correction.1\" annotator=\"testscript\"><new><w xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.c.1.wijzig.1\"><t>ronde</t></w></new><original auth=\"no\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.c.1\"><new><t>vierkante</t></new><original auth=\"no\"><t>vierkant</t></original></correction></original></correction>" );
+}
+
+void correction_test008(){
   startTestSerie( " corrections on elements without an ID " );
   Document corDoc;
   corDoc.read_from_file( "tests/corr_str.xml" );
@@ -6388,6 +6412,7 @@ int main(){
   correction_test005();
   correction_test006();
   correction_test007();
+  correction_test008();
   query_test001();
   query_test002();
   query_test003();
