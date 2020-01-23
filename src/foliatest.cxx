@@ -5565,6 +5565,7 @@ void query_test011(){
   assertEqual( matches.size(), 0 );
 }
 
+#if FOLIA_INT_VERSION < 24
 void build_test001(){
   startTestSerie( " build a text document using FoliaBuilder " );
   ofstream os( "/tmp/build.xml" );
@@ -5642,9 +5643,10 @@ void build_test002(){
   int stat = system( "./tests/foliadiff.sh /tmp/speechbuild.xml tests/speechbuild.xml" );
   assertMessage( "/tmp/speechbuild.xml tests/speechbuild.xml differ!",
    		 (stat == 0) );
-#endif
+#endif // version < 23
 }
 
+#endif // version < 24
 void processor_test001a(){
   startTestSerie( " copy a document using Folia Engine " );
   Engine proc;
@@ -6439,8 +6441,10 @@ int main(){
   query_test010a();
   query_test010b();
   query_test011();
+#if FOLIA_INT_VERSION < 24
   build_test001();
   build_test002();
+#endif
   processor_test001a();
   processor_test001b();
   processor_test001c();
