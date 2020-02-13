@@ -5029,7 +5029,7 @@ void create_test005( ){
   Document d( "xml:id""='example'" );
   FoliaElement *text = 0;
   KWargs args;
-  args["xml:id"] =  "t.1";
+  args["xml:id"] = "t.1";
   assertNoThrow( text = d.addText( args ) );
   args["xml:id"] = "p.1";
   FoliaElement *p = 0;
@@ -5050,14 +5050,13 @@ void create_test005( ){
   args["value"] = " dit is een ander tekst";
   TextContent *t3 = new TextContent( args  );
   // appending a text to the sentence with 'different text is NOT OK
-  assertThrow( s->append( t3 ), XmlError );
+  assertThrow( s->append( t3 ), DuplicateAnnotationError );
   s->addWord( "dit" );
   s->addWord( "is" );
-  assertThrow( s->addWord( "geen" ), XmlError );
+  assertThrow( s->addWord( "geen" ), InconsistentText ); // ERROR, not detected
   s->addWord( "een" );
   s->addWord( "\t  tekst \n" );
 }
-
 
 void correction_test001a( ){
   startTestSerie( " Split correction " );
@@ -6403,6 +6402,7 @@ int main(){
   create_test002();
   create_test003();
   create_test004();
+  create_test005();
   correction_test001a();
   correction_test001b();
   correction_test002();
@@ -6469,5 +6469,5 @@ int main(){
     Test_Exxx_SetAndSetLess();
     Test_Provenance();
   }
-  summarize_tests(0);
+  summarize_tests(1);
 }
