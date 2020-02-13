@@ -5268,8 +5268,9 @@ void correction_test006(){
   KWargs args;
   args["xml:id"] = corDoc->id() + ".s.1";
   Sentence *sent = new Sentence( args );
-  FoliaElement *text = 0;
-  assertNoThrow( text = (*corDoc)[0] );
+  FoliaElement *root = corDoc->doc();
+  FoliaElement *text =0;
+  assertNoThrow( text = root->index(0) );
   assertNoThrow( text->append( sent ) );
   args["xml:id"] = corDoc->id() + ".s.1.w.1";
   args["text"] = "De";
