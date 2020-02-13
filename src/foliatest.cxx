@@ -2022,21 +2022,7 @@ void sanity_test099(){
   assertNoThrow( sanityDoc.save( "/tmp/savetest.canonical.xml", true ) );
 }
 
-void sanity_test100a( ){
-  startTestSerie(" Checking saved file against document " );
-  {
-    Document d;
-    assertNoThrow( d.read_from_file( "/tmp/savetest.xml" ) );
-    assertTrue( d == sanityDoc );
-  }
-  {
-    Document d;
-    assertNoThrow( d.read_from_file( "/tmp/savetest.canonical.xml" ) );
-    assertTrue( d == sanityDoc );
-  }
-}
-
-void sanity_test100b( ){
+void sanity_test100( ){
   startTestSerie(" Checking saved file against input file " );
   int stat = system( "./tests/foliadiff.sh /tmp/savetest.xml tests/example.xml" );
   assertMessage( "/tmp/savetest.xml tests/example.xml differ!",
@@ -6317,8 +6303,7 @@ int main(){
   sanity_test049();
   sanity_test050();
   sanity_test099();
-  sanity_test100a();
-  sanity_test100b();
+  sanity_test100();
   sanity_test101();
   sanity_test101a();
   sanity_test101b();
