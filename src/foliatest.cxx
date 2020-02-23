@@ -5052,8 +5052,7 @@ void create_test005( ){
   assertThrow( s->append( t3 ), DuplicateAnnotationError );
   s->addWord( "dit" );
   s->addWord( "is" );
-  assertThrow( s->addWord( "geen" ), InconsistentText ); // ERROR, not detected
-  s->addWord( "een" );
+  assertThrow( s->addWord( "geen" ), InconsistentText );
   s->addWord( "\t  tekst \n" );
 }
 
@@ -6468,5 +6467,5 @@ int main(){
     Test_Exxx_SetAndSetLess();
     Test_Provenance();
   }
-  summarize_tests(1);
+  summarize_tests(0);
 }
