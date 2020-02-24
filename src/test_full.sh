@@ -15,14 +15,12 @@ else
     prefix="${wd}/../usr/local/bin"
 fi
 
-verbose=$1
-
 lint="$prefix/folialint"
 #echo "lint=$lint"
 if [ ! -e $lint ]
 then
     echo "$lint not found"
-    exit
+    exit 1
 fi
 
 validate=`command -v foliavalidator`
@@ -30,15 +28,17 @@ validate=`command -v foliavalidator`
 if [ ! $validate ]
 then
     echo "$validate not found"
-    exit
+    exit 1
 fi
 
 checkdir="../FoLiA/examples"
 if [ ! -e $checkdir ]
 then
     echo "$checkdir not found"
-    exit
+    exit 1
 fi
+
+err_count=0;
 
 check_files () {
     total=0;
@@ -78,34 +78,32 @@ check_files () {
 #	echo "NOW lint=$lint_ok and val=$val_ok"
 	if [ $lint_ok = 1 ] && [ $val_ok = 1 ]
 	then
-	    if [ $verbose ]
-	    then
-		echo -e "[$total] $app $OK"
-	    fi
+	    echo -n "."
 	else
+	    err_count=$((err_count+1))
 	    if [ $lint_ok = 1 ]
 	    then
 		if [ $reversed ]
 		then
-		    echo -e "[$total] foliavalidator $FAIL to reject $app"
+		    echo -e "\n[$total] foliavalidator $FAIL to reject $app"
 		else
-		    echo -e "[$total] foliavalidator $FAIL to accept $app"
+		    echo -e "\n[$total] foliavalidator $FAIL to accept $app"
 		fi
 	    else
 		if [ $val_ok = 1 ]
 		then
 		    if [ $reversed ]
 		    then
-			echo -e "[$total] folialint $FAIL to reject $app"
+			echo -e "\n[$total] folialint $FAIL to reject $app"
 		    else
-			echo -e "[$total] folialint $FAIL to accept $app"
+			echo -e \n"[$total] folialint $FAIL to accept $app"
 		    fi
 		else
 		    if [ $reversed ]
 		    then
-			echo -e "[$total] BOTH $FAIL to reject $app"
+			echo -e "\n[$total] BOTH $FAIL to reject $app"
 		    else
-			echo -e "[$total] BOTH $FAIL to accept $app"
+			echo -e "\n[$total] BOTH $FAIL to accept $app"
 		    fi
 		fi
 	    fi
@@ -115,6 +113,17 @@ check_files () {
 
 echo "Comparing foliavalidator and folialint results. Both should accept all"
 check_files "$checkdir/*.folia.xml"
-
+if [ ! $verbose ]
+then
+    echo " "
+fi
 echo "Comparing foliavalidator and folialint results. Both should reject all"
 check_files "$checkdir/erroneous/*.folia.xml" "1"
+
+if [ $err_count -ne 0 ]
+then
+    echo -e "\nthere were $err_count problems"
+    exit 1
+else
+    exit 0
+fi
