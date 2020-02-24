@@ -6,8 +6,6 @@ NORMAL="\033[0m"
 OK="\033[1;32m OK  \033[0m"
 FAIL="\033[1;31m  FAILED  \033[0m"
 
-echo "Running and comparing foliavalidator and folialint"
-
 host=`hostname`
 if [ "$host" == "bonus" ] || [ "$host" == "kokos" ]
 then
@@ -16,6 +14,8 @@ else
     wd=`pwd`
     prefix="${wd}/../usr/local/bin"
 fi
+
+verbose=$1
 
 lint="$prefix/folialint"
 #echo "lint=$lint"
@@ -42,40 +42,79 @@ fi
 
 check_files () {
     total=0;
+    reversed=$2
+#    echo "reversed=$reversed"
     for app in $1
     do
 	total=$((total+1))
-	$lint $app > /dev/null 2>&1
 	lint_ok=1
+	$lint $app > /dev/null 2>&1
 	if [ $? -ne 0 ]
 	then
 	    lint_ok=0
 	fi
-	$validate $app > /dev/null 2>&1
 	val_ok=1
+	$validate $app > /dev/null 2>&1
 	if [ $? -ne 0 ]
 	then
 	    val_ok=0
 	fi
-	if [ $lint_ok ] && [ $val_ok ]
+#	echo "lint=$lint_ok and val=$val_ok"
+	if [ $reversed ]
 	then
-	    echo -e "[$total] $app $OK"
-	else
-	    if [ $lint_ok ]
+	    if [ $lint_ok = 1 ]
 	    then
-		echo -e "[$total] foliavalidator $FAIL on $app"
+		lint_ok=0
 	    else
-		if [ $val_ok ]
+		lint_ok=1
+	    fi
+	    if [ $val_ok = 1 ]
+	    then
+		val_ok=0
+	    else
+		val_ok=1
+	    fi
+	fi
+#	echo "NOW lint=$lint_ok and val=$val_ok"
+	if [ $lint_ok = 1 ] && [ $val_ok = 1 ]
+	then
+	    if [ $verbose ]
+	    then
+		echo -e "[$total] $app $OK"
+	    fi
+	else
+	    if [ $lint_ok = 1 ]
+	    then
+		if [ $reversed]
 		then
-		    echo -e "[$total] folialint $FAIL on $app"
+		    echo -e "[$total] foliavalidator $FAIL to reject $app"
 		else
-		    echo -e "[$total] BOTH $FAIL on $app"
+		    echo -e "[$total] foliavalidator $FAIL to accept $app"
+		fi
+	    else
+		if [ $val_ok = 1 ]
+		then
+		    if [ $reversed ]
+		    then
+			echo -e "[$total] folialint $FAIL to reject $app"
+		    else
+			echo -e "[$total] folialint $FAIL to accept $app"
+		    fi
+		else
+		    if [ $reversed ]
+		    then
+			echo -e "[$total] BOTH $FAIL to reject $app"
+		    else
+			echo -e "[$total] BOTH $FAIL to accept $app"
+		    fi
 		fi
 	    fi
 	fi
     done
 }
 
+echo "Comparing foliavalidator and folialint results. Both should accept all"
 check_files "$checkdir/*.folia.xml"
 
-check_files "$checkdir/erroneous/*.folia.xml"
+echo "Comparing foliavalidator and folialint results. Both should reject all"
+check_files "$checkdir/erroneous/*.folia.xml" "1"
