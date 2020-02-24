@@ -85,25 +85,25 @@ check_files () {
 	    then
 		if [ $reversed ]
 		then
-		    echo -e "\n[$total] foliavalidator $FAIL to reject $app"
+		    echo -e "\nfoliavalidator $FAIL to reject $app"
 		else
-		    echo -e "\n[$total] foliavalidator $FAIL to accept $app"
+		    echo -e "\nfoliavalidator $FAIL to accept $app"
 		fi
 	    else
 		if [ $val_ok = 1 ]
 		then
 		    if [ $reversed ]
 		    then
-			echo -e "\n[$total] folialint $FAIL to reject $app"
+			echo -e "\nfolialint $FAIL to reject $app"
 		    else
-			echo -e \n"[$total] folialint $FAIL to accept $app"
+			echo -e \n"folialint $FAIL to accept $app"
 		    fi
 		else
 		    if [ $reversed ]
 		    then
-			echo -e "\n[$total] BOTH $FAIL to reject $app"
+			echo -e "\nBoth $FAIL to reject $app"
 		    else
-			echo -e "\n[$total] BOTH $FAIL to accept $app"
+			echo -e "\nBoth $FAIL to accept $app"
 		    fi
 		fi
 	    fi
@@ -111,13 +111,9 @@ check_files () {
     done
 }
 
-echo "Comparing foliavalidator and folialint results. Both should accept all"
+echo -e "\nComparing foliavalidator and folialint results. Both should accept all"
 check_files "$checkdir/*.folia.xml"
-if [ ! $verbose ]
-then
-    echo " "
-fi
-echo "Comparing foliavalidator and folialint results. Both should reject all"
+echo -e "\nComparing foliavalidator and folialint results. Both should reject all"
 check_files "$checkdir/erroneous/*.folia.xml" "1"
 
 if [ $err_count -ne 0 ]
