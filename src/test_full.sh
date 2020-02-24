@@ -85,7 +85,7 @@ check_files () {
 	else
 	    if [ $lint_ok = 1 ]
 	    then
-		if [ $reversed]
+		if [ $reversed ]
 		then
 		    echo -e "[$total] foliavalidator $FAIL to reject $app"
 		else
