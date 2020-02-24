@@ -6195,8 +6195,29 @@ void processor_test011() {
    		 (stat == 0) );
 }
 
+void processor_test012() {
+  startTestSerie( " Test reading of erroneous files" );
+  string err_path = fol_path + "examples/erroneous/";
+  vector<string> file_names;
+  //file_names = TiCC::searchFilesExt( err_path, ".xml" );
+  file_names.push_back( err_path + "syntax_error_a.2.2.1.folia.xml" );
+  file_names.push_back( err_path + "syntax_error_b.2.2.1.folia.xml" );
+  file_names.push_back( err_path + "syntax_error_c.2.2.1.folia.xml" );
+  file_names.push_back( err_path + "syntax_error_d.2.2.1.folia.xml" );
+  for ( const auto& name : file_names ){
+    Engine proc;
+    //    proc.set_debug(true);
+    assertNoThrow( proc.init_doc( name ) );
+    if ( proc.ok() ){
+      assertThrow( loop( proc ), XmlError );
+    }
+  }
+}
+
 int main(){
   bool is_setup = setup();
+  //  processor_test012();
+  //  exit(3);
   //  Test_Exxx_SetAndSetLess();
   //  exit(777);
     //  processor_test001f();
@@ -6460,6 +6481,7 @@ int main(){
     assertMessage( "FOLIAPATH not set?", false );
   }
   else {
+    processor_test012();
     Test_E001_Tokens_Structure();
     Test_Exxx_Hidden_Tokens();
     Test_Exxx_Invalid_Wref();
@@ -6467,5 +6489,5 @@ int main(){
     Test_Exxx_SetAndSetLess();
     Test_Provenance();
   }
-  summarize_tests(0);
+  summarize_tests(4);
 }
