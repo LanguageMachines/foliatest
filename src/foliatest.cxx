@@ -6198,16 +6198,32 @@ void processor_test011() {
 void processor_test012() {
   startTestSerie( " Test reading of erroneous files" );
   string err_path = fol_path + "examples/erroneous/";
-  vector<string> file_names;
-  //file_names = TiCC::searchFilesExt( err_path, ".xml" );
-  file_names.push_back( err_path + "syntax_error_a.2.2.1.folia.xml" );
-  file_names.push_back( err_path + "syntax_error_b.2.2.1.folia.xml" );
-  file_names.push_back( err_path + "syntax_error_c.2.2.1.folia.xml" );
-  file_names.push_back( err_path + "syntax_error_d.2.2.1.folia.xml" );
-  for ( const auto& name : file_names ){
+  {
     Engine proc;
     //    proc.set_debug(true);
-    assertNoThrow( proc.init_doc( name ) );
+    assertThrow( proc.init_doc( err_path + "syntax_error_a.2.2.1.folia.xml" ),
+		 XmlError );
+  }
+  {
+    Engine proc;
+    //    proc.set_debug(true);
+    assertNoThrow( proc.init_doc( err_path + "syntax_error_b.2.2.1.folia.xml" ) );
+    if ( proc.ok() ){
+      assertThrow( loop( proc ), XmlError );
+    }
+  }
+  {
+    Engine proc;
+    //    proc.set_debug(true);
+    assertNoThrow( proc.init_doc( err_path + "syntax_error_c.2.2.1.folia.xml" ) );
+    if ( proc.ok() ){
+      assertThrow( loop( proc ), XmlError );
+    }
+  }
+  {
+    Engine proc;
+    //    proc.set_debug(true);
+    assertNoThrow( proc.init_doc( err_path + "syntax_error_d.2.2.1.folia.xml" ) );
     if ( proc.ok() ){
       assertThrow( loop( proc ), XmlError );
     }
@@ -6216,8 +6232,6 @@ void processor_test012() {
 
 int main(){
   bool is_setup = setup();
-  //  processor_test012();
-  //  exit(3);
   //  Test_Exxx_SetAndSetLess();
   //  exit(777);
     //  processor_test001f();
@@ -6489,5 +6503,5 @@ int main(){
     Test_Exxx_SetAndSetLess();
     Test_Provenance();
   }
-  summarize_tests(4);
+  summarize_tests(0);
 }
