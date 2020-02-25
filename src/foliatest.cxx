@@ -45,6 +45,7 @@
 #include "libfolia/folia_properties.h"
 #include "ticcutils/FileUtils.h"
 #include "ticcutils/UnitTest.h"
+#include "ticcutils/CommandLine.h"
 
 #include "config.h"
 using namespace std;
@@ -60,11 +61,13 @@ using TiCC::operator<<;
 #define AbstractTokenAnnotation AbstractInlineAnnotation
 #define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
 
+int expect = 0;
+string default_path =  "../FoLiApy/folia-repo";
 string fol_path;
 string legacy_file;
 Document LEGACYEXAMPLE;
+
 bool setup(){
-  string default_path = "../FoLiApy/folia-repo";
   const char *env = getenv("FOLIAPATH");
   if ( env == NULL ){
     if ( TiCC::isDir( default_path + "/examples" ) ){
@@ -79,6 +82,15 @@ bool setup(){
   fol_path += "/";
   legacy_file = fol_path + "examples/full-legacy.1.5.folia.xml";
   LEGACYEXAMPLE.read_from_file( legacy_file );
+  env = getenv("EXPECT");
+  if ( env != NULL ){
+    string value = env;
+    if ( !TiCC::stringTo( value, expect ) ){
+      cerr << "illegal value '" << value
+	   << "' for EXPECT environment variable." << endl;
+      return EXIT_FAILURE;
+    }
+  }
   return true;
 }
 
@@ -6230,7 +6242,45 @@ void processor_test012() {
   }
 }
 
-int main(){
+void usage(){
+  cerr << "usage: foliatest [options]" << endl;
+  cerr << "options are" << endl;
+  cerr << "\t-h or --help\t\t This help" << endl;
+  cerr << "\t-V or --version\t\t Show versions" << endl;
+  cerr << "\t--dir\t\t\t Extra directory to lookup example folia files." << endl;
+  cerr << "\t-e or --expect set this value to hint the number of errors to expect." << endl;
+}
+
+int main( int argc, char* argv[] ){
+  try {
+    TiCC::CL_Options Opts( "hVe:",
+			   "expect:,help,version,dir:");
+    Opts.init(argc, argv );
+    if ( Opts.extract( 'h' )
+	 || Opts.extract( "help" ) ){
+      usage();
+      return EXIT_SUCCESS;
+    }
+    if ( Opts.extract( 'V' )
+	 || Opts.extract( "version" ) ){
+      cout << "foliatest for " << folia::VersionName() << endl;
+      return EXIT_SUCCESS;
+    }
+    string value;
+    if ( Opts.extract( 'e', value )
+	 || Opts.extract( "expect", value ) ){
+      if ( !TiCC::stringTo( value, expect ) ){
+	cerr << "illegal value '" << value << "' for --expect/-e option."
+	     << endl;
+	return EXIT_FAILURE;
+      }
+    }
+    Opts.extract( "dir", default_path );
+  }
+  catch ( const exception& e ){
+    cerr << e.what() << endl;
+    return EXIT_FAILURE;
+  }
   bool is_setup = setup();
   //  Test_Exxx_SetAndSetLess();
   //  exit(777);
@@ -6503,5 +6553,5 @@ int main(){
     Test_Exxx_SetAndSetLess();
     Test_Provenance();
   }
-  summarize_tests(0);
+  summarize_tests(expect);
 }
