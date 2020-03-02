@@ -925,7 +925,6 @@ Document sanityDoc( "file='tests/example.xml'" );
 
 void sanity_test000( ){
   startTestSerie( " Text count " );
-  assertEqual( sanityDoc.size(), 1 );
   assertTrue( sanityDoc.getRoot()->isinstance<Text>() );
 }
 
