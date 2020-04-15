@@ -1,5 +1,10 @@
 foliatest 0.7 2019-08-29
 [Ko van der Sloot]
+* adapted to work with libfolia 2.4
+* enhanced tests
+
+foliatest 0.7 2019-08-29
+[Ko van der Sloot]
 * updated some test to also work with libfolia 2.3
 * added a script to compare folialint and foliavalidator on all
   examples in FoLiApy/folia-repo
