@@ -46,6 +46,11 @@ check_files () {
 #    echo "reversed=$reversed"
     for app in $1
     do
+	if [[ $app == *deep* ]]
+	then
+#	    echo "skipping deep test: $app"
+	    continue
+	fi
 	total=$((total+1))
 	lint_ok=1
 	$lint $app > /dev/null 2>&1
