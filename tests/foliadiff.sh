@@ -1,23 +1,12 @@
 # /bin/sh -x
-if [ "$exe" = "" ]
+if [ -z "$exe" ]
 then
-    exe="$HOME/usr/local/bin/folialint"
-    if [ ! -f $exe ]
-    then
-	exe="/exp/sloot/usr/local/bin/folialint"
-	if [ ! -f $exe ]
-	then
-	    exe="/usr/local/bin/folialint"
-	    if [ ! -f $exe ]
-	    then
-		exe="/usr/bin/folialint"
-	    fi
-	fi
+    if which folialint >/dev/null 2>/dev/null; then
+        exe=$(which folialint)
     fi
 fi
 
-if [ "$exe" = "" ];
-then
+if [ -z "$exe" ]; then
     "cannot locate folialint"
     exit 1
 fi
