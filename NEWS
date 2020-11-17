@@ -1,3 +1,10 @@
+foliatest 0.9 2020-11-17
+[Maarten van Gompel]
+* adapted to work with libfolia 2.6 (FoLiA v2.4)
+* find folialint in path
+[Ko van der Sloot]
+*  exclude *deep* files from testing, as folialint doesn't support deep testing
+
 foliatest 0.8 2020-04-15
 [Ko van der Sloot]
 * adapted to work with libfolia 2.4
