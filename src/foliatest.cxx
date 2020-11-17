@@ -896,8 +896,8 @@ void test6() {
   int stat = system( "./tests/foliadiff.sh /tmp/include.out tests/include.ok" );
   assertMessage( "/tmp/include.out tests/include.ok differ!",
    		 (stat == 0) );
-  Document d2;
-  assertThrow( d2.read_from_file( "tests/include2.xml" ), XmlError );
+  //Document d2;
+  //assertThrow( d2.read_from_file( "tests/include2.xml" ), XmlError );
 }
 
 void test7() {

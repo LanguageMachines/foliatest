@@ -9,11 +9,7 @@
         <t>chapter 1</t>
       </head>
     </div>
-    <div xml:id="chapter-2.div">
-      <head xml:id="chapter-2.head">
-        <t>chapter 2</t>
-      </head>
-    </div>
+    <external src="tests/chapter2.xml"/>
     <external src="chapter3.xml"/>
   </text>
 </FoLiA>
