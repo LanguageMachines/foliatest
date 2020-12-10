@@ -3807,8 +3807,8 @@ void edit_test018c(){
   assertEqual( s->text("larch"),"And now for something completely different." );
   // 6 get one word
   FoliaElement *w = editDoc["example.p.1.s.1.w.8"];
-  // check it's REAL text, including spaced
-  assertEqual( w->text("original"), " œuvre  " );
+  // check it's REAL text, but not including leading/trailing spaces
+  assertEqual( w->text("original"), "œuvre" );
   // check the normalized value
   assertEqual( normalize_spaces(w->text("original")), "œuvre" );
   // We may NOT changed te text
@@ -4836,7 +4836,7 @@ void text_test15(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string( xml ) );
-  assertEqual( doc["test.s"]->text(), "Dit\n         is een rare test.\n         ");
+  assertEqual( doc["test.s"]->text(), "Dit\n         is een rare test.");
 }
 
 void text_test16(){
