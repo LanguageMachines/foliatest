@@ -1,3 +1,7 @@
+foliatest 0.10 2020-12-11
+[Maarten van Gompel]
+* adapted two tests to comply with changes introduced by proycon/folia#88
+
 foliatest 0.9 2020-11-17
 [Maarten van Gompel]
 * adapted to work with libfolia 2.6 (FoLiA v2.4)
