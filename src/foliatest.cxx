@@ -2059,7 +2059,11 @@ void sanity_test101a(){
   int stat = system( "./tests/foliadiff.sh /tmp/folia.cmdi.xml tests/folia.cmdi.xml" );
   assertMessage( "/tmp/folia.cmdi.xml tests/folia.cmdi.xml differ!",
 		 stat == 0 );
+#if FOLIA_INT_VERSION < 25
   assertThrow( doc.set_metadata( "language", "por" ), MetaDataError );
+#else
+  assertNoThrow( doc.set_metadata( "language", "por" ) );
+#endif
 }
 
 void sanity_test101b(){
@@ -2071,7 +2075,11 @@ void sanity_test101b(){
   int stat = system( "./tests/foliadiff.sh /tmp/folia.imdi.xml tests/folia.imdi.xml" );
   assertMessage( "/tmp/folia.imdi.xml tests/folia.imdi.xml differ!",
 		 stat == 0 );
+#if FOLIA_INT_VERSION < 25
   assertThrow( doc.set_metadata( "language", "por" ), MetaDataError );
+#else
+  assertNoThrow( doc.set_metadata( "language", "por" ) );
+#endif
 }
 
 void sanity_test101c(){
@@ -2114,9 +2122,15 @@ void sanity_test101f(){
 		 stat == 0 );
   assertNoThrow( f_doc.set_foreign_metadata( root ) ); // append the same again
   assertNoThrow( f_doc.save( "/tmp/foreignmeta3.out" ) );
+#if FOLIA_INT_VERSION < 25
   int stat2 = system( "./tests/foliadiff.sh /tmp/foreignmeta3.out tests/foreignmeta3.out" );
   assertMessage( "/tmp/foreignmeta3.out tests/foreignmeta3.out differ!",
 		 stat2 == 0 );
+#else
+  int stat2 = system( "./tests/foliadiff.sh /tmp/foreignmeta3.out tests/foreignmeta3_v25.out" );
+  assertMessage( "/tmp/foreignmeta3.out tests/foreignmeta3_v25.out differ!",
+		 stat2 == 0 );
+#endif
   xmlFreeDoc( x_doc );
 }
 
