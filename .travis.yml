@@ -56,11 +56,11 @@ before_install:
       brew outdated || brew install zlib;
       brew install cppcheck;
       brew install libtar;
-#      brew install llvm;
-#      export PATH="/usr/local/opt/llvm/bin:$PATH";
-#      export LDFLAGS="-L/usr/local/opt/llvm/lib";
-#      export CXXFLAGS="-I/usr/local/opt/llvm/include";
     fi
+  #      brew install llvm;
+  #      export PATH="/usr/local/opt/llvm/bin:$PATH";
+  #      export LDFLAGS="-L/usr/local/opt/llvm/lib";
+  #      export CXXFLAGS="-I/usr/local/opt/llvm/include";
 
   - git clone https://github.com/proycon/foliapy
   - cd foliapy
