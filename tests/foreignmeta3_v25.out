@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="minimal" generator="libfolia-v2.6.2" version="1.4.987">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="minimal" generator="libfolia-v2.7" version="1.4.987">
   <metadata type="foreign">
     <annotations/>
+    <meta id="language">por</meta>
     <foreign-data>
       <pm:meta xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pm="http://www.politicalmashup.nl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <dc:identifier>nl.proc.ob.d.h-tk-20122013-33-7</dc:identifier>
