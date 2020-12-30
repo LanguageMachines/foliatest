@@ -2059,11 +2059,7 @@ void sanity_test101a(){
   int stat = system( "./tests/foliadiff.sh /tmp/folia.cmdi.xml tests/folia.cmdi.xml" );
   assertMessage( "/tmp/folia.cmdi.xml tests/folia.cmdi.xml differ!",
 		 stat == 0 );
-#if !(FOLIA_INT_VERSION == 27)
   assertThrow( doc.set_metadata( "language", "por" ), MetaDataError );
-#else
-  assertNoThrow( doc.set_metadata( "language", "por" ) );
-#endif
 }
 
 void sanity_test101b(){
@@ -2075,11 +2071,7 @@ void sanity_test101b(){
   int stat = system( "./tests/foliadiff.sh /tmp/folia.imdi.xml tests/folia.imdi.xml" );
   assertMessage( "/tmp/folia.imdi.xml tests/folia.imdi.xml differ!",
 		 stat == 0 );
-#if !(FOLIA_INT_VERSION == 27)
   assertThrow( doc.set_metadata( "language", "por" ), MetaDataError );
-#else
-  assertNoThrow( doc.set_metadata( "language", "por" ) );
-#endif
 }
 
 void sanity_test101c(){
