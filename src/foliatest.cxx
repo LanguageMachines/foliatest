@@ -2113,13 +2113,13 @@ void sanity_test101f(){
   assertMessage( "/tmp/foreignmeta.out tests/foreignmeta.out differ!",
 		 stat == 0 );
   assertNoThrow( f_doc.set_foreign_metadata( root ) ); // append the same again
-#if !(FOLIA_INT_VERSION == 27)
+#if !(FOLIA_INT_VERSION >= 27)
   assertThrow( f_doc.set_metadata( "language", "por" ), MetaDataError );
 #else
   assertNoThrow( f_doc.set_metadata( "language", "por" ) );
 #endif
   assertNoThrow( f_doc.save( "/tmp/foreignmeta3.out" ) );
-#if !(FOLIA_INT_VERSION == 27)
+#if !(FOLIA_INT_VERSION >= 27)
   int stat2 = system( "./tests/foliadiff.sh /tmp/foreignmeta3.out tests/foreignmeta3.out" );
   assertMessage( "/tmp/foreignmeta3.out tests/foreignmeta3.out differ!",
 		 stat2 == 0 );
