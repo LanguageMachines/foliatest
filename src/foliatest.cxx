@@ -4888,30 +4888,78 @@ void text_test17(){
   assertEqual( doc.words(0)->text(), "ἀντιϰειμένου");
 }
 
+void create_doc( bool with_space ){
+  Document doc( "xml:id='style'" );
+  assertNoThrow( doc.declare( AnnotationType::PARAGRAPH, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::STYLE, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::HYPHENATION, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::STRING, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::METRIC, "myset" ) );
+
+  KWargs args;
+  args["xml:id"] = "text";
+  FoliaElement *root = doc.addText( args );
+  args.clear();
+  args["generate_id"] = root->id();
+  Paragraph *p = new Paragraph( args, &doc );
+  root->append( p );
+  args.clear();
+  TextContent *t = new TextContent( args, &doc );
+  p->append( t );
+  args["generate_id"] = p->id();
+  TextMarkupString *str = new TextMarkupString( args, &doc );
+  t->append( str );
+  args.clear();
+  args["text"] = "deel";
+  TextMarkupStyle *style = new TextMarkupStyle( args, &doc );
+  str->append( style );
+  KWargs margs;
+  margs["class"] = "some";
+  margs["subset"] = "things";
+  Feature *f = new Feature( margs, &doc );
+  style->append( f );
+  Hyphbreak *hbr = new Hyphbreak();
+  style->append( hbr );
+  args.clear();
+  args["generate_id"] = p->id();
+  str = new TextMarkupString( args, &doc );
+  t->append( str );
+  args.clear();
+  args["text"] = "woord";
+  style = new TextMarkupStyle( args, &doc );
+  str->append( style );
+  margs["class"] = "other";
+  margs["subset"] = "things";
+  f = new Feature( margs, &doc );
+  style->append( f );
+  if ( with_space ){
+    XmlText *txt = new folia::XmlText();
+    txt->setvalue( " " );
+    t->append( txt );
+    args["text"] = "extra";
+  }
+  else {
+    args["text"] = " extra";
+  }
+  str = new TextMarkupString( args, &doc );
+  t->append( str );
+  if ( with_space ){
+    assertNoThrow( doc.save( "/tmp/styles-with-space.xml" ) );
+  }
+  else {
+    assertNoThrow( doc.save( "/tmp/styles-no-space.xml" ) );
+  }
+}
+
 void text_test18(){
-  startTestSerie( "Validation - paragraph with parts" );
-  string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-"<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"test\" version=\"1.5\" >"
-"  <text xml:id=\"t1\">"
-"    <p xml:id=\"p1\">"
-"      <t>Een test</t>"
-"      <part xml:id=\"part1\">"
-"        <t>Een</t>"
-"      </part>"
-"      <part xml:id=\"part2\">"
-"        <t> test</t>"
-"      </part>"
-"    </p>"
-"  </text>"
-"</FoLiA>";
-  Document doc;
-  assertNoThrow( doc.read_from_string( xml ) );
-  assertEqual( doc.paragraphs(0)->text(), "Een test");
+  startTestSerie( "Text creation - styles and stuff" );
+  create_doc( false );
+  create_doc( true );
 }
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
-  Document d( "xml:id""='example'" );
+  Document d( "xml:id='example'" );
   assertNoThrow( d.declare( AnnotationType::TOKEN,
 			    "adhocset",
 			    "annotator='proycon'" ) );
