@@ -59,6 +59,15 @@ jobs:
                 brew install zlib;
                 brew install libtar
              fi
+
+      - name: install FoliaPY
+        run: |
+          git clone https://github.com/proycon/foliapy;
+          cd foliapy;
+          # get folia-repo with examples
+          git submodule init && git submodule update;
+          cd ..
+
       - name: install TiccUtils
         env:
           CXX: ${{ matrix.compiler }}
@@ -87,7 +96,7 @@ jobs:
         run: sh bootstrap.sh
       - name: configure
         env:
-          CXX:  ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler }}
         run: ./configure
       - name: make
         run: make
@@ -95,7 +104,7 @@ jobs:
         run: sudo make install
       - name: check
         env:
-          CXX:  ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler }}
         run: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
         continue-on-error: true
       - name: show log
