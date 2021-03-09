@@ -103,13 +103,12 @@ jobs:
       - name: install
         run: sudo make install
       - name: check
+        run: make check
         env:
           CXX: ${{ matrix.compiler }}
-        run: make check
-	env:
           FOLIAPATH: foliapy/folia-repo
           EXPECT: 0
-	  LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
+          LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
         continue-on-error: true
       - name: show log
         run: cat src/test-suite.log
