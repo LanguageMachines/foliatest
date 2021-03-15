@@ -6526,7 +6526,7 @@ int main( int argc, char* argv[] ){
   sanity_test122();
   sanity_test123();
   sanity_test130();
-#if FOLIA_INT_VERSION >= 25
+#if FOLIA_INT_VERSION >= 28
   sanity_test140();
   sanity_test141();
 #endif
