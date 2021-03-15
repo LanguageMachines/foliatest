@@ -98,6 +98,8 @@ jobs:
         env:
           CXX: ${{ matrix.compiler }}
         run: ./configure
+      - name: show config
+        run: cat config.log
       - name: make
         run: make
       - name: install
