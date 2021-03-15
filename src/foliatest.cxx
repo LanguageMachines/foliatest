@@ -3089,6 +3089,46 @@ void sanity_test130( ){
   assertEqual( dv.size(), 0 );
 }
 
+void sanity_test140( ){
+  startTestSerie( " test parsing of xml:space attribute ");
+  Document doc( "tests/xmlspace.xml" );
+  doc.save( "/tmp/xmlspace.xml" );
+  int stat = system( "./tests/foliadiff.sh /tmp/xmlspace.xml tests/xmlspace.xml" );
+  assertMessage( "/tmp/xmlspace.xml tests/xmlspace.xml differ!",
+   		 (stat == 0) );
+}
+
+void sanity_test141( ){
+  startTestSerie( " test creating a doc with xml:space attribute ");
+  Document doc( "xml:id='spaces'" );
+  assertNoThrow( doc.declare( AnnotationType::DIVISION, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::PARAGRAPH, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::SENTENCE, "myset" ) );
+  KWargs args;
+  args["xml:id"] = "text";
+  FoliaElement *root = doc.addText( args );
+  args.clear();
+  args["generate_id"] = "text";
+  Division *d1 = root->create<Division>( args ) ;
+  args["generate_id"] = d1->id();
+  args["xml:space"] = "preserve";
+  Paragraph *p1 = d1->create<Paragraph>( args );
+  args.clear();
+  args["generate_id"] = p1->id();
+  Sentence *s1 = p1->create<Sentence>( args );
+  s1->settext( "de kat\nis    aaibaar" );
+  args.clear();
+  args["generate_id"] = p1->id();
+  args["xml:space"] = "default";
+  Sentence *s2 = p1->create<Sentence>( args );
+  s2->settext( "de hond\nblaft    hard" );
+  doc.setmode( "strip" );
+  doc.save( "/tmp/test141.xml", true );
+  int stat = system( "diff /tmp/test141.xml tests/test141.xml.ok" );
+  assertMessage( "/tmp/test141.xml tests/test141.xml.ok differ!",
+   		 (stat == 0) );
+}
+
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
   FoliaElement *p = 0;
@@ -6484,6 +6524,10 @@ int main( int argc, char* argv[] ){
   sanity_test122();
   sanity_test123();
   sanity_test130();
+#if FOLIA_INT_VERSION >= 25
+  sanity_test140();
+  sanity_test141();
+#endif
   edit_test001a();
   edit_test001b();
   edit_test002();

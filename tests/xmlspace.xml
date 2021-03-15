@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="hbr" generator="libfolia-v2.8" version="2.4.0">
+  <metadata type="native">
+    <annotations>
+      <paragraph-annotation/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <part-annotation/>
+      <hyphenation-annotation/>
+      <linebreak-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="hbr.text">
+    <p xml:id="hbr.text.p" xml:space="preserve">
+      <part xml:id="hbr.text.part.1" space="no">
+        <t>White<t-hbr/>water<br/>Moun<t-hbr/></t>
+      </part>
+      <part xml:id="hbr.text.part.2" xml:space="default">
+        <t>tains. Found in America.</t>
+      </part>
+    </p>
+  </text>
+</FoLiA>
