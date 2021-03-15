@@ -3089,6 +3089,7 @@ void sanity_test130( ){
   assertEqual( dv.size(), 0 );
 }
 
+#if FOLIA_INT_VERSION >= 25
 void sanity_test140( ){
   startTestSerie( " test parsing of xml:space attribute ");
   Document doc( "tests/xmlspace.xml" );
@@ -3128,6 +3129,7 @@ void sanity_test141( ){
   assertMessage( "/tmp/test141.xml tests/test141.xml.ok differ!",
    		 (stat == 0) );
 }
+#endif
 
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");
