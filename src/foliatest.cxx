@@ -3089,7 +3089,7 @@ void sanity_test130( ){
   assertEqual( dv.size(), 0 );
 }
 
-#if FOLIA_INT_VERSION >= 25
+#if FOLIA_INT_VERSION >= 28
 void sanity_test140( ){
   startTestSerie( " test parsing of xml:space attribute ");
   Document doc( "tests/xmlspace.xml" );
