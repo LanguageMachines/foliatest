@@ -1949,7 +1949,7 @@ void sanity_test044b(){
   startTestSerie( " Sanity check - Text Markup (LineBreak)" );
   FoliaElement *par = sanityDoc["entry.1.def.1.p.1"];
   string txt = par->str();
-  assertEqual( txt, "Term uit de editiewetenschap en tekstkritiek voor de schematische weergave in de vorm van een boomdiagram van de onderlinge verwantschap van \n documentaire bronnen (handschrift, codex, druk), waarin een tekst bewaard is gebleven.\n" );
+  assertEqual( txt, "Term uit de editiewetenschap en tekstkritiek voor de schematische weergave in de vorm van een boomdiagram van de onderlinge verwantschap van \ndocumentaire bronnen (handschrift, codex, druk), waarin een tekst bewaard is gebleven.\n" );
 }
 
 void sanity_test045(){
