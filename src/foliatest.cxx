@@ -4341,7 +4341,7 @@ void text_test10(){
 "         <t offset=\"100\">of</t>"
 "       </w>"
 "       <w xml:id=\"example.p.1.s.1.w.18\" class=\"WORD\" space=\"no\">"
-"         <!-- this one is invalid -->
+"         <!-- this one is invalid -->"
 "         <t offset=\"104\">Grunberg</t>"
 "       </w>"
 "       <w xml:id=\"example.p.1.s.1.w.19\" class=\"PUNCTUATION\">"
