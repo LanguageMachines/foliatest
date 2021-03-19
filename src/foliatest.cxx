@@ -63,26 +63,32 @@ using TiCC::operator<<;
 
 int expect = 0;
 string default_path =  "../FoLiApy/folia-repo";
-string fol_path;
 string legacy_file;
 Document LEGACYEXAMPLE;
 
+string get_folia_path() {
+    string fol_path;
+    const char *env = getenv("FOLIAPATH");
+    if ( env == NULL ){
+      if ( TiCC::isDir( default_path + "/examples" ) ){
+        env = default_path.c_str();
+      }
+      else {
+        cerr << "WARNING: FOLIAPATH not set or guessed!!!" << endl;
+        return "../FoLiA/";
+      }
+    };
+    fol_path = env;
+    fol_path += "/";
+    return fol_path;
+}
+
+string fol_path = get_folia_path();
+
 bool setup(){
-  const char *env = getenv("FOLIAPATH");
-  if ( env == NULL ){
-    if ( TiCC::isDir( default_path + "/examples" ) ){
-      env = default_path.c_str();
-    }
-    else {
-      cerr << "FOLIAPATH not set or guessed" << endl;
-      return false;
-    }
-  };
-  fol_path = env;
-  fol_path += "/";
   legacy_file = fol_path + "examples/full-legacy.1.5.folia.xml";
   LEGACYEXAMPLE.read_from_file( legacy_file );
-  env = getenv("EXPECT");
+  const char *env = getenv("EXPECT");
   if ( env != NULL ){
     string value = env;
     if ( !TiCC::stringTo( value, expect ) ){
@@ -3844,10 +3850,8 @@ void edit_test018c(){
   FoliaElement *s = editDoc["example.p.1.s.1"];
   // 1 get text() dynamic from children
   assertEqual( s->text(), "Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg?" );
-  // 2 get the text of the Sentence itself (which contains spaces and tabs!
-  assertEqual( s->stricttext(), "Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers\n"
-"	als Couperus, 	Haasse, of\n"
-"	Grunberg?" );
+  // 2 get the text of the Sentence itself (it contains spaces and tabs that are normalized away since FoLiA >= 2.5)!
+  assertEqual( s->stricttext(), "Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg?");
   // 3 try to change the text
   assertThrow( s->settext("This MUST fail!" ), InconsistentText );
   // 4 but we may add differnet text in another class
@@ -6423,7 +6427,7 @@ void processor_test012() {
   }
 }
 
-Document whitespaceDoc( "file='tests/issue88b.2.5.0.folia.xml'" );
+Document whitespaceDoc( "file='" + fol_path + "examples/tests/issue88b.2.5.0.folia.xml'" );
 
 void whitespace_test001(){
   startTestSerie(" Whitespace - Heavy markuped up, double nested and multiline " );
