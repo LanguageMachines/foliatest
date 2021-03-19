@@ -6497,8 +6497,7 @@ void whitespace_test012(){
   assertTrue( p->text() == "I Buiten- en binnenlandse hoogleraren, lectoren en oud-docenten in de neerlandistiek, sprekers, bestuurs- en stafleden van de IVN ." );
 }
 
-
-void whitespace_test011(){
+void whitespace_test013(){
   startTestSerie(" Whitespace - No space despite t-hbr, markup and features " );
   FoliaElement *p = whitespaceDoc["test.p.13"];
   assertTrue( p->text() == "Es entspricht einerseits nicht den Erwartungen derjenigen, welche in betreff der Lage der Landarbeiter nur solche" );
