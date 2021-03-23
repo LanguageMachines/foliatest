@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="spaces" generator="libfolia-v2.1" version="2.4.0">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <token-annotation set="tokconfig-nld"/>
+      <sentence-annotation set="tokconfig-nld"/>
+      <paragraph-annotation set="tokconfig-nld"/>
+      <style-annotation set="style"/>
+    </annotations>
+  </metadata>
+  <text xml:id="spaces.text">
+    <p xml:id="spaces.text.p.1">
+      <s xml:id="spaces.text.p.1.s.1">
+	<t>Zit ting 8-23 december 1632</t>
+        <w xml:id="spaces.text.p.1.s.1.w.1" class="WORD" set="tokconfig-nld">
+          <t offset="0" >Zit ting</t>
+        </w>
+        <w xml:id="spaces.text.p.1.s.1.w.2" class="WORD-COMPOUND" set="tokconfig-nld">
+          <t offset="9">8-23</t>
+        </w>
+        <w xml:id="spaces.text.p.1.s.1.w.3" class="WORD" set="tokconfig-nld">
+          <t offset="14">december</t>
+        </w>
+        <w xml:id="spaces.text.p.1.s.1.w.4" class="NUMBER" set="tokconfig-nld">
+          <t offset="23">1632</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="spaces.text.p.2">
+      <s xml:id="spaces.text.p.2.s.1">
+	<!-- two words with U+2004 spaces (THREE-PER-EM SPACE) e2 80 84 -->
+	<t>zij de ha ren</t>
+        <w xml:id="spaces.text.p.2.s.1.w.1" class="WORD" set="tokconfig-nld">
+          <t>zij de</t>
+        </w>
+        <w xml:id="spaces.text.p.2.s.1.w.2" class="WORD" set="tokconfig-nld">
+          <t><t-style class="bold">ha</t-style> ren</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="spaces.text.p.3">
+      <s xml:id="spaces.text.p.3.s.1">
+	<t>dat op die noodinge van de de ese zij de</t>
+        <w xml:id="spaces.text.p.3.s.1.w.1" class="WORD" set="tokconfig-nld">
+          <t>dat</t>
+        </w>
+        <w xml:id="spaces.text.p.3.s.1.w.2" class="WORD" set="tokconfig-nld">
+          <t>op die</t>
+        </w>
+        <w xml:id="spaces.text.p.3.s.1.w.3" class="WORD" set="tokconfig-nld">
+          <t>noodinge</t>
+        </w>
+        <w xml:id="spaces.text.p.3.s.1.w.4" class="WORD" set="tokconfig-nld">
+          <t>van de</t>
+        </w>
+        <w xml:id="spaces.text.p.3.s.1.w.5" class="WORD" set="tokconfig-nld">
+          <t>de ese</t>
+        </w>
+        <w xml:id="spaces.text.p.3.s.1.w.6" class="WORD" set="tokconfig-nld">
+          <t>zij de</t>
+        </w>
+      </s>
+    </p>
+  </text>
+</FoLiA>
