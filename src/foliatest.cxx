@@ -3887,30 +3887,31 @@ void text_test01(){
   startTestSerie( " a text with miscellaneous spaces " );
   Document doc;
   assertNoThrow( doc.read_from_file("tests/spaces.xml") );
-  return; // for now due to error
-  FoliaElement *el = doc["spaces.text.p.1.s.1.w.1"];
-  assertFalse( el->str() == "Zit ting" );
-  assertEqual( el->str(), "Zit ting" );
-  el = doc["spaces.text.p.3.s.1.w.2"];
-  assertFalse( el->str() == "op die" );
-  assertEqual( el->str(), "op die" );
-  el = doc["spaces.text.p.3.s.1.w.4"];
-  assertFalse( el->str() == "van de" );
-  assertEqual( el->str(), "van de" );
-  el = doc["spaces.text.p.3.s.1.w.5"];
-  assertFalse( el->str() == "de ese" );
-  assertEqual( el->str(), "de ese" );
-  el = doc["spaces.text.p.3.s.1.w.6"];
-  cerr << el << endl;
-  cerr << TiCC::format_nonascii(el->str()) << endl;
-  assertFalse( el->str() == "zij de" );
-  assertEqual( el->str(), "zij de" );
-  el = el->index(0);
-  cerr << el << endl;
-  cerr << TiCC::format_nonascii(el->str()) << endl;
-  el = el->index(0);
-  cerr << el << endl;
-  cerr << TiCC::format_nonascii(el->str()) << endl;
+  if ( !hasThrown() ){
+    FoliaElement *el = doc["spaces.text.p.1.s.1.w.1"];
+    assertFalse( el->str() == "Zit ting" );
+    assertEqual( el->str(), "Zit ting" );
+    el = doc["spaces.text.p.3.s.1.w.2"];
+    assertFalse( el->str() == "op die" );
+    assertEqual( el->str(), "op die" );
+    el = doc["spaces.text.p.3.s.1.w.4"];
+    assertFalse( el->str() == "van de" );
+    assertEqual( el->str(), "van de" );
+    el = doc["spaces.text.p.3.s.1.w.5"];
+    assertFalse( el->str() == "de ese" );
+    assertEqual( el->str(), "de ese" );
+    el = doc["spaces.text.p.3.s.1.w.6"];
+    cerr << el << endl;
+    cerr << TiCC::format_nonascii(el->str()) << endl;
+    assertFalse( el->str() == "zij de" );
+    assertEqual( el->str(), "zij de" );
+    el = el->index(0);
+    cerr << el << endl;
+    cerr << TiCC::format_nonascii(el->str()) << endl;
+    el = el->index(0);
+    cerr << el << endl;
+    cerr << TiCC::format_nonascii(el->str()) << endl;
+  }
 }
 
 void text_test03(){
