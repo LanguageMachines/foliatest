@@ -6537,6 +6537,11 @@ void whitespace_test013(){
   assertTrue( p->text() == "Es entspricht einerseits nicht den Erwartungen derjenigen, welche in betreff der Lage der Landarbeiter nur solche" );
 }
 
+void whitespace_test014(){
+  startTestSerie(" Whitespace - Maintain trailing space " );
+  FoliaElement *p = whitespaceDoc["test.p.14"];
+  assertTrue( p->text() == "Terwijl hij den gemiddelden prijs van een karaat geslepen op £ 8 stelde, den prijs van een steen van 2 karaat op 22 X 8 = £ 32" );
+}
 
 
 void usage(){
@@ -6862,6 +6867,7 @@ int main( int argc, char* argv[] ){
   whitespace_test011();
   whitespace_test012();
   whitespace_test013();
+  whitespace_test014();
 #endif
   if ( !is_setup ){
     assertMessage( "FOLIAPATH not set?", false );
