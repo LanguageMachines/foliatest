@@ -473,14 +473,24 @@ void Test_Provenance(){
     args.clear();
     args["processor"] = proc2->id();
     args["generate_id"] = body->id();
+#if (FOLIA_INT_VERSION >= 28)
+    Sentence *sentence = body->create_child<Sentence>( args );
+#else
     Sentence *sentence = body->create<Sentence>( args );
+#endif
     args.clear();
     args["processor"] = proc1->id();
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
+#if (FOLIA_INT_VERSION >= 28)
+    Word *w = sentence->create_child<Word>( args );
+    args["text"] = "world";
+    sentence->create_child<Word>( args );
+#else
     Word *w = sentence->create<Word>( args );
     args["text"] = "world";
     sentence->create<Word>( args );
+#endif
     const processor *p = test->get_processor(w->processor());
     assertEqual( p, test->provenance()->index(proc1->id()) );
     test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml" );
@@ -3116,18 +3126,18 @@ void sanity_test141( ){
   FoliaElement *root = doc.addText( args );
   args.clear();
   args["generate_id"] = "text";
-  Division *d1 = root->create<Division>( args ) ;
+  Division *d1 = root->create_child<Division>( args );
   args["generate_id"] = d1->id();
   args["xml:space"] = "preserve";
-  Paragraph *p1 = d1->create<Paragraph>( args );
+  Paragraph *p1 = d1->create_child<Paragraph>( args );
   args.clear();
   args["generate_id"] = p1->id();
-  Sentence *s1 = p1->create<Sentence>( args );
+  Sentence *s1 = p1->create_child<Sentence>( args );
   s1->settext( "de kat\nis    aaibaar" );
   args.clear();
   args["generate_id"] = p1->id();
   args["xml:space"] = "default";
-  Sentence *s2 = p1->create<Sentence>( args );
+  Sentence *s2 = p1->create_child<Sentence>( args );
   s2->settext( "de hond\nblaft    hard" );
   doc.setmode( "strip" );
   doc.save( "/tmp/test141.xml", true );
