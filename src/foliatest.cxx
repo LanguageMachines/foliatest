@@ -1872,6 +1872,8 @@ void sanity_test041a(){
     }
   }
   assertEqual( res, " ander woord" );
+  assertNoThrow( spans = word->parent()->selectSpan() );
+  assertEqual( spans.size(), 24 );
 }
 
 void sanity_test041b(){
@@ -3911,16 +3913,8 @@ void text_test01(){
     assertFalse( el->str() == "de ese" );
     assertEqual( el->str(), "de ese" );
     el = doc["spaces.text.p.3.s.1.w.6"];
-    cerr << el << endl;
-    cerr << TiCC::format_nonascii(el->str()) << endl;
     assertFalse( el->str() == "zij de" );
     assertEqual( el->str(), "zij de" );
-    el = el->index(0);
-    cerr << el << endl;
-    cerr << TiCC::format_nonascii(el->str()) << endl;
-    el = el->index(0);
-    cerr << el << endl;
-    cerr << TiCC::format_nonascii(el->str()) << endl;
   }
 }
 
