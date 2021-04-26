@@ -4231,6 +4231,9 @@ void text_test08b(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
+#if FOLIA_INT_VERSION > 28
+  assertEqual( doc.get_warn_count(), 8 );
+#endif
 }
 
 void text_test09(){
@@ -4474,6 +4477,9 @@ void text_test11(){
   assertNoThrow( doc.read_from_string(xml) );
   assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
+#if FOLIA_INT_VERSION > 28
+  assertEqual( doc.get_warn_count(), 1 );
+#endif
 }
 
 void text_test12(){
