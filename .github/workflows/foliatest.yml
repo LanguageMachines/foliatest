@@ -26,7 +26,7 @@ jobs:
           channel: '#gitlama'
           nickname: GitHub
           message: |-
-            ${{ github.actor }} started a build of libfolia
+            ${{ github.actor }} started a build of foliatest
 
   build:
     runs-on: ${{ matrix.os }}
@@ -99,8 +99,12 @@ jobs:
         env:
           CXX: ${{ matrix.compiler }}
         run: ./configure
-      - name: show config
-        run: cat config.log
+      - id: compiler
+        run: |
+          id=$(echo ${{matrix.compiler}} | cut -d\+ -f1)
+          echo "::set-output name=id::$id"
+#      - name: show config
+#        run: cat config.log
       - name: Static Code-check
         run: cppcheck --enable=all --quiet --error-exitcode=0 .
       - name: make
@@ -124,9 +128,9 @@ jobs:
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
-          nickname: GitHub
+          nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
           message: |-
-            libfolia: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: FAILED
+            foliatest: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: FAILED
 
       - name: Notify IRC of succes
         if: ${{ success() }}
@@ -134,6 +138,6 @@ jobs:
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
-          nickname: GitHub
+          nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
           message: |-
-            libfolia: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: SUCCESS
+            foliatest: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: SUCCESS
