@@ -26,7 +26,7 @@ jobs:
           channel: '#gitlama'
           nickname: GitHub
           message: |-
-            ${{ github.actor }} started a build of ${{ github.event.repository.name }}
+            ${{ github.actor }} started a build of libfolia
 
   build:
     runs-on: ${{ matrix.os }}
@@ -126,7 +126,7 @@ jobs:
           channel: '#gitlama'
           nickname: GitHub
           message: |-
-            ${{ github.event.repository.name }} with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: FAILED
+            libfolia: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: FAILED
 
       - name: Notify IRC of succes
         if: ${{ success() }}
@@ -136,4 +136,4 @@ jobs:
           channel: '#gitlama'
           nickname: GitHub
           message: |-
-            ${{ github.event.repository.name }} with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: SUCCESS
+            libfolia: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: SUCCESS
