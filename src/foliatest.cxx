@@ -67,7 +67,7 @@ string legacy_file;
 Document LEGACYEXAMPLE;
 
 string get_folia_path() {
-    string fol_path;
+    string path;
     const char *env = getenv("FOLIAPATH");
     if ( env == NULL ){
       if ( TiCC::isDir( default_path + "/examples" ) ){
@@ -78,9 +78,9 @@ string get_folia_path() {
         return "../FoLiA/";
       }
     };
-    fol_path = env;
-    fol_path += "/";
-    return fol_path;
+    path = env;
+    path += "/";
+    return path;
 }
 
 string fol_path = get_folia_path();
@@ -267,15 +267,15 @@ void Test_Exxx_KeepVersion(){ // xxx -> replace with a number at some point
 }
 
 void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
-  Document doc( fol_path + "examples/tests/set_and_setless.2.0.0.folia.xml" );
+  Document sdoc( fol_path + "examples/tests/set_and_setless.2.0.0.folia.xml" );
   {
     startTestSerie( "Testing sanity with set-holding and setless annotation types similtaneously (setless)" );
-    auto c1 = doc["example.p.1.s.1.chunk.1"];
+    auto c1 = sdoc["example.p.1.s.1.chunk.1"];
     assertEqual( c1->sett(), "" );
   }
   {
     startTestSerie( "Testing sanity with set-holding and setless annotation types similtaneously (set-holding)" );
-    auto c1 = doc["example.p.1.s.1.chunkset.1"];
+    auto c1 = sdoc["example.p.1.s.1.chunkset.1"];
     assertEqual( c1->sett(), "chunkset" );
   }
   {
@@ -1867,8 +1867,8 @@ void sanity_test041a(){
   vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<EntitiesLayer>() );
   for( const auto& span: spans ){
-    for ( const auto& word: span->wrefs() ){
-      res += " " + word->text();
+    for ( const auto& w: span->wrefs() ){
+      res += " " + w->text();
     }
   }
   assertEqual( res, " ander woord" );
@@ -6576,6 +6576,7 @@ int main( int argc, char* argv[] ){
     if ( Opts.extract( 'V' )
 	 || Opts.extract( "version" ) ){
       cout << "foliatest for " << folia::VersionName() << endl;
+      cout << "build to test version: " << FOLIA_INT_VERSION << endl;
       return EXIT_SUCCESS;
     }
     string value;
