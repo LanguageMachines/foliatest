@@ -646,20 +646,20 @@ void Test_Provenance(){
     KWargs args;
     args["name"] = "TestSuite";
     args["id"] = "p0";
-    processor *main = doc.add_processor( args );
+    processor *main_p = doc.add_processor( args );
     args.clear();
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
     args["generator"] = "YES";
-    doc.add_processor( args, main );
+    doc.add_processor( args, main_p );
     doc.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
     args["generator"] = "YES";
-    doc.add_processor( args, main );
+    doc.add_processor( args, main_p );
     doc.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
     doc.declare( AnnotationType::TEXT, DEFAULT_TEXT_SET, "processor='p0'" );
@@ -690,13 +690,13 @@ void Test_Provenance(){
     KWargs args;
     args["name"] = "TestSuite";
     args["id"] = "p0";
-    processor *main = doc.add_processor( args );
+    processor *main_p = doc.add_processor( args );
     args.clear();
     args["name"] = "SomeTokeniser";
     args["generate_id"] = "next()";
     args["version"] = "1";
     args["generator"] = "YES";
-    processor *sub = doc.add_processor( args, main );
+    processor *sub = doc.add_processor( args, main_p );
     args.clear();
     args["processor"] = sub->id();
     doc.declare( AnnotationType::TOKEN, "adhoc", args );
@@ -705,12 +705,12 @@ void Test_Provenance(){
     args["generate_id"] = "next()";
     args["version"] = "1";
     args["generator"] = "YES";
-    sub = doc.add_processor( args, main );
+    sub = doc.add_processor( args, main_p );
     args.clear();
     args["processor"] = sub->id();
     doc.declare( AnnotationType::SENTENCE, "adhoc", args );
     args.clear();
-    args["processor"] = main->id();
+    args["processor"] = main_p->id();
     doc.declare( AnnotationType::TEXT, DEFAULT_TEXT_SET, args );
     args.clear();
     args["xml:id"] = "test.text.1";
@@ -1883,8 +1883,8 @@ void sanity_test041b(){
   vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<EntitiesLayer>("http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml") );
   for( const auto& span: spans ){
-    for ( const auto& word: span->wrefs() ){
-      res += " " + word->text();
+    for ( const auto& w: span->wrefs() ){
+      res += " " + w->text();
     }
   }
   assertEqual( res, " Maarten van Gompel" );
@@ -1897,8 +1897,8 @@ void sanity_test041c(){
   vector<AbstractSpanAnnotation*> spans;
   assertNoThrow( spans = word->findspans<Entity>("http://raw.github.com/proycon/folia/master/setdefinitions/namedentities.foliaset.xml") );
   for( const auto& span: spans ){
-    for ( const auto& word: span->wrefs() ){
-      res += " " + word->text();
+    for ( const auto& w: span->wrefs() ){
+      res += " " + w->text();
     }
   }
   assertEqual( res, " Maarten van Gompel" );

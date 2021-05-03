@@ -85,7 +85,7 @@ jobs:
         env:
           CXX: ${{ matrix.compiler }}
         run: |
-          git clone -b folia2.5 https://github.com/LanguageMachines/libfolia;
+          git clone https://github.com/LanguageMachines/libfolia;
           cd libfolia;
           bash bootstrap.sh;
           ./configure;
