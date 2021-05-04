@@ -447,6 +447,23 @@ void Test_Provenance(){
     }
   }
 
+#if FOLIA_INT_VERSION > 28
+  {
+    startTestSerie( "Provenance - Fail to a document - illegal to set processor on <text>" );
+    Document *test = new Document("xml:id='test'");
+    KWargs args;
+    args["name"] = "whatever";
+    args["generate_id"] = "p0";
+    args["version"] = "1";
+    args["generator"] = "YES";
+    processor *proc = test->add_processor( args );
+    test->declare( AnnotationType::TOKEN, "adhoc",
+		   "processor='" + proc->id() + "'" );
+    args.clear();
+    args["processor"] = proc->id();
+    assertThrow( test->create_root<Text>( args ), ValueError );
+  }
+#endif
 
   {
     startTestSerie( "Provenance - Create a document with flat processors - Explicit processor assignment" );
@@ -5259,7 +5276,6 @@ void create_test004( ){
   assertThrow( s->append( sT ), InconsistentText );
 }
 
-
 void create_test005( ){
   startTestSerie( " Creating a document from scratch. appending Words After Sentence" );
   Document d( "xml:id""='example'" );
@@ -5868,7 +5884,7 @@ void build_test002(){
 }
 
 #endif // version < 24
-void processor_test001a(){
+void engine_test001a(){
   startTestSerie( " copy a document using Folia Engine " );
   Engine proc;
   // proc.set_debug(true);
@@ -5887,7 +5903,7 @@ void processor_test001a(){
   }
 }
 
-void processor_test001b(){
+void engine_test001b(){
   startTestSerie( " copy a document with namespaces using Folia Engine" );
   Engine proc;
   //  proc.set_debug(true);
@@ -5905,7 +5921,7 @@ void processor_test001b(){
   }
 }
 
-void processor_test001c(){
+void engine_test001c(){
   startTestSerie( " process an invalid document using Folia Engine" );
   Engine proc;
   //  proc.set_debug(true);
@@ -5920,7 +5936,7 @@ void loop( Engine& proc ){
   }
 }
 
-void processor_test001d(){
+void engine_test001d(){
   startTestSerie( " process an invalid document using Folia Engine" );
   Engine proc;
   //  proc.set_debug(true);
@@ -5932,7 +5948,7 @@ void processor_test001d(){
   }
 }
 
-void processor_test001e(){
+void engine_test001e(){
   startTestSerie( " copy a difficult document using Folia Engine " );
   Engine proc;
   //  proc.set_debug(true);
@@ -5951,7 +5967,7 @@ void processor_test001e(){
   }
 }
 
-void processor_test001f(){
+void engine_test001f(){
   startTestSerie( " copy a FoLiA 2.0 document using Folia Engine " );
   string infile = fol_path
     + "examples/tests/provenance-nested-implicit.2.0.0.folia.xml";
@@ -5972,7 +5988,7 @@ void processor_test001f(){
   }
 }
 
-void processor_test002a(){
+void engine_test002a(){
   startTestSerie( " copy a document using Folia Engine (alternative)" );
   Engine proc;
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
@@ -5989,7 +6005,7 @@ void processor_test002a(){
   }
 }
 
-void processor_test002b(){
+void engine_test002b(){
   startTestSerie( " copy a document with namespace using Folia Engine (alternative)" );
   Engine proc;
   //  proc.set_debug(true);
@@ -6007,7 +6023,7 @@ void processor_test002b(){
   }
 }
 
-void processor_test002c(){
+void engine_test002c(){
   startTestSerie( " copy a speech document using Folia Engine" );
   Engine proc;
   //  proc.set_debug(true);
@@ -6025,7 +6041,7 @@ void processor_test002c(){
   }
 }
 
-void processor_test003(){
+void engine_test003(){
   startTestSerie( " read a document and adding word and annotations using Foliaprocessor " );
   Engine proc;
   assertNoThrow( proc.init_doc( "tests/zin.xml", "/tmp/zin.xml") );
@@ -6053,7 +6069,7 @@ void processor_test003(){
   }
 }
 
-void processor_test004(){
+void engine_test004(){
   startTestSerie( " read a document searching for several nodes " );
   Engine proc;
   //  proc.set_debug(true);
@@ -6088,7 +6104,7 @@ void processor_test004(){
   }
 }
 
-void processor_test005(){
+void engine_test005(){
   startTestSerie( " enumerate a document on xml_element nodes " );
   Engine proc;
   //  proc.set_debug(true);
@@ -6104,7 +6120,7 @@ void processor_test005(){
   }
 }
 
-void processor_test006a(){
+void engine_test006a(){
   startTestSerie( " enumerate a document on text node parents" );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6121,7 +6137,7 @@ void processor_test006a(){
   }
 }
 
-void processor_test006b(){
+void engine_test006b(){
   startTestSerie( " enumerate a document on text node parents with textclass" );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6138,7 +6154,7 @@ void processor_test006b(){
   }
 }
 
-void processor_test006c(){
+void engine_test006c(){
   startTestSerie( " enumerate a document with layers on text node parents" );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6165,7 +6181,7 @@ void processor_test006c(){
   }
 }
 
-void processor_test006d(){
+void engine_test006d(){
   startTestSerie( " enumerate a complex document on text node parents" );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6182,7 +6198,7 @@ void processor_test006d(){
   }
 }
 
-void processor_test007(){
+void engine_test007(){
   startTestSerie( " process a document searching for text nodes " );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6208,7 +6224,7 @@ void processor_test007(){
   }
 }
 
-void processor_test008a(){
+void engine_test008a(){
   startTestSerie( " process a document searching for text nodes " );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6230,7 +6246,7 @@ void processor_test008a(){
   }
 }
 
-void processor_test008b(){
+void engine_test008b(){
   startTestSerie( " process a document with layers searching for text nodes " );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6252,7 +6268,7 @@ void processor_test008b(){
   }
 }
 
-void processor_test008c(){
+void engine_test008c(){
   startTestSerie( " process a complex document searching for text nodes " );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6280,7 +6296,7 @@ void test_proc( TextEngine& proc ){
   }
 }
 
-void processor_test008d(){
+void engine_test008d(){
   startTestSerie( " process a strange document searching for text nodes " );
   TextEngine proc( "tests/scary.xml", "/tmp/proctest-8d.xml");
   if ( proc.ok() ){
@@ -6289,7 +6305,7 @@ void processor_test008d(){
   }
 }
 
-void processor_test008e(){
+void engine_test008e(){
   startTestSerie( " process a document with entities, searching for text nodes " );
   TextEngine proc( "tests/entities.xml" );
   // proc.set_debug(true);
@@ -6310,7 +6326,7 @@ void processor_test008e(){
   }
 }
 
-void processor_test009a(){
+void engine_test009a(){
   startTestSerie( " process a difficult document with t-style " );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6330,7 +6346,7 @@ void processor_test009a(){
   }
 }
 
-void processor_test009b(){
+void engine_test009b(){
   startTestSerie( " process a difficult document for text " );
   TextEngine proc( "tests/textbug1.xml" );
   //  proc.set_debug(true);
@@ -6349,7 +6365,7 @@ void processor_test009b(){
   }
 }
 
-void processor_test009c(){
+void engine_test009c(){
   startTestSerie( " process a difficult document for text " );
   TextEngine proc;
   //  proc.set_debug(true);
@@ -6369,7 +6385,7 @@ void processor_test009c(){
   }
 }
 
-void processor_test010(){
+void engine_test010(){
   startTestSerie( " copy a document using Folia Engine on string buffer" );
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\""
@@ -6419,7 +6435,7 @@ void processor_test010(){
   }
 }
 
-void processor_test011() {
+void engine_test011() {
   startTestSerie( " Test lezen en schrijven van een BZ2 FoLiA file " );
   Engine proc( "/tmp/example.xml.bz2" ); // created by earlier test
   while ( proc.get_node( "pqrs" ) ){
@@ -6432,7 +6448,7 @@ void processor_test011() {
    		 (stat == 0) );
 }
 
-void processor_test012() {
+void engine_test012() {
   startTestSerie( " Test reading of erroneous files" );
   string err_path = fol_path + "examples/erroneous/";
   {
@@ -6597,7 +6613,7 @@ int main( int argc, char* argv[] ){
   bool is_setup = setup();
   //  Test_Exxx_SetAndSetLess();
   //  exit(777);
-    //  processor_test001f();
+    //  engine_test001f();
   //  exit(5);
   //  Test_Exxx_Hidden_Tokens();
   //  sanity_test006c();
@@ -6837,33 +6853,33 @@ int main( int argc, char* argv[] ){
   build_test001();
   build_test002();
 #endif
-  processor_test001a();
-  processor_test001b();
-  processor_test001c();
-  processor_test001d();
-  processor_test001e();
-  processor_test001f();
-  processor_test002a();
-  processor_test002b();
-  processor_test002c();
-  processor_test003();
-  processor_test004();
-  processor_test005();
-  processor_test006a();
-  processor_test006b();
-  processor_test006c();
-  processor_test006d();
-  processor_test007();
-  processor_test008a();
-  processor_test008b();
-  processor_test008c();
-  processor_test008d();
-  processor_test008e();
-  processor_test009a();
-  processor_test009b();
-  processor_test009c();
-  processor_test010();
-  processor_test011();
+  engine_test001a();
+  engine_test001b();
+  engine_test001c();
+  engine_test001d();
+  engine_test001e();
+  engine_test001f();
+  engine_test002a();
+  engine_test002b();
+  engine_test002c();
+  engine_test003();
+  engine_test004();
+  engine_test005();
+  engine_test006a();
+  engine_test006b();
+  engine_test006c();
+  engine_test006d();
+  engine_test007();
+  engine_test008a();
+  engine_test008b();
+  engine_test008c();
+  engine_test008d();
+  engine_test008e();
+  engine_test009a();
+  engine_test009b();
+  engine_test009c();
+  engine_test010();
+  engine_test011();
 #if FOLIA_INT_VERSION >= 28
   whitespace_test001();
   whitespace_test002();
@@ -6884,7 +6900,7 @@ int main( int argc, char* argv[] ){
     assertMessage( "FOLIAPATH not set?", false );
   }
   else {
-    processor_test012();
+    engine_test012();
     Test_E001_Tokens_Structure();
     Test_Exxx_Hidden_Tokens();
     Test_Exxx_Invalid_Wref();
