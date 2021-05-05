@@ -3144,8 +3144,10 @@ void sanity_test141( ){
   args["xml:id"] = "text";
   FoliaElement *root = doc.addText( args );
   args.clear();
+  cerr << "HIER 1 " << endl;
   args["generate_id"] = "text";
   Division *d1 = root->create_child<Division>( args );
+  cerr << "HIER 2 " << endl;
   args["generate_id"] = d1->id();
   args["xml:space"] = "preserve";
   Paragraph *p1 = d1->create_child<Paragraph>( args );
@@ -3635,7 +3637,7 @@ void edit_test011(){
   startTestSerie( " Adding Subtoken annotation (morphological analysis)" );
   Document editDoc( "file='tests/example.xml'" );
   FoliaElement *w = editDoc["WR-P-E-J-0000000001.p.1.s.5.w.3"];
-  MorphologyLayer *l = new MorphologyLayer(0);
+  MorphologyLayer *l = new MorphologyLayer();
   w->append( l );
   Morpheme *m = new Morpheme( &editDoc );
   l->append( m );
