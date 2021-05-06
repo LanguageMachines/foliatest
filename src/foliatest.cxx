@@ -490,8 +490,8 @@ void Test_Provenance(){
     args.clear();
     args["processor"] = proc2->id();
     args["generate_id"] = body->id();
-#if (FOLIA_INT_VERSION >= 28)
-    Sentence *sentence = body->create_child<Sentence>( args );
+#if (FOLIA_INT_VERSION >= 29)
+    Sentence *sentence = body->add_child<Sentence>( args );
 #else
     Sentence *sentence = body->create<Sentence>( args );
 #endif
@@ -499,10 +499,10 @@ void Test_Provenance(){
     args["processor"] = proc1->id();
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
-#if (FOLIA_INT_VERSION >= 28)
-    Word *w = sentence->create_child<Word>( args );
+#if (FOLIA_INT_VERSION >= 29)
+    Word *w = sentence->add_child<Word>( args );
     args["text"] = "world";
-    sentence->create_child<Word>( args );
+    sentence->add_child<Word>( args );
 #else
     Word *w = sentence->create<Word>( args );
     args["text"] = "world";
@@ -3124,7 +3124,7 @@ void sanity_test130( ){
   assertEqual( dv.size(), 0 );
 }
 
-#if FOLIA_INT_VERSION >= 28
+#if FOLIA_INT_VERSION >= 29
 void sanity_test140( ){
   startTestSerie( " test parsing of xml:space attribute ");
   Document doc( "tests/xmlspace.xml" );
@@ -3146,19 +3146,19 @@ void sanity_test141( ){
   args.clear();
   cerr << "HIER 1 " << endl;
   args["generate_id"] = "text";
-  Division *d1 = root->create_child<Division>( args );
+  Division *d1 = root->add_child<Division>( args );
   cerr << "HIER 2 " << endl;
   args["generate_id"] = d1->id();
   args["xml:space"] = "preserve";
-  Paragraph *p1 = d1->create_child<Paragraph>( args );
+  Paragraph *p1 = d1->add_child<Paragraph>( args );
   args.clear();
   args["generate_id"] = p1->id();
-  Sentence *s1 = p1->create_child<Sentence>( args );
+  Sentence *s1 = p1->add_child<Sentence>( args );
   s1->settext( "de kat\nis    aaibaar" );
   args.clear();
   args["generate_id"] = p1->id();
   args["xml:space"] = "default";
-  Sentence *s2 = p1->create_child<Sentence>( args );
+  Sentence *s2 = p1->add_child<Sentence>( args );
   s2->settext( "de hond\nblaft    hard" );
   doc.setmode( "strip" );
   doc.save( "/tmp/test141.xml", true );
@@ -5137,10 +5137,70 @@ void create_doc( bool with_space ){
   }
 }
 
+#if FOLIA_INT_VERSION >= 29
+void create_newstyle_doc( bool with_space ){
+  Document doc( "xml:id='style'" );
+  assertNoThrow( doc.declare( AnnotationType::PARAGRAPH, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::STYLE, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::HYPHENATION, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::STRING, "myset" ) );
+  assertNoThrow( doc.declare( AnnotationType::METRIC, "myset" ) );
+
+  KWargs args;
+  args["xml:id"] = "text";
+  FoliaElement *root = doc.addText( args );
+  args.clear();
+  args["generate_id"] = "auto()";
+  Paragraph *p = root->add_child<Paragraph>( args );
+  args.clear();
+  TextContent *t = p->add_child<TextContent>( args  );
+  args["xml:id"] = "auto()";
+  TextMarkupString *str = t->add_child<TextMarkupString>( args );
+  KWargs s_args;
+  s_args["text"] = "deel";
+  TextMarkupStyle *style = str->add_child<TextMarkupStyle>( s_args );
+  KWargs m_args;
+  m_args["class"] = "some";
+  m_args["subset"] = "things";
+  style->add_child<Feature>( m_args );
+  style->add_child<Hyphbreak>();
+  str = t->add_child<TextMarkupString>( args );
+  s_args["text"] = "woord";
+  style = str->add_child<TextMarkupStyle>( s_args );
+  m_args["class"] = "other";
+  style->add_child<Feature>( m_args );
+  args.clear();
+  if ( with_space ){
+    XmlText *txt = new folia::XmlText();
+    txt->setvalue( " " );
+    t->append( txt );
+    args["text"] = "extra";
+  }
+  else {
+    args["text"] = " extra";
+  }
+  str = t->add_child<TextMarkupString>( args );
+  if ( with_space ){
+    assertNoThrow( doc.save( "/tmp/new-styles-with-space.xml" ) );
+  }
+  else {
+    assertNoThrow( doc.save( "/tmp/new-styles-no-space.xml" ) );
+  }
+}
+#endif
+
 void text_test18(){
   startTestSerie( "Text creation - styles and stuff" );
   create_doc( false );
   create_doc( true );
+#if FOLIA_INT_VERSION >= 29
+  create_newstyle_doc( false );
+  create_newstyle_doc( true );
+  int stat = system( "./tests/foliadiff.sh /tmp/new-styles-no-space.xml /tmp/styles-no-space.xml" );
+  assertMessage( "/tmp/new-styles-no-space.xml /tmp/styles-no-space.xml differ",
+   		 (stat == 0) );
+
+#endif
 }
 
 void create_test001( ){
