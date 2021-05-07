@@ -108,7 +108,7 @@ jobs:
       - name: show config.h
         run: cat config.h
       - name: Static Code-check
-        run: cppcheck --enable=all --quiet --error-exitcode=0 .
+        run: cppcheck --enable=all --quiet --error-exitcode=0 -I . .
       - name: make
         run: make
       - name: install
