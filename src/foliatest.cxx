@@ -42,7 +42,6 @@
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
-#include "libfolia/folia_properties.h"
 #include "ticcutils/FileUtils.h"
 #include "ticcutils/UnitTest.h"
 #include "ticcutils/CommandLine.h"
