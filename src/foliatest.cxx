@@ -3143,10 +3143,8 @@ void sanity_test141( ){
   args["xml:id"] = "text";
   FoliaElement *root = doc.addText( args );
   args.clear();
-  cerr << "HIER 1 " << endl;
   args["generate_id"] = "text";
   Division *d1 = root->add_child<Division>( args );
-  cerr << "HIER 2 " << endl;
   args["generate_id"] = d1->id();
   args["xml:space"] = "preserve";
   Paragraph *p1 = d1->add_child<Paragraph>( args );
@@ -5178,7 +5176,7 @@ void create_newstyle_doc( bool with_space ){
   else {
     args["text"] = " extra";
   }
-  str = t->add_child<TextMarkupString>( args );
+  t->add_child<TextMarkupString>( args );
   if ( with_space ){
     assertNoThrow( doc.save( "/tmp/new-styles-with-space.xml" ) );
   }
