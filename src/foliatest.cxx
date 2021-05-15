@@ -5150,7 +5150,7 @@ void create_newstyle_doc( bool with_space ){
   args["generate_id"] = "auto()";
   Paragraph *p = root->add_child<Paragraph>( args );
   args.clear();
-  TextContent *t = p->add_child<TextContent>( args  );
+  TextContent *t = p->add_child<TextContent>( args );
   args["xml:id"] = "auto()";
   TextMarkupString *str = t->add_child<TextMarkupString>( args );
   KWargs s_args;
