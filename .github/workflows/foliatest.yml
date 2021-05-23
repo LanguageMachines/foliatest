@@ -2,7 +2,7 @@ name: Build foliatests
 
 on:
   schedule:
-    - cron: "0 23 * * 6"
+    - cron: "0 22 * * 6"
 
   push:
     branches: [master]
