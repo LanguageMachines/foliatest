@@ -404,13 +404,13 @@ void Test_Provenance(){
 
     {
       startTestSerie("Provenance - Create a document with a processor" );
-      Document *test = new Document("xml:id='test'");
+      Document test("xml:id='test'");
       KWargs args;
       args["name"] = "TestSuite";
       args["xml:id"] = "p0";
-      test->add_processor( args );
-      assertEqual( test->provenance()->index("p0")->name(), "TestSuite");
-      test->save( "/tmp/test-1.xml" );
+      test.add_processor( args );
+      assertEqual( test.provenance()->index("p0")->name(), "TestSuite");
+      test.save( "/tmp/test-1.xml" );
       string xmlref =
 	"<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"test\" version=\"2.0.0\" generator=\"foliapy-v2.0.0\">\n"
 	"  <metadata type=\"native\">\n"
@@ -428,64 +428,64 @@ void Test_Provenance(){
 
     {
       startTestSerie("Provenance - provenance: Duplicate named and ID's" );
-      Document *test = new Document("xml:id='test'");
+      Document test("xml:id='test'");
       KWargs args;
       args["name"] = "TestSuite";
       args["xml:id"] = "p0";
-      test->add_processor( args );
+      test.add_processor( args );
       args.clear();
       args["name"] = "TestSuite"; // duplicate names is OK!
       args["xml:id"] = "p1";
-      test->add_processor( args );
-      vector<processor *> pv = test->get_processors_by_name( "TestSuite" );
+      test.add_processor( args );
+      vector<processor *> pv = test.get_processors_by_name( "TestSuite" );
       assertEqual( pv.size(), 2 );
       args.clear();
       args["name"] = "TestSuite";
       args["xml:id"] = "p0";      // duplicate ID' not!
-      assertThrow( test->add_processor( args ), DuplicateIDError );
+      assertThrow( test.add_processor( args ), DuplicateIDError );
     }
   }
 
 #if FOLIA_INT_VERSION > 28
   {
     startTestSerie( "Provenance - Fail to a document - illegal to set processor on <text>" );
-    Document *test = new Document("xml:id='test'");
+    Document test("xml:id='test'");
     KWargs args;
     args["name"] = "whatever";
     args["generate_id"] = "p0";
     args["version"] = "1";
     args["generator"] = "YES";
-    processor *proc = test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc",
+    processor *proc = test.add_processor( args );
+    test.declare( AnnotationType::TOKEN, "adhoc",
 		   "processor='" + proc->id() + "'" );
     args.clear();
     args["processor"] = proc->id();
-    assertThrow( test->create_root<Text>( args ), ValueError );
+    assertThrow( test.create_root<Text>( args ), ValueError );
   }
 #endif
 
   {
     startTestSerie( "Provenance - Create a document with flat processors - Explicit processor assignment" );
-    Document *test = new Document("xml:id='test'");
+    Document test("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
     args["generate_id"] = "p0";
     args["version"] = "1";
     args["generator"] = "YES";
-    processor *proc1 = test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc",
+    processor *proc1 = test.add_processor( args );
+    test.declare( AnnotationType::TOKEN, "adhoc",
 		   "processor='" + proc1->id() + "'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["generate_id"] = "p0";
     args["version"] = "1";
     args["generator"] = "Doesn't matter what we say here";
-    processor *proc2 = test->add_processor( args );
-    test->declare( AnnotationType::SENTENCE, "adhoc",
+    processor *proc2 = test.add_processor( args );
+    test.declare( AnnotationType::SENTENCE, "adhoc",
 		   "processor='" + proc2->id() + "'" );
     args.clear();
     args["xml:id"] = "test.text.1";
-    Text *body = test->create_root<Text>( args );
+    Text *body = test.create_root<Text>( args );
     args.clear();
     args["processor"] = proc2->id();
     args["generate_id"] = body->id();
@@ -507,9 +507,9 @@ void Test_Provenance(){
     args["text"] = "world";
     sentence->create<Word>( args );
 #endif
-    const processor *p = test->get_processor(w->processor());
-    assertEqual( p, test->provenance()->index(proc1->id()) );
-    test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml" );
+    const processor *p = test.get_processor(w->processor());
+    assertEqual( p, test.provenance()->index(proc1->id()) );
+    test.save( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml" );
     Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
     assertTrue( xmldiff( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml",
 			 fol_path
@@ -518,36 +518,36 @@ void Test_Provenance(){
 
   {
     startTestSerie( "Provenance - Create a document with flat processors - Implicit processor assignment" );
-    Document *test = new Document("xml:id='test'");
+    Document test("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
     args["generator"] = ""; // may be empty too
-    test->add_processor( args );
-    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     args.clear();
     args["xml:id"] = "test.text.1";
-    FoliaElement *body = test->append( new Text(args) );
+    FoliaElement *body = test.append( new Text(args) );
     args.clear();
     args["generate_id"] = body->id();
-    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    FoliaElement *sentence = body->append( new Sentence( args, &test ) );
     args.clear();
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
-    FoliaElement *w = sentence->append( new Word( args, test ) );
+    FoliaElement *w = sentence->append( new Word( args, &test ) );
     args["text"] = "world";
-    sentence->append( new Word( args, test ) );
-    const processor *p = test->get_processor(w->processor());
-    assertEqual( p, test->provenance()->index("p0.1") );
-    test->save( "/tmp/provenance-flat-implicit.2.0.0.folia-2.xml" );
+    sentence->append( new Word( args, &test ) );
+    const processor *p = test.get_processor(w->processor());
+    assertEqual( p, test.provenance()->index("p0.1") );
+    test.save( "/tmp/provenance-flat-implicit.2.0.0.folia-2.xml" );
     Document xmlref( fol_path + "examples/tests/provenance-flat-implicit.2.0.0.folia.xml" );
     assertTrue( xmldiff( "/tmp/provenance-flat-implicit.2.0.0.folia-2.xml",
 			 fol_path
@@ -556,53 +556,53 @@ void Test_Provenance(){
 
   {
     startTestSerie( "Provenance - Create a document with flat processors - Explicit multiple processor assignment" );
-    Document *test = new Document("xml:id='test'");
+    Document test("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     // we declare some extra processors (even though we don't really use them),
     // but this means the annotations will need to serialise an explicit
     // processor= attribute
     args["name"] = "SomeOtherTokeniser";
     args["id"] = "p0.3";
     args["version"] = "1";
-    test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
     args.clear();
     args["name"] = "OtherSentenceSplitter";
     args["id"] = "p0.4";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
     args.clear();
     args["xml:id"] = "test.text.1";
-    FoliaElement *body = test->append( new Text(args) );
+    FoliaElement *body = test.append( new Text(args) );
     args.clear();
     args["processor"] = "p0.2";
     args["generate_id"] = body->id();
-    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    FoliaElement *sentence = body->append( new Sentence( args, &test ) );
     args.clear();
     args["processor"] = "p0.1";
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
-    FoliaElement *w = sentence->append( new Word( args, test ) );
+    FoliaElement *w = sentence->append( new Word( args, &test ) );
     args["text"] = "world";
-    sentence->append( new Word( args, test ) );
-    const processor *p = test->get_processor(w->processor());
-    assertEqual( p, test->provenance()->index("p0.1") );
-    test->save( "/tmp/provenance-flat-explicit.2.0.0.folia.xml" );
+    sentence->append( new Word( args, &test ) );
+    const processor *p = test.get_processor(w->processor());
+    assertEqual( p, test.provenance()->index("p0.1") );
+    test.save( "/tmp/provenance-flat-explicit.2.0.0.folia.xml" );
     assertTrue( xmldiff( "/tmp/provenance-flat-explicit.2.0.0.folia.xml",
 			 fol_path
 			 + "examples/tests/provenance-flat-explicit.2.0.0.folia.xml" ) );
@@ -610,21 +610,21 @@ void Test_Provenance(){
 
   {
     startTestSerie( "Provenance - Create a document with flat processors - Implicit multiple processor assignment" );
-    Document *test = new Document("xml:id='test'");
+    Document test("xml:id='test'");
     KWargs args;
     args["name"] = "SomeTokeniser";
     args["id"] = "p0.1";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.1'" );
     args.clear();
     args["name"] = "SentenceSplitter";
     args["id"] = "p0.2";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.2'" );
     // we declare some extra processors (even though we don't really use them),
     // but this means the annotations will need to serialise an explicit
     // processor= attribute
@@ -632,27 +632,27 @@ void Test_Provenance(){
     args["id"] = "p0.3";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::TOKEN, "adhoc", "processor='p0.3'" );
     args.clear();
     args["name"] = "OtherSentenceSplitter";
     args["id"] = "p0.4";
     args["version"] = "1";
     args["generator"] = "YES";
-    test->add_processor( args );
-    test->declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
+    test.add_processor( args );
+    test.declare( AnnotationType::SENTENCE, "adhoc", "processor='p0.4'" );
     args.clear();
     args["xml:id"] = "test.text.1";
-    FoliaElement *body = test->append( new Text(args) );
+    FoliaElement *body = test.append( new Text(args) );
     args.clear();
     args["processor"] = "p0.2";
     args["generate_id"] = body->id();
-    FoliaElement *sentence = body->append( new Sentence( args, test ) );
+    FoliaElement *sentence = body->append( new Sentence( args, &test ) );
     args.clear();
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
     FoliaElement *w = 0;
-    assertThrow( w = new Word( args, test ), NoDefaultError );
+    assertThrow( w = new Word( args, &test ), NoDefaultError );
     assertTrue( w == 0 );
   }
 
@@ -2926,7 +2926,7 @@ void sanity_test108( ){
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "</FoLiA>\n" ;
-  assertThrow( doc.read_from_string(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), XmlError );  // invalid id!
   xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld_1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
