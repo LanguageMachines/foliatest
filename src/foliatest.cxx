@@ -5619,7 +5619,11 @@ void correction_test006(){
   FoliaElement *s = corDoc->index(corDoc->id() + ".s.1");
   FoliaElement *s2 = corDoc->index(corDoc->id() + ".s.2");
   FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.6");
+#if FOLIA_INT_VERSION > 28
+  s->remove(w); // doesn't delete w, we gonna re-use it
+#else
   s->remove(w,false); // don't delete w, we gonna re-use it
+#endif
   Correction *corr = new Correction();
   assertNoThrow( s->append( corr ) );
   Current *cur = new Current();
