@@ -1,3 +1,14 @@
+foliatest 0.11 2021-07-12
+[Ko van der Sloot]
+* added tests for newer Correction handling in FoLiA
+* added tests for, and adapted other tests to
+  the most recent libfolia (release 2.09)
+* modernized some tests
+* replaced TravisCI by GitHub actions
+
+[Maarten van Gompel]
+* added tests concerning text normalization and spacing
+
 foliatest 0.10 2020-12-11
 [Maarten van Gompel]
 * adapted two tests to comply with changes introduced by proycon/folia#88
