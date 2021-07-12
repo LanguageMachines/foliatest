@@ -3886,7 +3886,7 @@ void edit_test018c(){
   assertEqual( s->stricttext(), "Is het creëren van een volwaardig literair oeuvre voorbehouden aan schrijvers als Couperus, Haasse, of Grunberg?");
   // 3 try to change the text
   assertThrow( s->settext("This MUST fail!" ), InconsistentText );
-  // 4 but we may add differnet text in another class
+  // 4 but we may add different text in another class
   assertNoThrow( s->settext("And now for something completely different.", "larch" ) );
   // 5 get the text from the children
   // 5a check the text in the 'original' class
