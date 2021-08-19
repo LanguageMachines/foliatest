@@ -6625,6 +6625,12 @@ void whitespace_test010(){
   assertTrue( p->text() == "deel\nwoord\nextra\n" );
 }
 
+void whitespace_test010b(){
+  startTestSerie(" Whitespace - Explicit linebreaks " );
+  FoliaElement *p = whitespaceDoc["test.p.10b"];
+  assertTrue( p->text() == "deel\nwoord\nextra\n" );
+}
+
 void whitespace_test011(){
   startTestSerie(" Whitespace - Running text " );
   FoliaElement *p = whitespaceDoc["test.p.11"];
