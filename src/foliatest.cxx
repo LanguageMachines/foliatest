@@ -6562,7 +6562,7 @@ void engine_test012() {
   }
 }
 
-Document whitespaceDoc( "file='" + fol_path + "examples/tests/issue88b.2.5.0.folia.xml'" );
+Document whitespaceDoc( "file='" + fol_path + "examples/tests/issue88b.2.5.1.folia.xml'" );
 
 void whitespace_test001(){
   startTestSerie(" Whitespace - Heavy markuped up, double nested and multiline " );
