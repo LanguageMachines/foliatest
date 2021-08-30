@@ -121,8 +121,16 @@ jobs:
           EXPECT: 0
           LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
         continue-on-error: true
+
       - name: show log
         run: cat src/test-suite.log
+
+      - name: foliatest action
+        run: |
+	  ./src/testaction.sh;
+          TEST_STAT=$(cat status.tmp)
+          echo "test_status=$TEST_STAT" >> $GITHUB_ENV
+        continue-on-error: true
 
       - name: Notify IRC of failure
         if: ${{ failure() }}
