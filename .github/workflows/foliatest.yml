@@ -120,6 +120,10 @@ jobs:
         run: sudo make install
 
       - name: running foliatests
+        env:
+          FOLIA_PATH: foliapy/folia-repo
+          EXPECT: 0
+          LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
         run: |
           ./src/testaction.sh;
           TEST_STAT=$(cat status.tmp)
