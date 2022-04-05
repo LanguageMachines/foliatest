@@ -5204,6 +5204,48 @@ void text_test18(){
 #endif
 }
 
+void text_test19(){
+  startTestSerie( " Adding TextContents in different sets" );
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"2.5\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <text-annotation annotator=\"sloot\" set=\"set_a\"/>\n"
+"      <text-annotation annotator=\"sloot\" set=\"set_b\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"text\">\n"
+"    <div xml:id=\"div\">\n"
+"      <head xml:id=\"head\"/>\n"
+"    </div>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+
+  Document doc;
+  assertNoThrow( doc.read_from_string(xml) );
+  FoliaElement *head = 0;
+  assertNoThrow( head = doc["head"] );
+  KWargs args;
+  args["value"] = "Woord";
+  args["class"] = "class_a";
+  args["set"] = "set_a";
+  TextContent *tc = 0;
+  assertNoThrow( tc = new TextContent( args, &doc ) );
+  assertNoThrow( head->append( tc ) );
+  args["value"] = "Woord2";
+  args["set"] = "set_b"; // different set. OK
+  assertNoThrow( tc = new TextContent( args, &doc ) );
+  assertNoThrow( head->append( tc ) );
+  args["value"] = "Woord3"; // same set and class not OK
+  assertNoThrow( tc = new TextContent( args, &doc ) );
+  assertThrow( head->append( tc ), DuplicateAnnotationError );
+  if ( hasThrown() ){
+    assertMessage( "Duplicate Annotation detected", true );
+  }
+}
+
+
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
   Document d( "xml:id='example'" );
@@ -6899,6 +6941,7 @@ int main( int argc, char* argv[] ){
   text_test16();
   text_test17();
   text_test18();
+  text_test19();
   create_test001();
   create_test002();
   create_test003();
