@@ -2393,18 +2393,18 @@ void sanity_test102g(){
 
 void sanity_test102h(){
   startTestSerie(" Declarations - Adding a declaration in same set. (other annotator)" );
-  string xml = "<?xml version=\"1.0\"?>\n"
-" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
-"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
-"  <metadata type=\"native\">\n"
-"    <annotations>\n"
-"      <gap-annotation annotator=\"sloot\" set=\"gap-set\"/>\n"
-"    </annotations>\n"
-"  </metadata>\n"
-"  <text xml:id=\"example.text.1\">\n"
-"    <gap class=\"X\" />\n"
-"  </text>\n"
-"</FoLiA>\n" ;
+  string xml = R"~(<?xml version="1.0"?>
+ <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns="http://ilk.uvt.nl/folia" xml:id="example" generator="libfolia-v0.8" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <gap-annotation annotator="sloot" set="gap-set"/>
+    </annotations>
+  </metadata>
+  <text xml:id="example.text.1">
+    <gap class="X" />
+  </text>
+</FoLiA>)~";
 
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
@@ -2412,7 +2412,7 @@ void sanity_test102h(){
 					"gap-set",
 					"annotator='proycon'" ) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
-  assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap-set\"/>" );
+  assertTrue( v[0]->xmlstring() == R"~(<gap xmlns="http://ilk.uvt.nl/folia" annotator="sloot" class="X" set="gap-set"/>)~" );
 
 }
 
@@ -5204,7 +5204,33 @@ void text_test18(){
 #endif
 }
 
-void text_test19(){
+void text_test19a(){
+  startTestSerie( " Adding TextContents in different sets" );
+  string xml = "<?xml version=\"1.0\"?>\n"
+" <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+"xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"libfolia-v0.8\" version=\"2.5\">\n"
+"  <metadata type=\"native\">\n"
+"    <annotations>\n"
+"      <text-annotation annotator=\"sloot\" set=\"set_a\"/>\n"
+"    </annotations>\n"
+"  </metadata>\n"
+"  <text xml:id=\"text\">\n"
+"    <div xml:id=\"div\">\n"
+"      <head xml:id=\"head\"/>\n"
+"    </div>\n"
+"  </text>\n"
+"</FoLiA>\n" ;
+
+  Document doc;
+  assertNoThrow( doc.read_from_string(xml) );
+  assertNoThrow( doc.declare( AnnotationType::TEXT, "set_a" ) );
+  assertThrow( doc.declare( AnnotationType::TEXT, "set_b"), XmlError );
+  if ( hasThrown() ){
+    cerr << "XmlError message was: " << lastError() << endl;
+  }
+}
+
+void text_test19b(){
   startTestSerie( " Adding TextContents in different sets" );
   string xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
@@ -5223,9 +5249,13 @@ void text_test19(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertNoThrow( doc.read_from_string(xml) );
-  FoliaElement *head = 0;
-  assertNoThrow( head = doc["head"] );
+  assertThrow( doc.read_from_string(xml), XmlError );
+  if ( hasThrown() ){
+    cerr << "XmlError message was: " << lastError() << endl;
+  }
+  return;
+  //  Next code should start working later on
+  FoliaElement *head = doc["head"];
   KWargs args;
   args["value"] = "Woord";
   args["class"] = "class_a";
@@ -5234,17 +5264,18 @@ void text_test19(){
   assertNoThrow( tc = new TextContent( args, &doc ) );
   assertNoThrow( head->append( tc ) );
   args["value"] = "Woord2";
+  args["class"] = "class_a";
   args["set"] = "set_b"; // different set. OK
   assertNoThrow( tc = new TextContent( args, &doc ) );
   assertNoThrow( head->append( tc ) );
   args["value"] = "Woord3"; // same set and class not OK
   assertNoThrow( tc = new TextContent( args, &doc ) );
   assertThrow( head->append( tc ), DuplicateAnnotationError );
-  if ( hasThrown() ){
-    assertMessage( "Duplicate Annotation detected", true );
-  }
+  assertNoThrow( doc.save( "/tmp/test19.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/test19.xml tests/test19.xml" );
+  assertMessage( "/tmp/test19.xml tests/test19.xml differ!",
+   		 (stat == 0) );
 }
-
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
@@ -6914,6 +6945,7 @@ int main( int argc, char* argv[] ){
   edit_test018b();
   edit_test018c();
   edit_test019();
+  edit_test019();
   text_test01();
   text_test03();
   text_test04();
@@ -6941,7 +6973,8 @@ int main( int argc, char* argv[] ){
   text_test16();
   text_test17();
   text_test18();
-  text_test19();
+  text_test19a();
+  text_test19b();
   create_test001();
   create_test002();
   create_test003();
