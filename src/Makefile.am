@@ -3,7 +3,7 @@ AM_CXXFLAGS = -std=c++11 -g -W -Wall -pedantic
 
 bin_PROGRAMS = foliatest
 
-foliatest_SOURCES = foliatest.cxx
+foliatest_SOURCES = edit_tests.cxx text_tests.cxx foliatest.cxx
 
 TESTS = tst.sh
 TESTS_ENVIRONMENT = topsrcdir=$(top_srcdir)
