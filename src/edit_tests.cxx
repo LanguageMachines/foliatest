@@ -47,6 +47,7 @@
 #include "ticcutils/CommandLine.h"
 
 #include "config.h"
+#include "cassert"
 using namespace std;
 using namespace icu;
 using namespace folia;
@@ -55,10 +56,6 @@ using TiCC::operator<<;
 
 #define AlignReference LinkReference
 #define Alignment Relation
-// #define ComplexAlignment SpanRelation
-// #define ComplexAlignmentLayer SpanRelationLayer
-// #define AbstractTokenAnnotation AbstractInlineAnnotation
-// #define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
 
 void edit_test001a( ){
   startTestSerie( " Add a sentence to the first paragraph ");

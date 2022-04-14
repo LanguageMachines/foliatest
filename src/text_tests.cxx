@@ -25,26 +25,12 @@
 
 */
 
-#include <cstdlib>
-#include <sstream>
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <set>
-#include <list>
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <stdexcept>
-#include <unicode/unistr.h>
-#include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
-#include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
-#include "ticcutils/FileUtils.h"
 #include "ticcutils/UnitTest.h"
-#include "ticcutils/CommandLine.h"
 
 #include "config.h"
 using namespace std;
@@ -52,13 +38,6 @@ using namespace icu;
 using namespace folia;
 
 using TiCC::operator<<;
-
-// #define AlignReference LinkReference
-// #define Alignment Relation
-// #define ComplexAlignment SpanRelation
-// #define ComplexAlignmentLayer SpanRelationLayer
-// #define AbstractTokenAnnotation AbstractInlineAnnotation
-// #define AbstractTokenAnnotation_t AbstractInlineAnnotation_t
 
 void text_test01(){
   startTestSerie( " a text with miscellaneous spaces " );
