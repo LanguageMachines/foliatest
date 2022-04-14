@@ -2225,7 +2225,7 @@ void sanity_test102b(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.read_from_string(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), DeclarationError );
 
 }
 
@@ -2271,7 +2271,7 @@ void sanity_test102d1(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.read_from_string(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), DeclarationError );
 
 }
 
@@ -2293,7 +2293,7 @@ void sanity_test102d2(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.read_from_string(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), DeclarationError );
 
 }
 
@@ -2336,7 +2336,7 @@ void sanity_test102e(){
 "</FoLiA>\n" ;
 
   Document doc;
-  assertThrow( doc.read_from_string(xml), XmlError );
+  assertThrow( doc.read_from_string(xml), DeclarationError );
 
 }
 
@@ -2392,13 +2392,14 @@ void sanity_test102g(){
 }
 
 void sanity_test102h(){
-  startTestSerie(" Declarations - Adding a declaration in same set. (other annotator)" );
+  startTestSerie(" Declarations - Ambiguous set" );
   string xml = R"~(<?xml version="1.0"?>
  <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink"
 xmlns="http://ilk.uvt.nl/folia" xml:id="example" generator="libfolia-v0.8" version="0.8">
   <metadata type="native">
     <annotations>
       <gap-annotation annotator="sloot" set="gap-set"/>
+      <gap-annotation annotator="proycon" set="gap-set2"/>
     </annotations>
   </metadata>
   <text xml:id="example.text.1">
@@ -2407,13 +2408,7 @@ xmlns="http://ilk.uvt.nl/folia" xml:id="example" generator="libfolia-v0.8" versi
 </FoLiA>)~";
 
   Document doc;
-  assertNoThrow( doc.read_from_string(xml) );
-  assertNoThrow( doc.declare( AnnotationType::GAP,
-					"gap-set",
-					"annotator='proycon'" ) );
-  vector<Gap*> v = doc["example.text.1"]->select<Gap>();
-  assertTrue( v[0]->xmlstring() == R"~(<gap xmlns="http://ilk.uvt.nl/folia" annotator="sloot" class="X" set="gap-set"/>)~" );
-
+  assertThrow( doc.read_from_string(xml), DeclarationError );
 }
 
 void sanity_test102i(){
@@ -2438,8 +2433,8 @@ void sanity_test102i(){
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap1-set",
 					"annotator='proycon'" ) );
-  assertTrue( doc.default_annotator(AnnotationType::GAP,"gap1-set") == "" );
-  assertTrue( doc.default_annotator(AnnotationType::GAP,"gap2-set") == "sloot" );
+  assertEqual( doc.default_annotator(AnnotationType::GAP,"gap1-set"), "" );
+  assertEqual( doc.default_annotator(AnnotationType::GAP,"gap2-set"), "sloot" );
   FoliaElement *text = doc["example.text.1"];
   KWargs args = getArgs( "set='gap1-set', class='Y', annotator='proycon'" );
   FoliaElement *g = 0;
@@ -2455,7 +2450,7 @@ void sanity_test102i(){
   assertNoThrow( g = new Gap( args, &doc ) );
   assertNoThrow( text->append( g ) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
-  assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap1-set\"/>" );
+  assertEqual( v[0]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap1-set\"/>" );
   assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"proycon\" class=\"Y\" set=\"gap1-set\"/>" );
   assertTrue( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z1\" set=\"gap1-set\"/>" );
   assertTrue( v[3]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z2\" set=\"gap2-set\"/>" );
@@ -2522,7 +2517,7 @@ void sanity_test102k(){
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap-set",
 					"annotatortype='manual'" ) );
-  assertTrue( doc.default_annotatortype(AnnotationType::GAP) == UNDEFINED );
+  assertEqual( doc.default_annotatortype(AnnotationType::GAP), UNDEFINED );
   KWargs args = getArgs( "set='gap-set', class='Y', annotatortype='unknown'" );
   FoliaElement *g = 0;
   assertThrow( g = new Gap( args, &doc ), ValueError );
@@ -2533,9 +2528,9 @@ void sanity_test102k(){
   assertNoThrow( g = new Gap( args, &doc ) );
   text->append( g );
   v = text->select<Gap>();
-  assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
-  assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"manual\" class=\"Y\" set=\"gap-set\"/>" );
-  assertTrue( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\" set=\"gap-set\"/>" );
+  assertEqual( v[0]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
+  assertEqual( v[1]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"manual\" class=\"Y\" set=\"gap-set\"/>" );
+  assertEqual( v[2]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\" set=\"gap-set\"/>" );
 
 }
 
@@ -2589,7 +2584,8 @@ void sanity_test102m(){
   assertNoThrow( doc.save( "/tmp/declared1.out" ) );
   assertNoThrow( doc.un_declare( AnnotationType::GAP, "gap-set2" ) );
   assertNoThrow( doc.save( "/tmp/declared2.out" ) );
-  assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ), XmlError );
+  assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ),
+	       DeclarationError );
   assertNoThrow( doc.save( "/tmp/declared3.out" ) );
 }
 
@@ -2617,14 +2613,14 @@ void sanity_test102n(){
 			      "annotatortype='manual', alias='gap-set2'" ) );
   assertNoThrow( doc.save( "/tmp/declared1.out" ) );
   // using a setname which is already an alias is a error
-  assertThrow( doc.declare( AnnotationType::GAP, "gap-set2", "alias='gap-set3'"),
-	       XmlError );
+  assertThrow( doc.declare( AnnotationType::GAP, "gap-set3", "alias='gap-set2'"),
+	       DeclarationError );
   // using an alias  which is already an alias is a error
   assertThrow( doc.declare( AnnotationType::GAP, "someset", "alias='gap-set'"),
-	       XmlError );
+	       DeclarationError );
   // using an alias  which is already a setname is a error
   assertThrow( doc.declare( AnnotationType::GAP, "some_other_set", "alias='nog zon ingewikkelde en veels te lange declaratie'"),
-	       XmlError );
+	       DeclarationError );
   // just declaring again is NOT an error!
   assertNoThrow( doc.declare( AnnotationType::GAP,
 			      "nog zon ingewikkelde en veels te lange declaratie",
@@ -2633,15 +2629,16 @@ void sanity_test102n(){
   assertThrow( doc.declare( AnnotationType::GAP,
 			    "nog zon ingewikkelde en veels te lange declaratie",
 			    "annotatortype='manual', alias='gap-set3'" ),
-	       XmlError) ;
+	       DeclarationError) ;
   // declaring again with same alias and another setname IS an error!
   assertThrow( doc.declare( AnnotationType::GAP,
 			    "niet zon ingewikkelde en veels te lange declaratie",
 			    "annotatortype='manual', alias='gap-set2'" ),
-	       XmlError );
+	       DeclarationError );
   assertNoThrow( doc.un_declare( AnnotationType::GAP, "gap-set2" ) );
   assertNoThrow( doc.save( "/tmp/declared2.out" ) );
-  assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ), XmlError );
+  assertThrow( doc.un_declare( AnnotationType::GAP, "gap-set" ),
+	       DeclarationError );
   assertNoThrow( doc.save( "/tmp/declared3.out" ) );
 }
 
