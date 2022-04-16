@@ -1540,7 +1540,7 @@ void sanity_test102i(){
   assertNoThrow( doc.declare( AnnotationType::GAP,
 					"gap1-set",
 					"annotator='proycon'" ) );
-  assertEqual( doc.default_annotator(AnnotationType::GAP,"gap1-set"), "" );
+  assertEqual( doc.default_annotator(AnnotationType::GAP,"gap1-set"), "proycon" );
   assertEqual( doc.default_annotator(AnnotationType::GAP,"gap2-set"), "sloot" );
   FoliaElement *text = doc["example.text.1"];
   KWargs args = getArgs( "set='gap1-set', class='Y', annotator='proycon'" );
@@ -1558,10 +1558,10 @@ void sanity_test102i(){
   assertNoThrow( text->append( g ) );
   vector<Gap*> v = doc["example.text.1"]->select<Gap>();
   assertEqual( v[0]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"sloot\" class=\"X\" set=\"gap1-set\"/>" );
-  assertTrue( v[1]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"proycon\" class=\"Y\" set=\"gap1-set\"/>" );
-  assertTrue( v[2]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z1\" set=\"gap1-set\"/>" );
-  assertTrue( v[3]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z2\" set=\"gap2-set\"/>" );
-  assertTrue( v[4]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"onbekend\" class=\"Y2\" set=\"gap2-set\"/>" );
+  assertEqual( v[1]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\" set=\"gap1-set\"/>" );
+  assertEqual( v[2]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z1\" set=\"gap1-set\"/>" );
+  assertEqual( v[3]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Z2\" set=\"gap2-set\"/>" );
+  assertEqual( v[4]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotator=\"onbekend\" class=\"Y2\" set=\"gap2-set\"/>" );
 
 }
 
@@ -1618,13 +1618,13 @@ void sanity_test102k(){
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
   FoliaElement *text = doc["example.text.1"];
-  assertTrue( doc.default_annotatortype(AnnotationType::GAP) == AUTO );
+  assertEqual( doc.default_annotatortype(AnnotationType::GAP), AUTO );
   vector<Gap*> v = text->select<Gap>();
-  assertTrue( v[0]->xmlstring() == "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
+  assertEqual( v[0]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertNoThrow( doc.declare( AnnotationType::GAP,
-					"gap-set",
-					"annotatortype='manual'" ) );
-  assertEqual( doc.default_annotatortype(AnnotationType::GAP), UNDEFINED );
+			      "gap-set",
+			      "annotatortype='manual'" ) );
+  assertEqual( doc.default_annotatortype(AnnotationType::GAP), MANUAL );
   KWargs args = getArgs( "set='gap-set', class='Y', annotatortype='unknown'" );
   FoliaElement *g = 0;
   assertThrow( g = new Gap( args, &doc ), ValueError );
@@ -1635,9 +1635,9 @@ void sanity_test102k(){
   assertNoThrow( g = new Gap( args, &doc ) );
   text->append( g );
   v = text->select<Gap>();
-  assertEqual( v[0]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\" set=\"gap-set\"/>" );
-  assertEqual( v[1]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"manual\" class=\"Y\" set=\"gap-set\"/>" );
-  assertEqual( v[2]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\" set=\"gap-set\"/>" );
+  assertEqual( v[0]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"X\"/>" );
+  assertEqual( v[1]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"Y\"/>" );
+  assertEqual( v[2]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" annotatortype=\"auto\" class=\"Z\"/>" );
 
 }
 
