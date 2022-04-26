@@ -1799,7 +1799,7 @@ void sanity_test103( ){
     "</FoLiA>\n" ;
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
-  assertTrue( len(doc.words()) == 1 ); // first word is in alien namespace
+  assertEqual( len(doc.words()),  1 ); // first word is in alien namespace
   // not read
   FoliaElement *w = doc["example.text.1.s.1.alienword"];
   assertTrue( w == 0 );   // doesn't exist
