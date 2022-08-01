@@ -1,8 +1,8 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.59)
-AC_INIT([foliatest], [0.12], [lamasoftware@science.ru.nl])
+AC_PREREQ([2.69])
+AC_INIT([foliatest],[0.12],[lamasoftware@science.ru.nl])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -26,7 +26,6 @@ fi
 AC_OPENMP
 
 # use libtool
-AC_PROG_LIBTOOL
 LT_INIT
 
 # when running tests, use CXX
@@ -72,7 +71,8 @@ FOLINT="${FOLVER//.}"
 AC_DEFINE_UNQUOTED( [FOLIA_INT_VERSION],
 	   	    [${FOLINT}],
 		    [The integer representation of the folialib version])
-AC_OUTPUT([
+AC_CONFIG_FILES([
   Makefile
   src/Makefile
 ])
+AC_OUTPUT
