@@ -464,6 +464,7 @@ extern void text_test17();
 extern void text_test18();
 extern void text_test19a();
 extern void text_test19b();
+extern void text_test20();
 
 extern void engine_test001a();
 extern void engine_test001b();
@@ -1595,6 +1596,7 @@ int main( int argc, char* argv[] ){
   text_test18();
   text_test19a();
   text_test19b();
+  text_test20();
   create_test001();
   create_test002();
   create_test003();

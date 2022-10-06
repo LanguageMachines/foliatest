@@ -1400,3 +1400,9 @@ void text_test19b(){
   assertMessage( "/tmp/test19.xml tests/test19.xml differ!",
    		 (stat == 0) );
 }
+
+void text_test20(){
+  startTestSerie( "Validation - sentence ending with correction" );
+  Document doc;
+  assertNoThrow( doc.read_from_file( "tests/corrected.xml" ) );
+}
