@@ -17,19 +17,22 @@ on:
 jobs:
   notification:
     runs-on: ubuntu-latest
-    name: Notify start to '#gitlama'
+    name: Notify start to IRC gitlama
+    outputs:
+      branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
       - name: IRC notification
-        uses: Gottox/irc-message-action@v1
+        uses: Gottox/irc-message-action@v2
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
           nickname: GitHub
-          message: |-
+          message: >
             ${{ github.actor }} started a build of foliatest
-
+            [${{ steps.extract_branch.outputs.branch }}]
   build:
     runs-on: ${{ matrix.os }}
+    needs: notification
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -37,7 +40,7 @@ jobs:
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.0
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
@@ -107,7 +110,7 @@ jobs:
       - id: compiler
         run: |
           id=$(echo ${{matrix.compiler}} | cut -d\+ -f1)
-          echo "::set-output name=id::$id"
+          echo "id=$id" >> $GITHUB_OUTPUT
       - name: show config.log
         run: cat config.log
       - name: show config.h
@@ -132,20 +135,17 @@ jobs:
 
       - name: Notify IRC of failure
         if: ${{ env.test_status != '0' }}
-        uses: Gottox/irc-message-action@v1
+        uses: Gottox/irc-message-action@v2
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
           nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
-          message: |-
-            foliatest: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: FAILED
-
+          message: "foliatest [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00034FAIL\u0003"
       - name: Notify IRC of succes
         if: ${{ env.test_status == '0' }}
-        uses: Gottox/irc-message-action@v1
+        uses: Gottox/irc-message-action@v2
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
           nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
-          message: |-
-            foliatest: with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: SUCCESS
+          message: "ticcutils [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00033SUCCESS\u0003"
