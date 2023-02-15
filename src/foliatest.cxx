@@ -740,11 +740,7 @@ void correction_test001b( ){
   assertEqual( len( s->words() ), 5 );
   assertEqual( s->rwords(1)->text(), "online" );
   assertEqual( s->text(), "De site staat online ." );
-#if FOLIA_INT_VERSION >= 29
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
-#else
-  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><current><w xml:id=\"example.s.1.w.4\"><t>online</t></w></current><new/><suggestion auth=\"no\"><w xml:id=\"example.s.1.w.6\"><t>on</t></w><w xml:id=\"example.s.1.w.7\"><t>line</t></w></suggestion></correction><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>");
-#endif
 }
 
 void correction_test002(){
@@ -841,11 +837,7 @@ void correction_test004(){
   //  assertNoThrow( corDoc.save( "/tmp/foliainsert004.xml" ) );
   assertEqual( s->words().size(), 6 );
   assertEqual( s->text(), "Ik zie een groot huis ." );
-#if FOLIA_INT_VERSION < 29
-  assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.3b\"><t>groot</t></w></new><original auth=\"no\"/></correction><w xml:id=\"example.s.1.w.4\"><t>huis</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
-#else
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>Ik</t></w><w xml:id=\"example.s.1.w.2\"><t>zie</t></w><w xml:id=\"example.s.1.w.3\"><t>een</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.3b\"><t>groot</t></w></new></correction><w xml:id=\"example.s.1.w.4\"><t>huis</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s>" );
-#endif
 }
 
 void correction_test005(){
@@ -869,11 +861,7 @@ void correction_test005(){
   assertEqual( w->annotation<Correction>()->annotator(), "John Doe" );
   assertEqual( w->annotation<Correction>()->annotatortype(), MANUAL );
 
-#if FOLIA_INT_VERSION < 29
-  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><new><t>stippellijn</t></new><suggestion auth=\"no\"><t>stippellijn</t></suggestion><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
-#else
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
-#endif
   delete corDoc;
 }
 
@@ -940,11 +928,7 @@ void correction_test006(){
   FoliaElement *s = corDoc->index(corDoc->id() + ".s.1");
   FoliaElement *s2 = corDoc->index(corDoc->id() + ".s.2");
   FoliaElement *w = corDoc->index(corDoc->id() + ".s.1.w.6");
-#if FOLIA_INT_VERSION > 28
   s->remove(w); // doesn't delete w, we gonna re-use it
-#else
-  s->remove(w,false); // don't delete w, we gonna re-use it
-#endif
   Correction *corr = new Correction();
   assertNoThrow( s->append( corr ) );
   Current *cur = new Current();
@@ -976,7 +960,6 @@ void correction_test007(){
   assertEqual( w->text(), "Wijziging" );
 }
 
-#if FOLIA_INT_VERSION > 23
 void correction_test008a(){
   startTestSerie( " Correction - correct a correction" );
   Document cor_doc( "tests/example.xml" );
@@ -1010,7 +993,6 @@ void correction_test008b(){
   assertEqual( cor->xmlstring(),
 	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.correction.1\" annotator=\"testscript\"><new><t>ronde</t></new><original auth=\"no\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.c.1\"><new><t>vierkante</t></new><original auth=\"no\"><t>vierkant</t></original></correction></original></correction>" );
 }
-#endif
 
 Document qDoc( "file='tests/example.xml'" );
 
@@ -1185,89 +1167,6 @@ void query_test011(){
 							  SenseAnnotation_t ) );
   assertEqual( matches.size(), 0 );
 }
-
-#if FOLIA_INT_VERSION < 24
-void build_test001(){
-  startTestSerie( " build a text document using FoliaBuilder " );
-  ofstream os( "/tmp/build.xml" );
-  Builder b( os, "build1" );
-  KWargs args;
-  args["xml:id"] = "div1";
-  Division *d = new Division( args, b.doc() );
-  args["xml:id"] = "p1";
-  Paragraph *p = new Paragraph( args );
-  d->append(p);
-  p->settext( "paragraaf 1" );
-  b.add( d );
-  b.flush();
-  args["xml:id"] = "div2";
-  d = new Division( args );
-  args["xml:id"] = "p2";
-  p = new Paragraph( args );
-  p->settext( "paragraaf 2" );
-  d->append(p);
-  b.add( d );
-  b.flush();
-  args["xml:id"] = "div3";
-  d = new Division( args );
-  args["xml:id"] = "p3";
-  p = new Paragraph( args );
-  p->settext( "paragraaf 3" );
-  d->append(p);
-  b.add( d );
-  b.finish();
-#if FOLIA_INT_VERSION < 23
-  int stat = system( "./tests/foliadiff.sh /tmp/build.xml tests/build.old.xml" );
-  assertMessage( "/tmp/build.xml tests/build.old.xml differ!",
-   		 (stat == 0) );
-#else
-  int stat = system( "./tests/foliadiff.sh /tmp/build.xml tests/build.xml" );
-  assertMessage( "/tmp/build.xml tests/build.xml differ!",
-   		 (stat == 0) );
-#endif
-}
-
-void build_test002(){
-  startTestSerie( " build a speech document using FoliaBuilder " );
-  ofstream os( "/tmp/speechbuild.xml" );
-  Builder b( os, "build1", Builder::SPEECH );
-  KWargs args;
-  args["xml:id"] = "div1";
-  Division *d = new Division( args, b.doc() );
-  args["xml:id"] = "p1";
-  Paragraph *p = new Paragraph( args );
-  d->append(p);
-  p->settext( "paragraaf 1" );
-  b.add( d );
-  b.flush();
-  args["xml:id"] = "div2";
-  d = new Division( args );
-  args["xml:id"] = "p2";
-  p = new Paragraph( args );
-  p->settext( "paragraaf 2" );
-  d->append(p);
-  b.add( d );
-  b.flush();
-  args["xml:id"] = "div3";
-  d = new Division( args );
-  args["xml:id"] = "p3";
-  p = new Paragraph( args );
-  p->settext( "paragraaf 3" );
-  d->append(p);
-  b.add( d );
-  b.finish();
-#if FOLIA_INT_VERSION < 23
-  int stat = system( "./tests/foliadiff.sh /tmp/speechbuild.xml tests/speechbuild.old.xml" );
-  assertMessage( "/tmp/speechbuild.xml tests/speechbuild.old.xml differ!",
-   		 (stat == 0) );
-#else
-  int stat = system( "./tests/foliadiff.sh /tmp/speechbuild.xml tests/speechbuild.xml" );
-  assertMessage( "/tmp/speechbuild.xml tests/speechbuild.xml differ!",
-   		 (stat == 0) );
-#endif // version < 23
-}
-
-#endif // version < 24
 
 Document whitespaceDoc( "file='" + fol_path + "examples/tests/issue88b.2.5.1.folia.xml'" );
 
@@ -1541,10 +1440,8 @@ int main( int argc, char* argv[] ){
   sanity_test122();
   sanity_test123();
   sanity_test130();
-#if FOLIA_INT_VERSION >= 28
   sanity_test140();
   sanity_test141();
-#endif
   sanity_test150();
   edit_test001a();
   edit_test001b();
@@ -1587,14 +1484,10 @@ int main( int argc, char* argv[] ){
   text_test05();
   text_test06();
   text_test07();
-#if FOLIA_INT_VERSION >= 28
   text_test08();
-#endif
   text_test08b();
-#if FOLIA_INT_VERSION >= 28
   text_test09();
   text_test10();
-#endif
   text_test11();
   text_test12();
   text_test13a();
@@ -1624,10 +1517,8 @@ int main( int argc, char* argv[] ){
   correction_test005();
   correction_test006();
   correction_test007();
-#if FOLIA_INT_VERSION > 23
   correction_test008a();
   correction_test008b();
-#endif
   query_test001();
   query_test002();
   query_test003();
@@ -1640,10 +1531,6 @@ int main( int argc, char* argv[] ){
   query_test010a();
   query_test010b();
   query_test011();
-#if FOLIA_INT_VERSION < 24
-  build_test001();
-  build_test002();
-#endif
   engine_test001a();
   engine_test001b();
   engine_test001c();
@@ -1671,7 +1558,6 @@ int main( int argc, char* argv[] ){
   engine_test009c();
   engine_test010();
   engine_test011();
-#if FOLIA_INT_VERSION >= 28
   whitespace_test001();
   whitespace_test002();
   whitespace_test003();
@@ -1686,7 +1572,6 @@ int main( int argc, char* argv[] ){
   whitespace_test012();
   whitespace_test013();
   whitespace_test014();
-#endif
   if ( !is_setup ){
     assertMessage( "FOLIAPATH not set?", false );
   }

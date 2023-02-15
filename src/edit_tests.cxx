@@ -237,11 +237,7 @@ void edit_test003b( ){
   // add a pos annotation (in a different set than the one declared,
   // to generate a conflict)
   KWargs args = getArgs( "set='adhopcos', class='NOUN', annotator='testscript', annotatortype='auto'" );
-#if FOLIA_INT_VERSION < 23
-  assertThrow( w->addAnnotation<PosAnnotation>( args ), ValueError );
-#else
   assertThrow( w->addAnnotation<PosAnnotation>( args ), DeclarationError );
-#endif
 }
 
 void edit_test004a( ){
@@ -467,11 +463,7 @@ void edit_test008( ){
   assertNoThrow( c = w->annotation<Correction>() );
   assertNoThrow( c = c->suggestions()[0] );
   assertTrue( c->text() == "stippellijn" );
-#if FOLIA_INT_VERSION < 29
-  assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"testscript\" annotatortype=\"auto\" class=\"spelling\"><new/><suggestion auth=\"no\"><t>stippellijn</t></suggestion></correction></w>" );
-#else
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><t>stippelijn</t><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"testscript\" annotatortype=\"auto\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion></correction></w>" );
-#endif
 }
 
 void edit_test009a( ){
@@ -696,12 +688,8 @@ void edit_test015(){
   Document editDoc( "file='tests/example.xml'" );
   FoliaElement *word = editDoc["WR-P-E-J-0000000001.p.1.s.3.w.14"];
   word->remove( word->annotation<PosAnnotation>() );
-#if FOLIA_INT_VERSION < 23
-  assertThrow( word->annotations<PosAnnotation>(), NoSuchAnnotation );
-#else
   vector<PosAnnotation*> v = word->annotations<PosAnnotation>();
   assertEqual( v.size(), 0 );
-#endif
   assertTrue( word->xmlstring() == "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.3.w.14\"><t>plaats</t><lemma class=\"plaats\"/></w>" );
 }
 

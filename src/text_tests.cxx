@@ -375,9 +375,7 @@ void text_test08b(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
-#if FOLIA_INT_VERSION > 28
   assertEqual( doc.get_warn_count(), 8 );
-#endif
 }
 
 void text_test09(){
@@ -621,9 +619,7 @@ void text_test11(){
   assertNoThrow( doc.read_from_string(xml) );
   assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
-#if FOLIA_INT_VERSION > 28
   assertEqual( doc.get_warn_count(), 1 );
-#endif
 }
 
 void text_test12(){
@@ -1125,11 +1121,7 @@ void text_test13f(){
   s->append( w );
 
   doc.setmode("strip");
-#if FOLIA_INT_VERSION < 23
-  assertEqual( doc.getmode(), "mode=strip,checktext," );
-#else
   assertEqual( doc.getmode(), "mode=strip,checktext,autodeclare," );
-#endif
   assertEqual( doc.xmlstring(),
 	       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 	       "<FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example\" generator=\"\" version=\"\"><metadata type=\"native\"><annotations><text-annotation set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl\"/></annotations></metadata><text xml:id=\"example.text.1\"><s xml:id=\"example.s.1\"><t>De site staat online . </t><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><w xml:id=\"example.s.1.w.4\"><t>online</t></w><w xml:id=\"example.s.1.w.5\"><t>.</t></w></s></text></FoLiA>\n" );
@@ -1262,7 +1254,6 @@ void create_doc( bool with_space ){
   }
 }
 
-#if FOLIA_INT_VERSION >= 29
 void create_newstyle_doc( bool with_space ){
   Document doc( "xml:id='style'" );
   assertNoThrow( doc.declare( AnnotationType::PARAGRAPH, "myset" ) );
@@ -1312,20 +1303,17 @@ void create_newstyle_doc( bool with_space ){
     assertNoThrow( doc.save( "/tmp/new-styles-no-space.xml" ) );
   }
 }
-#endif
 
 void text_test18(){
   startTestSerie( "Text creation - styles and stuff" );
   create_doc( false );
   create_doc( true );
-#if FOLIA_INT_VERSION >= 29
   create_newstyle_doc( false );
   create_newstyle_doc( true );
   int stat = system( "./tests/foliadiff.sh /tmp/new-styles-no-space.xml /tmp/styles-no-space.xml" );
   assertMessage( "/tmp/new-styles-no-space.xml /tmp/styles-no-space.xml differ",
    		 (stat == 0) );
 
-#endif
 }
 
 void text_test19a(){

@@ -265,14 +265,8 @@ void sanity_test011( ){
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( len( w->select<SenseAnnotation>() ) == 0 );
   assertTrue( w->select<SenseAnnotation>().size() == 0 );
-#if FOLIA_INT_VERSION < 23
-  assertThrow( w->annotation<SenseAnnotation>(),
-	       NoSuchAnnotation );
-#else
   auto a = w->annotation<SenseAnnotation>();
   assertTrue( a == 0 );
-#endif
-
 }
 
 void sanity_test012( ){
@@ -940,12 +934,7 @@ void sanity_test037c( ){
 
 void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
-#if FOLIA_INT_VERSION < 23
-  PosAnnotation *p =0;
-  assertThrow( p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>(), NoSuchAnnotation );
-#else
   PosAnnotation *p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>();
-#endif
   assertTrue( p == 0 );
 }
 
@@ -1254,21 +1243,11 @@ void sanity_test101f(){
   assertMessage( "/tmp/foreignmeta.out tests/foreignmeta.out differ!",
 		 stat == 0 );
   assertNoThrow( f_doc.set_foreign_metadata( root ) ); // append the same again
-#if !(FOLIA_INT_VERSION >= 27)
-  assertThrow( f_doc.set_metadata( "language", "por" ), MetaDataError );
-#else
   assertNoThrow( f_doc.set_metadata( "language", "por" ) );
-#endif
   assertNoThrow( f_doc.save( "/tmp/foreignmeta3.out" ) );
-#if !(FOLIA_INT_VERSION >= 27)
-  int stat2 = system( "./tests/foliadiff.sh /tmp/foreignmeta3.out tests/foreignmeta3.out" );
-  assertMessage( "/tmp/foreignmeta3.out tests/foreignmeta3.out differ!",
-		 stat2 == 0 );
-#else
   int stat2 = system( "./tests/foliadiff.sh /tmp/foreignmeta3.out tests/foreignmeta3_v25.out" );
   assertMessage( "/tmp/foreignmeta3.out tests/foreignmeta3_v25.out differ!",
 		 stat2 == 0 );
-#endif
   xmlFreeDoc( x_doc );
 }
 
@@ -2252,7 +2231,6 @@ void sanity_test130( ){
   assertEqual( dv.size(), 0 );
 }
 
-#if FOLIA_INT_VERSION >= 29
 void sanity_test140( ){
   startTestSerie( " test parsing of xml:space attribute ");
   Document doc( "tests/xmlspace.xml" );
@@ -2292,7 +2270,6 @@ void sanity_test141( ){
   assertMessage( "/tmp/test141.xml tests/test141.xml.ok differ!",
    		 (stat == 0) );
 }
-#endif
 
 void sanity_test150( ){
   startTestSerie( " Reading a document with missing processor declaration " );

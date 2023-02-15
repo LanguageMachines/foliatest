@@ -238,11 +238,7 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     Document doc( fol_path + "examples/tests/set_holding.2.0.0.folia.xml" );
     startTestSerie( "Testing sanity with adding setless to setholding chunks" );
     assertEqual( doc.default_set(AnnotationType::CHUNKING), "chunkset" );
-#if FOLIA_INT_VERSION < 23
-    // got it wrong
-#else
     assertEqual( doc.default_processor(AnnotationType::CHUNKING), "p1" );
-#endif
     KWargs args;
     args["name"] = "my_proc";
     args["xml:id"] = "my_chunker";
@@ -251,25 +247,14 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     args["processor"] = "my_chunker";
     doc.declare( AnnotationType::CHUNKING, "", args );
     // now there are 2 chunkers active, so NO default set anymore
-#if FOLIA_INT_VERSION < 23
-    // got it wrong
-#else
     assertEqual( doc.default_set(AnnotationType::CHUNKING), "" );
-#endif
     // now there are 2 chunkers active, and NO default processor too
-#if FOLIA_INT_VERSION < 23
-    // got it wrong
-#else
     assertEqual( doc.default_processor(AnnotationType::CHUNKING), "" );
-#endif
     auto s = doc["example.p.1.s.1"];
     args.clear();
     ChunkingLayer *c = 0;
     assertNoThrow( c = new ChunkingLayer( args, &doc ) );
     s->append( c );
-#if FOLIA_INT_VERSION < 23
-    // got it wrong
-#else
     Chunk *ch = 0;
     args["class"] = "NP";
     args["processor"] = "my_chunker";
@@ -283,7 +268,6 @@ void Test_Exxx_SetAndSetLess(){ // xxx -> replace with a number at some point
     int stat = system( cmd.c_str() );
     assertMessage( "/tmp/set_test.xml tests/set_test.ok differ!",
 		   (stat == 0) );
-#endif
   }
 }
 
@@ -403,7 +387,6 @@ void Test_Provenance(){
     }
   }
 
-#if FOLIA_INT_VERSION > 28
   {
     startTestSerie( "Provenance - Fail to a document - illegal to set processor on <text>" );
     Document test("xml:id='test'");
@@ -419,7 +402,6 @@ void Test_Provenance(){
     args["processor"] = proc->id();
     assertThrow( test.create_root<Text>( args ), ValueError );
   }
-#endif
 
   {
     startTestSerie( "Provenance - Create a document with flat processors - Explicit processor assignment" );
@@ -446,24 +428,14 @@ void Test_Provenance(){
     args.clear();
     args["processor"] = proc2->id();
     args["generate_id"] = body->id();
-#if (FOLIA_INT_VERSION >= 29)
     Sentence *sentence = body->add_child<Sentence>( args );
-#else
-    Sentence *sentence = body->create<Sentence>( args );
-#endif
     args.clear();
     args["processor"] = proc1->id();
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
-#if (FOLIA_INT_VERSION >= 29)
     Word *w = sentence->add_child<Word>( args );
     args["text"] = "world";
     sentence->add_child<Word>( args );
-#else
-    Word *w = sentence->create<Word>( args );
-    args["text"] = "world";
-    sentence->create<Word>( args );
-#endif
     const processor *p = test.get_processor(w->processor());
     assertEqual( p, test.provenance()->index(proc1->id()) );
     test.save( "/tmp/provenance-flat-implicit.2.0.0.folia-1.xml" );
