@@ -2284,3 +2284,9 @@ void sanity_test141( ){
    		 (stat == 0) );
 }
 #endif
+
+void sanity_test150( ){
+  startTestSerie( " Reading a document with missing processor declaration " );
+  Document d;
+  assertThrow( d.read_from_file( "tests/missing_proc.xml" ), XmlError );
+}

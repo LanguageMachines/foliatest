@@ -393,6 +393,7 @@ extern void sanity_test123();
 extern void sanity_test130();
 extern void sanity_test140();
 extern void sanity_test141();
+extern void sanity_test150();
 
 extern void Test_E001_Tokens_Structure();
 extern void Test_Exxx_Hidden_Tokens();
@@ -1532,6 +1533,7 @@ int main( int argc, char* argv[] ){
   sanity_test140();
   sanity_test141();
 #endif
+  sanity_test150();
   edit_test001a();
   edit_test001b();
   edit_test002();
