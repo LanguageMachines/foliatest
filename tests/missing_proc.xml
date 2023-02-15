@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foo" version="2.5.1" generator="manual">
+  <metadata type="native">
+    <annotations>
+      <division-annotation set="divs">
+	<annotator processor="fubar"/>
+      </division-annotation>
+    </annotations>
+  </metadata>
+  <text xml:id="foo.text">
+    <div xml:id="foo.div" class="chapter">
+    </div>
+  </text>
+</FoLiA>
