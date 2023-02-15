@@ -215,7 +215,11 @@ void test2() {
 void test3() {
   startTestSerie( " Test lezen van een DCOI file " );
   Document d;
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( d.read_from_file( "tests/dcoi.example" ), DocumentError );
+#else
   assertThrow( d.read_from_file( "tests/dcoi.example" ), XmlError );
+#endif
 }
 
 void test4() {
@@ -251,13 +255,21 @@ void test6() {
 void test7() {
   startTestSerie( " Test inlezen van een FoLiA file zonder namespace declaratie" );
   Document d;
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( d.read_from_file( "tests/noname.xml" ), DocumentError );
+#else
   assertThrow( d.read_from_file( "tests/noname.xml" ), XmlError );
+#endif
 }
 
 void test8() {
   startTestSerie( " Test inlezen van een FoLiA file met foute namespace declaratie" );
   Document d;
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( d.read_from_file( "tests/wrongname.xml" ), DocumentError );
+#else
   assertThrow( d.read_from_file( "tests/wrongname.xml" ), XmlError );
+#endif
 }
 
 void test9() {

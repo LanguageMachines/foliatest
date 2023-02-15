@@ -1310,10 +1310,15 @@ void sanity_test102a(){
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
   assertTrue( doc["example.text.1"]->select<Gap>()[0]->sett() == "gap-set" );
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( doc.declare( AnnotationType::TOKEN,
+			    "some-set",
+			    "annotatorname='proycon'" ), DocumentError );
+#else
   assertThrow( doc.declare( AnnotationType::TOKEN,
 			    "some-set",
 			    "annotatorname='proycon'" ), XmlError );
-
+#endif
 }
 
 void sanity_test102b(){
@@ -2046,7 +2051,11 @@ void sanity_test108( ){
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld 1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
 "</FoLiA>\n" ;
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( doc.read_from_string(xml), DocumentError );  // invalid id!
+#else
   assertThrow( doc.read_from_string(xml), XmlError );  // invalid id!
+#endif
   xml = "<?xml version=\"1.0\"?>\n"
 " <FoLiA xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
 "xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"voorbeeld_1\" generator=\"libfolia-v0.8\" version=\"0.8\">\n"
@@ -2288,5 +2297,9 @@ void sanity_test141( ){
 void sanity_test150( ){
   startTestSerie( " Reading a document with missing processor declaration " );
   Document d;
-  assertThrow( d.read_from_file( "tests/missing_proc.xml" ), XmlError );
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( d.read_from_file( "tests/missing_proc.xml" ), DocumentError );
+#else
+  assertNoThrow( d.read_from_file( "tests/missing_proc.xml" ) );
+#endif
 }

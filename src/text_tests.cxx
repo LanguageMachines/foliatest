@@ -1348,9 +1348,13 @@ void text_test19a(){
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
   assertNoThrow( doc.declare( AnnotationType::TEXT, "set_a" ) );
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( doc.declare( AnnotationType::TEXT, "set_b"), DocumentError );
+#else
   assertThrow( doc.declare( AnnotationType::TEXT, "set_b"), XmlError );
+#endif
   if ( hasThrown() ){
-    cerr << "XmlError message was: " << lastError() << endl;
+    cerr << "Error message was: " << lastError() << endl;
   }
 }
 
@@ -1373,9 +1377,13 @@ void text_test19b(){
 "</FoLiA>\n" ;
 
   Document doc;
+#if FOLIA_INT_VERSION >= 214
+  assertThrow( doc.read_from_string(xml), DocumentError );
+#else
   assertThrow( doc.read_from_string(xml), XmlError );
+#endif
   if ( hasThrown() ){
-    cerr << "XmlError message was: " << lastError() << endl;
+    cerr << "Error message was: " << lastError() << endl;
   }
   return;
   //  Next code should start working later on
