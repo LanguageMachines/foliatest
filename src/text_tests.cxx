@@ -1287,9 +1287,7 @@ void create_newstyle_doc( bool with_space ){
   style->add_child<Feature>( m_args );
   args.clear();
   if ( with_space ){
-    XmlText *txt = new folia::XmlText();
-    txt->setvalue( " " );
-    t->append( txt );
+    t->add_child<XmlText>( " " );
     args["text"] = "extra";
   }
   else {
