@@ -1400,3 +1400,9 @@ void text_test20(){
   Document doc;
   assertNoThrow( doc.read_from_file( "tests/corrected.xml" ) );
 }
+
+void text_test21(){
+  startTestSerie( "Validation - empty t-hbr" );
+  Document doc;
+  assertNoThrow( doc.read_from_file("tests/bug52.xml") );
+}
