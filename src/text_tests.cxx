@@ -1422,10 +1422,22 @@ void text_test20(){
 
 void text_test21(){
   startTestSerie( "Validation - empty t-hbr" );
-  Document doc;
 #if FOLIA_INT_VERSION >= 215
-  assertNoThrow( doc.read_from_file("tests/bug52.xml") );
+  {
+    Document doc;
+    assertNoThrow( doc.read_from_file("tests/bug52.xml") );
+  }
+  {
+    Document doc;
+    assertNoThrow( doc.read_from_file("tests/bug52-2.xml") );
+  }
+  {
+    Document doc;
+    assertThrow( doc.read_from_file("tests/bug52-3.xml"),
+		 UnresolvableTextContent );
+  }
 #else
+  Document doc;
   assertThrow( doc.read_from_file("tests/bug52.xml"),
 	       UnresolvableTextContent );
 #endif

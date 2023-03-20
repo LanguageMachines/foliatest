@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="bugxx" generator="libfolia-v1.11" version="2.5">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <division-annotation/>
+      <paragraph-annotation/>
+      <sentence-annotation/>
+      <token-annotation/>
+      <hyphenation-annotation/>
+      <string-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="bug">
+    <div xml:id="bug.div">
+      <p xml:id="bug.div.p">
+        <s xml:id="bug.div.p.s.1">
+	  <t>appel<t-hbr>-</t-hbr>taart</t>
+          <str xml:id="bug.div.p.s.1.str.1">
+            <t offset="0">appel</t>
+	  </str>
+          <str xml:id="bug.div.p.s.1.str.2">
+            <t offset="7"><t-hbr>-</t-hbr></t>
+	  </str>
+          <str xml:id="bug.div.p.s.1.str.3">
+            <t offset="5">taart</t>
+	  </str>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>
