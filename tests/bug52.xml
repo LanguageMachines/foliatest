@@ -14,8 +14,15 @@
     <div xml:id="bug.text.1.div">
       <p xml:id="bug.text.1.div.p">
         <s xml:id="bug.text.1.div.p.s">
-          <w xml:id="bug.text.1.div.p.s.w.4">
+          <w xml:id="bug.text.1.div.p.s.w.1">
+	    <!-- the t-hbr is the first child of w.1 -->
             <t><t-hbr>-</t-hbr></t>
+	  </w>
+          <w xml:id="bug.text.1.div.p.s.w.2">
+	    <!-- the t-hbr is NOT the first child of w.2 -->
+            <t>
+	      <t-hbr>-</t-hbr>
+	    </t>
 	  </w>
         </s>
       </p>
