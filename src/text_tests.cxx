@@ -537,7 +537,8 @@ void text_test10(){
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
 #if FOLIA_INT_VERSION >= 215
-  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(true),
+  int off = 0;
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(off),
 	       doc["example.p.1"] ); // testing resolving explicit reference
 #else
   assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
@@ -623,7 +624,8 @@ void text_test11(){
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
 #if FOLIA_INT_VERSION >= 215
-  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(true),
+  int off = 0;
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(off),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
 #else
   assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
@@ -657,7 +659,8 @@ void text_test12(){
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
 #if FOLIA_INT_VERSION >= 215
-  assertEqual( doc["example.string"]->text_content()->get_reference(true),
+  int off = 0;
+  assertEqual( doc["example.string"]->text_content()->get_reference(off),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
 #else
   assertEqual( doc["example.string"]->text_content()->get_reference(),
