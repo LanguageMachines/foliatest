@@ -536,8 +536,13 @@ void text_test10(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
+#if FOLIA_INT_VERSION >= 215
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(true),
+	       doc["example.p.1"] ); // testing resolving explicit reference
+#else
   assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1"] ); // testing resolving explicit reference
+#endif
 }
 
 void text_test11(){
@@ -617,8 +622,13 @@ void text_test11(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
+#if FOLIA_INT_VERSION >= 215
+  assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(true),
+	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
+#else
   assertEqual( doc["example.p.1.s.1.w.19"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
+#endif
   assertEqual( doc.get_warn_count(), 1 );
 }
 
@@ -646,8 +656,14 @@ void text_test12(){
 "</FoLiA>";
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
+#if FOLIA_INT_VERSION >= 215
+  assertEqual( doc["example.string"]->text_content()->get_reference(true),
+	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
+#else
   assertEqual( doc["example.string"]->text_content()->get_reference(),
 	       doc["example.p.1.s.1"] ); // testing resolving implicit reference
+#endif
+
 }
 
 void text_test13a(){
@@ -1404,5 +1420,10 @@ void text_test20(){
 void text_test21(){
   startTestSerie( "Validation - empty t-hbr" );
   Document doc;
+#if FOLIA_INT_VERSION >= 215
   assertNoThrow( doc.read_from_file("tests/bug52.xml") );
+#else
+  assertThrow( doc.read_from_file("tests/bug52.xml"),
+	       UnresolvableTextContent );
+#endif
 }
