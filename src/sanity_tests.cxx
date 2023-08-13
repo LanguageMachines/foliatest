@@ -233,8 +233,10 @@ void sanity_test009( ){
   assertTrue( w->annotation<PosAnnotation>() == w->select<PosAnnotation>()[0] );
   assertTrue( w->annotation<PosAnnotation>()->isinstance(PosAnnotation_t ) );
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+#if FOLIA_INT_VERSION <= 215
   bool test = isSubClass<PosAnnotation, AbstractTokenAnnotation>();
   assertTrue( test );
+#endif
   assertTrue( w->annotation<PosAnnotation>()->cls() == "N(soort,ev,basis,onz,stan)" );
   assertTrue( w->pos() == "N(soort,ev,basis,onz,stan)" );
   assertTrue( w->annotation<PosAnnotation>()->sett() == "https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn" );
@@ -569,7 +571,11 @@ void sanity_test023c(){
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.1.w.2"];
   vector<Word*> context = w->leftcontext(3,"?");
   assertTrue( context.size() == 3 );
-  assertTrue( context[0]->isinstance( PlaceHolder_t) );
+#if FOLIA_INT_VERSION <= 215
+  assertTrue( context[0]->isinstance( Placeholder_t ) q);
+#else
+  assertTrue( context[0]->is_placeholder() );
+#endif
   assertTrue( context[0]->text() == "?" );
   assertTrue( context[1]->text() == "Stemma" );
   assertTrue( context[2]->text() == "Stemma" );
@@ -603,7 +609,11 @@ void sanity_test024c(){
   vector<Word*> context = w->rightcontext(3, "_");
   assertTrue( context.size() == 3 );
   assertTrue( text(context[0]) == "University" );
+#if FOLIA_INT_VERSION <= 215
   assertTrue( context[1]->isinstance(PlaceHolder_t) );
+#else
+  assertTrue( context[1]->is_placeholder() );
+#endif
   assertTrue( context[2]->text() == "_" );
 
 }
@@ -642,15 +652,22 @@ void sanity_test025c(){
   assertTrue( text(context[0]) == "nil" );
   assertEqual( text(context[301]), "handschrift" );
   assertTrue( text(context[202]) == "nil" );
+#if FOLIA_INT_VERSION <= 215
   assertTrue( context[500]->isinstance(PlaceHolder_t) );
-
+#else
+  assertTrue( context[500]->is_placeholder() );
+#endif
 }
 
 void sanity_test026a(){
   startTestSerie(" Features " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
   FoliaElement *pos = w->annotation<PosAnnotation>();
+#if FOLIA_INT_VERSION <= 215
   assertTrue( pos->isSubClass( AbstractTokenAnnotation_t ) );
+#else
+  assertTrue( isSubClass( pos->element_id(), AbstractTokenAnnotation_t ) );
+#endif
   assertTrue( pos->isinstance(PosAnnotation_t) );
   assertTrue( pos->cls() == "WW(vd,prenom,zonder)" );
   assertTrue( len(pos) ==  1 );
@@ -853,7 +870,7 @@ void sanity_test037a( ){
   assertTrue( doc["head.1.s.1.w.1"]->pos() == "NN(blah)" );
   assertTrue( doc["head.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "NN" );
   assertTrue( doc["p.1.s.1.w.1"]->pos() == "BB(blah)" );
-  assertTrue( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head") == "BB" );
+  assertEqual( doc["p.1.s.1.w.1"]->annotation<PosAnnotation>()->feat("head"), "BB" );
 }
 
 void sanity_test037b( ){
@@ -2048,12 +2065,14 @@ void sanity_test108( ){
 
 void sanity_test109( ){
   startTestSerie( " type hierarchy " );
+#if FOLIA_INT_VERSION <= 215
   assertTrue( isSubClass( PlaceHolder_t, AbstractStructureElement_t ) );
   assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
   assertTrue( isSubClass( PlaceHolder_t, Word_t ) );
   assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
-  assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
+#endif
+  assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
 }
 
 void sanity_test110(){
