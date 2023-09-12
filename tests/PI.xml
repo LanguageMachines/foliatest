@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="hbr" generator="libfolia-v2.16" version="2.5.3">
+  <metadata type="native">
+    <annotations>
+      <paragraph-annotation/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+    </annotations>
+  </metadata>
+  <text xml:id="text">
+    <p xml:id="text.p1">
+      <?pi1 content1A?>
+      <?pi1 content1B?>
+      <?pi2 content2A?>
+      <t>onzin</t>
+    </p>
+  </text>
+</FoLiA>
