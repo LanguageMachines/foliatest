@@ -707,5 +707,19 @@ void engine_test013() {
 		     (stat == 0) );
     }
   }
+  {
+    Engine proc;
+    //  proc.set_debug(true);
+    assertNoThrow( proc.init_doc( "tests/PI.xml" ) );
+    if ( proc.ok() ){
+      xml_tree *result = proc.create_simple_tree("tests/PI.xml");
+      ofstream os( "/tmp/PIenum.tree" );
+      print( os, result );
+      delete result;
+      int stat = system( "diff /tmp/PIenum.tree tests/PIenum.tree.ok" );
+      assertMessage( "/tmp/PIenum.tree tests/PIenum.tree.ok differ!",
+		     (stat == 0) );
+    }
+  }
 #endif
 }
