@@ -660,3 +660,52 @@ void engine_test012() {
     }
   }
 }
+
+void engine_test013() {
+  startTestSerie( " Test reading of a file with PI's" );
+  string path = "tests/PI.xml";
+#if FOLIA_INT_VERSION >= 216
+  {
+    Engine proc;
+    //    proc.set_debug(true);
+    assertNoThrow( proc.init_doc( path ) );
+    if ( proc.ok() ){
+      FoliaElement *res = 0;
+      while ( (res = proc.get_node( "pqrs" ) ) ){
+	// search a non-existing node. makes get_node collect the whole document
+	proc.next();
+      }
+      assertNoThrow( proc.save( "/tmp/PI.xml") );
+      int stat = system( "./tests/foliadiff.sh /tmp/PI.xml tests/PI.xml" );
+      assertMessage( "/tmp/PI.xml tests/PI.xml differ!",
+		     (stat == 0) );
+    }
+  }
+  {
+    Engine proc;
+    //    proc.set_debug(true);
+    assertNoThrow( proc.init_doc( path ) );
+    if ( proc.ok() ){
+      FoliaElement *res = proc.get_node( "p" );
+      auto piv = res->getPI();
+      assertEqual( piv.size(), 3 );
+    }
+  }
+  {
+    Engine proc;
+    //    proc.set_debug(true);
+    assertNoThrow( proc.init_doc( path ) );
+    if ( proc.ok() ){
+      FoliaElement *res = 0;
+      ofstream os( "/tmp/PInodes.txt" );
+      while ( (res = proc.get_node( "PI" ) ) ){
+	auto PI = dynamic_cast<ProcessingInstruction*>( res );
+	os << PI->target() << " : " << PI->content() << endl;
+      }
+      int stat = system( "diff /tmp/PInodes.txt tests/PInodes.txt.ok" );
+      assertMessage( "/tmp/PInodes.txt tests/PInodes.txt.ok differ!",
+		     (stat == 0) );
+    }
+  }
+#endif
+}

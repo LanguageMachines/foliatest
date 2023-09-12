@@ -510,6 +510,7 @@ extern void engine_test009c();
 extern void engine_test010();
 extern void engine_test011();
 extern void engine_test012();
+extern void engine_test013();
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
@@ -1562,6 +1563,7 @@ int main( int argc, char* argv[] ){
   engine_test009c();
   engine_test010();
   engine_test011();
+  engine_test013();
   whitespace_test001();
   whitespace_test002();
   whitespace_test003();
