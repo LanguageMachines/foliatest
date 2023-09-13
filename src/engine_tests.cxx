@@ -292,9 +292,15 @@ void engine_test005(){
     ofstream os( "/tmp/enum.tree" );
     print( os, result );
     delete result;
+#if FOLIA_INT_VERSION >= 216
+    int stat = system( "diff /tmp/enum.tree tests/enum.tree.216.ok" );
+    assertMessage( "/tmp/enum.tree tests/enum.tree.216.ok differ!",
+     		   (stat == 0) );
+#else
     int stat = system( "diff /tmp/enum.tree tests/enum.tree.ok" );
     assertMessage( "/tmp/enum.tree tests/enum.tree.ok differ!",
      		   (stat == 0) );
+#endif
   }
 }
 
@@ -309,9 +315,15 @@ void engine_test006a(){
     for ( const auto& n : result ){
       os << n.first << endl;
     }
+#if FOLIA_INT_VERSION >= 216
+    int stat = system( "diff /tmp/textparents.lst tests/textparents.lst.216.ok" );
+    assertMessage( "/tmp/textparents.lst tests/textparents.lst.216.ok differ!",
+     		   (stat == 0) );
+#else
     int stat = system( "diff /tmp/textparents.lst tests/textparents.lst.ok" );
     assertMessage( "/tmp/textparents.lst tests/textparents.lst.ok differ!",
      		   (stat == 0) );
+#endif
   }
 }
 
@@ -326,9 +338,15 @@ void engine_test006b(){
     for ( const auto& n : result ){
       os << n.first << endl;
     }
+#if FOLIA_INT_VERSION >= 216
+    int stat = system( "diff /tmp/textparents-o.lst tests/textparents-o.lst.216.ok" );
+    assertMessage( "/tmp/textparents-o.lst tests/textparents-o.lst.216.ok differ!",
+     		   (stat == 0) );
+#else
     int stat = system( "diff /tmp/textparents-o.lst tests/textparents-o.lst.ok" );
     assertMessage( "/tmp/textparents-o.lst tests/textparents-o.lst.ok differ!",
      		   (stat == 0) );
+#endif
   }
 }
 
