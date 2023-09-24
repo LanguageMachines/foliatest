@@ -2299,3 +2299,23 @@ void sanity_test150( ){
   assertNoThrow( d.read_from_file( "tests/missing_proc.xml" ) );
 #endif
 }
+
+void sanity_test151( ){
+  startTestSerie( " Reading a document with processing instructions " );
+  Document d;
+  assertNoThrow( d.read_from_file( "tests/PI.xml" ) );
+#if FOLIA_INT_VERSION >= 216
+  auto parv = d.paragraphs();
+  auto par = parv[0];
+  vector<ProcessingInstruction*> PIS = par->getPI();
+  assertEqual( PIS.size(), 3 );
+  assertEqual( PIS[0]->target(), "pi1" );
+  assertEqual( PIS[1]->target(), "pi1" );
+  assertEqual( PIS[2]->target(), "pi2" );
+  assertEqual( PIS[0]->content(), "content1A" );
+  assertEqual( PIS[1]->content(), "content1B" );
+  PIS = par->getPI( "pi2" );
+  assertTrue( PIS.size() == 1 );
+  assertEqual( PIS[0]->content(), "content2A" );
+#endif
+}

@@ -406,6 +406,7 @@ extern void sanity_test130();
 extern void sanity_test140();
 extern void sanity_test141();
 extern void sanity_test150();
+extern void sanity_test151();
 
 extern void Test_E001_Tokens_Structure();
 extern void Test_Exxx_Hidden_Tokens();
@@ -509,6 +510,7 @@ extern void engine_test009c();
 extern void engine_test010();
 extern void engine_test011();
 extern void engine_test012();
+extern void engine_test013();
 
 void create_test001( ){
   startTestSerie( " Creating a document from scratch. " );
@@ -1444,6 +1446,7 @@ int main( int argc, char* argv[] ){
   sanity_test140();
   sanity_test141();
   sanity_test150();
+  sanity_test151();
   edit_test001a();
   edit_test001b();
   edit_test002();
@@ -1560,6 +1563,7 @@ int main( int argc, char* argv[] ){
   engine_test009c();
   engine_test010();
   engine_test011();
+  engine_test013();
   whitespace_test001();
   whitespace_test002();
   whitespace_test003();
