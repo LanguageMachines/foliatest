@@ -681,8 +681,8 @@ void engine_test012() {
 
 void engine_test013() {
   startTestSerie( " Test reading of a file with PI's" );
-  string path = "tests/PI.xml";
 #if FOLIA_INT_VERSION >= 216
+  string path = "tests/PI.xml";
   {
     Engine proc;
     //    proc.set_debug(true);

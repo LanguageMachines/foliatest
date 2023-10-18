@@ -1574,6 +1574,7 @@ int main( int argc, char* argv[] ){
   whitespace_test008();
   whitespace_test009();
   whitespace_test010();
+  whitespace_test010b();
   whitespace_test011();
   whitespace_test012();
   whitespace_test013();
