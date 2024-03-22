@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<!-- Foo1a -->
+<!-- Foo1b -->
+<FoLiA xmlns="http://ilk.uvt.nl/folia" version="2.0" xml:id="example">
+  <!-- Foo2 -->
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation/>
+    </annotations>
+  </metadata>
+  <!-- Foo3 -->
+  <text>
+    <!-- Foo4 -->
+    <p>
+      <!-- Foo5 -->
+      <t><!-- Foo6 -->Dit is een test.</t>
+      <!-- Foo7-->
+    </p>
+    <!-- Foo8 -->
+  </text>
+  <!-- Foo9 -->
+</FoLiA>
