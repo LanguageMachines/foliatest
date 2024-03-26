@@ -998,6 +998,42 @@ void correction_test008b(){
 	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.correction.1\" annotator=\"testscript\"><new><t>ronde</t></new><original auth=\"no\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.c.1\"><new><t>vierkante</t></new><original auth=\"no\"><t>vierkant</t></original></correction></original></correction>" );
 }
 
+
+void correction_test009a(){
+  startTestSerie( " Correction - don't accept invalid corrections" );
+#if FOLIA_INT_VERSION >= 218
+  assertThrow( Document cor_doc( "tests/invalid_corr.xml" ), XmlError );
+#else
+  Document cor_doc;
+  assertNoThrow( cor_doc.read_from_file( "tests/invalid_corr.xml" ) );
+#endif
+}
+
+void correction_test009b(){
+  startTestSerie( " Correction - invalid correction" );
+  Document cor_doc( "tests/examplev1.5.xml" );
+  FoliaElement *node = cor_doc["example.p.1.s.1.w.1"];
+  vector<PosAnnotation*> pV;
+  FoliaElement *pos = node->getPosAnnotations( "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn", pV );
+  vector<FoliaElement*> oV;
+  oV.push_back(pos);
+  vector<FoliaElement*> sV;
+  vector<FoliaElement*> cV;
+  vector<FoliaElement*> nV;
+  KWargs args;
+  args["xml:id"] = "BLA";
+  FoliaElement *sent = new Sentence( args );
+  nV.push_back(sent);
+  Correction *c;
+#if FOLIA_INT_VERSION >= 218
+  assertThrow( c = node->correct( oV, cV, nV, sV, args ), XmlError );
+#else
+  c = node->correct( oV, cV, nV, sV, args );
+  assertEqual( c->xmlstring(),
+	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.p.1.s.1.w.1.correction.1\"><new><s xml:id=\"BLA\"/></new><original auth=\"no\"><pos class=\"WW(pv,tgw,ev)\" confidence=\"0.996196\" head=\"WW\"><feat class=\"pv\" subset=\"wvorm\"/><feat class=\"tgw\" subset=\"pvtijd\"/><feat class=\"ev\" subset=\"pvagr\"/></pos></original></correction>" );
+#endif
+}
+
 Document qDoc( "file='tests/example.xml'" );
 
 void query_test001(){
@@ -1526,6 +1562,8 @@ int main( int argc, char* argv[] ){
   correction_test007();
   correction_test008a();
   correction_test008b();
+  correction_test009a();
+  correction_test009b();
   query_test001();
   query_test002();
   query_test003();
