@@ -49,6 +49,9 @@ jobs:
           access_token: ${{ github.token }}
 
       - uses: actions/checkout@v4.1.1
+        with:
+          submodules: recursive
+
       - name: Install Build Environment
         run: |
              if [ "$RUNNER_OS" == "Linux" ]; then
@@ -71,14 +74,6 @@ jobs:
                 brew install zlib
                 brew install cppcheck
              fi
-
-      - name: install FoliaPY
-        run: |
-          git clone https://github.com/proycon/foliapy;
-          cd foliapy;
-          # get folia-repo with examples
-          git submodule init && git submodule update;
-          cd ..
 
       - name: install TiccUtils
         env:
