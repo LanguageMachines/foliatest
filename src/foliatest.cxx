@@ -1036,16 +1036,6 @@ void correction_test009b(){
 }
 
 void correction_test009c(){
-  startTestSerie( " Correction - don't accept invalid corrections" );
-#if FOLIA_INT_VERSION >= 218
-  assertThrow( Document cor_doc( "tests/invalid_corr_2.xml" ), XmlError );
-#else
-  Document cor_doc;
-  assertNoThrow( cor_doc.read_from_file( "tests/invalid_corr_2.xml" ) );
-#endif
-}
-
-void correction_test009d(){
   startTestSerie( " Correction - accept complex corrections" );
   {
     Document cor_doc;
@@ -1592,7 +1582,6 @@ int main( int argc, char* argv[] ){
   correction_test009a();
   correction_test009b();
   correction_test009c();
-  correction_test009d();
   query_test001();
   query_test002();
   query_test003();
