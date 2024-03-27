@@ -998,14 +998,15 @@ void correction_test008b(){
 	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.correction.1\" annotator=\"testscript\"><new><t>ronde</t></new><original auth=\"no\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.c.1\"><new><t>vierkante</t></new><original auth=\"no\"><t>vierkant</t></original></correction></original></correction>" );
 }
 
-
 void correction_test009a(){
   startTestSerie( " Correction - don't accept invalid corrections" );
 #if FOLIA_INT_VERSION >= 218
   assertThrow( Document cor_doc( "tests/invalid_corr.xml" ), XmlError );
+  assertThrow( Document cor_doc( "tests/invalid_corr_2.xml" ), XmlError );
 #else
   Document cor_doc;
   assertNoThrow( cor_doc.read_from_file( "tests/invalid_corr.xml" ) );
+  assertNoThrow( cor_doc.read_from_file( "tests/invalid_corr_2.xml" ) );
 #endif
 }
 
@@ -1032,6 +1033,32 @@ void correction_test009b(){
   assertEqual( c->xmlstring(),
 	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.p.1.s.1.w.1.correction.1\"><new><s xml:id=\"BLA\"/></new><original auth=\"no\"><pos class=\"WW(pv,tgw,ev)\" confidence=\"0.996196\" head=\"WW\"><feat class=\"pv\" subset=\"wvorm\"/><feat class=\"tgw\" subset=\"pvtijd\"/><feat class=\"ev\" subset=\"pvagr\"/></pos></original></correction>" );
 #endif
+}
+
+void correction_test009c(){
+  startTestSerie( " Correction - don't accept invalid corrections" );
+#if FOLIA_INT_VERSION >= 218
+  assertThrow( Document cor_doc( "tests/invalid_corr_2.xml" ), XmlError );
+#else
+  Document cor_doc;
+  assertNoThrow( cor_doc.read_from_file( "tests/invalid_corr_2.xml" ) );
+#endif
+}
+
+void correction_test009d(){
+  startTestSerie( " Correction - accept complex corrections" );
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_1.xml" ) );
+  }
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_2.xml" ) );
+  }
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_3.xml" ) );
+  }
 }
 
 Document qDoc( "file='tests/example.xml'" );
@@ -1564,6 +1591,8 @@ int main( int argc, char* argv[] ){
   correction_test008b();
   correction_test009a();
   correction_test009b();
+  correction_test009c();
+  correction_test009d();
   query_test001();
   query_test002();
   query_test003();

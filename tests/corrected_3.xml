@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="Walter" generator="libfolia-v2.12" version="2.5.3">
+  <metadata type="native">
+    <annotations>
+      <token-annotation/>
+      <paragraph-annotation/>
+      <sentence-annotation/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <correction-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="Walter.text">
+    <correction xml:id="Walter.correction.1">
+      <new>
+	<p xml:id="par">
+          <s xml:id="Walter.corr.s.1">
+            <t>Dit is een zin.</t>
+          </s>
+          <s xml:id="Walter.corr.s.2">
+            <t>Dit is nog een zin.</t>
+          </s>
+	</p>
+      </new>
+      <original auth="no">
+        <s xml:id="Walter.s.1">
+          <t>Dit is een zin.</t>
+        </s>
+        <s xml:id="Walter.s.2">
+          <t>Dit is nog een zin</t>
+        </s>
+      </original>
+    </correction>
+  </text>
+</FoLiA>
