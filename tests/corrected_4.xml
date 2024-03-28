@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="Walter" generator="libfolia-v2.12" version="2.5.3">
+  <metadata type="native">
+    <annotations>
+      <token-annotation/>
+      <lemma-annotation set="bli"/>
+      <pos-annotation set="bla"/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <correction-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="Walter.text">
+    <w xml:id="word">
+      <t>Woord!</t>
+      <correction xml:id="Walter.correction.1">
+	<new>
+	  <pos xml:id="pos.corr" class="N"/>
+	  <lemma xml:id="lem.corr" class="woord"/>
+	</new>
+	<original auth="no">
+          <lemma xml:id="lem" class="N"/>
+          <pos xml:id="pos" class="woord"/>
+	</original>
+      </correction>
+    </w>
+  </text>
+</FoLiA>

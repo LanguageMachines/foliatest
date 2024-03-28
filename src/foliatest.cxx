@@ -1011,7 +1011,7 @@ void correction_test009a(){
 }
 
 void correction_test009b(){
-  startTestSerie( " Correction - invalid correction" );
+  startTestSerie( " Correction - invalid creation of correction" );
   Document cor_doc( "tests/examplev1.5.xml" );
   FoliaElement *node = cor_doc["example.p.1.s.1.w.1"];
   vector<PosAnnotation*> pV;
@@ -1048,6 +1048,10 @@ void correction_test009c(){
   {
     Document cor_doc;
     assertNoThrow( cor_doc.read_from_file( "tests/corrected_3.xml" ) );
+  }
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_4.xml" ) );
   }
 }
 
