@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # bootstrap - script to bootstrap the distribution rolling engine
 
 # usage:
@@ -38,7 +40,7 @@ aclocal=aclocal
 # inspired by hack as used in mcl (from http://micans.org/)
 
 # autoconf-archive Debian package, aclocal-archive RPM, obsolete/badly supported OS, installed in home dir
-   acdirs="/usr/share/autoconf-archive/ /usr/share/aclocal/ /usr/local/share/aclocal/ $HOME/local/share/autoconf-archive/"
+acdirs="/usr/share/autoconf-archive/ /usr/share/aclocal/ /usr/local/share/aclocal/ $HOME/local/share/autoconf-archive/ /opt/homebrew/share/aclocal"
 
    found=false
    for d in $acdirs
@@ -61,19 +63,19 @@ EOT
    fi
 
 
-if $automake --version|head -1 |grep ' 1\.[4-9]'; then
-    echo "automake 1.4-1.8 is active. You should use automake 1.10 or later"
+if $automake --version|head -1 |grep ' 1\.[4-8]'; then
+    echo "automake 1.4-1.8 is active. You should use automake 1.9 or later"
     if test -f /etc/debian_version; then
-        echo " sudo apt-get install automake1.10"
+        echo " sudo apt-get install automake1.9"
         echo " sudo update-alternatives --config automake"
     fi
     exit 1
 fi
 
-if $aclocal --version|head -1 |grep ' 1\.[4-9]'; then
-    echo "aclocal 1.4-1.8 is active. You should use aclocal 1.10 or later"
+if $aclocal --version|head -1 |grep ' 1\.[4-8]'; then
+    echo "aclocal 1.4-1.8 is active. You should use aclocal 1.9 or later"
     if test -f /etc/debian_version; then
-        echo " sudo apt-get install aclocal1.10"
+        echo " sudo apt-get install aclocal1.9"
         echo " sudo update-alternatives --config aclocal"
     fi
     exit 1
@@ -81,7 +83,7 @@ fi
 
 # Debian automake package installs as automake-version.  Use this
 # to make sure the right automake is being used.
-# if not installed, use: apt-get install automake1.10
+# if not installed, use: apt-get install automake1.9
 
 AUTOMAKE=automake ACLOCAL=aclocal autoreconf --install \
       --symlink
@@ -90,6 +92,6 @@ AUTOMAKE=automake ACLOCAL=aclocal autoreconf --install \
 
 # autoreconf should run something like:
 #
-# aclocal-1.10 \
-#     && automake-1.10 --add-missing --verbose --gnu \
+# aclocal-1.9 \
+#     && automake-1.9 --add-missing --verbose --gnu \
 #     && autoconf
