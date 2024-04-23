@@ -1450,18 +1450,18 @@ void text_test22(){
     Document doc;
     assertThrow( doc.read_from_file("tests/empty.xml"), XmlError );
   }
-  {
-    Document doc;
-    assertNoThrow( doc.read_from_file("tests/empty2.xml") );
-  }
 #else
   {
     Document doc;
     assertNoThrow( doc.read_from_file("tests/empty.xml" ) );
   }
+#endif
   {
     Document doc;
-    assertNoThrow( doc.read_from_file("tests/empty2.xml" ) );
+    assertNoThrow( doc.read_from_file("tests/empty2.xml") );
   }
-#endif
+  {
+    Document doc;
+    assertNoThrow( doc.read_from_file("tests/empty3.xml") );
+  }
 }
