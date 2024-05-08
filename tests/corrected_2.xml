@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="Walter" generator="libfolia-v2.12" version="2.5.3">
+  <metadata type="native">
+    <annotations>
+      <token-annotation alias="tokconfig-deu" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-deu.foliaset.ttl">
+        <annotator processor="FoLiA-correct.1"/>
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <paragraph-annotation>
+        <annotator processor="ucto.1"/>
+      </paragraph-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <correction-annotation set="Ticcl-set">
+        <annotator processor="FoLiA-correct.1"/>
+      </correction-annotation>
+    </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2022-10-06T12:10:53" command="ucto -X -L deu --textredundancy=full --id Walter bug.in bug.folia.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.26">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.12"/>
+        <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.9.1">
+          <processor xml:id="uctodata.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+      <processor xml:id="FoLiA-correct.1" begindatetime="2022-10-06T12:11:06" command="FoLiA-correct --ngram=3 -e folia.xml -O OUT --rank=data/DeutscheEssays.RANK.withunderscore.ranked --unk=data/DeutscheEssays.UNK.withunderscore.unk --punct=data/DeutscheEssays.UNK.withunderscore.punct" folia_version="2.5.1" host="kobus" name="FoLiA-correct" user="sloot" version="0.19">
+        <processor xml:id="FoLiA-correct.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.12"/>
+      </processor>
+    </provenance>
+    <meta id="language">deu</meta>
+  </metadata>
+  <text xml:id="Walter.text">
+    <p xml:id="Walter.p.1">
+      <t>chat... Von</t>
+      <s xml:id="Walter.p.1.s.1">
+        <t>chat...</t>
+        <w xml:id="Walter.p.1.s.1.w.1" class="WORD" processor="ucto.1" space="no">
+          <t>chat</t>
+        </w>
+        <correction xml:id="Walter.p.1.s.1.correction.1">
+          <new>
+            <w xml:id="Walter.p.1.s.1.w.3.edit.1" processor="FoLiA-correct.1">
+              <t>...</t>
+            </w>
+          </new>
+          <original auth="no">
+            <w xml:id="Walter.p.1.s.1.w.3" class="PUNCTUATION-MULTI" processor="ucto.1">
+              <t>...</t>
+            </w>
+          </original>
+        </correction>
+      </s>
+      <s xml:id="Walter.p.1.s.2">
+        <t>Von</t>
+        <w xml:id="Walter.p.1.s.2.w.1" class="WORD" processor="ucto.1">
+          <t>Von</t>
+        </w>
+      </s>
+    </p>
+  </text>
+</FoLiA>

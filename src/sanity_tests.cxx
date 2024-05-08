@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2020
+  Copyright (c) 2006 - 2024
   CLST  - Radboud University
   ILK   - Tilburg University
 
@@ -2317,5 +2317,17 @@ void sanity_test151( ){
   PIS = par->getPI( "pi2" );
   assertTrue( PIS.size() == 1 );
   assertEqual( PIS[0]->content(), "content2A" );
+#endif
+}
+
+void sanity_test152( ){
+  startTestSerie( " Reading a document with a lot of comment " );
+  Document d;
+  assertNoThrow( d.read_from_file( "tests/comment.xml" ) );
+  assertNoThrow( d.save( "/tmp/test152.xml", true ) );
+#if FOLIA_INT_VERSION >= 218
+  int stat = system( "./tests/foliadiff.sh /tmp/test152.xml tests/comment.xml" );
+  assertMessage( "/tmp/test152.xml tests/comment.xml differ!",
+   		 (stat == 0) );
 #endif
 }

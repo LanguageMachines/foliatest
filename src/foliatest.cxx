@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2020
+  Copyright (c) 2006 - 2024
   CLST  - Radboud University
   ILK   - Tilburg University
 
@@ -407,6 +407,7 @@ extern void sanity_test140();
 extern void sanity_test141();
 extern void sanity_test150();
 extern void sanity_test151();
+extern void sanity_test152();
 
 extern void Test_E001_Tokens_Structure();
 extern void Test_Exxx_Hidden_Tokens();
@@ -480,6 +481,7 @@ extern void text_test19a();
 extern void text_test19b();
 extern void text_test20();
 extern void text_test21();
+extern void text_test22();
 
 extern void engine_test001a();
 extern void engine_test001b();
@@ -997,6 +999,63 @@ void correction_test008b(){
 	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.correction.1\" annotator=\"testscript\"><new><t>ronde</t></new><original auth=\"no\"><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.6.w.31.c.1\"><new><t>vierkante</t></new><original auth=\"no\"><t>vierkant</t></original></correction></original></correction>" );
 }
 
+void correction_test009a(){
+  startTestSerie( " Correction - don't accept invalid corrections" );
+#if FOLIA_INT_VERSION >= 218
+  assertThrow( Document cor_doc( "tests/invalid_corr.xml" ), XmlError );
+  assertThrow( Document cor_doc( "tests/invalid_corr_2.xml" ), XmlError );
+#else
+  Document cor_doc;
+  assertNoThrow( cor_doc.read_from_file( "tests/invalid_corr.xml" ) );
+  assertNoThrow( cor_doc.read_from_file( "tests/invalid_corr_2.xml" ) );
+#endif
+}
+
+void correction_test009b(){
+  startTestSerie( " Correction - invalid creation of correction" );
+  Document cor_doc( "tests/examplev1.5.xml" );
+  FoliaElement *node = cor_doc["example.p.1.s.1.w.1"];
+  vector<PosAnnotation*> pV;
+  FoliaElement *pos = node->getPosAnnotations( "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn", pV );
+  vector<FoliaElement*> oV;
+  oV.push_back(pos);
+  vector<FoliaElement*> sV;
+  vector<FoliaElement*> cV;
+  vector<FoliaElement*> nV;
+  KWargs args;
+  args["xml:id"] = "BLA";
+  FoliaElement *sent = new Sentence( args );
+  nV.push_back(sent);
+  Correction *c;
+#if FOLIA_INT_VERSION >= 218
+  assertThrow( c = node->correct( oV, cV, nV, sV, args ), XmlError );
+#else
+  c = node->correct( oV, cV, nV, sV, args );
+  assertEqual( c->xmlstring(),
+	       "<correction xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.p.1.s.1.w.1.correction.1\"><new><s xml:id=\"BLA\"/></new><original auth=\"no\"><pos class=\"WW(pv,tgw,ev)\" confidence=\"0.996196\" head=\"WW\"><feat class=\"pv\" subset=\"wvorm\"/><feat class=\"tgw\" subset=\"pvtijd\"/><feat class=\"ev\" subset=\"pvagr\"/></pos></original></correction>" );
+#endif
+}
+
+void correction_test009c(){
+  startTestSerie( " Correction - accept complex corrections" );
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_1.xml" ) );
+  }
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_2.xml" ) );
+  }
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_3.xml" ) );
+  }
+  {
+    Document cor_doc;
+    assertNoThrow( cor_doc.read_from_file( "tests/corrected_4.xml" ) );
+  }
+}
+
 Document qDoc( "file='tests/example.xml'" );
 
 void query_test001(){
@@ -1447,6 +1506,7 @@ int main( int argc, char* argv[] ){
   sanity_test141();
   sanity_test150();
   sanity_test151();
+  sanity_test152();
   edit_test001a();
   edit_test001b();
   edit_test002();
@@ -1509,6 +1569,7 @@ int main( int argc, char* argv[] ){
   text_test19b();
   text_test20();
   text_test21();
+  text_test22();
   create_test001();
   create_test002();
   create_test003();
@@ -1524,6 +1585,9 @@ int main( int argc, char* argv[] ){
   correction_test007();
   correction_test008a();
   correction_test008b();
+  correction_test009a();
+  correction_test009b();
+  correction_test009c();
   query_test001();
   query_test002();
   query_test003();
@@ -1574,6 +1638,7 @@ int main( int argc, char* argv[] ){
   whitespace_test008();
   whitespace_test009();
   whitespace_test010();
+  whitespace_test010b();
   whitespace_test011();
   whitespace_test012();
   whitespace_test013();

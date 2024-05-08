@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2020
+  Copyright (c) 2006 - 2024
   CLST  - Radboud University
   ILK   - Tilburg University
 
@@ -1441,4 +1441,27 @@ void text_test21(){
   assertThrow( doc.read_from_file("tests/bug52.xml"),
 	       UnresolvableTextContent );
 #endif
+}
+
+void text_test22(){
+  startTestSerie( "Validation - document with empty <t>" );
+#if FOLIA_INT_VERSION >= 218
+  {
+    Document doc;
+    assertThrow( doc.read_from_file("tests/empty.xml"), XmlError );
+  }
+#else
+  {
+    Document doc;
+    assertNoThrow( doc.read_from_file("tests/empty.xml" ) );
+  }
+#endif
+  {
+    Document doc;
+    assertNoThrow( doc.read_from_file("tests/empty2.xml") );
+  }
+  {
+    Document doc;
+    assertNoThrow( doc.read_from_file("tests/empty3.xml") );
+  }
 }

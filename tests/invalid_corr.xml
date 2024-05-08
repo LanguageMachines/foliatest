@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="2.2">
+  <metadata type="native">
+    <annotations>
+      <correction-annotation />
+      <text-annotation />
+      <pos-annotation set="bla"/>
+      <paragraph-annotation />
+    </annotations>
+  </metadata>
+  <text xml:id="bug">
+    <correction>
+      <new>
+        <p xml:id="p">
+          <t>paragraaf</t>
+        </p>
+      </new>
+      <original>
+        <pos xml:id="s" class="n">
+        </pos>
+      </original>
+    </correction>
+  </text>
+</FoLiA>
