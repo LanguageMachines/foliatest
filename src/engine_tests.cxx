@@ -581,6 +581,27 @@ void engine_test009c(){
   }
 }
 
+void engine_test009d(){
+  startTestSerie( " process a tagged text document " );
+  TextEngine proc;
+  assertNoThrow( proc.init_doc( "tests/tagged.xml" ) );
+  proc.set_debug(true);
+  ofstream os( "/tmp/testtagged.out" );
+  if ( proc.ok() ){
+    proc.setup("",true);
+    FoliaElement *e = 0;
+    assertNoThrow( e = proc.next_text_parent() );
+    while ( e ) {
+      os << e->id() << " : " << e->str() << endl;
+      assertNoThrow( e = proc.next_text_parent() );
+    }
+    os << "done" << endl;
+    int stat = system( "diff /tmp/testtagged.out tests/testtagged.ok" );
+    assertMessage( "/tmp/testtagged.out tests/testtagged.ok differ!",
+		   (stat == 0) );
+  }
+}
+
 void engine_test010(){
   startTestSerie( " copy a document using Folia Engine on string buffer" );
   string xml = "<?xml version=\"1.0\"?>\n"

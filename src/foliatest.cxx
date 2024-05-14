@@ -509,6 +509,7 @@ extern void engine_test008e();
 extern void engine_test009a();
 extern void engine_test009b();
 extern void engine_test009c();
+extern void engine_test009d();
 extern void engine_test010();
 extern void engine_test011();
 extern void engine_test012();
@@ -1625,6 +1626,7 @@ int main( int argc, char* argv[] ){
   engine_test009a();
   engine_test009b();
   engine_test009c();
+  engine_test009d();
   engine_test010();
   engine_test011();
   engine_test013();
