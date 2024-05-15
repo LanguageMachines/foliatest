@@ -585,7 +585,7 @@ void engine_test009d(){
   startTestSerie( " process a tagged text document " );
   TextEngine proc;
   assertNoThrow( proc.init_doc( "tests/tagged.xml" ) );
-  proc.set_debug(true);
+  //  proc.set_debug(true);
   ofstream os( "/tmp/testtagged.out" );
   if ( proc.ok() ){
     proc.setup("",true);
