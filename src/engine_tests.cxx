@@ -122,7 +122,11 @@ void engine_test001d(){
   if ( proc.ok() ){
     // init should work!
     // reading on should fail at a certain point
+#if FOLIA_INT_VERSION >= 219
+    assertThrow( loop( proc ), ValueError );
+#else
     assertThrow( loop( proc ), XmlError );
+#endif
   }
 }
 
