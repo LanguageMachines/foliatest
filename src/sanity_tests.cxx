@@ -233,7 +233,7 @@ void sanity_test009( ){
   assertTrue( w->annotation<PosAnnotation>() == w->select<PosAnnotation>()[0] );
   assertTrue( w->annotation<PosAnnotation>()->isinstance(PosAnnotation_t ) );
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
-#if FOLIA_INT_VERSION <= 215
+#if FOLIA_INT_VERSION <= 215 || FOLIA_INT_VERSION >= 219
   bool test = isSubClass<PosAnnotation, AbstractTokenAnnotation>();
   assertTrue( test );
 #endif
@@ -663,11 +663,10 @@ void sanity_test026a(){
   startTestSerie(" Features " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
   FoliaElement *pos = w->annotation<PosAnnotation>();
-#if FOLIA_INT_VERSION <= 215
+#if FOLIA_INT_VERSION <= 215  || FOLIA_INT_VERSION >= 219
   assertTrue( pos->isSubClass( AbstractTokenAnnotation_t ) );
-#else
-  assertTrue( isSubClass( pos->element_id(), AbstractTokenAnnotation_t ) );
 #endif
+  assertTrue( isSubClass( pos->element_id(), AbstractTokenAnnotation_t ) );
   assertTrue( pos->isinstance(PosAnnotation_t) );
   assertTrue( pos->cls() == "WW(vd,prenom,zonder)" );
   assertTrue( len(pos) ==  1 );
@@ -2070,6 +2069,13 @@ void sanity_test109( ){
   assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
   assertTrue( isSubClass( PlaceHolder_t, Word_t ) );
   assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
+  assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
+#elif FOLIA_INT_VERSION >= 219
+  assertTrue( ( isSubClass<Word, AbstractStructureElement>() ) );
+  assertTrue( ( isSubClass<Word, AbstractWord>() ) );
+  assertFalse( ( isSubClass<AbstractWord, Word>() ) );
+  assertFalse( ( isSubClass<AbstractWord, AbstractStructureElement>() ) );
+  assertTrue( ( isSubClass<AbstractWord, FoliaElement>() ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
 #endif
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
