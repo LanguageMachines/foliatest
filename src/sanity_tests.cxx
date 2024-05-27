@@ -2075,6 +2075,7 @@ void sanity_test109( ){
   assertTrue( ( isSubClass<Word, AbstractWord>() ) );
   assertFalse( ( isSubClass<AbstractWord, Word>() ) );
   assertFalse( ( isSubClass<AbstractWord, AbstractStructureElement>() ) );
+  assertFalse( ( isSubClass<AbstractWord, AbstractElement>() ) );
   assertTrue( ( isSubClass<AbstractWord, FoliaElement>() ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
 #endif
