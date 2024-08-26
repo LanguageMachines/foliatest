@@ -144,7 +144,7 @@ jobs:
         run: make
         continue-on-error: true
       - name: get status make
-        if: ${{ steps.make.outcome != 'success' }}
+        if: ${{ env.action_status == '' }} && ${{ steps.make.outcome != 'success' }}
         run: echo "action_status=make" >> $GITHUB_ENV
       - name: install
         id: install
@@ -152,7 +152,7 @@ jobs:
         run: sudo make install
         continue-on-error: true
       - name: get status install
-        if: ${{ steps.install.outcome != 'success' }}
+        if: ${{ env.action_status == '' }} && ${{ steps.install.outcome != 'success' }}
         run: echo "action_status=install" >> $GITHUB_ENV
 
       - name: running foliatests
