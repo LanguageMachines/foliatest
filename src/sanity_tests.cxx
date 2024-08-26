@@ -950,7 +950,7 @@ void sanity_test037c( ){
 
 void sanity_test038a(){
   startTestSerie( "Sanity check - Obtaining annotation should not descend into morphology layer" );
-  PosAnnotation *p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>();
+  const PosAnnotation *p = sanityDoc["WR-P-E-J-0000000001.sandbox.2.s.1.w.2"]->annotation<PosAnnotation>();
   assertTrue( p == 0 );
 }
 

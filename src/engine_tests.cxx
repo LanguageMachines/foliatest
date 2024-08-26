@@ -69,7 +69,7 @@ void engine_test001a(){
   assertNoThrow( proc.init_doc( "tests/example.xml",
 				"/tmp/example-p1.xml") );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
@@ -87,7 +87,7 @@ void engine_test001b(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample", "/tmp/nsexample" ) );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
@@ -107,7 +107,7 @@ void engine_test001c(){
 }
 
 void loop( Engine& proc ){
-  FoliaElement *res;
+  const FoliaElement *res;
   while ( ( res = proc.get_node( "pqrs" ) ) ){
     // search a non-existing node. will barf on the unknown tag
     proc.next();
@@ -137,7 +137,7 @@ void engine_test001e(){
   assertNoThrow( proc.init_doc( "tests/bug-1.xml",
 				"/tmp/bug-1.xml") );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
@@ -157,7 +157,7 @@ void engine_test001f(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( infile, "/tmp/proc_test001f.xml" ) );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
@@ -175,7 +175,7 @@ void engine_test002a(){
   Engine proc;
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
@@ -193,7 +193,7 @@ void engine_test002b(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/folia.nsexample" ) );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
@@ -211,7 +211,7 @@ void engine_test002c(){
   //  proc.set_debug(true);
   assertNoThrow( proc.init_doc( "tests/speechexample.xml" ) );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();
@@ -266,7 +266,7 @@ void engine_test004(){
       if ( tag == "p" ){
 	vector<Sentence*> sv = res->select<Sentence>();
 	for ( const auto& s : sv ){
-	  Word *w = 0;
+	  const Word *w = 0;
 	  KWargs args;
 	  args["text"] = "found: " + tag + "|s";
 	  assertNoThrow( w = s->addWord( args ) );
@@ -491,7 +491,7 @@ void engine_test008c(){
 }
 
 void test_proc( TextEngine& proc ){
-  FoliaElement *e = 0;
+  const FoliaElement *e = 0;
   while ( (e = proc.next_text_parent() ) ){
   }
 }
@@ -644,7 +644,7 @@ void engine_test010(){
   // proc.set_debug(true);
   assertNoThrow( proc.init_doc( xml ) );
   if ( proc.ok() ){
-    FoliaElement *res = 0;
+    const FoliaElement *res = 0;
     while ( (res = proc.get_node( "pqrs" ) ) ){
       // search a non-existing node. makes get_node collect the whole document
       proc.next();

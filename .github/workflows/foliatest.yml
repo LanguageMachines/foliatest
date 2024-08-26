@@ -76,6 +76,21 @@ jobs:
                 brew install cppcheck
              fi
 
+      - name: Configure CppCheck
+        run: |
+             if [ "$RUNNER_OS" == "Linux" ]; then
+                cpc_opts="--enable=all --inline-suppr --force \
+                         -I include -I /usr/local/include \
+                         --std=c++17 --quiet --error-exitcode=0"
+             else
+                cpc_opts="--enable=all --inline-suppr --force \
+                          --check-level=exhaustive \
+                          --suppress=missingInclude \
+                          --suppress=missingIncludeSystem \
+                          --std=c++17 --quiet --error-exitcode=0"
+             fi
+             echo "cpc_opts=$cpc_opts" >> $GITHUB_ENV
+
       - name: install FoliaPY
         run: |
           git clone https://github.com/proycon/foliapy;
@@ -119,7 +134,7 @@ jobs:
         run: echo "action_status=libfolia" >> $GITHUB_ENV
 
       - name: Static Code-check
-        run: cppcheck --enable=all --quiet --error-exitcode=0 -I . .
+        run: cppcheck ${{ env.cpc_opts }} .
 
       - name: bootstrap
         run: sh bootstrap.sh
