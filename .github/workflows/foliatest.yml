@@ -147,7 +147,7 @@ jobs:
         if: ${{ steps.make.outcome != 'success' }}
         run: echo "action_status=make" >> $GITHUB_ENV
       - name: install
-        id: make
+        id: install
         if: ${{ env.action_status == '' }}
         run: sudo make install
         continue-on-error: true
