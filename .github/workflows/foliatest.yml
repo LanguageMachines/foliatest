@@ -167,12 +167,9 @@ jobs:
           TEST_STAT=$(cat status.tmp)
           echo "test_status=$TEST_STAT" >> $GITHUB_ENV
         continue-on-error: true
-      - name: get status foliatest
-        if: ${{ steps.foliatest.outcome != 'success' }}
-        run: echo "action_status=foliatest" >> $GITHUB_ENV
 
       - name: Notify IRC of build failure
-        if: ${{ env.acction_status != '' }}
+        if: ${{ env.action_status != '' }}
         uses: Gottox/irc-message-action@v2
         with:
           server: irc.uvt.nl
