@@ -580,7 +580,7 @@ void Test_Provenance(){
     args.clear();
     args["text"] = "hello";
     args["generate_id"] = sentence->id();
-    FoliaElement *w = 0;
+    const FoliaElement *w = 0;
     assertThrow( w = new Word( args, &test ), NoDefaultError );
     assertTrue( w == 0 );
   }
@@ -703,7 +703,7 @@ void Test_Provenance(){
     args["name"] = "mbpos";
     args["generate_id"] = "auto()";
     args["version"] = "1";
-    processor *sub = 0;
+    const processor *sub = 0;
     assertNoThrow( sub = doc.add_processor( args, frogs[0] ) );
     assertTrue( sub != NULL );
     mbv = doc.get_processors_by_name("mbpos");
