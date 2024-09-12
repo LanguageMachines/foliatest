@@ -62,25 +62,38 @@ using TiCC::operator<<;
 
 int expect = 0;
 
-string default_path =  "../FoLiApy/folia-repo";
+vector<string> default_paths =
+  { "../FoLiApy/folia-repo",
+    "../foliapy/folia-repo",
+    "foliapy/folia-repo" };
+
 string legacy_file;
 Document LEGACYEXAMPLE;
 
 string get_folia_path() {
-    string path;
-    const char *env = getenv("FOLIAPATH");
-    if ( env == NULL ){
-      if ( TiCC::isDir( default_path + "/examples" ) ){
-        env = default_path.c_str();
+  string path;
+  const char *env = getenv("FOLIAPATH");
+  if ( env == NULL ){
+    for ( const auto& p : default_paths ){
+      if ( TiCC::isDir( p + "/examples" ) ){
+	path = p;
+	break;
       }
-      else {
-        cerr << "WARNING: FOLIAPATH not set or guessed!!!" << endl;
-        return "../FoLiA/";
-      }
-    };
+    }
+    if ( path.empty() ) {
+      throw runtime_error( "FOLIAPATH not set or guessed!!!" );
+    }
+  }
+  else {
     path = env;
-    path += "/";
-    return path;
+    if ( !TiCC::isDir( path + "/examples" ) ){
+      throw runtime_error( "FOLIAPATH not set or guessed from '"
+			   + path + "'" );
+    }
+  }
+  path += "/";
+  cerr << "folia path= '" << path << "'" << endl;
+  return path;
 }
 
 string fol_path = get_folia_path();
@@ -1358,7 +1371,10 @@ int main( int argc, char* argv[] ){
 	return EXIT_FAILURE;
       }
     }
-    Opts.extract( "dir", default_path );
+    string tmp;
+    if ( Opts.extract( "dir", tmp ) ){
+      default_paths.insert( default_paths.begin(), tmp );
+    }
   }
   catch ( const exception& e ){
     cerr << e.what() << endl;
