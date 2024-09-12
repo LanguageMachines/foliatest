@@ -91,7 +91,7 @@ string get_folia_path() {
     }
   }
   path += "/";
-  cout << "folia path= '" << path << "'" << endl;
+  cerr << "folia path= '" << path << "'" << endl;
   return path;
 }
 

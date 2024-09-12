@@ -1,5 +1,4 @@
 #! /bin/sh
-ls -al
 cd ..
-ls -al
-./src/foliatest
+ls -al foliapy
+EXPECT=6 ./src/foliatest
