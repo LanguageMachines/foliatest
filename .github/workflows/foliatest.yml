@@ -75,6 +75,8 @@ jobs:
           cd ..
 
       - uses: LanguageMachines/ticcactions/cpp-safe-build@v1
+        env:
+          FOLIAPATH: foliapy/folia-repo
 
       - name: Notify IRC of build results
         uses: LanguageMachines/ticcactions/irc-status@v1
