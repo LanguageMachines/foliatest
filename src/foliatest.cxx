@@ -64,7 +64,8 @@ int expect = 0;
 
 vector<string> default_paths =
   { "../FoLiApy/folia-repo",
-    "../foliapy/folia-repo" };
+    "../foliapy/folia-repo",
+    "foliapy/folia-repo" };
 
 string legacy_file;
 Document LEGACYEXAMPLE;
