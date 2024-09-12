@@ -70,23 +70,29 @@ string legacy_file;
 Document LEGACYEXAMPLE;
 
 string get_folia_path() {
-    string path;
-    const char *env = getenv("FOLIAPATH");
-    if ( env == NULL ){
-      for ( const auto& p : default_paths ){
-	if ( TiCC::isDir( p + "/examples" ) ){
-	  path = p;
-	}
-      }
-      if ( path.empty() ) {
-	throw runtime_error( "FOLIAPATH not set or guessed!!!" );
+  string path;
+  const char *env = getenv("FOLIAPATH");
+  if ( env == NULL ){
+    for ( const auto& p : default_paths ){
+      if ( TiCC::isDir( p + "/examples" ) ){
+	path = p;
+	break;
       }
     }
-    else {
-      path = env;
+    if ( path.empty() ) {
+      throw runtime_error( "FOLIAPATH not set or guessed!!!" );
     }
-    path += "/";
-    return path;
+  }
+  else {
+    path = env;
+    if ( !TiCC::isDir( path + "/examples" ) ){
+      throw runtime_error( "FOLIAPATH not set or guessed from '"
+			   + path + "'" );
+    }
+  }
+  path += "/";
+  cout << "folia path= '" << path << "'" << endl;
+  return path;
 }
 
 string fol_path = get_folia_path();
