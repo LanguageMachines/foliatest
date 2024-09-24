@@ -87,11 +87,15 @@ jobs:
           EXPECT: 0
           LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
         run: |
-          cd foliatest;
           ./src/testaction.sh;
           TEST_STAT=$(cat status.tmp)
           echo "action_details=$TEST_STAT errors" >> $GITHUB_ENV
         continue-on-error: true
+      - name: get test status
+        uses: LanguageMachines/ticcactions/get-status@v1
+        with:
+          the-step: foliatests
+          outcome: ${{ steps.foliatests.outcome }}
       - name: Notify IRC of end result
         uses: LanguageMachines/ticcactions/irc-status@v1
         with:
