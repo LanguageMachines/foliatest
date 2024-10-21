@@ -2292,9 +2292,15 @@ void sanity_test141( ){
   s2->settext( "de hond\nblaft    hard" );
   doc.setmode( "strip" );
   doc.save( "/tmp/test141.xml", true );
+#if FOLIA_INT_VERSION < 221
   int stat = system( "diff /tmp/test141.xml tests/test141.xml.ok" );
   assertMessage( "/tmp/test141.xml tests/test141.xml.ok differ!",
    		 (stat == 0) );
+#else
+  int stat = system( "diff /tmp/test141.xml tests/test141-221.xml.ok" );
+  assertMessage( "/tmp/test141.xml tests/test141-221.xml.ok differ!",
+   		 (stat == 0) );
+#endif
 }
 
 void sanity_test150( ){

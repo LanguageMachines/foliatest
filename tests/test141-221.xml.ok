@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="spaces">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <division-annotation set="myset"/>
+      <paragraph-annotation set="myset"/>
+      <sentence-annotation set="myset"/>
+    </annotations>
+  </metadata>
+  <text xml:id="text">
+    <div xml:id="text.div.1">
+      <p xml:id="text.div.1.p.1" xml:space="preserve">
+        <s xml:id="text.div.1.p.1.s.1">
+          <t>de kat
+is    aaibaar</t>
+        </s>
+        <s xml:id="text.div.1.p.1.s.2" xml:space="default">
+          <t>de hond
+blaft    hard</t>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>

@@ -1041,7 +1041,9 @@ void correction_test009b(){
   FoliaElement *sent = new Sentence( args );
   nV.push_back(sent);
   Correction *c;
-#if FOLIA_INT_VERSION >= 218
+#if FOLIA_INT_VERSION >= 221
+  assertThrow( c = node->correct( oV, cV, nV, sV, args ), DuplicateIDError );
+#elif FOLIA_INT_VERSION >= 218
   assertThrow( c = node->correct( oV, cV, nV, sV, args ), XmlError );
 #else
   c = node->correct( oV, cV, nV, sV, args );
