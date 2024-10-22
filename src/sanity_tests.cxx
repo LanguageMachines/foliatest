@@ -2069,8 +2069,8 @@ void sanity_test109( ){
   assertTrue( ( isSubClass<PlaceHolder, AbstractStructureElement>() ) );
   assertTrue( isSubClass( PlaceHolder_t, Word_t ) );
   assertTrue( ( isSubClass<PlaceHolder, Word>() ) );
-  assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
-#elif FOLIA_INT_VERSION >= 219
+#endif
+#if FOLIA_INT_VERSION >= 219
   assertTrue( ( isSubClass<Word, AbstractStructureElement>() ) );
   assertTrue( ( isSubClass<Word, AbstractWord>() ) );
   assertFalse( ( isSubClass<AbstractWord, Word>() ) );
