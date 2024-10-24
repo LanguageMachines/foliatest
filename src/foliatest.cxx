@@ -1386,6 +1386,9 @@ int main( int argc, char* argv[] ){
   }
   bool is_setup = setup();
   //  exit(777);
+  cout << "running foliatests for folia version: " << folia::VersionName()
+       << endl;
+  cout << "configured to test version: " << FOLIA_INT_VERSION << endl;
   test0();
   test1();
   test1a();
