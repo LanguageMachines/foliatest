@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - master
-      - action
+      - develop
 
     paths:
       - configure.ac
