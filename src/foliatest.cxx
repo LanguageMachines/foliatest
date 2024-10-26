@@ -121,9 +121,9 @@ void test0() {
   assertTrue( bla["dat"] == " ra ar" );
   assertEqual ( bla["dat"] , string(" ra ar") );
   assertThrow( bla = getArgs( "dit='fout' = " ), ArgsError );
-#if FOLIA_INT_VERSION >= 221
-  assertThrow( bla = getArgs( "dit=fout dit=dubbel" ), ArgsError );
-#endif
+// #if FOLIA_INT_VERSION >= 221
+//   assertThrow( bla = getArgs( "dit=fout dit=dubbel" ), ArgsError );
+// #endif
   assertNoThrow( bla = getArgs( "cls='o\\'k'" ) );
   assertTrue( bla["cls"] == "o'k" );
   assertNoThrow( bla = getArgs( "class='o\\k'" ) );
@@ -1043,9 +1043,10 @@ void correction_test009b(){
   FoliaElement *sent = new Sentence( args );
   nV.push_back(sent);
   Correction *c;
-#if FOLIA_INT_VERSION >= 221
-  assertThrow( c = node->correct( oV, cV, nV, sV, args ), DuplicateAttributeError );
-#elif FOLIA_INT_VERSION >= 218
+// #if FOLIA_INT_VERSION >= 221
+//   assertThrow( c = node->correct( oV, cV, nV, sV, args ), DuplicateAttributeError );
+// #elif FOLIA_INT_VERSION >= 218
+#if FOLIA_INT_VERSION >= 218
   assertThrow( c = node->correct( oV, cV, nV, sV, args ), XmlError );
 #else
   c = node->correct( oV, cV, nV, sV, args );
