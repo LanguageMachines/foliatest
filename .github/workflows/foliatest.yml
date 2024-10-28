@@ -44,15 +44,6 @@ jobs:
       - uses: LanguageMachines/ticcactions/cpp-dependencies@v1
       - uses: LanguageMachines/ticcactions/setup-cppcheck@v1
       - uses: LanguageMachines/ticcactions/irc-nick@v1
-      - name: add valgrind
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Linux" ]
-          then
-            sudo apt-get install valgrind
-          else
-            brew install valgrind
-          fi
 
       - uses: LanguageMachines/ticcactions/cpp-submodule-build@v1
         with:
