@@ -148,7 +148,6 @@ void test0() {
 void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
   Document d;
-  d.setdebug( 1 ); // debug parsing
   assertNoThrow( d.read_from_file("tests/example.xml") );
   d.setdebug( 64 ); // debug serialize
   assertNoThrow( d.save( "/tmp/example.xml" ) );
