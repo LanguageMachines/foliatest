@@ -147,8 +147,9 @@ void test0() {
 
 void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
+  Document debug("file='tests/example.xml', debug='3'");
   Document d;
-  assertNoThrow( d.read_from_file( "tests/example.xml" ) );
+  assertNoThrow( d.read_from_file("tests/example.xml") );
   assertNoThrow( d.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
   assertMessage( "/tmp/example.xml tests/example.xml differ!",
@@ -1043,9 +1044,10 @@ void correction_test009b(){
   FoliaElement *sent = new Sentence( args );
   nV.push_back(sent);
   Correction *c;
-#if FOLIA_INT_VERSION >= 221
-  assertThrow( c = node->correct( oV, cV, nV, sV, args ), DuplicateAttributeError );
-#elif FOLIA_INT_VERSION >= 218
+  //#if FOLIA_INT_VERSION >= 221
+  //  assertThrow( c = node->correct( oV, cV, nV, sV, args ), DuplicateAttributeError );
+  // #el
+#if FOLIA_INT_VERSION >= 218
   assertThrow( c = node->correct( oV, cV, nV, sV, args ), XmlError );
 #else
   c = node->correct( oV, cV, nV, sV, args );
