@@ -147,8 +147,7 @@ void test0() {
 
 void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
-  Document debug("file='tests/example.xml', debug='3'");
-  Document d;
+  Document d("debug='1'");
   assertNoThrow( d.read_from_file("tests/example.xml") );
   assertNoThrow( d.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
