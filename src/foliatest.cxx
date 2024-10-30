@@ -149,7 +149,7 @@ void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
   Document d;
   assertNoThrow( d.read_from_file("tests/example.xml") );
-  d.setdebug( 64 ); // debug serialize
+  // d.setdebug( 64 ); // debug serialize
   assertNoThrow( d.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
   assertMessage( "/tmp/example.xml tests/example.xml differ!",
