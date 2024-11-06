@@ -286,13 +286,25 @@ void Test_Provenance(){
       assertEqual((*provenance)["p0"]->name(), "ucto" );
       assertEqual((*provenance)["p0.1"]->name(), "libfolia");
       assertEqual((*provenance)["p1"]->name(), "frog");
+#if FOLIA_INT_VERSION < 221
       assertEqual((*provenance)["p1"]->type(), AUTO );
+#else
+      assertEqual((*provenance)["p1"]->type(), AnnotatorType::AUTO );
+#endif
       assertEqual(provenance->index("p1")->version(), "0.16");
       assertEqual((*provenance)["p1.0"]->name(), "libfolia");
+#if FOLIA_INT_VERSION < 221
       assertEqual((*provenance)["p1.0"]->type(), GENERATOR );
+#else
+      assertEqual((*provenance)["p1.0"]->type(), AnnotatorType::GENERATOR );
+#endif
       assertEqual((*provenance)["p1.0"]->name(), "libfolia");
       assertEqual((*provenance)["p2.1"]->name(), "proycon");
+#if FOLIA_INT_VERSION < 221
       assertEqual((*provenance)["p2.1"]->type(), MANUAL );
+#else
+      assertEqual((*provenance)["p2.1"]->type(), AnnotatorType::MANUAL );
+#endif
       auto annotators = doc.get_annotators( AnnotationType::POS,
 					    "http://ilk.uvt.nl/folia/sets/frog-mbpos-cgn" );
       assertEqual(len(annotators), 3 );
@@ -303,9 +315,17 @@ void Test_Provenance(){
       // let's see if we got the right ones:
       assertEqual( processors[0]->id(), "p1.1" );
       assertEqual( processors[0]->name(), "mbpos" );
+#if FOLIA_INT_VERSION < 221
       assertEqual( processors[0]->type(), AUTO );
+#else
+      assertEqual( processors[0]->type(), AnnotatorType::AUTO );
+#endif
       assertEqual( processors[1]->name(), "proycon");
+#if FOLIA_INT_VERSION < 221
       assertEqual( processors[1]->type(), MANUAL );
+#else
+      assertEqual( processors[1]->type(), AnnotatorType::MANUAL );
+#endif
     }
     {
       startTestSerie( "Provenance - Annotation sanity check" );
@@ -315,20 +335,32 @@ void Test_Provenance(){
       auto proc = doc.get_processor( pid );
       assertEqual( proc->id(), "p1.1" );
       assertEqual( proc->name(), "mbpos" );
+#if FOLIA_INT_VERSION < 221
       assertEqual( proc->type(), AUTO );
+#else
+      assertEqual( proc->type(), AnnotatorType::AUTO );
+#endif
       // The old annotator attribute can also still be used and refers to the
       // processor name (for backward API compatibility)
       assertEqual( proc->annotator(), "mbpos" );
       // The old annotatortype attribute can also still be used and refers
       // to the processor type:
+#if FOLIA_INT_VERSION < 221
       assertEqual( proc->annotatortype(), AUTO );
+#else
+      assertEqual( proc->annotatortype(), AnnotatorType::AUTO );
+#endif
       word = doc["untitled.p.1.s.1.w.2"];
       pid = word->annotation<PosAnnotation>()->processor();
       assertEqual( pid, "p2.1" );
       proc = doc.get_processor( pid );
       assertEqual( proc->id(), "p2.1" );
       assertEqual( proc->name(), "proycon" );
+#if FOLIA_INT_VERSION < 221
       assertEqual( proc->type(), MANUAL );
+#else
+      assertEqual( proc->type(), AnnotatorType::MANUAL );
+#endif
     }
     {
       startTestSerie("Provenance - Checking default/implicit processor/annotator" );
@@ -337,7 +369,11 @@ void Test_Provenance(){
       auto proc = doc.get_processor( pid );
       assertEqual( proc->id(), "p1.2" );
       assertEqual( proc->name(), "mblem" );
+#if FOLIA_INT_VERSION < 221
       assertEqual( proc->type(), AUTO );
+#else
+      assertEqual( proc->type(), AnnotatorType::AUTO );
+#endif
       // The old annotator attribute can also still be used and refers to
       // the processor name
       assertEqual( proc->annotator(), "mblem");

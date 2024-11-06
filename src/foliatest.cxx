@@ -149,7 +149,6 @@ void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
   Document d;
   assertNoThrow( d.read_from_file("tests/example.xml") );
-  // d.setdebug( 64 ); // debug serialize
   assertNoThrow( d.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
   assertMessage( "/tmp/example.xml tests/example.xml differ!",
@@ -213,6 +212,16 @@ void test1f() {
   assertNoThrow( d1.save( "/tmp/entities.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/entities.xml tests/entities.xml" );
   assertMessage( "/tmp/entities.xml tests/entities.xml differ!",
+   		 (stat == 0) );
+}
+
+void test1g() {
+  startTestSerie( " Test testing document debugging " );
+  Document d("debug='PARSING|SERIALIZE'");
+  assertNoThrow( d.read_from_file("tests/example.xml") );
+  assertNoThrow( d.save( "/tmp/example.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
+  assertMessage( "/tmp/example.xml tests/example.xml differ!",
    		 (stat == 0) );
 }
 
@@ -881,8 +890,11 @@ void correction_test005(){
   assertEqual( w->annotation<Correction>()->suggestions(0)->text(), "stippellijn" );
   assertEqual( w->annotation<Correction>()->getNew()->text(), "stippellijn" );
   assertEqual( w->annotation<Correction>()->annotator(), "John Doe" );
+#if FOLIA_INT_VERSION < 221
   assertEqual( w->annotation<Correction>()->annotatortype(), MANUAL );
-
+#else
+  assertEqual( w->annotation<Correction>()->annotatortype(), AnnotatorType::MANUAL );
+#endif
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
   delete corDoc;
 }
@@ -1398,6 +1410,9 @@ int main( int argc, char* argv[] ){
   test1d();
   test1e();
   test1f();
+#if FOLIA_INT_VERSION >= 221
+  test1g();
+#endif
   test2();
   test3();
   test4();

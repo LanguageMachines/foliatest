@@ -43,6 +43,7 @@
 #include "ticcutils/XMLtools.h"
 #include "libfolia/folia.h"
 #include "ticcutils/FileUtils.h"
+using TiCC::operator<<;    // Essential to have this BEFORE include UnitTest.h
 #include "ticcutils/UnitTest.h"
 #include "ticcutils/CommandLine.h"
 
@@ -51,7 +52,6 @@ using namespace std;
 using namespace icu;
 using namespace folia;
 
-using TiCC::operator<<;
 
 #define AlignReference LinkReference
 #define Alignment Relation
@@ -241,8 +241,11 @@ void sanity_test009( ){
   assertTrue( w->pos() == "N(soort,ev,basis,onz,stan)" );
   assertTrue( w->annotation<PosAnnotation>()->sett() == "https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn" );
   assertTrue( w->annotation<PosAnnotation>()->annotator() == "frog" );
+#if FOLIA_INT_VERSION < 221
   assertTrue( w->annotation<PosAnnotation>()->annotatortype() == AUTO );
-
+#else
+  assertTrue( w->annotation<PosAnnotation>()->annotatortype() == AnnotatorType::AUTO );
+#endif
 }
 
 void sanity_test010( ){
@@ -257,8 +260,11 @@ void sanity_test010( ){
   assertTrue( w->lemma() == "stemma" );
   assertTrue( l->sett() == "lemmas-nl" );
   assertTrue( l->annotator() == "tadpole" );
+#if FOLIA_INT_VERSION < 221
   assertTrue( l->annotatortype() == AUTO );
-
+#else
+  assertTrue( l->annotatortype() == AnnotatorType::AUTO );
+#endif
 }
 
 void sanity_test011( ){
@@ -1625,13 +1631,20 @@ void sanity_test102k(){
   Document doc;
   assertNoThrow( doc.read_from_string(xml) );
   FoliaElement *text = doc["example.text.1"];
+#if FOLIA_INT_VERSION < 221
   assertEqual( doc.default_annotatortype(AnnotationType::GAP), AUTO );
+#else
+  assertEqual( doc.default_annotatortype(AnnotationType::GAP),
+	       AnnotatorType::AUTO );
+#endif
   vector<Gap*> v = text->select<Gap>();
   assertEqual( v[0]->xmlstring(), "<gap xmlns=\"http://ilk.uvt.nl/folia\" class=\"X\"/>" );
   assertNoThrow( doc.declare( AnnotationType::GAP,
 			      "gap-set",
 			      "annotatortype='manual'" ) );
-#if FOLIA_INT_VERSION >= 211
+#if FOLIA_INT_VERSION >= 221
+  assertEqual( doc.default_annotatortype(AnnotationType::GAP), AnnotatorType::MANUAL );
+#elif FOLIA_INT_VERSION >= 211
   assertEqual( doc.default_annotatortype(AnnotationType::GAP), MANUAL );
 #else
   assertEqual( doc.default_annotatortype(AnnotationType::GAP), UNDEFINED );

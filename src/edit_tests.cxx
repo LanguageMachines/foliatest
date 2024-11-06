@@ -93,8 +93,11 @@ void edit_test001a( ){
 
   // attribute check
   assertTrue( s->index(0)->annotator() == "testscript" );
+#if FOLIA_INT_VERSION < 221
   assertTrue( s->index(2)->annotatortype() == AUTO );
-
+#else
+  assertTrue( s->index(2)->annotatortype() == AnnotatorType::AUTO );
+#endif
   // adition to paragraph correct?
   assertEqual( p->size(), (tmp+1) );
   assertTrue( p->rindex(0) == s );
