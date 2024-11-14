@@ -35,6 +35,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <filesystem>
 #include <stdexcept>
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
@@ -218,11 +219,17 @@ void test1f() {
 void test1g() {
   startTestSerie( " Test testing document debugging " );
   Document d("debug='PARSING|SERIALIZE'");
+  ofstream os( "/tmp/foliatest.dbg" );
+  TiCC::LogStream ds( os );
+  ds.setlevel( LogHeavy );
+  d.set_dbg_stream( &ds );
   assertNoThrow( d.read_from_file("tests/example.xml") );
   assertNoThrow( d.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
   assertMessage( "/tmp/example.xml tests/example.xml differ!",
    		 (stat == 0) );
+  size_t size = std::filesystem::file_size("/tmp/foliatest.dbg");
+  assertTrue( size > 5000 );
 }
 
 void test2() {
