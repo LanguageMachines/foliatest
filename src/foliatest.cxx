@@ -216,6 +216,7 @@ void test1f() {
    		 (stat == 0) );
 }
 
+#if FOLIA_INT_VERSION >= 221
 void test1g() {
   startTestSerie( " Test testing document debugging " );
   Document d("debug='PARSING|SERIALIZE'");
@@ -231,6 +232,11 @@ void test1g() {
   size_t size = std::filesystem::file_size("/tmp/foliatest.dbg");
   assertTrue( size > 5000 );
 }
+#else
+void test1g() {
+  // noop
+}
+#endif
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -526,7 +532,8 @@ extern void engine_test002b();
 extern void engine_test002c();
 extern void engine_test003();
 extern void engine_test004();
-extern void engine_test005();
+extern void engine_test005a();
+extern void engine_test005b();
 extern void engine_test006a();
 extern void engine_test006b();
 extern void engine_test006c();
@@ -1417,9 +1424,7 @@ int main( int argc, char* argv[] ){
   test1d();
   test1e();
   test1f();
-#if FOLIA_INT_VERSION >= 221
   test1g();
-#endif
   test2();
   test3();
   test4();
@@ -1658,7 +1663,8 @@ int main( int argc, char* argv[] ){
   engine_test002c();
   engine_test003();
   engine_test004();
-  engine_test005();
+  engine_test005a();
+  engine_test005b();
   engine_test006a();
   engine_test006b();
   engine_test006c();
