@@ -316,7 +316,7 @@ void engine_test005b(){
   Document d("debug='PARSING|SERIALIZE'");
   ofstream os( "/tmp/foliaengine.dbg" );
   TiCC::LogStream ds( os );
-  ds.setlevel( LogHeavy );
+  ds.set_level( LogHeavy );
   proc.set_debug(true);
   proc.set_dbg_stream( &ds );
   assertNoThrow( proc.init_doc( "tests/example.xml" ) );

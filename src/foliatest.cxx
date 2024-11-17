@@ -222,7 +222,7 @@ void test1g() {
   Document d("debug='PARSING|SERIALIZE'");
   ofstream os( "/tmp/foliatest.dbg" );
   TiCC::LogStream ds( os );
-  ds.setlevel( LogHeavy );
+  ds.set_level( LogHeavy );
   d.set_dbg_stream( &ds );
   assertNoThrow( d.read_from_file("tests/example.xml") );
   assertNoThrow( d.save( "/tmp/example.xml" ) );
