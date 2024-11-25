@@ -97,7 +97,7 @@ void Test_E001_Tokens_Structure(){
   {
     startTestSerie("Simple Token & Structure Test - First word");
     FoliaElement *w = words[0];
-    assertTrue( w->isinstance( Word_t ) );
+    assertTrue( w->isinstance<Word>() );
     assertEqual( w->id(), "example.p.1.s.1.w.1" );
     assertEqual( w->text(), "Hello" );
     assertEqual( str(w), "Hello" );
@@ -114,7 +114,7 @@ void Test_E001_Tokens_Structure(){
     startTestSerie( "Simple Token & Structure Test - Sentence" );
     //grab second sentence
     FoliaElement *s = doc.sentences(1);
-    assertTrue( isinstance( s, Sentence_t) );
+    assertTrue( s->isinstance<Sentence>() );
     assertEqual( s->id(), "example.p.1.s.2" );
     assertFalse( s->hastext() ); //no explicit text
     assertEqual( str(s), "This is an example." );
@@ -123,7 +123,7 @@ void Test_E001_Tokens_Structure(){
     startTestSerie( "Simple Token & Structure Test - Index" );
     // rab something using the index
     FoliaElement *w = doc["example.p.1.s.1.w.1"];
-    assertTrue( isinstance( w, Word_t ) );
+    assertTrue( w->isinstance<Word>() );
     assertEqual( doc["example.p.1.s.1.w.1"],
 		 doc.index("example.p.1.s.1.w.1") );
     assertEqual( w->id(), "example.p.1.s.1.w.1" );

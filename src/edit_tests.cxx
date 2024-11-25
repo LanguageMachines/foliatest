@@ -547,7 +547,7 @@ void edit_test011(){
   f = new Feature( getArgs("subset='function', class='plural'"), &editDoc );
   m->append( f );
   assertTrue( len(l) ==  2 );  // 2 morphemes
-  assertTrue( isinstance( l->index(0), Morpheme_t ) );
+  assertTrue( l->index(0)->isinstance<Morpheme>() );
   assertTrue( l->index(0)->text() == "handschrift" );
   assertTrue( l->index(0)->feat("type") == "stem" );
   assertTrue( l->index(0)->feat("function") == "lexical" );

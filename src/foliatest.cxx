@@ -821,7 +821,7 @@ void correction_test002(){
   assertEqual( s->text(), "De site staat online ." );
   // incorrection() test, check if newly added word correctly reports being part of a correction
   FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4-5");
-  assertTrue( isinstance(w->incorrection(), Correction_t) );
+  assertTrue( w->incorrection()->isinstance<Correction>() );
   //incorrection return the correction the word is part of, or None if not part of a correction,
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
 }

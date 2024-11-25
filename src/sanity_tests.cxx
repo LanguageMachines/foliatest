@@ -104,7 +104,7 @@ void sanity_test004(){
   startTestSerie(" first word " );
   FoliaElement* w = 0;
   assertNoThrow( w = sanityDoc.words(0) );
-  assertTrue( w->isinstance( Word_t ) );
+  assertTrue( w->isinstance<Word>() );
   assertTrue( w->id() == "WR-P-E-J-0000000001.head.1.s.1.w.1" );
   assertTrue( w->text() == "Stemma" );
   assertTrue( str(w) == "Stemma" );
@@ -126,7 +126,7 @@ void sanity_test006a( ){
   startTestSerie(" second sentence " );
   FoliaElement* s = 0;
   assertNoThrow( s = sanityDoc.sentences(1) );
-  assertTrue( isinstance( s, Sentence_t ) );
+  assertTrue( s->isinstance<Sentence>() );
   assertEqual( s->id(), "WR-P-E-J-0000000001.p.1.s.1" );
   assertTrue( !s->hastext() );
   assertEqual( s->str() , "Stemma is een ander woord voor stamboom." );
@@ -136,7 +136,7 @@ void sanity_test006b(){
   startTestSerie( " Sanity check - Sentence text (including retaining tokenisation) " );
   // grab fifth sentence
   Sentence *s = sanityDoc.sentences(5);
-  assertTrue( isinstance( s, Sentence_t ) );
+  assertTrue( s->isinstance<Sentence>() );
   assertFalse( s->hastext() );
   assertEqual( s->text(), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring." );
   assertEqual( s->text(TEXT_FLAGS::RETAIN), "De andere handschriften krijgen ook een letter die verband kan houden met hun plaats van oorsprong óf plaats van bewaring ." );
@@ -162,7 +162,7 @@ void sanity_test007( ){
   startTestSerie(" use index " );
   FoliaElement *e = 0;
   assertNoThrow( e = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"] );
-  assertTrue( e->isinstance( Word_t ) );
+  assertTrue( e->isinstance<Word>() );
   assertEqual( e, sanityDoc.index("WR-P-E-J-0000000001.p.1.s.2.w.7") );
   assertEqual( e->id(), string("WR-P-E-J-0000000001.p.1.s.2.w.7") );
   assertEqual( e->text(), "stamboom" );
@@ -173,7 +173,7 @@ void sanity_test008a(){
   startTestSerie(" division + head " );
   FoliaElement *e = 0;
   assertNoThrow( e = sanityDoc["WR-P-E-J-0000000001.div0.1"] );
-  assertTrue( e->isinstance( Division_t ) );
+  assertTrue( e->isinstance<Division>() );
   FoliaElement *h = 0;
   assertNoThrow( h = e->head() );
   assertEqual( h,  sanityDoc["WR-P-E-J-0000000001.head.1"] );
@@ -231,8 +231,12 @@ void sanity_test009( ){
   FoliaElement *w = 0;
   assertNoThrow( w = sanityDoc.words(0) );
   assertTrue( w->annotation<PosAnnotation>() == w->select<PosAnnotation>()[0] );
-  assertTrue( w->annotation<PosAnnotation>()->isinstance(PosAnnotation_t ) );
+  assertTrue( w->annotation<PosAnnotation>()->isinstance<PosAnnotation>() );
+#if FOLIA_INT_VERSION < 221
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+#else
+  assertTrue( is_subtype( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+#endif
 #if FOLIA_INT_VERSION <= 215 || FOLIA_INT_VERSION >= 219
   bool test = isSubClass<PosAnnotation, AbstractTokenAnnotation>();
   assertTrue( test );
@@ -255,7 +259,7 @@ void sanity_test010( ){
   FoliaElement *l = 0;
   assertNoThrow( l = w->annotation<LemmaAnnotation>() );
   assertTrue( l == w->select<LemmaAnnotation>()[0] );
-  assertTrue( isinstance( l, LemmaAnnotation_t ) );
+  assertTrue( l->isinstance<LemmaAnnotation>() );
   assertTrue( l->cls() == "stemma" );
   assertTrue( w->lemma() == "stemma" );
   assertTrue( l->sett() == "lemmas-nl" );
@@ -332,24 +336,24 @@ int check( FoliaElement *parent, const string& indent, ostream& os, int& fails )
   for ( size_t i=0; i < parent->size(); ++i ){
     FoliaElement *child = parent->index(i);
     os << indent << repr( child ) << endl;
-    if ( ! ( (parent->isinstance( SyntacticUnit_t )
-	      || parent->isinstance( Chunk_t )
-	      || parent->isinstance( Entity_t )
-	      || parent->isinstance( TimeSegment_t )
-	      || parent->isinstance( TimingLayer_t )
-	      || parent->isinstance( CoreferenceChain_t )
-	      || parent->isinstance( CoreferenceLink_t )
-	      || parent->isinstance( SemanticRole_t )
-	      || parent->isinstance( Headspan_t )
-	      || parent->isinstance( Source_t )
-	      || parent->isinstance( Target_t )
-	      || parent->isinstance( Relation_t )
-	      || parent->isinstance( Sentiment_t )
-	      || parent->isinstance( Statement_t )
-	      || parent->isinstance( Observation_t )
-	      || parent->isinstance( Dependency_t )
-	      || parent->isinstance( DependencyDependent_t ) )
-	     && ( child->isinstance( Word_t ) || child->isinstance( Morpheme_t )) ) ){
+    if ( ! ( (parent->isinstance<SyntacticUnit>()
+	      || parent->isinstance<Chunk>()
+	      || parent->isinstance<Entity>()
+	      || parent->isinstance<TimeSegment>()
+	      || parent->isinstance<TimingLayer>()
+	      || parent->isinstance<CoreferenceChain>()
+	      || parent->isinstance<CoreferenceLink>()
+	      || parent->isinstance<SemanticRole>()
+	      || parent->isinstance<Headspan>()
+	      || parent->isinstance<Source>()
+	      || parent->isinstance<Target>()
+	      || parent->isinstance<Relation>()
+	      || parent->isinstance<Sentiment>()
+	      || parent->isinstance<Statement>()
+	      || parent->isinstance<Observation>()
+	      || parent->isinstance<Dependency>()
+	      || parent->isinstance<DependencyDependent>() )
+	      && ( child->isinstance<Word>() || child->isinstance<Morpheme>()) ) ){
       ++count;
       if ( parent != child->parent() ){
 	//	os << indent << "^ DAAR!" << endl;
@@ -423,7 +427,7 @@ void sanity_test020a(){
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
   FoliaElement *l = 0;
   assertNoThrow( l = s->annotation<SyntaxLayer>() );
-  assertTrue( isinstance( l->index(0), SyntacticUnit_t ) );
+  assertTrue( l->index(0)->isinstance<SyntacticUnit>() );
   assertTrue( l->index(0)->cls() == "sentence" );
   assertTrue( l->index(0)->index(0)->cls() == "subject" );
   assertTrue( l->index(0)->index(0)->text() == "Stemma" );
@@ -441,7 +445,7 @@ void sanity_test020b(){
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
   ChunkingLayer *l = 0;
   assertNoThrow( l = s->annotation<ChunkingLayer>() );
-  assertTrue( isinstance( l->index(0), Chunk_t ) );
+  assertTrue( l->index(0)->isinstance<Chunk>() );
   assertTrue( l->index(0)->text() == "een ander woord" );
   assertTrue( l->index(1)->text() == "voor stamboom" );
 
@@ -452,7 +456,7 @@ void sanity_test020c(){
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.1"];
   EntitiesLayer *l = 0;
   assertNoThrow( l = s->annotation<EntitiesLayer>() );
-  assertTrue( isinstance( l->index(0), Entity_t ) );
+  assertTrue( l->index(0)->isinstance<Entity>() );
   assertTrue( l->index(0)->text() == "ander woord" );
 
 }
@@ -496,7 +500,7 @@ void sanity_test020e(){
   TimingLayer *l = 0;
   assertNoThrow( l = s->annotation<TimingLayer>() );
 
-  assertTrue( isinstance( l->index(0), TimeSegment_t ) );
+  assertTrue( l->index(0)->isinstance<TimeSegment>() );
   assertEqual( l->index(0)->text(),  "een ander woord" ) ;
   assertEqual( l->index(1)->cls(), "cough" );
   assertEqual( l->index(2)->text(),  "voor stamboom" );
@@ -536,7 +540,7 @@ void sanity_test021(){
   startTestSerie(" Obtaining previous word " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   FoliaElement *prevw = w->previous();
-  assertTrue( prevw->isinstance( Word_t ) );
+  assertTrue( prevw->isinstance<Word>() );
   assertTrue( prevw->text() == "zo'n" );
 
 }
@@ -545,7 +549,7 @@ void sanity_test022(){
   startTestSerie(" Obtaining next word " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.2.w.7"];
   FoliaElement *prevw = w->next();
-  assertTrue( prevw->isinstance( Word_t ) );
+  assertTrue( prevw->isinstance<Word>() );
   assertTrue( prevw->text() == "," );
 
 }
@@ -578,7 +582,7 @@ void sanity_test023c(){
   vector<Word*> context = w->leftcontext(3,"?");
   assertTrue( context.size() == 3 );
 #if FOLIA_INT_VERSION <= 215
-  assertTrue( context[0]->isinstance( Placeholder_t ) q);
+  assertTrue( context[0]->isinstance<Placeholder>() q);
 #else
   assertTrue( context[0]->is_placeholder() );
 #endif
@@ -616,7 +620,7 @@ void sanity_test024c(){
   assertTrue( context.size() == 3 );
   assertTrue( text(context[0]) == "University" );
 #if FOLIA_INT_VERSION <= 215
-  assertTrue( context[1]->isinstance(PlaceHolder_t) );
+  assertTrue( context[1]->isinstance<PlaceHolder>() );
 #else
   assertTrue( context[1]->is_placeholder() );
 #endif
@@ -659,7 +663,7 @@ void sanity_test025c(){
   assertEqual( text(context[301]), "handschrift" );
   assertTrue( text(context[202]) == "nil" );
 #if FOLIA_INT_VERSION <= 215
-  assertTrue( context[500]->isinstance(PlaceHolder_t) );
+  assertTrue( context[500]->isinstance<PlaceHolder>() );
 #else
   assertTrue( context[500]->is_placeholder() );
 #endif
@@ -672,15 +676,24 @@ void sanity_test026a(){
 #if FOLIA_INT_VERSION <= 215  || FOLIA_INT_VERSION >= 219
   assertTrue( pos->isSubClass( AbstractTokenAnnotation_t ) );
 #endif
+#if FOLIA_INT_VERSION < 221
   assertTrue( isSubClass( pos->element_id(), AbstractTokenAnnotation_t ) );
-  assertTrue( pos->isinstance(PosAnnotation_t) );
+#else
+  assertTrue( is_subtype( pos->element_id(), AbstractTokenAnnotation_t ) );
+#endif
+  assertTrue( pos->isinstance<PosAnnotation>() );
   assertTrue( pos->cls() == "WW(vd,prenom,zonder)" );
   assertTrue( len(pos) ==  1 );
   vector<Feature*> features = pos->select<Feature>();
   assertTrue( len(features) == 1 );
+#if FOLIA_INT_VERSION < 221
   assertFalse( isSubClass( features[0]->element_id(), Sentence_t ) );
   assertTrue( isSubClass( features[0]->element_id(), Feature_t ) );
-  assertTrue( isinstance(features[0], Feature_t ) );
+#else
+  assertFalse( is_subtype( features[0]->element_id(), Sentence_t ) );
+  assertTrue( is_subtype( features[0]->element_id(), Feature_t ) );
+#endif
+  assertTrue( features[0]->isinstance<Feature>() );
   assertTrue( features[0]->subset() == "head" );
   assertTrue( features[0]->cls() == "WW" );
   KWargs args;
@@ -696,7 +709,7 @@ void sanity_test026b(){
   startTestSerie(" Metric " );
   FoliaElement *p= sanityDoc.paragraphs(0);
   FoliaElement *m = p->annotation<Metric>();
-  assertTrue( isinstance(m, Metric_t ) );
+  assertTrue( m->isinstance<Metric>() );
   assertEqual( m->cls(), "sentenceCount" );
   assertEqual( m->feat("value"), "8" );
 }
@@ -715,15 +728,15 @@ void sanity_test028() {
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.w.15"];
 
   FoliaElement *s = w->sentence();
-  assertTrue( s->isinstance( Sentence_t ) );
+  assertTrue( s->isinstance<Sentence>() );
   assertTrue( s->id() == "WR-P-E-J-0000000001.p.1.s.8" );
 
   FoliaElement *p = w->paragraph();
-  assertTrue( isinstance( p, Paragraph_t ) );
+  assertTrue( p->isinstance<Paragraph>() );
   assertTrue( p->id() == "WR-P-E-J-0000000001.p.1" );
 
   FoliaElement *div = w->division();
-  assertTrue( isinstance( div, Division_t ) );
+  assertTrue( div->isinstance<Division>() );
   assertTrue( div->id() == "WR-P-E-J-0000000001.div0.1" );
   assertTrue( w->incorrection() == 0 );
 
@@ -732,7 +745,7 @@ void sanity_test028() {
 void sanity_test029(){
   startTestSerie(" Sanity Check - Quote " );
   FoliaElement *q = sanityDoc["WR-P-E-J-0000000001.p.1.s.8.q.1"];
-  assertTrue( q->isinstance( Quote_t ) );
+  assertTrue( q->isinstance<Quote>() );
   assertTrue( q->text() == "volle lijn" );
 
   FoliaElement *s = sanityDoc["WR-P-E-J-0000000001.p.1.s.8"];
@@ -775,7 +788,7 @@ void sanity_test030b( ){
   assertTrue( len(t) == 3 );
   assertEqual( t->text(), "De \nFoLiA developers zijn:" );
   assertEqual( t->index(0)->text(), "De ");
-  assertTrue( isinstance( t->index(1), TextMarkupString_t ) );
+  assertTrue( t->index(1)->isinstance<TextMarkupString>() );
   assertEqual( t->index(1)->text(), "\nFoLiA developers" );
   assertEqual( t->index(2)->text(), " zijn:" );
 }
@@ -1041,11 +1054,11 @@ void sanity_test041c(){
 void sanity_test042(){
   startTestSerie( " Sanity check - Table " );
   FoliaElement *table = sanityDoc["example.table.1"];
-  assertTrue( isinstance( table, Table_t) );
-  assertTrue( isinstance( table->index(0), TableHead_t) );
-  assertTrue( isinstance( table->index(0)->index(0), Row_t) );
+  assertTrue( table->isinstance<Table>() );
+  assertTrue( table->index(0)->isinstance<TableHead>() );
+  assertTrue( table->index(0)->index(0)->isinstance<Row>() );
   assertEqual( len( table->index(0)->index(0)), size_t(2) ); // two cells
-  assertTrue( isinstance(table->index(0)->index(0)->index(0), Cell_t) );
+  assertTrue( table->index(0)->index(0)->index(0)->isinstance<Cell>() );
   assertEqual( table->index(0)->index(0)->index(0)->text(), "Naam" );
   assertEqual( table->index(0)->index(0)->text(), "Naam | Universiteit" ); //text of whole row
 }
@@ -1077,7 +1090,7 @@ void sanity_test044a(){
   FoliaElement *r2 = sanityDoc["sandbox.3.str"];
   assertEqual( r1, r2 ); // testing resolving references
   t = sanityDoc["WR-P-E-J-0000000001.p.1.s.6"]->text_content();
-  assertTrue( t->index(t->size()-1)->isinstance( Linebreak_t) );  // did we get the linebreak properly?
+  assertTrue( t->index(t->size()-1)->isinstance<Linebreak>() );  // did we get the linebreak properly?
   // testing nesting
   assertEqual( len(st), size_t(2) );
   assertEqual( st->index(0), sanityDoc["sandbox.3.str.bold"] );
@@ -1848,7 +1861,7 @@ void sanity_test104a( ){
   assertNoThrow( doc.read_from_string(xml) );
   //  assertNoThrow( doc.save( "/tmp/test104a.xml" ) );
   //  assertTrue( isinstance(doc.doc(0), Speech_t) );
-  assertTrue( isinstance(doc["example.speech.utt.1"], Utterance_t) );
+  assertTrue( doc["example.speech.utt.1"]->isinstance<Utterance>() );
   assertEqual( doc["example.speech.utt.1"]->phon(), "həlˈəʊ wˈɜːld" );
   assertThrow( doc["example.speech.utt.1"]->text(), NoSuchText ); // doesn't exist
   assertEqual( doc["example.speech.utt.2"]->phon(), "həlˈəʊ wˈɜːld" );
@@ -1884,7 +1897,7 @@ void sanity_test104b( ){
   assertNoThrow( doc.read_from_string(xml) );
   assertNoThrow( doc.save( "/tmp/test104b.xml" ) );
   //assertTrue( isinstance(doc.doc(), folia.Speech) );
-  assertTrue( isinstance(doc["example.speech.utt.1"], Utterance_t) );
+  assertTrue( doc["example.speech.utt.1"]->isinstance<Utterance>() );
   assertEqual( doc["example.speech.utt.1"]->phon(), "həlˈəʊ wˈɜːld" );
   assertThrow( doc["example.speech.utt.1"]->text(), NoSuchText ); // doesn't exist
   assertEqual( doc["example.speech.utt.2"]->phon(), "həlˈəʊ wˈɜːld" );
@@ -2092,7 +2105,11 @@ void sanity_test109( ){
   assertTrue( ( isSubClass<AbstractWord, FoliaElement>() ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
 #endif
+#if FOLIA_INT_VERSION < 221
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+#else
+  assertTrue( is_subtype( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+#endif
 }
 
 void sanity_test110(){
