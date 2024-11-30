@@ -437,7 +437,6 @@ void sanity_test020a(){
   assertTrue( l->index(0)->index(2)->index(1)->cls() == "pp" );
   assertTrue( l->index(0)->index(2)->index(1)->text() == "voor stamboom" );
   assertEqual( l->index(0)->index(2)->text(), "een ander woord voor stamboom" );
-
 }
 
 void sanity_test020b(){
@@ -2100,8 +2099,6 @@ void sanity_test109( ){
   assertTrue( ( isSubClass<Word, AbstractStructureElement>() ) );
   assertTrue( ( isSubClass<Word, AbstractWord>() ) );
   assertFalse( ( isSubClass<AbstractWord, Word>() ) );
-  assertFalse( ( isSubClass<AbstractWord, AbstractStructureElement>() ) );
-  assertFalse( ( isSubClass<AbstractWord, AbstractElement>() ) );
   assertTrue( ( isSubClass<AbstractWord, FoliaElement>() ) );
   assertTrue( ( isSubClass<PosAnnotation, AbstractTokenAnnotation>() ) );
 #endif
@@ -2109,6 +2106,8 @@ void sanity_test109( ){
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
 #else
   assertTrue( is_subtype( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+  assertTrue( ( isSubClass<AbstractWord, AbstractStructureElement>() ) );
+  assertTrue( ( isSubClass<AbstractWord, AbstractElement>() ) );
 #endif
 }
 
