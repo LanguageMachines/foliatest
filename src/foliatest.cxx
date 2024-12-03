@@ -1129,8 +1129,13 @@ void query_test002(){
 void query_test003(){
   startTestSerie( " Find Words by annotation " );
   vector<string> words = { "de", "historisch", "wetenschap", "worden" };
+#if FOLIA_INT_VERSION < 221
   vector<vector<Word*> >matches = qDoc.findwords( Pattern( words,
 							   LemmaAnnotation_t ) );
+#else
+  vector<vector<Word*> >matches = qDoc.findwords( Pattern( words,
+							   ElementType::LemmaAnnotation_t ) );
+#endif
   assertEqual( matches.size(), 1 );
   assertEqual( len(matches[0]), 4 );
 
@@ -1143,7 +1148,12 @@ void query_test003(){
 void query_test004(){
   startTestSerie( " Find Words using multiple patterns " );
   Pattern p1( { "de", "historische", "*", "wordt" } );
+#if FOLIA_INT_VERSION < 221
   Pattern p2( { "de", "historisch", "wetenschap", "worden" }, LemmaAnnotation_t );
+#else
+  Pattern p2( { "de", "historisch", "wetenschap", "worden" },
+	      ElementType::LemmaAnnotation_t );
+#endif
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
@@ -1270,8 +1280,13 @@ void query_test010b(){
 void query_test011(){
   startTestSerie( " Find Words by non existing annotation " );
   vector<string> words = { "bli", "bla", "blu" };
+#if FOLIA_INT_VERSION < 221
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
 							  SenseAnnotation_t ) );
+#else
+  vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
+							  ElementType::SenseAnnotation_t ) );
+#endif
   assertEqual( matches.size(), 0 );
 }
 

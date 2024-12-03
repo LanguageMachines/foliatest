@@ -350,7 +350,11 @@ void edit_test005a( ){
   assertTrue( p->isinstance<PosAnnotation>() );
 
   std::vector<Alternative *> alt3;
+#if FOLIA_INT_VERSION < 221
   assertNoThrow( alt3 = w->alternatives(PosAnnotation_t, pos_set) );
+#else
+  assertNoThrow( alt3 = w->alternatives(ElementType::PosAnnotation_t, pos_set) );
+#endif
   assertEqual( alt3.size(), 1 );
   assertEqual( alt[0] , alt3[0] );
 

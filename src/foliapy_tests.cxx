@@ -132,11 +132,18 @@ void Test_E001_Tokens_Structure(){
   {
     startTestSerie( "Simple Token & Structure Test - Declarations" );
     assertTrue( doc.declared(AnnotationType::TOKEN) );
-    assertTrue( doc.declared(Word_t) ); // same as above, resolves automatically
     assertTrue( doc.declared(AnnotationType::TEXT) );
+#if FOLIA_INT_VERSION < 221
+    assertTrue( doc.declared(Word_t) ); // same as above, resolves automatically
     assertTrue( doc.declared(TextContent_t) ); //same as above, resolves automatically
     assertTrue( doc.declared(Sentence_t) );
     assertTrue( doc.declared(Paragraph_t) );
+#else
+    assertTrue( doc.declared(ElementType::Word_t) ); // same as above, resolves automatically
+    assertTrue( doc.declared(ElementType::TextContent_t) ); //same as above, resolves automatically
+    assertTrue( doc.declared(ElementType::Sentence_t) );
+    assertTrue( doc.declared(ElementType::Paragraph_t) );
+#endif
   }
 }
 

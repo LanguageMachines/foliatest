@@ -235,7 +235,7 @@ void sanity_test009( ){
 #if FOLIA_INT_VERSION < 221
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
 #else
-  assertTrue( is_subtype( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+  assertTrue( is_subtype( ElementType::PosAnnotation_t, ElementType::AbstractTokenAnnotation_t ) );
 #endif
 #if FOLIA_INT_VERSION <= 215 || FOLIA_INT_VERSION >= 219
   bool test = isSubClass<PosAnnotation, AbstractTokenAnnotation>();
@@ -672,13 +672,14 @@ void sanity_test026a(){
   startTestSerie(" Features " );
   FoliaElement *w = sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.1"];
   FoliaElement *pos = w->annotation<PosAnnotation>();
-#if FOLIA_INT_VERSION <= 215  || FOLIA_INT_VERSION >= 219
+#if FOLIA_INT_VERSION <= 215
   assertTrue( pos->isSubClass( AbstractTokenAnnotation_t ) );
 #endif
 #if FOLIA_INT_VERSION < 221
   assertTrue( isSubClass( pos->element_id(), AbstractTokenAnnotation_t ) );
 #else
-  assertTrue( is_subtype( pos->element_id(), AbstractTokenAnnotation_t ) );
+  assertTrue( pos->isSubClass<AbstractTokenAnnotation>() );
+  assertTrue( is_subtype( pos->element_id(), ElementType::AbstractTokenAnnotation_t ) );
 #endif
   assertTrue( pos->isinstance<PosAnnotation>() );
   assertTrue( pos->cls() == "WW(vd,prenom,zonder)" );
@@ -689,8 +690,8 @@ void sanity_test026a(){
   assertFalse( isSubClass( features[0]->element_id(), Sentence_t ) );
   assertTrue( isSubClass( features[0]->element_id(), Feature_t ) );
 #else
-  assertFalse( is_subtype( features[0]->element_id(), Sentence_t ) );
-  assertTrue( is_subtype( features[0]->element_id(), Feature_t ) );
+  assertFalse( is_subtype( features[0]->element_id(), ElementType::Sentence_t ) );
+  assertTrue( is_subtype( features[0]->element_id(), ElementType::Feature_t ) );
 #endif
   assertTrue( features[0]->isinstance<Feature>() );
   assertTrue( features[0]->subset() == "head" );
@@ -777,7 +778,6 @@ void sanity_test030( ){
   FoliaElement *w2= sanityDoc["WR-P-E-J-0000000001.p.1.s.6.w.31"];
   assertTrue( w2->text() == "vierkante" );
   assertTrue( w2->stricttext() == "vierkante" );
-
 }
 
 void sanity_test030b( ){
@@ -2105,7 +2105,7 @@ void sanity_test109( ){
 #if FOLIA_INT_VERSION < 221
   assertTrue( isSubClass( PosAnnotation_t, AbstractTokenAnnotation_t ) );
 #else
-  assertTrue( is_subtype( PosAnnotation_t, AbstractTokenAnnotation_t ) );
+  assertTrue( is_subtype( ElementType::PosAnnotation_t, ElementType::AbstractTokenAnnotation_t ) );
   assertTrue( ( isSubClass<AbstractWord, AbstractStructureElement>() ) );
   assertTrue( ( isSubClass<AbstractWord, AbstractElement>() ) );
 #endif
