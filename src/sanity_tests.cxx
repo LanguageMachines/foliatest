@@ -2256,7 +2256,11 @@ void sanity_test130( ){
   root=root->index(0); // Text
   vector<Division*> dv = root->select<Division>();
   assertEqual( dv.size(), 5 );
+#if FOLIA_INT_VERSION < 221
   dv = root->select<Division>(false);
+#else
+  dv = root->select<Division>(SELECT_FLAGS::LOCAL);
+#endif
   assertEqual( dv.size(), 2 );
   dv = root->select<Division>("role");
   assertEqual( dv.size(), 3 );
