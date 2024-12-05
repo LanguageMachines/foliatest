@@ -35,6 +35,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <filesystem>
 #include <stdexcept>
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
@@ -148,7 +149,7 @@ void test0() {
 void test1() {
   startTestSerie( " Test lezen van een FoLiA file " );
   Document d;
-  assertNoThrow( d.read_from_file( "tests/example.xml" ) );
+  assertNoThrow( d.read_from_file("tests/example.xml") );
   assertNoThrow( d.save( "/tmp/example.xml" ) );
   int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
   assertMessage( "/tmp/example.xml tests/example.xml differ!",
@@ -214,6 +215,28 @@ void test1f() {
   assertMessage( "/tmp/entities.xml tests/entities.xml differ!",
    		 (stat == 0) );
 }
+
+#if FOLIA_INT_VERSION >= 221
+void test1g() {
+  startTestSerie( " Test testing document debugging " );
+  Document d("debug='PARSING|SERIALIZE'");
+  ofstream os( "/tmp/foliatest.dbg" );
+  TiCC::LogStream ds( os );
+  ds.set_level( LogHeavy );
+  d.set_dbg_stream( &ds );
+  assertNoThrow( d.read_from_file("tests/example.xml") );
+  assertNoThrow( d.save( "/tmp/example.xml" ) );
+  int stat = system( "./tests/foliadiff.sh /tmp/example.xml tests/example.xml" );
+  assertMessage( "/tmp/example.xml tests/example.xml differ!",
+   		 (stat == 0) );
+  size_t size = std::filesystem::file_size("/tmp/foliatest.dbg");
+  assertTrue( size > 5000 );
+}
+#else
+void test1g() {
+  // noop
+}
+#endif
 
 void test2() {
   startTestSerie( " Test lezen van een FoLiA string " );
@@ -509,7 +532,8 @@ extern void engine_test002b();
 extern void engine_test002c();
 extern void engine_test003();
 extern void engine_test004();
-extern void engine_test005();
+extern void engine_test005a();
+extern void engine_test005b();
 extern void engine_test006a();
 extern void engine_test006b();
 extern void engine_test006c();
@@ -797,7 +821,7 @@ void correction_test002(){
   assertEqual( s->text(), "De site staat online ." );
   // incorrection() test, check if newly added word correctly reports being part of a correction
   FoliaElement *w = corDoc.index(corDoc.id() + ".s.1.w.4-5");
-  assertTrue( isinstance(w->incorrection(), Correction_t) );
+  assertTrue( w->incorrection()->isinstance<Correction>() );
   //incorrection return the correction the word is part of, or None if not part of a correction,
   assertEqual( s->xmlstring(), "<s xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"example.s.1\"><w xml:id=\"example.s.1.w.1\"><t>De</t></w><w xml:id=\"example.s.1.w.2\"><t>site</t></w><w xml:id=\"example.s.1.w.3\"><t>staat</t></w><correction xml:id=\"example.s.1.correction.1\"><new><w xml:id=\"example.s.1.w.4-5\"><t>online</t></w></new><original auth=\"no\"><w xml:id=\"example.s.1.w.4\"><t>on</t></w><w xml:id=\"example.s.1.w.5\"><t>line</t></w></original></correction><w xml:id=\"example.s.1.w.6\"><t>.</t></w></s>" );
 }
@@ -880,8 +904,11 @@ void correction_test005(){
   assertEqual( w->annotation<Correction>()->suggestions(0)->text(), "stippellijn" );
   assertEqual( w->annotation<Correction>()->getNew()->text(), "stippellijn" );
   assertEqual( w->annotation<Correction>()->annotator(), "John Doe" );
+#if FOLIA_INT_VERSION < 221
   assertEqual( w->annotation<Correction>()->annotatortype(), MANUAL );
-
+#else
+  assertEqual( w->annotation<Correction>()->annotatortype(), AnnotatorType::MANUAL );
+#endif
   assertEqual( w->xmlstring(), "<w xmlns=\"http://ilk.uvt.nl/folia\" xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11\"><pos class=\"FOUTN(soort,ev,basis,zijd,stan)\" set=\"https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/frog-mbpos-cgn\"/><lemma class=\"stippelijn\"/><correction xml:id=\"WR-P-E-J-0000000001.p.1.s.8.w.11.correction.1\" annotator=\"John Doe\" class=\"spelling\"><suggestion auth=\"no\"><t>stippellijn</t></suggestion><new><t>stippellijn</t></new><original auth=\"no\"><t>stippelijn</t></original></correction></w>" );
   delete corDoc;
 }
@@ -1103,8 +1130,13 @@ void query_test002(){
 void query_test003(){
   startTestSerie( " Find Words by annotation " );
   vector<string> words = { "de", "historisch", "wetenschap", "worden" };
+#if FOLIA_INT_VERSION < 221
   vector<vector<Word*> >matches = qDoc.findwords( Pattern( words,
 							   LemmaAnnotation_t ) );
+#else
+  vector<vector<Word*> >matches = qDoc.findwords( Pattern( words,
+							   ElementType::LemmaAnnotation_t ) );
+#endif
   assertEqual( matches.size(), 1 );
   assertEqual( len(matches[0]), 4 );
 
@@ -1117,7 +1149,12 @@ void query_test003(){
 void query_test004(){
   startTestSerie( " Find Words using multiple patterns " );
   Pattern p1( { "de", "historische", "*", "wordt" } );
+#if FOLIA_INT_VERSION < 221
   Pattern p2( { "de", "historisch", "wetenschap", "worden" }, LemmaAnnotation_t );
+#else
+  Pattern p2( { "de", "historisch", "wetenschap", "worden" },
+	      ElementType::LemmaAnnotation_t );
+#endif
   list<Pattern> l;
   l.push_back( p1 );
   l.push_back( p2 );
@@ -1244,8 +1281,13 @@ void query_test010b(){
 void query_test011(){
   startTestSerie( " Find Words by non existing annotation " );
   vector<string> words = { "bli", "bla", "blu" };
+#if FOLIA_INT_VERSION < 221
   vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
 							  SenseAnnotation_t ) );
+#else
+  vector<vector<Word*> >matches = qDoc.findwords( Pattern(words,
+							  ElementType::SenseAnnotation_t ) );
+#endif
   assertEqual( matches.size(), 0 );
 }
 
@@ -1398,6 +1440,7 @@ int main( int argc, char* argv[] ){
   test1d();
   test1e();
   test1f();
+  test1g();
   test2();
   test3();
   test4();
@@ -1636,7 +1679,8 @@ int main( int argc, char* argv[] ){
   engine_test002c();
   engine_test003();
   engine_test004();
-  engine_test005();
+  engine_test005a();
+  engine_test005b();
   engine_test006a();
   engine_test006b();
   engine_test006c();

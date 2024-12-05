@@ -93,8 +93,11 @@ void edit_test001a( ){
 
   // attribute check
   assertTrue( s->index(0)->annotator() == "testscript" );
+#if FOLIA_INT_VERSION < 221
   assertTrue( s->index(2)->annotatortype() == AUTO );
-
+#else
+  assertTrue( s->index(2)->annotatortype() == AnnotatorType::AUTO );
+#endif
   // adition to paragraph correct?
   assertEqual( p->size(), (tmp+1) );
   assertTrue( p->rindex(0) == s );
@@ -347,7 +350,11 @@ void edit_test005a( ){
   assertTrue( p->isinstance<PosAnnotation>() );
 
   std::vector<Alternative *> alt3;
+#if FOLIA_INT_VERSION < 221
   assertNoThrow( alt3 = w->alternatives(PosAnnotation_t, pos_set) );
+#else
+  assertNoThrow( alt3 = w->alternatives(ElementType::PosAnnotation_t, pos_set) );
+#endif
   assertEqual( alt3.size(), 1 );
   assertEqual( alt[0] , alt3[0] );
 
@@ -544,7 +551,7 @@ void edit_test011(){
   f = new Feature( getArgs("subset='function', class='plural'"), &editDoc );
   m->append( f );
   assertTrue( len(l) ==  2 );  // 2 morphemes
-  assertTrue( isinstance( l->index(0), Morpheme_t ) );
+  assertTrue( l->index(0)->isinstance<Morpheme>() );
   assertTrue( l->index(0)->text() == "handschrift" );
   assertTrue( l->index(0)->feat("type") == "stem" );
   assertTrue( l->index(0)->feat("function") == "lexical" );

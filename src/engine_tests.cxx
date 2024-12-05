@@ -36,6 +36,7 @@
 #include <map>
 #include <algorithm>
 #include <stdexcept>
+#include <filesystem>
 #include <unicode/unistr.h>
 #include "libxml/tree.h"
 #include "ticcutils/StringOps.h"
@@ -286,7 +287,7 @@ void engine_test004(){
   }
 }
 
-void engine_test005(){
+void engine_test005a(){
   startTestSerie( " enumerate a document on xml_element nodes " );
   Engine proc;
   //  proc.set_debug(true);
@@ -307,6 +308,35 @@ void engine_test005(){
 #endif
   }
 }
+
+#if FOLIA_INT_VERSION >= 221
+void engine_test005b(){
+  startTestSerie( " enumerate a document on xml_element nodes with debugging" );
+  Engine proc;
+  Document d("debug='PARSING|SERIALIZE'");
+  ofstream os( "/tmp/foliaengine.dbg" );
+  TiCC::LogStream ds( os );
+  ds.set_level( LogHeavy );
+  proc.set_debug(true);
+  proc.set_dbg_stream( &ds );
+  assertNoThrow( proc.init_doc( "tests/example.xml" ) );
+  if ( proc.ok() ){
+    xml_tree *result = proc.create_simple_tree("tests/example.xml");
+    ofstream os( "/tmp/enum.tree" );
+    print( os, result );
+    delete result;
+    int stat = system( "diff /tmp/enum.tree tests/enum.tree.216.ok" );
+    assertMessage( "/tmp/enum.tree tests/enum.tree.216.ok differ!",
+     		   (stat == 0) );
+  }
+  size_t size = std::filesystem::file_size("/tmp/foliatest.dbg");
+  assertTrue( size > 5000 );
+}
+#else
+void engine_test005b(){
+  // noop
+}
+#endif
 
 void engine_test006a(){
   startTestSerie( " enumerate a document on text node parents" );
