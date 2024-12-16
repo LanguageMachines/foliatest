@@ -1,3 +1,9 @@
+foliatest 0.14 2024-12-16
+[Ko van der Sloot]
+* added and improved tests upto libfolia 2.21
+* improved GitHub CI
+* updated to C++17
+
 foliatest 0.13 2024-05-27
 [Ko van der Sloot]
 * added and improved tests upto libfolia 2.19
