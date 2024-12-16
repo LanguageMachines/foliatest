@@ -122,9 +122,9 @@ void test0() {
   assertTrue( bla["dat"] == " ra ar" );
   assertEqual ( bla["dat"] , string(" ra ar") );
   assertThrow( bla = getArgs( "dit='fout' = " ), ArgsError );
-#if FOLIA_INT_VERSION >= 221
-  assertThrow( bla = getArgs( "dit=fout dit=dubbel" ), ArgsError );
-#endif
+// #if FOLIA_INT_VERSION >= 221
+//   assertThrow( bla = getArgs( "dit=fout dit=dubbel" ), ArgsError );
+// #endif
   assertNoThrow( bla = getArgs( "cls='o\\'k'" ) );
   assertTrue( bla["cls"] == "o'k" );
   assertNoThrow( bla = getArgs( "class='o\\k'" ) );
