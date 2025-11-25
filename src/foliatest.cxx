@@ -438,6 +438,7 @@ extern void sanity_test109();
 extern void sanity_test110();
 extern void sanity_test120();
 extern void sanity_test121();
+extern void sanity_test121a();
 extern void sanity_test122();
 extern void sanity_test123();
 extern void sanity_test130();
@@ -1567,6 +1568,7 @@ int main( int argc, char* argv[] ){
   sanity_test120();
   sanity_test121();
   sanity_test122();
+  sanity_test121a();
   sanity_test123();
   sanity_test130();
   sanity_test140();

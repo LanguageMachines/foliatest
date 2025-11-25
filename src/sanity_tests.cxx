@@ -2179,7 +2179,11 @@ void sanity_test120( ){
 }
 
 void sanity_test121( ){
+#if FOLIA_INT_VERSION < 222
   startTestSerie( " Word References - backward with wrong t NOT DETECTED!" );
+#else
+  startTestSerie( " Word References - backward with wrong t" );
+#endif
   Document d;
   string xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
     "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:id=\"doc\" version=\"1.5\">\n"
@@ -2206,8 +2210,25 @@ void sanity_test121( ){
     "  </text>\n"
     "</FoLiA>\n";
 
-  //  assertThrow( d.read_from_string( xml ), XmlError );
+#if FOLIA_INT_VERSION < 222
   assertNoThrow( d.read_from_string( xml ) );
+#else
+  assertThrow( d.read_from_string( xml ), XmlError );
+#endif
+}
+
+void sanity_test121a( ){
+#if FOLIA_INT_VERSION < 222
+  startTestSerie( " Word References - FAILING backward with multiple textclasses" );
+#else
+  startTestSerie( " Word References - backward with multiple textclasses" );
+#endif
+  Document d;
+#if FOLIA_INT_VERSION < 222
+  assertThrow( d.read_from_file( "tests/bug22.xml" ), XmlError );
+#else
+  assertNoThrow( d.read_from_file( "tests/bug22.xml" ) );
+#endif
 }
 
 void sanity_test122( ){
