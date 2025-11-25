@@ -2225,9 +2225,9 @@ void sanity_test121a( ){
 #endif
   Document d;
 #if FOLIA_INT_VERSION < 222
-  assertThrow( d.read_from_file( "tests/bug22.xml" ), XmlError );
+  assertThrow( d.read_from_file( "tests/bug21.xml" ), XmlError );
 #else
-  assertNoThrow( d.read_from_file( "tests/bug22.xml" ) );
+  assertNoThrow( d.read_from_file( "tests/bug21.xml" ) );
 #endif
 }
 
