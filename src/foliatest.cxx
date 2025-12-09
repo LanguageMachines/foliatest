@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2024
+  Copyright (c) 2006 - 2026
   CLST  - Radboud University
   ILK   - Tilburg University
 
@@ -1393,6 +1393,43 @@ void usage(){
   cerr << "\t-e or --expect set this value to hint the number of errors to expect." << endl;
 }
 
+//#define EXTRA
+#ifdef EXTRA
+void extra_test( ){
+  startTestSerie( " Creating a document from scratch. appending Words After Sentence" );
+  Document d( "xml:id""='example'" );
+  FoliaElement *text = 0;
+  KWargs args;
+  args["xml:id"] = "t.1";
+  assertNoThrow( text = d.addText( args ) );
+  args["xml:id"] = "p.1";
+  FoliaElement *p = 0;
+  assertNoThrow( p = new Paragraph( args ) );
+  text->append( p );
+  args["xml:id"] = "s.1";
+  FoliaElement *s = 0;
+  assertNoThrow( s = new Sentence( args ) );
+  p->append( s );
+  args.clear();
+  args["value"] = " dit is \t een \n tekst";
+  TextContent *t1 = new TextContent( args  );
+  p->append( t1 );
+  args["value"] = "dit is een tekst";
+  TextContent *t2 = new TextContent( args  );
+  // appending a text to the sentence with 'equivalent' text is OK
+  assertNoThrow( s->append( t2 ) );
+  cerr<< "NU " << s << endl;
+  args["value"] = " dit is een andere tekst";
+  TextContent *t3 = new TextContent( args  );
+  // appending a text to the sentence with 'different text is NOT OK
+  assertThrow( s->append( t3 ), DuplicateAnnotationError );
+  s->addWord( "dit" );
+  s->addWord( "is" );
+  assertThrow( s->addWord( "geen" ), InconsistentText );
+  s->addWord( "\t  tekst \n" );
+}
+#endif
+
 int main( int argc, char* argv[] ){
   try {
     TiCC::CL_Options Opts( "hVe:",
@@ -1429,6 +1466,10 @@ int main( int argc, char* argv[] ){
   }
   bool is_setup = setup();
   //  exit(777);
+#ifdef EXTRA
+  extra_test();
+  exit(1);
+#endif
   cout << "running foliatests for folia version: " << folia::VersionName()
        << endl;
   cout << "configured to test version: " << FOLIA_INT_VERSION << endl;
