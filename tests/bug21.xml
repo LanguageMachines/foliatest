@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="bugxx" generator="manual" version="2.5">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <sentence-annotation/>
+      <entity-annotation set="http://ilk.uvt.nl/folia/sets/frog-ner-nl"/>
+      <token-annotation set="tokconfig-nld"/>
+    </annotations>
+  </metadata>
+  <text>
+    <s xml:id="TEI.1.par">
+      <w xml:id="TEI.1.text.1.body.1.div1.1.head.1.s.1.w.3" class="WORD" set="tokconfig-nld">
+	<t>Zuydthollanschen</t>
+	<t class="contemporary">Zuidhollanschen</t>
+      </w>
+      <w xml:id="TEI.1.text.1.body.1.div1.1.head.1.s.1.w.4" class="WORD" set="tokconfig-nld" space="no">
+	<t>Synodi</t>
+	<t class="contemporary">Sijnodi</t>
+      </w>
+      <entities xml:id="TEI.1.text.1.body.1.div1.1.head.1.s.1.entities.1">
+	<entity xml:id="TEI.1.text.1.body.1.div1.1.head.1.s.1.entities.1.entity.1" class="pro" confidence="0.68202" set="http://ilk.uvt.nl/folia/sets/frog-ner-nl" textclass="contemporary">
+	  <wref id="TEI.1.text.1.body.1.div1.1.head.1.s.1.w.3" t="Zuidhollanschen"/>
+	  <wref id="TEI.1.text.1.body.1.div1.1.head.1.s.1.w.4" t="Sijnodi"/>
+	</entity>
+      </entities>
+    </s>
+  </text>
+</FoLiA>
